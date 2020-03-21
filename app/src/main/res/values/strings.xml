@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Corona Diagnostic App</string>
+    <string name="welcome_message">Welcome to the remote corona diagnostic app</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="required">Required!</string>
+    <string name="must_valid_email">Must be a valid email</string>
+    <string name="passwords_match">Passwords must match</string>
+    <string name="personal_info_request">Please enter your information</string>
+    <string name="age">Age</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="submit_personal_info">Submit</string>
+</resources>
