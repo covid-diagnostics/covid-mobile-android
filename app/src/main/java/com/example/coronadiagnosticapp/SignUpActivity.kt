@@ -5,13 +5,57 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.afollestad.vvalidator.form
+import com.example.coronadiagnosticapp.data.model.User
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.github.kittinunf.fuel.jackson.responseObject
+import com.github.kittinunf.fuel.json.jsonDeserializer
+import com.github.kittinunf.fuel.json.responseJson
+import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
+import java.util.*
+import java.util.logging.Level.parse
+
+const val SIGNUP_URL =
+    "/api/me/sign-up/"
 
 class SignUpActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        FuelManager.instance.basePath =
+            "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/staging/"
+        val preferencesHelper = SharedPreferencesHelper(this)
+
+        if (preferencesHelper.getIsLoggedIn()) {
+
+            val token = preferencesHelper.getToken()
+            if (token != "") {
+                FuelManager.instance.baseHeaders = mapOf("Authorization" to "JWT $token")
+
+                Fuel.get("/api/me/").responseJson() { _, _, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            preferencesHelper.putIsLoggedIn(false)
+                            preferencesHelper.putToken("")
+                            FuelManager.instance.baseHeaders = mapOf()
+
+                        }
+                        is Result.Success -> {
+                            if (preferencesHelper.getFirstName() != "") {
+                                toDailyCollectionScreen()
+                            }
+                            toPersonalInformationScreen()
+                        }
+                    }
+                }
+
+            }
+        }
 
         form {
             inputLayout(activity_signup_inp_email) {
@@ -32,25 +76,60 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
             submitWith(activity_signup_btn_submit) { res ->
-                val token = submitSignupForm(
+                submitSignupForm(
                     res.get("activity_signup_inp_email")?.value.toString(),
                     res.get("activity_signup_inp_password")?.value.toString()
                 )
-                println("Token $token")
-
-                nextScreen()
-
 
             }
         }
     }
-    fun nextScreen(){
+
+    fun toPersonalInformationScreen() {
         val intent = Intent(this, PersonalInfoCollection::class.java)
         startActivity((intent))
     }
 
+    fun toDailyCollectionScreen() {
+        val intent = Intent(this, DailyMetricCollection::class.java)
+        startActivity((intent))
+    }
+
     fun submitSignupForm(email: String, password: String): String {
-        println("Email: $email, Pass: $password")
+        val uniqueID = UUID.randomUUID().toString()
+        val requestBody = JSONObject()
+        requestBody.put("email", email)
+        requestBody.put("password", password)
+        requestBody.put("deviceId", uniqueID)
+
+        Fuel.post(
+            SIGNUP_URL
+        ).jsonBody(requestBody.toString()).responseJson() { request, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    val errData = jsonDeserializer().deserialize(response).obj()
+                    println(errData)
+
+                }
+                is Result.Success -> {
+                    val data = result.get()
+                    val preferencesHelper = SharedPreferencesHelper(this)
+                    val token = data.obj().getJSONObject("token")["access"].toString()
+                    preferencesHelper.putIsLoggedIn(true)
+                    preferencesHelper.putToken(token)
+
+                    FuelManager.instance.baseHeaders = mapOf("Authorization" to "JWT $token")
+
+                    toPersonalInformationScreen()
+                }
+
+            }
+
+
+        }
+
+
+
         return "TOKENSTRING"
     }
 

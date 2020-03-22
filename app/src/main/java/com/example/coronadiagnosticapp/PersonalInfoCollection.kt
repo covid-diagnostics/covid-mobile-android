@@ -4,7 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.afollestad.vvalidator.form
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import com.github.kittinunf.fuel.json.jsonDeserializer
+import com.github.kittinunf.fuel.json.responseJson
+import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_personal_info_collection.*
+import org.json.JSONObject
+import java.util.*
+
+const val FILL_DETAILS_URL = "/api/me/fill-personal-info/"
 
 class PersonalInfoCollection : AppCompatActivity() {
 
@@ -26,26 +36,48 @@ class PersonalInfoCollection : AppCompatActivity() {
             }
 
             submitWith(activity_personal_btn_submit) { res ->
-                val success = submitPersonalInfoForm(
+                submitPersonalInfoForm(
                     res.get("activity_personal_inp_first_name")?.value.toString(),
                     res.get("activity_personal_inp_last_name")?.value.toString(),
                     res.get("activity_personal_inp_age")?.value.toString()
                 )
-                println("Submitted info $success")
-
-                nextScreen()
-
 
             }
         }
 
     }
 
-    fun submitPersonalInfoForm(first_name: String, last_name: String, age: String): Boolean {
-        return true
+    fun submitPersonalInfoForm(first_name: String, last_name: String, age: String) {
+        val requestBody = JSONObject()
+        requestBody.put("firstName", first_name)
+        requestBody.put("lastName", last_name)
+        requestBody.put("age", age)
+
+        Fuel.put(
+            FILL_DETAILS_URL
+        ).jsonBody(requestBody.toString()).responseJson() { request, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    val errData = jsonDeserializer().deserialize(response).obj()
+                    println(errData)
+
+                }
+                is Result.Success -> {
+                    val data = result.get()
+                    val preferencesHelper = SharedPreferencesHelper(this)
+
+                    preferencesHelper.putFirstName(data.obj()["firstName"].toString())
+
+                    nextScreen()
+                }
+
+            }
+
+
+        }
     }
 
-    fun nextScreen(){
+    fun nextScreen() {
         val intent = Intent(this, DailyMetricCollection::class.java)
         startActivity((intent))
     }
