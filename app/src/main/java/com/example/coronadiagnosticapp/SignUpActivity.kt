@@ -18,71 +18,135 @@ import org.json.JSONObject
 import java.util.*
 import java.util.logging.Level.parse
 
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Size
+import android.graphics.Matrix
+import android.view.TextureView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+
 const val SIGNUP_URL =
     "/api/me/sign-up/"
+
+// This is an arbitrary number we are using to keep track of the permission
+// request. Where an app has multiple context for requesting permission,
+// this can help differentiate the different contexts.
+private const val REQUEST_CODE_PERMISSIONS = 215
+
+// This is an array of all the permission specified in the manifest.
+private val REQUIRED_PERMISSIONS = arrayOf(
+    Manifest.permission.CAMERA,
+    Manifest.permission.INTERNET,
+    Manifest.permission.RECORD_AUDIO
+)
 
 class SignUpActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        FuelManager.instance.basePath =
-            "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/staging/"
-        val preferencesHelper = SharedPreferencesHelper(this)
+        // Request camera permissions
+        if (allPermissionsGranted()) {
 
-        if (preferencesHelper.getIsLoggedIn()) {
+            FuelManager.instance.basePath =
+                "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/staging/"
+            val preferencesHelper = SharedPreferencesHelper(this)
 
-            val token = preferencesHelper.getToken()
-            if (token != "") {
-                FuelManager.instance.baseHeaders = mapOf("Authorization" to "JWT $token")
+            if (preferencesHelper.getIsLoggedIn()) {
 
-                Fuel.get("/api/me/").responseJson() { _, _, result ->
-                    when (result) {
-                        is Result.Failure -> {
-                            preferencesHelper.putIsLoggedIn(false)
-                            preferencesHelper.putToken("")
-                            FuelManager.instance.baseHeaders = mapOf()
+                val token = preferencesHelper.getToken()
+                if (token != "") {
+                    FuelManager.instance.baseHeaders = mapOf("Authorization" to "JWT $token")
 
-                        }
-                        is Result.Success -> {
-                            if (preferencesHelper.getFirstName() != "") {
-                                toDailyCollectionScreen()
+                    Fuel.get("/api/me/").responseJson() { _, _, result ->
+                        when (result) {
+                            is Result.Failure -> {
+                                preferencesHelper.putIsLoggedIn(false)
+                                preferencesHelper.putToken("")
+                                FuelManager.instance.baseHeaders = mapOf()
+
                             }
-                            toPersonalInformationScreen()
+                            is Result.Success -> {
+                                if (preferencesHelper.getFirstName() != "") {
+                                    toDailyCollectionScreen()
+                                }
+                                toPersonalInformationScreen()
+                            }
                         }
                     }
-                }
 
-            }
-        }
-
-        form {
-            inputLayout(activity_signup_inp_email) {
-                isNotEmpty().description(getString(R.string.required))
-                isEmail().description(getString(R.string.must_valid_email))
-            }
-            inputLayout(activity_signup_inp_password) {
-                isNotEmpty()
-
-
-            }
-            inputLayout(activity_signup_inp_password_repeat) {
-                isNotEmpty()
-                assert(getString(R.string.passwords_match)) { view ->
-                    val repeatPass = view.editText?.text.toString()
-                    val password = activity_signup_inp_password.editText?.text.toString()
-                    password == repeatPass
                 }
             }
-            submitWith(activity_signup_btn_submit) { res ->
-                submitSignupForm(
-                    res.get("activity_signup_inp_email")?.value.toString(),
-                    res.get("activity_signup_inp_password")?.value.toString()
-                )
 
+            setContentView(R.layout.activity_main)
+
+            form {
+                inputLayout(activity_signup_inp_email) {
+                    isNotEmpty().description(getString(R.string.required))
+                    isEmail().description(getString(R.string.must_valid_email))
+                }
+                inputLayout(activity_signup_inp_password) {
+                    isNotEmpty()
+
+
+                }
+                inputLayout(activity_signup_inp_password_repeat) {
+                    isNotEmpty()
+                    assert(getString(R.string.passwords_match)) { view ->
+                        val repeatPass = view.editText?.text.toString()
+                        val password = activity_signup_inp_password.editText?.text.toString()
+                        password == repeatPass
+                    }
+                }
+                submitWith(activity_signup_btn_submit) { res ->
+                    submitSignupForm(
+                        res.get("activity_signup_inp_email")?.value.toString(),
+                        res.get("activity_signup_inp_password")?.value.toString()
+                    )
+
+                }
+            }
+        } else {
+            ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
+
+    /**
+     * Process result from permission request dialog box, has the request
+     * been granted? If yes, start Camera. Otherwise display a toast
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
             }
         }
+    }
+
+    /**
+     * Check if all permission specified in the manifest have been granted
+     */
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     fun toPersonalInformationScreen() {

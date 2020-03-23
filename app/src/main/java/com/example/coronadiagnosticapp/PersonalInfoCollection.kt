@@ -12,7 +12,6 @@ import com.github.kittinunf.fuel.json.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_personal_info_collection.*
 import org.json.JSONObject
-import java.util.*
 
 const val FILL_DETAILS_URL = "/api/me/fill-personal-info/"
 
@@ -20,7 +19,30 @@ class PersonalInfoCollection : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val preferencesHelper = SharedPreferencesHelper(this)
+
+        if (preferencesHelper.getFirstName() != "") {
+
+            Fuel.get("/api/me/").responseJson() { _, _, result ->
+                when (result) {
+                    is Result.Failure -> {
+                        preferencesHelper.putIsLoggedIn(false)
+                        preferencesHelper.putToken("")
+                        FuelManager.instance.baseHeaders = mapOf()
+                        toSignupScreen()
+
+                    }
+                    is Result.Success -> {
+                        toDailyMetricsScreen()
+                    }
+                }
+            }
+
+
+        }
         setContentView(R.layout.activity_personal_info_collection)
+
+
 
         form {
             inputLayout(activity_personal_inp_first_name) {
@@ -68,7 +90,7 @@ class PersonalInfoCollection : AppCompatActivity() {
 
                     preferencesHelper.putFirstName(data.obj()["firstName"].toString())
 
-                    nextScreen()
+                    toDailyMetricsScreen()
                 }
 
             }
@@ -77,7 +99,12 @@ class PersonalInfoCollection : AppCompatActivity() {
         }
     }
 
-    fun nextScreen() {
+    fun toSignupScreen() {
+        val intent = Intent(this, SignUpActivity::class.java)
+        startActivity((intent))
+    }
+
+    fun toDailyMetricsScreen() {
         val intent = Intent(this, DailyMetricCollection::class.java)
         startActivity((intent))
     }

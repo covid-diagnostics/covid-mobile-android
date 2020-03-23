@@ -8,6 +8,8 @@ class SharedPreferencesHelper(private val context: Context) {
     private val FIRST_NAME = "FIRST_NAME"
     private val TOKEN = "TOKEN"
     private val GENDER = "GENDER"
+    private val SUBMISSION_ID = "SUBMISSION_ID"
+    private val FINISHED_SUBMISSION = "FINISHED_SUBMISSION"
     private val app_prefs: SharedPreferences
 
     init {
@@ -45,6 +47,26 @@ class SharedPreferencesHelper(private val context: Context) {
 
     fun getToken(): String? {
         return app_prefs.getString(TOKEN, "")
+    }
+
+    fun putSubmissionId(submissionId: Int) {
+        val edit = app_prefs.edit()
+        edit.putInt(SUBMISSION_ID, submissionId)
+        edit.commit()
+    }
+
+    fun getSubmissionId(): Int? {
+        return app_prefs.getInt(SUBMISSION_ID, 0)
+    }
+
+    fun putFinishedSubmission(isFinished: Boolean) {
+        val edit = app_prefs.edit()
+        edit.putBoolean(FINISHED_SUBMISSION, isFinished)
+        edit.commit()
+    }
+
+    fun getFinishedSubmission(): Boolean? {
+        return app_prefs.getBoolean(FINISHED_SUBMISSION, false)
     }
 
 
