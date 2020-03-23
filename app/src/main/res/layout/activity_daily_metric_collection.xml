@@ -8,12 +8,74 @@
     tools:context=".DailyMetricCollection">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="COLLLECT"
+        android:id="@+id/daily_metrics_message"
+        android:layout_width="267dp"
+        android:layout_height="99dp"
+        android:gravity="center"
+        android:text="@string/daily_metric_message"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024"
+        tools:text="@string/daily_metric_message" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_metrics_inp_temp"
+        android:layout_width="@dimen/input_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:hint="@string/temperature"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daily_metrics_message">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/activity_metrics_inp_cough_strength"
+        android:layout_width="@dimen/input_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="@string/coughStrength"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/activity_metrics_btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/submit_daily_metrics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_chk_cough_wet"
+        tools:text="@string/submit_daily_metrics" />
+
+    <CheckBox
+        android:id="@+id/activity_metrics_chk_cough_wet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:text="@string/isCoughWet"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
