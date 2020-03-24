@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_dailyMetricFragment"
+            app:destination="@id/dailyMetricFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment"
+        android:label="register_fragment"
+        tools:layout="@layout/register_fragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_informationFragment"
+            app:destination="@id/informationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
+        android:label="InformationFragment" >
+        <action
+            android:id="@+id/action_informationFragment_to_dailyMetricFragment"
+            app:destination="@id/dailyMetricFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dailyMetricFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment"
+        android:label="daily_metric_fragment"
+        tools:layout="@layout/daily_metric_fragment" >
+        <action
+            android:id="@+id/action_dailyMetricFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment"
+        android:label="camera_fragment"
+        tools:layout="@layout/camera_fragment" />
+</navigation>
