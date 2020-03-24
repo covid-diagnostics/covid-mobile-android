@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/instructions"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/instructions"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/videoview"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal" />
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="fill_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="vertical" >-->
+
+        <!--            <Button-->
+        <!--                android:id="@+id/mybutton"-->
+        <!--                android:layout_width="fill_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="REC"-->
+        <!--                android:textSize="12dp" />-->
+
+        <!--            <RadioGroup-->
+        <!--                android:layout_width="fill_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:orientation="vertical" >-->
+
+        <!--                <RadioButton-->
+        <!--                    android:id="@+id/flashoff"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:checked="true"-->
+        <!--                    android:text="OFF"-->
+        <!--                    android:textSize="8dp" />-->
+
+        <!--                <RadioButton-->
+        <!--                    android:id="@+id/flashtorch"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="Torch"-->
+        <!--                    android:textSize="8dp" />-->
+        <!--            </RadioGroup>-->
+        <!--        </LinearLayout>-->
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/ready_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:focusable="true"
+        android:paddingStart="80dp"
+        android:paddingLeft="80dp"
+        android:paddingEnd="80dp"
+        android:paddingRight="80dp"
+        android:text="@string/ready" />
+
+    <ProgressBar
+        android:id="@+id/barTimer"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/video_layout"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:indeterminate="false"
+        android:max="20"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/barTimer"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="20"
+        android:textSize="30sp"
+        android:visibility="gone" />
+
+</RelativeLayout>
