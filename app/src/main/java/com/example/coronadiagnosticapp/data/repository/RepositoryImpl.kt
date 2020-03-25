@@ -57,8 +57,13 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
-        val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
-        dao.insert(responseMetric)
+        try {
+            val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
+            dao.insert(responseMetric)
+
+        } catch (e: Exception) {
+            error.postValue(e.message)
+        }
     }
 
 }

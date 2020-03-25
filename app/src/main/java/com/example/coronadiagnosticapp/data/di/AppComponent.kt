@@ -13,6 +13,7 @@ import com.example.coronadiagnosticapp.data.repository.Repository
 import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
+import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.resultFragment.ResultFragment
 import dagger.BindsInstance
@@ -29,6 +30,8 @@ interface AppComponent {
     fun inject(fragment: InformationFragment)
     fun inject(fragment: DailyMetricFragment)
     fun inject(fragment: ResultFragment)
+    fun inject(fragment: RecorderFragment)
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
