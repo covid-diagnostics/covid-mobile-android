@@ -165,14 +165,11 @@ public class VideoRecordActivity extends AppCompatActivity {
     RadioButton flashOff, flashTorch;
     SurfaceHolder surfaceHolder;
     boolean recording;
-
+    private String filename;
     CountDownTimer countDownTimer;
     ProgressBar barTimer;
     TextView textTimer;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,7 +203,6 @@ public class VideoRecordActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View arg0, MotionEvent arg1) {
             // TODO Auto-generated method stub
-
             if (myCamera != null) {
                 Camera.Parameters parameters = myCamera.getParameters();
 
@@ -227,14 +223,6 @@ public class VideoRecordActivity extends AppCompatActivity {
         }
     };
 
-    Button.OnClickListener flashModeButtonOnClickListener = new Button.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            // TODO Auto-generated method stub
-
-        }
-    };
 
     Button.OnClickListener myButtonOnClickListener = new Button.OnClickListener() {
 
@@ -267,9 +255,8 @@ public class VideoRecordActivity extends AppCompatActivity {
                     Toast.makeText(VideoRecordActivity.this,
                             "Fail in prepareMediaRecorder()!\n - Ended -",
                             Toast.LENGTH_LONG).show();
-                    finish();
-                }
 
+                }
                 mediaRecorder.start();
                 recording = true;
                 myButton.setText("CANCEL");
@@ -301,6 +288,8 @@ public class VideoRecordActivity extends AppCompatActivity {
     }
 
     private boolean prepareMediaRecorder() {
+
+        filename = getApplicationContext().getExternalFilesDir("/").getAbsolutePath() + "video";
         myCamera = getCameraInstance();
 
         Camera.Parameters parameters = myCamera.getParameters();
@@ -326,7 +315,7 @@ public class VideoRecordActivity extends AppCompatActivity {
         mediaRecorder.setVideoEncoder(profile.videoCodec);
 
 
-        mediaRecorder.setOutputFile(getOutputMediaFile("movie"));
+        mediaRecorder.setOutputFile(filename);
 //        mediaRecorder.setMaxDuration(6000000); // Set max duration 60 sec.
 //        mediaRecorder.setMaxFileSize(500000000); // Set max file size 500M
 
@@ -337,7 +326,7 @@ public class VideoRecordActivity extends AppCompatActivity {
         try {
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
-            Log.d("VideoRecordActivity", "mediaRecorder.prepare failed");
+            Log.d("VideoRecordActivity", "mediaRecorder.prepare failed" + e.getMessage());
             e.printStackTrace();
             releaseMediaRecorder();
             return false;
@@ -477,10 +466,10 @@ public class VideoRecordActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 if (textTimer.getText().equals("0")) {
-//                    Intent intent = new Intent(VideoRecordActivity.this, ResultsActivity.class);
-//                    startActivity(intent);
-                    Toast.makeText(VideoRecordActivity.this, "VideoRecordActivity finished!", Toast.LENGTH_SHORT).show();
-                    Log.d("VideoRecordActivity", "VideoRecordActivity finished!");
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result", filename);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
                 } else {
                     textTimer.setText("20");
                     barTimer.setProgress(time_seconds);

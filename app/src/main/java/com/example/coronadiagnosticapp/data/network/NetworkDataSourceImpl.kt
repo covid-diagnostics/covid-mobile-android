@@ -1,10 +1,12 @@
 package com.example.coronadiagnosticapp.data.network
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -24,9 +26,21 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
 
     override suspend fun updateUserPersonalInformation(
         user: User
-    ): User = api.updateUserInformation(user).await()
+    ): User? {
+        try {
+            return api.updateUserInformation(user).await()
 
-    override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric {
+        } catch (e: Exception) {
+            Log.e("HTTP", e.message)
+        }
+        return null
+    }
+
+    override suspend fun updateUserMetrics(
+        temp: String,
+        cough: Int,
+        isWet: Boolean
+    ): ResponseMetric {
         return api.updateUserMetrics(
             SendMetric(
                 temperature = temp,

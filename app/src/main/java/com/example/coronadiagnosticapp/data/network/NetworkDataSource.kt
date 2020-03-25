@@ -15,7 +15,7 @@ interface NetworkDataSource {
 
     suspend fun updateUserPersonalInformation(
         user: User
-    ): User
+    ): User?
 
     suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
 

@@ -31,6 +31,7 @@ class RepositoryImpl @Inject constructor(
             val responseUser = networkDataSource.registerUser(userRegister)
             dao.insert(responseUser.user)
             tokenProvider.setToken(responseUser.token.access)
+            tokenServiceInterceptor.sessionToken = responseUser.token.access
             this.responseUser = responseUser
         } catch (e: Exception) {
             error.postValue(e.message)
@@ -52,7 +53,9 @@ class RepositoryImpl @Inject constructor(
             this.age = age
         }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
-        dao.upsert(userRes)
+        if (userRes != null) {
+            dao.upsert(userRes)
+        }
 
     }
 

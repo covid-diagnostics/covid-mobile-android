@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
@@ -52,7 +53,9 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerAppComponent.factory().create(context!!).inject(this)
+        activity?.applicationContext.let { ctx ->
+            (ctx as MyApplication).getAppComponent().inject(this)
+        }
         recordFile = context!!.externalCacheDir!!.absolutePath
 
     }
@@ -111,6 +114,7 @@ class RecorderFragment : ScopedFragment() {
         mediaRecorder!!.release()
         mediaRecorder = null
 
+
     }
 
     private fun startRecording() {
@@ -156,10 +160,10 @@ class RecorderFragment : ScopedFragment() {
                     withContext(Dispatchers.Main) {
                         showLoading(false)
                         Log.d("Record", "file finish")
+                        findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
                     }
                 }
             }
-
         }
 
 

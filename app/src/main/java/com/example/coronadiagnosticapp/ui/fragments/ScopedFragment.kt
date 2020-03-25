@@ -2,6 +2,7 @@ package com.example.coronadiagnosticapp.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.coronadiagnosticapp.MyApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
