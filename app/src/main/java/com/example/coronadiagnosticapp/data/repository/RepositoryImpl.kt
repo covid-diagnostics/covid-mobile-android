@@ -1,17 +1,12 @@
 package com.example.coronadiagnosticapp.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.UserDao
 import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
-import com.example.coronadiagnosticapp.data.db.entity.User
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.TokenProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -29,17 +24,15 @@ class RepositoryImpl @Inject constructor(
     override suspend fun registerUser(userRegister: UserRegister) {
         try {
             val responseUser = networkDataSource.registerUser(userRegister)
-            dao.insert(responseUser.user)
-            tokenProvider.setToken(responseUser.token.access)
+            dao.upsertUser(responseUser.user)
             tokenServiceInterceptor.sessionToken = responseUser.token.access
-            this.responseUser = responseUser
         } catch (e: Exception) {
             error.postValue(e.message)
         }
 
     }
 
-    override fun isLoggedIn(): Boolean = !tokenProvider.getToken().isNullOrBlank()
+    override fun isLoggedIn(): Boolean = !tokenServiceInterceptor.sessionToken.isNullOrBlank()
 
     override suspend fun updateUserPersonalInformation(
         firstName: String,
@@ -54,7 +47,7 @@ class RepositoryImpl @Inject constructor(
         }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
         if (userRes != null) {
-            dao.upsert(userRes)
+            dao.upsertUser(userRes)
         }
 
     }
@@ -62,7 +55,7 @@ class RepositoryImpl @Inject constructor(
     override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
         try {
             val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
-            dao.insert(responseMetric)
+            dao.upsertMetric(responseMetric)
 
         } catch (e: Exception) {
             error.postValue(e.message)

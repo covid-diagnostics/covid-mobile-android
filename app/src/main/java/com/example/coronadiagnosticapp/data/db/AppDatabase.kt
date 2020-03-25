@@ -11,7 +11,7 @@ import com.example.coronadiagnosticapp.data.db.entity.User
 
 @Database(
     entities = [User::class, ResponseMetric::class],
-    version = 3
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getUserDao(): UserDao

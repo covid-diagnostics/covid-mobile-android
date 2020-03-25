@@ -262,7 +262,7 @@ public class VideoRecordActivity extends AppCompatActivity {
                 myButton.setText("CANCEL");
                 barTimer.setVisibility(View.VISIBLE);
                 textTimer.setVisibility(View.VISIBLE);
-                startTimer(20);
+                startTimer(3);
             }
         }
     };

@@ -49,12 +49,14 @@ class CameraFragment : ScopedFragment() {
 
     @Inject
     lateinit var viewModel: CameraViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,7 +90,7 @@ class CameraFragment : ScopedFragment() {
                 }
             } else {
                 val intent = Intent(context, VideoRecordActivity::class.java)
-                startActivityForResult(intent,REQUEST_CODE_VIDEO)
+                startActivityForResult(intent, REQUEST_CODE_VIDEO)
             }
         }
     }
@@ -103,7 +105,7 @@ class CameraFragment : ScopedFragment() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
                     val intent = Intent(context, VideoRecordActivity::class.java)
-                    startActivityForResult(intent,REQUEST_CODE_VIDEO)
+                    startActivityForResult(intent, REQUEST_CODE_VIDEO)
                 }
             } else {
                 Toast.makeText(context, "cannot continue without permissions", Toast.LENGTH_LONG)
@@ -114,17 +116,17 @@ class CameraFragment : ScopedFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_VIDEO){
-            if (resultCode == Activity.RESULT_OK){
-                if (data != null){
+        if (requestCode == REQUEST_CODE_VIDEO) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
                     val fileName = data.getStringExtra("result")
+                    val file = File(fileName)
 
-                    val filePart :RequestBody
-
+                    Log.d("CameraFragment", file.totalSpace.toString())
                     showLoading(true)
-                    launch (Dispatchers.IO){
+                    launch(Dispatchers.IO) {
                         viewModel.uploadVideo(File("csd"))
-                        withContext(Dispatchers.Main){
+                        withContext(Dispatchers.Main) {
                             showLoading(false)
                             findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
                         }
@@ -132,14 +134,14 @@ class CameraFragment : ScopedFragment() {
 
 
                 }
-            }else{
+            } else {
                 Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun showLoading(show:Boolean){
+    private fun showLoading(show: Boolean) {
         when (show) {
             true -> progressBar_cameraFragment.visibility = View.VISIBLE
             false -> progressBar_cameraFragment.visibility = View.GONE

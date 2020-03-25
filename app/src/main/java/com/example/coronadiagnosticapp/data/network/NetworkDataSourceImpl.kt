@@ -19,7 +19,14 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
 
 
     override suspend fun registerUser(userRegister: UserRegister): ResponseUser {
+
+        try {
+            return api.registerUser(userRegister).await()
+        }catch (e: HttpException) {
+            Log.e("HTTP", e.response().toString())
+        }
         return api.registerUser(userRegister).await()
+
 
 
     }
@@ -30,8 +37,8 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         try {
             return api.updateUserInformation(user).await()
 
-        } catch (e: Exception) {
-            Log.e("HTTP", e.message)
+        } catch (e: HttpException) {
+            Log.e("HTTP", e.response().toString())
         }
         return null
     }
