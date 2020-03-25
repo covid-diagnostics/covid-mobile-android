@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.kittinunf.result:result:3.0.0@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kittinunf.result/result/3.0.0/b58c3fd700b219fe6164af49c25c072225453667/result-3.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kittinunf.result/result/3.0.0/e1d0f9ed298f9524a1f73fa52933a8649bf53cb7/result-3.0.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kittinunf.result/result/3.0.0/f577838f9ae87aad313f9f0ce27d8dc815d29e67/result-3.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

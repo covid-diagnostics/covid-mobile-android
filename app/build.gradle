@@ -90,5 +90,11 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.25.2'
     // if you use the support libraries
 
+    // permission
+    implementation 'com.karumi:dexter:6.0.2'
+
+    // AUDIO RECORDER
+    implementation 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
+
 
 }
