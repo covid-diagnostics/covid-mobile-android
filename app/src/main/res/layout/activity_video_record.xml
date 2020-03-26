@@ -23,11 +23,11 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/videoview"
+        <SurfaceView
+            android:id="@+id/preview"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"></SurfaceView>
 
         <!--        <LinearLayout-->
         <!--            android:layout_width="fill_parent"-->
@@ -64,21 +64,21 @@
         <!--        </LinearLayout>-->
     </LinearLayout>
 
-    <Button
-        android:id="@+id/ready_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:clickable="true"
-        android:elevation="5dp"
-        android:focusable="true"
-        android:paddingStart="80dp"
-        android:paddingLeft="80dp"
-        android:paddingEnd="80dp"
-        android:paddingRight="80dp"
-        android:text="@string/ready" />
+<!--    <Button-->
+<!--        android:id="@+id/ready_btn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginBottom="50dp"-->
+<!--        android:clickable="true"-->
+<!--        android:elevation="5dp"-->
+<!--        android:focusable="true"-->
+<!--        android:paddingStart="80dp"-->
+<!--        android:paddingLeft="80dp"-->
+<!--        android:paddingEnd="80dp"-->
+<!--        android:paddingRight="80dp"-->
+<!--        android:text="@string/ready" />-->
 
     <ProgressBar
         android:id="@+id/barTimer"

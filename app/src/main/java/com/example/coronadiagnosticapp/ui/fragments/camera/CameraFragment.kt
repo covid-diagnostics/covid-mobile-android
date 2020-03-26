@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
+import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.activities.VideoRecordActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.camera_fragment.*
@@ -89,7 +90,7 @@ class CameraFragment : ScopedFragment() {
                     )
                 }
             } else {
-                val intent = Intent(context, VideoRecordActivity::class.java)
+                val intent = Intent(context, OxymeterActivity::class.java)
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)
             }
         }
@@ -104,7 +105,7 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == 200) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
-                    val intent = Intent(context, VideoRecordActivity::class.java)
+                    val intent = Intent(context, OxymeterActivity::class.java)
                     startActivityForResult(intent, REQUEST_CODE_VIDEO)
                 }
             } else {
@@ -119,19 +120,19 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == REQUEST_CODE_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    val fileName = data.getStringExtra("result")
-                    val file = File(fileName)
-
-                    Log.d("CameraFragment", file.totalSpace.toString())
-                    showLoading(true)
-                    launch(Dispatchers.IO) {
-                        viewModel.uploadVideo(File("csd"))
-                        withContext(Dispatchers.Main) {
-                            showLoading(false)
-                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-                        }
-                    }
-
+//                    val fileName = data.getStringExtra("result")
+//                    val file = File(fileName)
+//
+//                    Log.d("CameraFragment", file.totalSpace.toString())
+//                    showLoading(true)
+//                    launch(Dispatchers.IO) {
+//                        viewModel.uploadVideo(File("csd"))
+//                        withContext(Dispatchers.Main) {
+//                            showLoading(false)
+//                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+//                        }
+//                    }
+                    Toast.makeText(context, "Result: "+ data.getStringExtra("result"), Toast.LENGTH_SHORT).show()
 
                 }
             } else {
