@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,8 +39,6 @@ public class OxymeterActivity extends Activity {
     //Toast
     private Toast mainToast;
 
-    // DataBase
-    public String user;
 
     //ProgressBar
 //    private ProgressBar ProgO2;
@@ -48,6 +47,9 @@ public class OxymeterActivity extends Activity {
 
     //Button
     private Button readyBtn;
+
+    //TextView
+    private TextView alert;
 
     //Freq + timer variable
     private static long startTime = 0;
@@ -75,19 +77,22 @@ public class OxymeterActivity extends Activity {
 
         // XML - Java Connecting
         preview = (SurfaceView) findViewById(R.id.preview);
+        alert = (TextView)findViewById(R.id.putfinger);
         previewHolder = preview.getHolder();
-        previewHolder.addCallback(surfaceCallback);
-        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+       previewHolder.addCallback(surfaceCallback);
+       previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-//        readyBtn = (Button) findViewById(R.id.ready_btn);
-//
-//        readyBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                previewHolder.addCallback(surfaceCallback);
-//                previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//            }
-//        });
+        readyBtn = (Button) findViewById(R.id.ready_btn);
+
+        readyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startTime = System.currentTimeMillis();
+             //   previewHolder.addCallback(surfaceCallback);
+             //   previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            }
+        });
 
 
      //   ProgO2 = (ProgressBar)findViewById(R.id.O2PB);
@@ -118,7 +123,7 @@ public class OxymeterActivity extends Activity {
 
         camera.setDisplayOrientation(90);
 
-        startTime = System.currentTimeMillis();
+//        startTime = System.currentTimeMillis();
 
         Log.e("OnResume():","Called.");
     }
@@ -146,9 +151,14 @@ public class OxymeterActivity extends Activity {
             if (data == null) throw new NullPointerException();
             Camera.Size size = cam.getParameters().getPreviewSize();
             if (size == null) throw new NullPointerException();
+            if(startTime == 0) // Don't count if not started yet!
+                processing.set(false);
+            else
+                processing.set(true);
 
             //Atomically sets the value to the given updated value if the current value == the expected value.
-            if (!processing.compareAndSet(false, true)) return;
+            if (processing.compareAndSet(false, true)){
+                return;}
 
             //put width + height of the camera inside the variables
             int width = size.width;
@@ -164,19 +174,26 @@ public class OxymeterActivity extends Activity {
             RedAvgList.add(RedAvg);
             BlueAvgList.add(BlueAvg);
 
-            ++counter; //countes number of frames in 30 seconds
-
             //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
             if (RedAvg < 200) {
+                alert.setVisibility(View.VISIBLE);
 //                inc=0;
 //                ProgP=inc;
 //                ProgO2.setProgress(ProgP);
                 processing.set(false);
+                startTime = System.currentTimeMillis();
+                return;
+            }else {
+                alert.setVisibility(View.INVISIBLE);
             }
+
+
+            ++counter; //countes number of frames in 30 seconds
+
 
             long endTime = System.currentTimeMillis();
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
-            if (totalTimeInSecs >= 30) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
+            if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
 
                 startTime = System.currentTimeMillis();
                 SamplingFreq =  (counter/totalTimeInSecs);
@@ -207,16 +224,19 @@ public class OxymeterActivity extends Activity {
 
                 double spo2 = 100-5*(R);
                 o2 =(int) (spo2);
-
+                Log.e("O2 Value = ", ""+ Integer.toString(o2));
+//-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
                 if (( o2 < 80 || o2 > 99) || (bpm < 45 || bpm > 200)) {
 //                    inc=0;
 //                    ProgP=inc;
 //                    ProgO2.setProgress(ProgP);
-                    mainToast = Toast.makeText(getApplicationContext(), "Measurement Failed", Toast.LENGTH_SHORT);
+                    Log.e("O2 Value before Toast = ", ""+ Integer.toString(o2));
+                    mainToast = Toast.makeText(getApplicationContext(), "Measurement Failed, Starting over please dont move your finger!!", Toast.LENGTH_SHORT);
                     mainToast.show();
                     startTime = System.currentTimeMillis();
                     counter=0;
                     processing.set(false);
+                    o2 = 0;
                     return;
                 }
 
@@ -228,11 +248,11 @@ public class OxymeterActivity extends Activity {
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();}
 
-//            if(RedAvg!=0){
-//                ProgP=inc++/34;;
-//                ProgO2.setProgress(ProgP);}
+            if(RedAvg!=0) {
+//                Toast.makeText(getApplicationContext(), " RedAVG != 0", Toast.LENGTH_SHORT).show();
+            }
 
-            processing.set(false);
+            processing.set(true);
 
         }
     };
