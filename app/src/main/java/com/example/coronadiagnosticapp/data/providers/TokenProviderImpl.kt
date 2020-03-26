@@ -17,7 +17,7 @@ class TokenProviderImpl @Inject constructor(context: Context) : TokenProvider,
 
     }
 
-    override  fun setToken(token: String) {
+    override  fun setToken(token: String?) {
         Log.d("token","set")
         with(preferences.edit()) {
             putString(USER_TOKEN, token)

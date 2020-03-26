@@ -6,14 +6,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
+import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ResultFragment : Fragment() {
+class ResultFragment : ScopedFragment() {
 
+    @Inject
+    lateinit var viewModel: ResultViewModel
 
-    @Inject lateinit var viewModel: ResultViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.applicationContext.let { ctx ->
+            (ctx as MyApplication).getAppComponent().inject(this)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +36,9 @@ class ResultFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ResultViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        launch(Dispatchers.IO) {
+        }
     }
 
 }

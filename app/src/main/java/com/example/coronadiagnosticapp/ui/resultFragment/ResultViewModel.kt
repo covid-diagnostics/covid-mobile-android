@@ -5,7 +5,4 @@ import javax.inject.Inject
 
 class ResultViewModel @Inject constructor(): ViewModel() {
 
-   suspend fun calcResult(){
-
-   }
 }

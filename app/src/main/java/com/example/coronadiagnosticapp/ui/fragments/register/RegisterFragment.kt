@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
+import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
@@ -34,8 +35,10 @@ class RegisterFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.applicationContext.let { ctx ->
+            (ctx as MyApplication).getAppComponent().inject(this)
+        }
 
-        DaggerAppComponent.factory().create(context!!).inject(this)
     }
 
     override fun onCreateView(

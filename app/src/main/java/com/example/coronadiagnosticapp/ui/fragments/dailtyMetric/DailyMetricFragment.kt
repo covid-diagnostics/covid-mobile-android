@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
+import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
@@ -23,8 +24,9 @@ class DailyMetricFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerAppComponent.factory().create(context!!).inject(this)
-
+        activity?.applicationContext.let { ctx ->
+            (ctx as MyApplication).getAppComponent().inject(this)
+        }
     }
 
     @Inject

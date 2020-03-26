@@ -11,6 +11,7 @@ import com.example.coronadiagnosticapp.data.providers.TokenProvider
 import com.example.coronadiagnosticapp.data.providers.TokenProviderImpl
 import com.example.coronadiagnosticapp.data.repository.Repository
 import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
+import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
@@ -31,6 +32,7 @@ interface AppComponent {
     fun inject(fragment: DailyMetricFragment)
     fun inject(fragment: ResultFragment)
     fun inject(fragment: RecorderFragment)
+    fun inject(fragment: CameraFragment)
 
     @Component.Factory
     interface Factory {
@@ -71,10 +73,9 @@ class DataRepositoryModule {
     fun provideTokenProvider(context: Context): TokenProvider = TokenProviderImpl(context)
 
     @Provides
-    fun provideNetworkInterceptor(provideTokenProvider: TokenProvider): TokenServiceInterceptor {
-        // get token
-        val token = provideTokenProvider.getToken()
-        return TokenServiceInterceptor(token)
+    @Singleton
+    fun provideNetworkInterceptor(): TokenServiceInterceptor {
+        return TokenServiceInterceptor()
     }
 
 
