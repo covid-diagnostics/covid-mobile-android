@@ -20,5 +20,5 @@ interface NetworkDataSource {
 
     suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
 
-    suspend fun uploadAudioRecording(file: File)
+    suspend fun uploadAudioRecording(file: File, id: Int)
 }

@@ -65,7 +65,8 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun uploadAudioRecording(file: File) {
         try {
-            networkDataSource.uploadAudioRecording(file)
+            val id = dao.getMetric().id
+            networkDataSource.uploadAudioRecording(file, id)
 
         } catch (e: Exception) {
             error.postValue(e.message)

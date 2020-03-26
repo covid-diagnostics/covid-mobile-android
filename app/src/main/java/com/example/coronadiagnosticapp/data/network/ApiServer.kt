@@ -48,7 +48,7 @@ interface ApiServer {
 
     @Multipart
     @PUT(AUDIO_UPLOAD)
-    fun uploadAudioRecording(@Part chestRecording: MultipartBody.Part) : Deferred<Unit>
+    fun uploadAudioRecording(@Part chestRecording: MultipartBody.Part, @Part id: MultipartBody.Part) : Deferred<Unit>
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {
