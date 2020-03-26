@@ -7,6 +7,7 @@ import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.TokenProvider
+import java.io.File
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -61,5 +62,16 @@ class RepositoryImpl @Inject constructor(
             error.postValue(e.message)
         }
     }
+
+    override suspend fun uploadAudioRecording(file: File) {
+        try {
+            val id = dao.getMetric().id
+            networkDataSource.uploadAudioRecording(file, id)
+
+        } catch (e: Exception) {
+            error.postValue(e.message)
+        }
+    }
+
 
 }

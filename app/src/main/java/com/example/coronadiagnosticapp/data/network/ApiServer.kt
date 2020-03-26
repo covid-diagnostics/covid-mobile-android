@@ -46,6 +46,10 @@ interface ApiServer {
     @PUT(VIDEO_UPLOAD)
     fun uploadVideo(@Part video: MultipartBody.Part)
 
+    @Multipart
+    @PUT(AUDIO_UPLOAD)
+    fun uploadAudioRecording(@Part chestRecording: MultipartBody.Part, @Part id: MultipartBody.Part) : Deferred<Unit>
+
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {
             val okHttpClient = OkHttpClient
@@ -67,7 +71,7 @@ interface ApiServer {
 @Singleton
 class TokenServiceInterceptor @Inject constructor() : Interceptor {
     val AUTH_HEDER_KEY = "Authorization"
-    var sessionToken:String? = null
+    var sessionToken: String? = null
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
