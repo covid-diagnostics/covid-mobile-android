@@ -9,6 +9,7 @@ import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.TokenProvider
+import java.io.File
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -64,11 +65,22 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+
     override suspend fun saveResult(healthResult: HealthResult) {
         dao.insertHealth(healthResult)
     }
 
     override fun getLastResult(): LiveData<HealthResult> = dao.getLastHealthResult()
+
+    override suspend fun uploadAudioRecording(file: File) {
+        try {
+            val id = dao.getMetric().id
+            networkDataSource.uploadAudioRecording(file, id)
+
+        } catch (e: Exception) {
+            error.postValue(e.message)
+        }
+    }
 
 
 }

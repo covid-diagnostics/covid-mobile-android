@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.HttpException
-import java.lang.Exception
+import java.io.File
 import javax.inject.Inject
+
 
 class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDataSource {
 
@@ -22,11 +24,10 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
 
         try {
             return api.registerUser(userRegister).await()
-        }catch (e: HttpException) {
+        } catch (e: HttpException) {
             Log.e("HTTP", e.response().toString())
         }
         return api.registerUser(userRegister).await()
-
 
 
     }
@@ -56,5 +57,18 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
             )
         ).await()
 
+    }
+
+    override suspend fun uploadAudioRecording(file: File, id: Int) {
+        val filePart = MultipartBody.Part.createFormData(
+            "chestRecording",
+            file.name,
+            RequestBody.create(MediaType.parse("audio/*"), file)
+        )
+
+        val idPart = MultipartBody.Part.createFormData("id", id.toString())
+
+
+        return api.uploadAudioRecording(filePart, idPart).await()
     }
 }
