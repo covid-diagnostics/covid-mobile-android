@@ -37,8 +37,7 @@ class ResultFragment : ScopedFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        launch(Dispatchers.IO) {
-        }
+
     }
 
 }
