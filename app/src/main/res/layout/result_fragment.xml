@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Respination Rate:"
+        android:text="Respiration Rate:"
         app:layout_constraintStart_toStartOf="@+id/textView_Blood"
         app:layout_constraintTop_toBottomOf="@+id/textView_Blood" />
 
