@@ -19,32 +19,4 @@ import javax.inject.Inject
 
 class ResultFragment : ScopedFragment() {
 
-    @Inject
-    lateinit var viewModel: ResultViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.result_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel.getLastResult().observe(viewLifecycleOwner, Observer {
-            // TODO show result to user
-            Log.d("ResultFragment", it.toString())
-
-        })
-
-    }
-
 }
