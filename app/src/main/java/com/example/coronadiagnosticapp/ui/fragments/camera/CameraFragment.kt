@@ -2,11 +2,9 @@ package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
+import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
-import com.example.coronadiagnosticapp.ui.activities.VideoRecordActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.camera_fragment.*
-import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.RequestBody
-import java.io.File
 import javax.inject.Inject
 
 
@@ -38,15 +32,13 @@ private const val REQUEST_CODE_PERMISSIONS = 215
 private const val REQUEST_CODE_VIDEO = 315
 
 
-// This is an array of all the permission specified in the manifest.
-private val REQUIRED_PERMISSIONS = arrayOf(
-    Manifest.permission.CAMERA,
-    Manifest.permission.INTERNET,
-    Manifest.permission.RECORD_AUDIO,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
-
 class CameraFragment : ScopedFragment() {
+
+    companion object CameraCodes {
+        fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
+        fun breathsPerMinute() = "BREATHS_PER_MINUTE"
+        fun oxygenSaturation() = "OXYGEN_SATURATION"
+    }
 
     @Inject
     lateinit var viewModel: CameraViewModel
@@ -132,7 +124,32 @@ class CameraFragment : ScopedFragment() {
 //                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
 //                        }
 //                    }
-                    Toast.makeText(context, "Result: "+ data.getStringExtra("result"), Toast.LENGTH_SHORT).show()
+
+                    showLoading(true)
+                    // get data from OxymeterActivity
+                    val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
+                    val breathsPerMinute = data.getStringExtra(breathsPerMinute())?.toInt()
+                    val oxygenSaturation = data.getStringExtra(oxygenSaturation())?.toInt()
+                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
+                        launch(Dispatchers.IO) {
+                            viewModel.saveResult(
+                                HealthResult(
+                                    beatsPerMinute,
+                                    breathsPerMinute,
+                                    oxygenSaturation
+                                )
+                            )
+                            withContext(Dispatchers.Main) {
+                                showLoading(false)
+                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+                            }
+                        }
+                    }
+                    Toast.makeText(
+                        context,
+                        "Result: " + data.getStringExtra("result"),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
             } else {

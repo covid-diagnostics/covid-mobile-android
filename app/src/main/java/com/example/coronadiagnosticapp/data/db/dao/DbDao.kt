@@ -1,11 +1,13 @@
 package com.example.coronadiagnosticapp.data.db.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.User
 
 @Dao
-interface UserDao {
+interface DbDao {
     @Transaction
     fun upsertUser(user: User) {
         deleteAllUsers()
@@ -40,5 +42,12 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(responseMetric: ResponseMetric)
+
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insertHealth(healthResult: HealthResult)
+
+    @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
+    fun getLastHealthResult(): LiveData<HealthResult>
 
 }

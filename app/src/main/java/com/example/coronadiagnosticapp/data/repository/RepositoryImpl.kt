@@ -1,7 +1,9 @@
 package com.example.coronadiagnosticapp.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.dao.UserDao
+import com.example.coronadiagnosticapp.data.db.dao.DbDao
+import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
@@ -12,7 +14,7 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     val networkDataSource: NetworkDataSource,
-    val dao: UserDao,
+    val dao: DbDao,
     val tokenProvider: TokenProvider,
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
@@ -61,5 +63,12 @@ class RepositoryImpl @Inject constructor(
             error.postValue(e.message)
         }
     }
+
+    override suspend fun saveResult(healthResult: HealthResult) {
+        dao.insertHealth(healthResult)
+    }
+
+    override fun getLastResult(): LiveData<HealthResult> = dao.getLastHealthResult()
+
 
 }

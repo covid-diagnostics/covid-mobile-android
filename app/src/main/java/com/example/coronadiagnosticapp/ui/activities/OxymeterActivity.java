@@ -1,20 +1,16 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
+import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -191,7 +188,7 @@ public class OxymeterActivity extends Activity {
             GreenAvgList.add(GreenAvg);
 
             //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-            if (RedAvg < 200) {
+            if (RedAvg < 150) {
                 alert.setVisibility(View.VISIBLE);
 //                inc=0;
 //                ProgP=inc;
@@ -290,10 +287,13 @@ public class OxymeterActivity extends Activity {
 
             }
 
-            if ((Beats != 0)  && (o2 != 0) && (Breath != 0 )) {
+            if ((Beats != 0) && (o2 != 0) && (Breath != 0)) {
                 Intent returnIntent = new Intent();
                 //TODO Need to pass Bats o2 and Breath
-                returnIntent.putExtra("result", Integer.toString(o2));
+
+                returnIntent.putExtra(CameraFragment.CameraCodes.oxygenSaturation(), Integer.toString(o2));
+                returnIntent.putExtra(CameraFragment.CameraCodes.beatsPerMinuteKey(), Integer.toString(Beats));
+                returnIntent.putExtra(CameraFragment.CameraCodes.breathsPerMinute(), Integer.toString(Breath));
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
