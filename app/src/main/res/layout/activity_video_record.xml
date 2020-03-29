@@ -29,6 +29,24 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"></SurfaceView>
 
+        <ProgressBar
+            android:id="@+id/view_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:progressDrawable="@drawable/circular_progress_bar" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_timer"
+            android:layout_centerInParent="true"
+            />
+
         <!--        <LinearLayout-->
         <!--            android:layout_width="fill_parent"-->
         <!--            android:layout_height="wrap_content"-->

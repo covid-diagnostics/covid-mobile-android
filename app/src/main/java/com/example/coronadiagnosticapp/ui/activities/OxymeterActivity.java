@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import com.opencsv.CSVWriter;
 
 import retrofit2.http.HEAD;
 
+import static android.view.animation.Animation.RELATIVE_TO_SELF;
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 
@@ -53,6 +56,13 @@ public class OxymeterActivity extends Activity {
 
     //TextView
     private TextView alert;
+
+    //ProgressBar
+    ProgressBar progressBarView;
+    TextView tv_time;
+    int progress;
+    CountDownTimer countDownTimer;
+    int endTime = 250;
 
     //Freq + timer variable
     private static long startTime = 0;
@@ -107,15 +117,73 @@ public class OxymeterActivity extends Activity {
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         readyBtn = (Button) findViewById(R.id.ready_btn);
+        progressBarView = (ProgressBar) findViewById(R.id.view_progress_bar);
+        tv_time= (TextView)findViewById(R.id.tv_timer);
+
+
+
+        /*Animation*/
+        RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
+        makeVertical.setFillAfter(true);
+        progressBarView.startAnimation(makeVertical);
+        progressBarView.setSecondaryProgress(endTime);
+        progressBarView.setProgress(0);
 
         readyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fn_countdown();
                 startTime = System.currentTimeMillis();
                 Log.e(TAG,"Time has started = " + Long.toString(startTime));
             }
         });
 
+
+    }
+    private void fn_countdown() {
+
+
+            try {
+                countDownTimer.cancel();
+
+            } catch (Exception e) {
+
+            }
+
+            progress = 1;
+            endTime = 30;
+
+            countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    setProgress(progress, endTime);
+                    progress = progress + 1;
+                    int seconds = (int) (millisUntilFinished / 1000) % 60;
+                    String newtime =  seconds + " seconds";
+
+                    if (newtime.equals("0")) {
+                        tv_time.setText("Press start");
+                    } else {
+                        tv_time.setText(seconds + " seconds");
+                    }
+
+                }
+
+                @Override
+                public void onFinish() {
+                    progress = 0;
+                    setProgress(progress, 30);
+                }
+            };
+            countDownTimer.start();
+
+
+    }
+
+    public void setProgress(int startTime, int endTime) {
+        progressBarView.setMax(endTime);
+        progressBarView.setSecondaryProgress(endTime);
+        progressBarView.setProgress(startTime);
 
     }
 
@@ -204,10 +272,16 @@ public class OxymeterActivity extends Activity {
                 BlueAvgList.clear();
                 counter =0;
                 processing.set(false);
+                countDownTimer.cancel();
+                setProgress(0,30);
+                progress=0;
+                fn_countdown();
+                progressBarView.setVisibility(View.INVISIBLE);
                 startTime = System.currentTimeMillis();
                 return;
             } else {
                 alert.setVisibility(View.INVISIBLE);
+                progressBarView.setVisibility(View.VISIBLE);
             }
             if(counter == 0)
                 Log.e(TAG,"First count of counter, time =" + Long.toString(startTime));
@@ -364,6 +438,9 @@ public class OxymeterActivity extends Activity {
                     counter = 0;
                     o2 = 0;
                     processing.set(false);
+                    countDownTimer.cancel();
+                    progress=0;
+                    setProgress(0,30);
                     startTime = 0;
                     return;
                 }

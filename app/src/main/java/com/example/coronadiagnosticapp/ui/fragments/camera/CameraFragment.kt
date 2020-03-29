@@ -132,7 +132,7 @@ class CameraFragment : ScopedFragment() {
 //                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
 //                        }
 //                    }
-                    Toast.makeText(context, "Result: "+ data.getStringExtra("result"), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Result O2: "+ data.getStringExtra("result_o2") + "Result BPM = " +data.getStringExtra("result_bpm"), Toast.LENGTH_SHORT).show();
 
                 }
             } else {
