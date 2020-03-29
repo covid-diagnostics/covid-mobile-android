@@ -180,6 +180,10 @@ public class OxymeterActivity extends Activity {
 //                inc=0;
 //                ProgP=inc;
 //                ProgO2.setProgress(ProgP);
+                sumred = 0;
+                sumblue = 0;
+                RedAvgList.clear();
+                BlueAvgList.clear();
                 processing.set(false);
                 startTime = System.currentTimeMillis();
                 return;
