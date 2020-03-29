@@ -2,11 +2,9 @@ package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,16 +14,13 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
-import com.example.coronadiagnosticapp.ui.activities.VideoRecordActivity
+import com.example.coronadiagnosticapp.data.db.entity.HealthResult
+import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.camera_fragment.*
-import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.RequestBody
-import java.io.File
 import javax.inject.Inject
 
 
@@ -37,15 +32,13 @@ private const val REQUEST_CODE_PERMISSIONS = 215
 private const val REQUEST_CODE_VIDEO = 315
 
 
-// This is an array of all the permission specified in the manifest.
-private val REQUIRED_PERMISSIONS = arrayOf(
-    Manifest.permission.CAMERA,
-    Manifest.permission.INTERNET,
-    Manifest.permission.RECORD_AUDIO,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
-
 class CameraFragment : ScopedFragment() {
+
+    companion object CameraCodes {
+        fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
+        fun breathsPerMinute() = "BREATHS_PER_MINUTE"
+        fun oxygenSaturation() = "OXYGEN_SATURATION"
+    }
 
     @Inject
     lateinit var viewModel: CameraViewModel
@@ -89,7 +82,7 @@ class CameraFragment : ScopedFragment() {
                     )
                 }
             } else {
-                val intent = Intent(context, VideoRecordActivity::class.java)
+                val intent = Intent(context, OxymeterActivity::class.java)
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)
             }
         }
@@ -104,7 +97,7 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == 200) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
-                    val intent = Intent(context, VideoRecordActivity::class.java)
+                    val intent = Intent(context, OxymeterActivity::class.java)
                     startActivityForResult(intent, REQUEST_CODE_VIDEO)
                 }
             } else {
@@ -119,19 +112,44 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == REQUEST_CODE_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-                    val fileName = data.getStringExtra("result")
-                    val file = File(fileName)
+//                    val fileName = data.getStringExtra("result")
+//                    val file = File(fileName)
+//
+//                    Log.d("CameraFragment", file.totalSpace.toString())
+//                    showLoading(true)
+//                    launch(Dispatchers.IO) {
+//                        viewModel.uploadVideo(File("csd"))
+//                        withContext(Dispatchers.Main) {
+//                            showLoading(false)
+//                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+//                        }
+//                    }
 
-                    Log.d("CameraFragment", file.totalSpace.toString())
                     showLoading(true)
-                    launch(Dispatchers.IO) {
-                        viewModel.uploadVideo(File("csd"))
-                        withContext(Dispatchers.Main) {
-                            showLoading(false)
-                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+                    // get data from OxymeterActivity
+                    val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
+                    val breathsPerMinute = data.getStringExtra(breathsPerMinute())?.toInt()
+                    val oxygenSaturation = data.getStringExtra(oxygenSaturation())?.toInt()
+                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
+                        launch(Dispatchers.IO) {
+                            viewModel.saveResult(
+                                HealthResult(
+                                    beatsPerMinute,
+                                    breathsPerMinute,
+                                    oxygenSaturation
+                                )
+                            )
+                            withContext(Dispatchers.Main) {
+                                showLoading(false)
+                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+                            }
                         }
                     }
-
+                    Toast.makeText(
+                        context,
+                        "Result: " + data.getStringExtra("result"),
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
             } else {

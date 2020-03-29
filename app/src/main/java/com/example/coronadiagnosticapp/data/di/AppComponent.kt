@@ -2,7 +2,7 @@ package com.example.coronadiagnosticapp.data.di
 
 import android.content.Context
 import com.example.coronadiagnosticapp.data.db.AppDatabase
-import com.example.coronadiagnosticapp.data.db.dao.UserDao
+import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.network.ApiServer
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.NetworkDataSourceImpl
@@ -48,11 +48,11 @@ class DataRepositoryModule {
     @Provides
     fun provideDataRepository(
         networkDataSource: NetworkDataSource,
-        userDao: UserDao,
+        dbDao: DbDao,
         tokenProvider: TokenProvider,
         tokenServiceInterceptor: TokenServiceInterceptor
     ): Repository =
-        RepositoryImpl(networkDataSource, userDao, tokenProvider, tokenServiceInterceptor)
+        RepositoryImpl(networkDataSource, dbDao, tokenProvider, tokenServiceInterceptor)
 
     @Provides
     fun provideNetworkDataSource(api: ApiServer): NetworkDataSource = NetworkDataSourceImpl(api)
@@ -62,7 +62,7 @@ class DataRepositoryModule {
     fun provideDatabase(context: Context): AppDatabase = AppDatabase.invoke(context)
 
     @Provides
-    fun provideDatabaseDao(database: AppDatabase): UserDao = database.getUserDao()
+    fun provideDatabaseDao(database: AppDatabase): DbDao = database.getUserDao()
 
     @Provides
     fun provideRetrofitApi(tokenServiceInterceptor: TokenServiceInterceptor): ApiServer {
