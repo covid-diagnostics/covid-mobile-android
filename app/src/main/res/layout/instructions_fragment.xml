@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.instruction.InstructionsFragment">
+
+    <ImageView
+        android:id="@+id/imageView_background_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_heart_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_heart_ready"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_background_instructions"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_header_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:text="@string/header_instructions"
+        android:textAppearance="@style/appHeader"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_instructions" />
+
+    <TextView
+        android:id="@+id/textView_body_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/body_instructions"
+        android:textAppearance="@style/appBody"
+        app:layout_constraintStart_toStartOf="@id/textView_header_instructions"
+        app:layout_constraintTop_toBottomOf="@id/textView_header_instructions" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+
+    <Button
+        android:id="@+id/button_instructions"
+        android:text="@string/start"
+        style="@style/customButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

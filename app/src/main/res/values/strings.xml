@@ -22,7 +22,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="daily_metric_message">Hi, please submit your info</string>
+    <string name="daily_metric_message">Please check your\ntemperature and cough</string>
     <string name="submit_daily_metrics">Submit</string>
     <string name="temperature">Temperature</string>
     <string name="coughStrength">Cough Strength</string>
@@ -48,8 +48,13 @@
     <!--    those are string for VideoRecordActivity-->
     <string name="start">Start</string>
     <string name="ready">Ready</string>
-    <string name="instructions">Please put your finger on the camera, and hold for 30 seconds.</string>
+    <string name="header_instructions_camera_activity">Please put your finger on the camera, and hold for 30 seconds.</string>
     <string name="start_over">Start Over</string>
     <string name="results">Your results are:</string>
+    <string name="header_instructions">Hi there!</string>
+    <string name="body_instructions">Would you like to\n diagnose yourself?</string>
+    <string name="header_camera">Are you ready for\nthe test?</string>
+    <string name="camera_body">In the following screens\nyou will be asked to take\n a video and record\na short recording.</string>
+    <string name="im_ready">I\'m Ready!</string>
 
 </resources>

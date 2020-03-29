@@ -60,7 +60,7 @@ class CameraFragment : ScopedFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        startCamera.setOnClickListener {
+        button_startCamera.setOnClickListener {
             // TODO: Ask permission to use the camera
             if (context?.let { it1 ->
                     ActivityCompat.checkSelfPermission(

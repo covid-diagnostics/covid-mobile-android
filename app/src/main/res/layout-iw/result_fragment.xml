@@ -29,9 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_result_good_illustration"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_result"
-        app:layout_constraintTop_toTopOf="@+id/guideline_result" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_result"
+        tools:layout_editor_absoluteX="271dp" />
 
     <TextView
         android:id="@+id/textView_heartRate"
@@ -69,7 +69,5 @@
         android:text="Respiration Rate:"
         app:layout_constraintStart_toStartOf="@+id/textView_Blood"
         app:layout_constraintTop_toBottomOf="@+id/textView_Blood" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
