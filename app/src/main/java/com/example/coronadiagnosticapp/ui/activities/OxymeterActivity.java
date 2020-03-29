@@ -1,5 +1,4 @@
 package com.example.coronadiagnosticapp.ui.activities;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.example.coronadiagnosticapp.R;
@@ -39,6 +41,9 @@ public class OxymeterActivity extends Activity {
 
     //Toast
     private Toast mainToast;
+
+    //Initialize an object that calculates the rolling average of last 15 samples
+    private Rolling r = new Rolling(15);
 
 
     //ProgressBar
@@ -72,12 +77,22 @@ public class OxymeterActivity extends Activity {
     // Heart Rate vaiables
     public double bufferAvgB = 0;
     public int Beats = 0;
+    public double testBpm = 0;
 
     //Arraylist
     public ArrayList<Double> RedAvgList = new ArrayList<Double>();
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
+    public ArrayList<Double> MovAvgRed = new ArrayList<Double>();
     public int counter = 0;
+
+//    //CSV Writing
+//    String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+//    String fileName = "AnalysisData.csv";
+//    String filePath = baseDir + File.separator + fileName;
+//    File f = new File(filePath);
+//    CSVWriter writer;
+
 
 
     @Override
@@ -100,6 +115,7 @@ public class OxymeterActivity extends Activity {
             public void onClick(View view) {
 
                 startTime = System.currentTimeMillis();
+                Log.e(TAG,"Time has started = " + Long.toString(startTime));
                 //   previewHolder.addCallback(surfaceCallback);
                 //   previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
             }
@@ -206,16 +222,65 @@ public class OxymeterActivity extends Activity {
             } else {
                 alert.setVisibility(View.INVISIBLE);
             }
+            if(counter == 0)
+                Log.e(TAG,"First count of counter, time =" + Long.toString(startTime));
+
 
 
             ++counter; //countes number of frames in 30 seconds
-
+            Log.e(TAG,"Counter is at = " + counter);
 
             long endTime = System.currentTimeMillis();
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
+                Log.e(TAG,"30 secondes passed ! totalTimeInSecs is now = " + Double.toString(totalTimeInSecs));
+                Log.e(TAG,"The sampling frequent is = " + Double.toString(counter/totalTimeInSecs));
+                double avg_hr = (sumred) / (RedAvgList.size());
+                Log.e(TAG,"The average red is = " + avg_hr);
+                for (int i = 0; i<RedAvgList.size(); i++)
+                {
+                    if(i<15) {
+                        MovAvgRed.add(i, avg_hr);
+                        r.add(avg_hr);
+                    }else{
+                        MovAvgRed.add(r.getAverage());
+                    }
+                }
+                ArrayList<Double> window = new ArrayList<Double>();
+                ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
+                int windowIndex = 0;
+                for(int i=0;i<RedAvgList.size();i++)
+                {
+                    if(MovAvgRed.get(i) > RedAvgList.get(i) && window.isEmpty())
+                        continue;
+                    else
+                        if(RedAvgList.get(i) > MovAvgRed.get(i)) {
+                            window.add(windowIndex, RedAvgList.get(i));
+                            windowIndex++;
+                        }
+                    else{
+                        Object maximum = Collections.max(window);
+                        int beatposition = i - window.size() + window.indexOf(maximum);
+                        peakPositionList.add(beatposition);
+                        window.clear();
+                        windowIndex = 0;
+                        }
+                }
+                ArrayList<Double> RR_List = new ArrayList<Double>();
+                for(int i = 0 ;i<peakPositionList.size() - 1;i++)
+                {
+                    int RR_interval = peakPositionList.get(i+1) - peakPositionList.get(i);
+                    double ms_dist = ((RR_interval/(counter / totalTimeInSecs)) * 1000d);
+                    RR_List.add(ms_dist);
+                }
+                double sumRR_List = 0;
+                for ( int i=0; i < RR_List.size() ; i++) {
+                    // assuming the product class has a price
+                    sumRR_List += RR_List.get(i);
+                }
+                double avgRR_List = (sumRR_List)/RR_List.size();
 
-                startTime = System.currentTimeMillis();
+                testBpm = 60000 / (avgRR_List);
                 SamplingFreq = (counter / totalTimeInSecs);
                 Double[] Red = RedAvgList.toArray(new Double[RedAvgList.size()]);
                 Double[] Blue = BlueAvgList.toArray(new Double[BlueAvgList.size()]);
@@ -274,6 +339,7 @@ public class OxymeterActivity extends Activity {
 
                 double spo2 = 100 - 5 * (R);
                 o2 = (int) (spo2);
+                Log.e(TAG,"Value testBpm = " + Double.toString(testBpm));
                 Log.e("O2 Value = ", "" + Integer.toString(o2));
 //-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
                 if ((o2 < 80 || o2 > 99) || (bufferAvgB < 45 || bufferAvgB > 200)) {
@@ -283,10 +349,14 @@ public class OxymeterActivity extends Activity {
                     Log.e("O2 Value before Toast = ", "" + Integer.toString(o2));
                     mainToast = Toast.makeText(getApplicationContext(), "Measurement Failed, Starting over please dont move your finger!!", Toast.LENGTH_SHORT);
                     mainToast.show();
-                    startTime = System.currentTimeMillis();
+                    sumred = 0;
+                    sumblue = 0;
+                    RedAvgList.clear();
+                    BlueAvgList.clear();
                     counter = 0;
-                    processing.set(false);
                     o2 = 0;
+                    processing.set(false);
+                    startTime = System.currentTimeMillis();
                     return;
                 }
                 Beats = (int) bufferAvgB;
@@ -294,12 +364,14 @@ public class OxymeterActivity extends Activity {
 
             }
 
+
             if ((Beats != 0)  && (o2 != 0) && (Breath != 0 )) {
-                Intent returnIntent = new Intent();
-                //TODO Need to pass Bats o2 and Breath
-                returnIntent.putExtra("result", Integer.toString(o2));
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
+
+//                Intent returnIntent = new Intent();
+//                //TODO Need to pass Bats o2 and Breath
+//                returnIntent.putExtra("result", Integer.toString(o2));
+//                setResult(Activity.RESULT_OK, returnIntent);
+//                finish();
             }
 
             if (RedAvg != 0) {
