@@ -224,6 +224,7 @@ public class OxymeterActivity extends Activity {
                 sumblue = 0;
                 RedAvgList.clear();
                 BlueAvgList.clear();
+                counter =0;
                 processing.set(false);
                 startTime = System.currentTimeMillis();
                 return;
@@ -282,6 +283,9 @@ public class OxymeterActivity extends Activity {
                             windowIndex++;
                         }
                     else{
+                        if(window.isEmpty())
+                            continue;
+
                         Object maximum = Collections.max(window);
                         int beatposition = i - window.size() + window.indexOf(maximum);
                         peakPositionList.add(beatposition);
