@@ -1,5 +1,7 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
+import android.util.Log;
+
 public class Rolling {
 
         private int size;
@@ -18,6 +20,7 @@ public class Rolling {
             samples[index] = x;
             total += x;
             if (++index == size) index = 0; // cheaper than modulus
+            Log.e("Rolling: " , "total = " + Double.toString(total));
         }
 
         public double getAverage() {

@@ -18,14 +18,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
+import com.opencsv.CSVWriter;
+
+import retrofit2.http.HEAD;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -44,6 +50,7 @@ public class OxymeterActivity extends Activity {
 
     //Initialize an object that calculates the rolling average of last 15 samples
     private Rolling r = new Rolling(15);
+    private SMA calc_mov_avg = new SMA(15);
 
 
     //ProgressBar
@@ -86,12 +93,13 @@ public class OxymeterActivity extends Activity {
     public ArrayList<Double> MovAvgRed = new ArrayList<Double>();
     public int counter = 0;
 
-//    //CSV Writing
-//    String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-//    String fileName = "AnalysisData.csv";
-//    String filePath = baseDir + File.separator + fileName;
-//    File f = new File(filePath);
-//    CSVWriter writer;
+    //CSV Writing
+    String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+    String fileName = "AnalysisData.csv";
+    String[] HEADER = new String[]{"id","RED_VALUE","RED_AVG_VALUE"};
+    String filePath = baseDir + File.separator + fileName;
+    File f = new File(filePath);
+    CSVWriter writer;
 
 
 
@@ -236,15 +244,30 @@ public class OxymeterActivity extends Activity {
                 Log.e(TAG,"30 secondes passed ! totalTimeInSecs is now = " + Double.toString(totalTimeInSecs));
                 Log.e(TAG,"The sampling frequent is = " + Double.toString(counter/totalTimeInSecs));
                 double avg_hr = (sumred) / (RedAvgList.size());
+                List<String[]> rows = new ArrayList<String[]>();
+                rows.add(HEADER);
                 Log.e(TAG,"The average red is = " + avg_hr);
                 for (int i = 0; i<RedAvgList.size(); i++)
                 {
                     if(i<15) {
+                        calc_mov_avg.compute(avg_hr);
+                      //  r.add(avg_hr);
                         MovAvgRed.add(i, avg_hr);
-                        r.add(avg_hr);
+                        rows.add(new String[]{Integer.toString(i),RedAvgList.get(i).toString(),Double.toString(avg_hr)});
                     }else{
-                        MovAvgRed.add(r.getAverage());
+                       // r.add(RedAvgList.get(i));
+                        MovAvgRed.add(calc_mov_avg.compute(RedAvgList.get(i)));
+                        Log.e(TAG,"Current Average = " + calc_mov_avg.currentAverage());
+                        rows.add(new String[]{Integer.toString(i),RedAvgList.get(i).toString(),Double.toString(calc_mov_avg.currentAverage())});
                     }
+
+                }
+                try {
+                    writer = new CSVWriter(new FileWriter(filePath));
+                    writer.writeAll(rows);
+                    writer.close();
+                } catch (IOException ex){
+                    Log.e(TAG,"FileWriter Exception");
                 }
                 ArrayList<Double> window = new ArrayList<Double>();
                 ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
@@ -341,6 +364,7 @@ public class OxymeterActivity extends Activity {
                 o2 = (int) (spo2);
                 Log.e(TAG,"Value testBpm = " + Double.toString(testBpm));
                 Log.e("O2 Value = ", "" + Integer.toString(o2));
+
 //-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
                 if ((o2 < 80 || o2 > 99) || (bufferAvgB < 45 || bufferAvgB > 200)) {
 //                    inc=0;
@@ -362,6 +386,9 @@ public class OxymeterActivity extends Activity {
                 Beats = (int) bufferAvgB;
                 Breath = (int) bufferAvgBr;
 
+
+                camera.setPreviewCallback(null);
+                camera.stopPreview();
             }
 
 
