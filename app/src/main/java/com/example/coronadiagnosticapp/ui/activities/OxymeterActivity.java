@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
+import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -56,16 +57,26 @@ public class OxymeterActivity extends Activity {
     private double SamplingFreq;
 
     // SPO2 variables
-    private static double RedBlueRatio = 0 ;
-    double Stdr=0;
-    double Stdb=0;
-    double sumred=0;
-    double sumblue=0;
+    private static double RedBlueRatio = 0;
+    double Stdr = 0;
+    double Stdb = 0;
+    double sumred = 0;
+    double sumblue = 0;
+    double sumgreen = 0;
     public int o2;
 
+    //RespirationRate variable
+    public int Breath = 0;
+    public double bufferAvgBr = 0;
+
+    // Heart Rate vaiables
+    public double bufferAvgB = 0;
+    public int Beats = 0;
+
     //Arraylist
-    public ArrayList<Double> RedAvgList=new ArrayList<Double>();
-    public ArrayList<Double> BlueAvgList=new ArrayList<Double>();
+    public ArrayList<Double> RedAvgList = new ArrayList<Double>();
+    public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
+    public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
     public int counter = 0;
 
 
@@ -77,10 +88,10 @@ public class OxymeterActivity extends Activity {
 
         // XML - Java Connecting
         preview = (SurfaceView) findViewById(R.id.preview);
-        alert = (TextView)findViewById(R.id.putfinger);
+        alert = (TextView) findViewById(R.id.putfinger);
         previewHolder = preview.getHolder();
-       previewHolder.addCallback(surfaceCallback);
-       previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        previewHolder.addCallback(surfaceCallback);
+        previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         readyBtn = (Button) findViewById(R.id.ready_btn);
 
@@ -89,14 +100,14 @@ public class OxymeterActivity extends Activity {
             public void onClick(View view) {
 
                 startTime = System.currentTimeMillis();
-             //   previewHolder.addCallback(surfaceCallback);
-             //   previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+                //   previewHolder.addCallback(surfaceCallback);
+                //   previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
             }
         });
 
 
-     //   ProgO2 = (ProgressBar)findViewById(R.id.O2PB);
-     //   ProgO2.setProgress(0);
+        //   ProgO2 = (ProgressBar)findViewById(R.id.O2PB);
+        //   ProgO2.setProgress(0);
 
 
     }
@@ -125,7 +136,7 @@ public class OxymeterActivity extends Activity {
 
 //        startTime = System.currentTimeMillis();
 
-        Log.e("OnResume():","Called.");
+        Log.e("OnResume():", "Called.");
     }
 
     //call back the frames then release the camera + wakelock and Initialize the camera to null
@@ -151,28 +162,33 @@ public class OxymeterActivity extends Activity {
             if (data == null) throw new NullPointerException();
             Camera.Size size = cam.getParameters().getPreviewSize();
             if (size == null) throw new NullPointerException();
-            if(startTime == 0) // Don't count if not started yet!
+            if (startTime == 0) // Don't count if not started yet!
                 processing.set(false);
             else
                 processing.set(true);
 
             //Atomically sets the value to the given updated value if the current value == the expected value.
-            if (processing.compareAndSet(false, true)){
-                return;}
+            if (processing.compareAndSet(false, true)) {
+                return;
+            }
 
             //put width + height of the camera inside the variables
             int width = size.width;
             int height = size.height;
             double RedAvg;
             double BlueAvg;
+            double GreenAvg;
 
-            RedAvg=ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width,1); //1 stands for red intensity, 2 for blue, 3 for green
+            RedAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 1); //1 stands for red intensity, 2 for blue, 3 for green
             sumred = sumred + RedAvg;
-            BlueAvg=ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width,2); //1 stands for red intensity, 2 for blue, 3 for green
+            BlueAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 2); //1 stands for red intensity, 2 for blue, 3 for green
             sumblue = sumblue + BlueAvg;
+            GreenAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 3);
+            sumgreen = sumgreen + GreenAvg;
 
             RedAvgList.add(RedAvg);
             BlueAvgList.add(BlueAvg);
+            GreenAvgList.add(GreenAvg);
 
             //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
             if (RedAvg < 200) {
@@ -187,7 +203,7 @@ public class OxymeterActivity extends Activity {
                 processing.set(false);
                 startTime = System.currentTimeMillis();
                 return;
-            }else {
+            } else {
                 alert.setVisibility(View.INVISIBLE);
             }
 
@@ -200,59 +216,93 @@ public class OxymeterActivity extends Activity {
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
 
                 startTime = System.currentTimeMillis();
-                SamplingFreq =  (counter/totalTimeInSecs);
+                SamplingFreq = (counter / totalTimeInSecs);
                 Double[] Red = RedAvgList.toArray(new Double[RedAvgList.size()]);
                 Double[] Blue = BlueAvgList.toArray(new Double[BlueAvgList.size()]);
-                double HRFreq = Fft.FFT(Red, counter, SamplingFreq);
-                double bpm=(int)ceil(HRFreq*60);
+                Double[] Green = GreenAvgList.toArray(new Double[GreenAvgList.size()]);
 
-                double meanr = sumred/counter;
-                double meanb = sumblue/counter;
+                // double HRFreq = Fft.FFT(Red, counter, SamplingFreq);
+                // double bpm = (int) ceil(HRFreq * 60);
+                double HRFreq = Fft.FFT(Green, counter, SamplingFreq);
+                double bpmGreen = (int) ceil(HRFreq * 60);
+                double HR1Freq = Fft.FFT(Red, counter, SamplingFreq);
+                double bpmRed = (int) ceil(HR1Freq * 60);
 
-                for(int i=0;i<counter-1;i++){
+                double RRFreq = Fft2.FFT(Green, counter, SamplingFreq);
+                double breathGreen = (int) ceil(RRFreq * 60);
+                double RR1Freq = Fft2.FFT(Red, counter, SamplingFreq);
+                double breathRed = (int) ceil(RR1Freq * 60);
+
+                double meanr = sumred / counter;
+                double meanb = sumblue / counter;
+
+                for (int i = 0; i < counter - 1; i++) {
 
                     Double bufferb = Blue[i];
 
-                    Stdb = Stdb + ((bufferb - meanb)*(bufferb - meanb));
+                    Stdb = Stdb + ((bufferb - meanb) * (bufferb - meanb));
 
                     Double bufferr = Red[i];
 
-                    Stdr = Stdr + ((bufferr - meanr)*(bufferr - meanr));
+                    Stdr = Stdr + ((bufferr - meanr) * (bufferr - meanr));
 
                 }
 
-                double varr = sqrt(Stdr/(counter-1));
-                double varb = sqrt(Stdb/(counter-1));
 
-                double R = (varr/meanr)/(varb/meanb);
+                if ((bpmGreen > 45 || bpmGreen < 200) || (breathGreen > 10 || breathGreen < 20)) {
+                    if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 24)) {
 
-                double spo2 = 100-5*(R);
-                o2 =(int) (spo2);
-                Log.e("O2 Value = ", ""+ Integer.toString(o2));
+                        bufferAvgB = (bpmGreen + bpmRed) / 2;
+                        bufferAvgBr = (breathGreen + breathRed) / 2;
+
+                    } else {
+                        bufferAvgB = bpmGreen;
+                        bufferAvgBr = breathGreen;
+                    }
+                } else if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 20)) {
+
+                    bufferAvgB = bpmRed;
+                    bufferAvgBr = breathRed;
+
+                }
+
+
+                double varr = sqrt(Stdr / (counter - 1));
+                double varb = sqrt(Stdb / (counter - 1));
+
+                double R = (varr / meanr) / (varb / meanb);
+
+                double spo2 = 100 - 5 * (R);
+                o2 = (int) (spo2);
+                Log.e("O2 Value = ", "" + Integer.toString(o2));
 //-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
-                if (( o2 < 80 || o2 > 99) || (bpm < 45 || bpm > 200)) {
+                if ((o2 < 80 || o2 > 99) || (bufferAvgB < 45 || bufferAvgB > 200)) {
 //                    inc=0;
 //                    ProgP=inc;
 //                    ProgO2.setProgress(ProgP);
-                    Log.e("O2 Value before Toast = ", ""+ Integer.toString(o2));
+                    Log.e("O2 Value before Toast = ", "" + Integer.toString(o2));
                     mainToast = Toast.makeText(getApplicationContext(), "Measurement Failed, Starting over please dont move your finger!!", Toast.LENGTH_SHORT);
                     mainToast.show();
                     startTime = System.currentTimeMillis();
-                    counter=0;
+                    counter = 0;
                     processing.set(false);
                     o2 = 0;
                     return;
                 }
+                Beats = (int) bufferAvgB;
+                Breath = (int) bufferAvgBr;
 
             }
 
-            if(o2 != 0 ){
+            if ((Beats != 0)  && (o2 != 0) && (Breath != 0 )) {
                 Intent returnIntent = new Intent();
+                //TODO Need to pass Bats o2 and Breath
                 returnIntent.putExtra("result", Integer.toString(o2));
                 setResult(Activity.RESULT_OK, returnIntent);
-                finish();}
+                finish();
+            }
 
-            if(RedAvg!=0) {
+            if (RedAvg != 0) {
 //                Toast.makeText(getApplicationContext(), " RedAVG != 0", Toast.LENGTH_SHORT).show();
             }
 
@@ -261,7 +311,7 @@ public class OxymeterActivity extends Activity {
         }
     };
 
-    private  SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+    private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
 
         @Override
