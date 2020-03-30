@@ -458,21 +458,24 @@ public class OxymeterActivity extends Activity {
                 if (!(o2 < 80 || o2 > 99) && !(Beats <45 || Beats > 200) && !(peakBpm<45 || peakBpm>200)) {
                     int BpmAvg = (int)ceil((Beats + peakBpm) /2);
                     //TODO Need to pass Bats o2 and Breath
-                    returnIntent.putExtra("result_o2", Integer.toString(o2));
-                    returnIntent.putExtra("result_bpm",Integer.toString(BpmAvg));
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString(BpmAvg));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
                 else if(!(o2 < 80 || o2 > 99) && (Beats <45 || Beats > 200) && !(peakBpm<45 || peakBpm>200))
                 {
-                    returnIntent.putExtra("result_o2", Integer.toString(o2));
-                    returnIntent.putExtra("result_bpm",Integer.toString((int)peakBpm));
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString((int)peakBpm));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
                 else if(!(o2 < 80 || o2 > 99) && !(Beats <45 || Beats > 200) && (peakBpm<45 || peakBpm>200)){
-                    returnIntent.putExtra("result_o2", Integer.toString(o2));
-                    returnIntent.putExtra("result_bpm",Integer.toString(Beats));
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString(Beats));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }else{
