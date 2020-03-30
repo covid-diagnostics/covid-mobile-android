@@ -77,6 +77,8 @@ public class OxymeterActivity extends Activity {
     double sumgreen = 0;
     public int o2;
 
+    RotateAnimation makeVertical;
+
     //RespirationRate variable
     public int Breath = 0;
     public double bufferAvgBr = 0;
@@ -123,7 +125,7 @@ public class OxymeterActivity extends Activity {
 
 
         /*Animation*/
-        RotateAnimation makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
+        makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
         makeVertical.setFillAfter(true);
         progressBarView.startAnimation(makeVertical);
         progressBarView.setSecondaryProgress(endTime);
@@ -158,6 +160,7 @@ public class OxymeterActivity extends Activity {
             public void onTick(long millisUntilFinished) {
                 setProgress(progress, endTime);
                 progress = progress + 1;
+                Log.e(TAG,"ticking progress = " + progress);
                 int seconds = (int) (millisUntilFinished / 1000) % 60;
                 String newtime =  seconds + " seconds";
 
@@ -276,11 +279,19 @@ public class OxymeterActivity extends Activity {
                 setProgress(0,30);
                 progress=0;
                 fn_countdown();
-                progressBarView.setVisibility(View.INVISIBLE);
+                if(progressBarView.getVisibility() == View.VISIBLE) {
+                    progressBarView.clearAnimation();
+                    progressBarView.setVisibility(View.GONE);
+                }
                 startTime = System.currentTimeMillis();
                 return;
             } else {
                 alert.setVisibility(View.INVISIBLE);
+                if(!(progressBarView.getVisibility() == View.VISIBLE)) {
+                    progressBarView.startAnimation(makeVertical);
+                    progressBarView.setVisibility(View.VISIBLE);
+                }
+
                 progressBarView.setVisibility(View.VISIBLE);
             }
             if(counter == 0)
