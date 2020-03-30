@@ -97,8 +97,5 @@ dependencies {
     // AUDIO RECORDER
     implementation 'com.github.adrielcafe:AndroidAudioRecorder:0.3.0'
 
-    //OpenCSV
-    implementation 'com.opencsv:opencsv:4.6'
-
 
 }
