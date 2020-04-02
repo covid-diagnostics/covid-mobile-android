@@ -42,6 +42,8 @@ import static java.lang.Math.sqrt;
 
 public class OxymeterActivity extends Activity {
 
+    public enum RGB{RED,GREEN,BLUE};
+
     // Variables Initialization
     private static final String TAG = "HeartRateMonitor";
     private static final AtomicBoolean processing = new AtomicBoolean(false);
@@ -64,6 +66,8 @@ public class OxymeterActivity extends Activity {
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
     public ArrayList<Double> MovAvgRed = new ArrayList<Double>();
+    //peakPositionList represents a list which containts the peak positions
+    ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
     public int counter = 0;
     //ProgressBar
     ProgressBar progressBarView;
@@ -80,6 +84,7 @@ public class OxymeterActivity extends Activity {
     String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     String fileName = "AnalysisData.csv";
     String[] HEADER = new String[]{"id", "RED_VALUE", "RED_AVG_VALUE"};
+    List<String[]> rows = new ArrayList<String[]>(){{add(HEADER);}}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
     String filePath = baseDir + File.separator + fileName;
     File f = new File(filePath);
     CSVWriter writer;
@@ -117,18 +122,18 @@ public class OxymeterActivity extends Activity {
             double BlueAvg;
             double GreenAvg;
 
-            RedAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 1); //1 stands for red intensity, 2 for blue, 3 for green
+            RedAvg = getColorIntensities(data.clone(),height,width,RGB.RED); // Get red intensity
             sumred = sumred + RedAvg;
-            BlueAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 2); //1 stands for red intensity, 2 for blue, 3 for green
+            BlueAvg = getColorIntensities(data.clone(),height,width,RGB.BLUE); // Get red intensity
             sumblue = sumblue + BlueAvg;
-            GreenAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data.clone(), height, width, 3);
+            GreenAvg = getColorIntensities(data.clone(),height,width,RGB.GREEN); // Get red intensity
 
             RedAvgList.add(RedAvg);
             BlueAvgList.add(BlueAvg);
             GreenAvgList.add(GreenAvg);
 
             //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-            if (RedAvg < 200) {
+            if (checkImageIsBad(RedAvg)) {
                 resetProcessing();
                 removeProgressBarAndShowAlert();
                 processing.set(false);
@@ -142,27 +147,14 @@ public class OxymeterActivity extends Activity {
             long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
-                double avg_hr = (sumred) / (RedAvgList.size());
-                List<String[]> rows = new ArrayList<String[]>(); // Initializing List of string array's to generate CSV file
-                rows.add(HEADER); // Adding Header to the CSV file
-                for (int i = 0; i < RedAvgList.size(); i++) {
-                    if (i < 15) {                                   //Assign the average red received to the first 15 samples
-                        calc_mov_avg.compute(avg_hr);               //Add the value to the moving average object
-                        MovAvgRed.add(i, avg_hr);                   //Add the value to the MobAvgRed list
-                        rows.add(new String[]{Integer.toString(i), RedAvgList.get(i).toString(), Double.toString(avg_hr)});       ///Add to CSV
-                    } else {
-                        MovAvgRed.add(calc_mov_avg.compute(RedAvgList.get(i)));
-                        Log.e(TAG, "Current Average = " + calc_mov_avg.currentAverage());
-                        rows.add(new String[]{Integer.toString(i), RedAvgList.get(i).toString(), Double.toString(calc_mov_avg.currentAverage())});
-                    }
-
-                }
+                SamplingFreq = (counter / totalTimeInSecs);
+                calculateMovingAverage();
 //--------------------------CSV Writing-------------------------------
                 writeCSV(rows);
 //--------------------------------------------------------------------
-                caclualteMaBPM(totalTimeInSecs);
+                createWindowsToFindPeaks();
+                FindIntervalsAndCalculateBPM();
 
-                SamplingFreq = (counter / totalTimeInSecs);
                 Double[] Red = RedAvgList.toArray(new Double[RedAvgList.size()]);
                 Double[] Blue = BlueAvgList.toArray(new Double[BlueAvgList.size()]);
                 Double[] Green = GreenAvgList.toArray(new Double[GreenAvgList.size()]);
@@ -220,8 +212,6 @@ public class OxymeterActivity extends Activity {
 
                 double spo2 = 100 - 5 * (R);
                 o2 = (int) (spo2);
-                Log.e(TAG, "Value testBpm = " + Double.toString(peakBpm));
-                Log.e("O2 Value = ", "" + Integer.toString(o2));
 
 //-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
                 if ((o2 < 80 || o2 > 99) || ((bufferAvgB < 45 || bufferAvgB > 200) && (peakBpm < 45 || peakBpm > 200))) {
@@ -271,10 +261,24 @@ public class OxymeterActivity extends Activity {
 
         }
 
-        private void caclualteMaBPM(double totalTimeInSecs) {
+        public void calculateMovingAverage(){
+            double avg_hr = (sumred) / (RedAvgList.size());
+            for (int i = 0; i < RedAvgList.size(); i++) {
+                if (i < 15) {                                   //Assign the average red received to the first 15 samples
+                    calc_mov_avg.compute(avg_hr);               //Add the value to the moving average object
+                    MovAvgRed.add(i, avg_hr);                   //Add the value to the MobAvgRed list
+                    rows.add(new String[]{Integer.toString(i), RedAvgList.get(i).toString(), Double.toString(avg_hr)});       ///Add to CSV
+                } else {
+                    MovAvgRed.add(calc_mov_avg.compute(RedAvgList.get(i)));
+                    Log.e(TAG, "Current Average = " + calc_mov_avg.currentAverage());
+                    rows.add(new String[]{Integer.toString(i), RedAvgList.get(i).toString(), Double.toString(calc_mov_avg.currentAverage())});
+                }
+            }
+        }
+
+        private void createWindowsToFindPeaks(){
             //Create window which start's when RedAvg > MovAvg and ends when RedAvg < MovAvg and calculate's the highest point (peak) within the window
             ArrayList<Double> window = new ArrayList<Double>();
-            ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
             int windowIndex = 0;
             for (int i = 0; i < RedAvgList.size(); i++) {
                 if (MovAvgRed.get(i) > RedAvgList.get(i) && window.isEmpty())
@@ -293,11 +297,15 @@ public class OxymeterActivity extends Activity {
                     windowIndex = 0;
                 }
             }
+        }
+
+        private void FindIntervalsAndCalculateBPM() {
+
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
             for (int i = 0; i < peakPositionList.size() - 1; i++) {
                 int RR_interval = peakPositionList.get(i + 1) - peakPositionList.get(i);
-                double ms_dist = ((RR_interval / (counter / totalTimeInSecs)) * 1000d);
+                double ms_dist = ((RR_interval / SamplingFreq) * 1000d);
                 RR_List.add(ms_dist);
             }
             //Calculating the average interval
@@ -530,6 +538,34 @@ public class OxymeterActivity extends Activity {
             progressBarView.setVisibility(View.VISIBLE);
         }
         progressBarView.setVisibility(View.VISIBLE);
+    }
+
+//    private void addToSumRed(double red){
+//        sumred += red;
+//    }
+//    private void addToSumBlue(double blue){
+//        sumblue += blue;
+//    }
+
+    public boolean checkImageIsBad(double redIntensity){
+        if(redIntensity < 200)          //Image is bad!
+            return true;
+
+        return false;
+    }
+
+    private double getColorIntensities(byte[] data, int height, int width, RGB choice){
+        double RedAvg;
+        double BlueAvg;
+        double GreenAvg;
+        if(choice == RGB.RED)
+            return  ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 1); //1 stands for red intensity, 2 for blue, 3 for green
+        if(choice == RGB.BLUE)
+            return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 2); //1 stands for red intensity, 2 for blue, 3 for green
+        if(choice == RGB.GREEN)
+            return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 3); //1 stands for red intensity, 2 for blue, 3 for green
+
+        return 0;
     }
 }
 
