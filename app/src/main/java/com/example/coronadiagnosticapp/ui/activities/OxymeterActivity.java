@@ -53,21 +53,17 @@ public class OxymeterActivity extends Activity {
     private static long startTime = 0;
     // SPO2 variables
     private static double RedBlueRatio = 0;
-    public int o2;
+    public int o2 = 0;
     //RespirationRate variable
     public int Breath = 0;
-    public double bufferAvgBr = 0;
-    // Heart Rate vaiables
-    public double bufferAvgB = 0;
+    //HeartRate variables
     public int Beats = 0;
     public double peakBpm = 0;
     //Arraylist
     public ArrayList<Double> RedAvgList = new ArrayList<Double>();
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
-    public ArrayList<Double> MovAvgRed = new ArrayList<Double>();
-    //peakPositionList represents a list which containts the peak positions
-    ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
+
     public int counter = 0;
     //ProgressBar
     ProgressBar progressBarView;
@@ -75,8 +71,6 @@ public class OxymeterActivity extends Activity {
     int progress;
     CountDownTimer countDownTimer;
     int endTime = 250;
-    double Stdr = 0;
-    double Stdb = 0;
     double sumred = 0;
     double sumblue = 0;
     RotateAnimation makeVertical;
@@ -148,12 +142,12 @@ public class OxymeterActivity extends Activity {
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
                 SamplingFreq = (counter / totalTimeInSecs);
-                calculateMovingAverage();
+                ArrayList<Double> RedMoveAverage = calculateMovingAverage();
 //--------------------------CSV Writing-------------------------------
                 writeCSV(rows);
 //--------------------------------------------------------------------
-                createWindowsToFindPeaks();
-                FindIntervalsAndCalculateBPM();
+                ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage);
+                FindIntervalsAndCalculateBPM(peaksList);
 
                 Double[] Red = RedAvgList.toArray(new Double[RedAvgList.size()]);
                 Double[] Blue = BlueAvgList.toArray(new Double[BlueAvgList.size()]);
@@ -171,59 +165,11 @@ public class OxymeterActivity extends Activity {
                 double RR1Freq = Fft2.FFT(Red, counter, SamplingFreq);
                 double breathRed = (int) ceil(RR1Freq * 60);
 
-                double meanr = sumred / counter;
-                double meanb = sumblue / counter;
-
-                for (int i = 0; i < counter - 1; i++) {
-
-                    Double bufferb = Blue[i];
-
-                    Stdb = Stdb + ((bufferb - meanb) * (bufferb - meanb));
-
-                    Double bufferr = Red[i];
-
-                    Stdr = Stdr + ((bufferr - meanr) * (bufferr - meanr));
-
-                }
 
 
-                if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
-                    if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
-
-                        bufferAvgB = (bpmGreen + bpmRed) / 2;
-                        bufferAvgBr = (breathGreen + breathRed) / 2;
-
-                    } else {
-                        bufferAvgB = bpmGreen;
-                        bufferAvgBr = breathGreen;
-                    }
-                } else if ((bpmRed > 45 && bpmRed < 200) || (breathRed > 10 && breathRed < 20)) {
-
-                    bufferAvgB = bpmRed;
-                    bufferAvgBr = breathRed;
-
-                }
-
-
-                double varr = sqrt(Stdr / (counter - 1));
-                double varb = sqrt(Stdb / (counter - 1));
-
-                double R = (varr / meanr) / (varb / meanb);
-
-                double spo2 = 100 - 5 * (R);
-                o2 = (int) (spo2);
-
-//-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
-                if ((o2 < 80 || o2 > 99) || ((bufferAvgB < 45 || bufferAvgB > 200) && (peakBpm < 45 || peakBpm > 200))) {
-                    Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
-                    resetProcessing();
-                    o2 = 0;
-                    startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
-                    processing.set(false);
-                    return;
-                }
-                Beats = (int) bufferAvgB;
-                Breath = (int) bufferAvgBr;
+                o2 = (int) calculateSPO2(Red,Blue);
+                Breath = (int) calculateAverageFourierBreathAndBPM(bpmGreen,breathGreen,bpmRed,breathRed)[0]; // 0 stands for breath respiration value
+                Beats = (int) calculateAverageFourierBreathAndBPM(bpmGreen,breathGreen,bpmRed,breathRed)[1]; // 0 stands for Heart Rate value
 
             }
 
@@ -232,7 +178,6 @@ public class OxymeterActivity extends Activity {
                 Intent returnIntent = new Intent();
                 if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
                     int BpmAvg = (int) ceil((Beats + peakBpm) / 2);
-                    //TODO Need to pass Bats o2 and Breath
                     returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
                     returnIntent.putExtra("BEATS_PER_MINUTE", Integer.toString(BpmAvg));
                     returnIntent.putExtra("BREATHS_PER_MINUTE", Integer.toString(Breath));
@@ -250,8 +195,12 @@ public class OxymeterActivity extends Activity {
                     returnIntent.putExtra("BREATHS_PER_MINUTE", Integer.toString(Breath));
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please do the test again!", Toast.LENGTH_SHORT).show();
+                } else  {
+                    Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
+                    resetProcessing();
+                    startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
+                    processing.set(false);
+                    return;
                 }
 
 
@@ -261,7 +210,51 @@ public class OxymeterActivity extends Activity {
 
         }
 
-        public void calculateMovingAverage(){
+        public double[] calculateAverageFourierBreathAndBPM(double bpmGreen, double breathGreen, double bpmRed, double breathRed){
+            double bufferAvgBr = 0;
+            double bufferAvgB = 0;
+            if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
+                if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
+
+                    bufferAvgB = (bpmGreen + bpmRed) / 2;
+                    bufferAvgBr = (breathGreen + breathRed) / 2;
+
+                } else {
+                    bufferAvgB = bpmGreen;
+                    bufferAvgBr = breathGreen;
+                }
+            } else if ((bpmRed > 45 && bpmRed < 200) || (breathRed > 10 && breathRed < 20)) {
+
+                bufferAvgB = bpmRed;
+                bufferAvgBr = breathRed;
+            }
+
+            return new double[]{bufferAvgBr,bufferAvgB};
+        }
+
+        public double calculateSPO2(Double[] red, Double[] blue){
+            double Stdr = 0;
+            double Stdb = 0;
+            double meanr = sumred / counter;
+            double meanb = sumblue / counter;
+            for (int i = 0; i < counter - 1; i++) {
+                Double bufferb = blue[i];
+                Stdb = Stdb + ((bufferb - meanb) * (bufferb - meanb));
+                Double bufferr = red[i];
+                Stdr = Stdr + ((bufferr - meanr) * (bufferr - meanr));
+            }
+            double varr = sqrt(Stdr / (counter - 1));
+            double varb = sqrt(Stdb / (counter - 1));
+
+            double R = (varr / meanr) / (varb / meanb);
+
+            double spo2 = 100 - 5 * (R);
+
+            return spo2;
+        }
+
+        public ArrayList<Double> calculateMovingAverage(){
+            ArrayList<Double> MovAvgRed = new ArrayList<Double>();
             double avg_hr = (sumred) / (RedAvgList.size());
             for (int i = 0; i < RedAvgList.size(); i++) {
                 if (i < 15) {                                   //Assign the average red received to the first 15 samples
@@ -274,9 +267,13 @@ public class OxymeterActivity extends Activity {
                     rows.add(new String[]{Integer.toString(i), RedAvgList.get(i).toString(), Double.toString(calc_mov_avg.currentAverage())});
                 }
             }
+
+            return MovAvgRed;
         }
 
-        private void createWindowsToFindPeaks(){
+        private ArrayList<Integer> createWindowsToFindPeaks(ArrayList<Double> MovAvgRed){
+            //peakPositionList represents a list which containts the peak positions
+            ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
             //Create window which start's when RedAvg > MovAvg and ends when RedAvg < MovAvg and calculate's the highest point (peak) within the window
             ArrayList<Double> window = new ArrayList<Double>();
             int windowIndex = 0;
@@ -297,9 +294,10 @@ public class OxymeterActivity extends Activity {
                     windowIndex = 0;
                 }
             }
+            return peakPositionList; //Return list of peak positions
         }
 
-        private void FindIntervalsAndCalculateBPM() {
+        private void FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList) {
 
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
