@@ -410,8 +410,8 @@ public class OxymeterActivity extends Activity {
                 }
 
 
-                if ((bpmGreen > 45 || bpmGreen < 200) || (breathGreen > 10 || breathGreen < 20)) {
-                    if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 24)) {
+                if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
+                    if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
 
                         bufferAvgB = (bpmGreen + bpmRed) / 2;
                         bufferAvgBr = (breathGreen + breathRed) / 2;
@@ -420,7 +420,7 @@ public class OxymeterActivity extends Activity {
                         bufferAvgB = bpmGreen;
                         bufferAvgBr = breathGreen;
                     }
-                } else if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 20)) {
+                } else if ((bpmRed > 45 && bpmRed < 200) || (breathRed > 10 && breathRed < 20)) {
 
                     bufferAvgB = bpmRed;
                     bufferAvgBr = breathRed;
