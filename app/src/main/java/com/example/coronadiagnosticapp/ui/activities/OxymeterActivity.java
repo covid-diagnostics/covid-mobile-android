@@ -42,10 +42,8 @@ import static java.lang.Math.sqrt;
 
 public class OxymeterActivity extends Activity {
 
-    public enum RGB{RED,GREEN,BLUE};
-
-    // Variables Initialization
-    private static final String TAG = "HeartRateMonitor";
+        // Variables Initialization
+    private static final String TAG = "HeartRateMonitor";;
     private static final AtomicBoolean processing = new AtomicBoolean(false);
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
@@ -63,7 +61,6 @@ public class OxymeterActivity extends Activity {
     public ArrayList<Double> RedAvgList = new ArrayList<Double>();
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
-
     public int counter = 0;
     //ProgressBar
     ProgressBar progressBarView;
@@ -153,21 +150,11 @@ public class OxymeterActivity extends Activity {
 
                 // double HRFreq = Fft.FFT(Red, counter, SamplingFreq);
                 // double bpm = (int) ceil(HRFreq * 60);
-                double HRFreq = Fft.FFT(Green, counter, SamplingFreq);
-                double bpmGreen = (int) ceil(HRFreq * 60);
-                double HR1Freq = Fft.FFT(Red, counter, SamplingFreq);
-                double bpmRed = (int) ceil(HR1Freq * 60);
-
-                double RRFreq = Fft2.FFT(Green, counter, SamplingFreq);
-                double breathGreen = (int) ceil(RRFreq * 60);
-                double RR1Freq = Fft2.FFT(Red, counter, SamplingFreq);
-                double breathRed = (int) ceil(RR1Freq * 60);
-
 
 
                 o2 = (int) calculateSPO2(Red,Blue);
-                Breath = (int) calculateAverageFourierBreathAndBPM(bpmGreen,breathGreen,bpmRed,breathRed)[0]; // 0 stands for breath respiration value
-                Beats = (int) calculateAverageFourierBreathAndBPM(bpmGreen,breathGreen,bpmRed,breathRed)[1]; // 0 stands for Heart Rate value
+                Breath = (int) calculateAverageFourierBreathAndBPM(Red,Green,Blue)[0]; // 0 stands for breath respiration value
+                Beats = (int) calculateAverageFourierBreathAndBPM(Red,Green,Blue)[1]; // 0 stands for Heart Rate value
 
             }
 
@@ -208,9 +195,18 @@ public class OxymeterActivity extends Activity {
 
         }
 
-        public double[] calculateAverageFourierBreathAndBPM(double bpmGreen, double breathGreen, double bpmRed, double breathRed){
+        public double[] calculateAverageFourierBreathAndBPM(Double[] Red, Double[] Green, Double[] Blue){
             double bufferAvgBr = 0;
             double bufferAvgB = 0;
+            double HRFreq = Fft.FFT(Green, counter, SamplingFreq);
+            double bpmGreen = (int) ceil(HRFreq * 60);
+            double HR1Freq = Fft.FFT(Red, counter, SamplingFreq);
+            double bpmRed = (int) ceil(HR1Freq * 60);
+
+            double RRFreq = Fft2.FFT(Green, counter, SamplingFreq);
+            double breathGreen = (int) ceil(RRFreq * 60);
+            double RR1Freq = Fft2.FFT(Red, counter, SamplingFreq);
+            double breathRed = (int) ceil(RR1Freq * 60);
             if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
                 if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
 
@@ -372,10 +368,6 @@ public class OxymeterActivity extends Activity {
         return result;
     }
 
-    //Prevent the system from restarting your activity during certain configuration changes,
-    // but receive a callback when the configurations do change, so that you can manually update your activity as necessary.
-    //such as screen orientation, keyboard availability, and language
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -413,6 +405,10 @@ public class OxymeterActivity extends Activity {
 
 
     }
+
+    //Prevent the system from restarting your activity during certain configuration changes,
+    // but receive a callback when the configurations do change, so that you can manually update your activity as necessary.
+    //such as screen orientation, keyboard availability, and language
 
     private void fn_countdown() {
 
@@ -536,19 +532,19 @@ public class OxymeterActivity extends Activity {
         progressBarView.setVisibility(View.VISIBLE);
     }
 
-//    private void addToSumRed(double red){
-//        sumred += red;
-//    }
-//    private void addToSumBlue(double blue){
-//        sumblue += blue;
-//    }
-
     public boolean checkImageIsBad(double redIntensity){
         if(redIntensity < 200)          //Image is bad!
             return true;
 
         return false;
     }
+
+//    private void addToSumRed(double red){
+//        sumred += red;
+//    }
+//    private void addToSumBlue(double blue){
+//        sumblue += blue;
+//    }
 
     private double getColorIntensities(byte[] data, int height, int width, RGB choice){
         double RedAvg;
@@ -563,5 +559,7 @@ public class OxymeterActivity extends Activity {
 
         return 0;
     }
+
+public enum RGB{RED,GREEN,BLUE}
 }
 
