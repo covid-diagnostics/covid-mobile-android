@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
@@ -21,7 +22,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DailyMetricFragment : ScopedFragment() {
-
+    private var cough_strength_value = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.applicationContext.let { ctx ->
@@ -39,9 +40,23 @@ class DailyMetricFragment : ScopedFragment() {
         return inflater.inflate(R.layout.daily_metric_fragment, container, false)
     }
 
+    private fun updateCoughStrength(strength: Int) {
+        cough_strength_value = strength
+        cough_strength.text = "Cough Strength : $strength"
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        updateCoughStrength(cough_strength_value);
+        activity_metrics_inp_cough_strength.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                updateCoughStrength(i)
+            }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
         initForm()
     }
 
@@ -50,17 +65,12 @@ class DailyMetricFragment : ScopedFragment() {
             inputLayout(activity_metrics_inp_temp) {
                 isNotEmpty().description(getString(R.string.required))
             }
-            inputLayout(activity_metrics_inp_cough_strength) {
-                isNotEmpty()
-
-
-            }
             checkable(activity_metrics_chk_cough_wet) {
             }
             submitWith(button_metricSubmit) { res ->
                 submitDailyMetrics(
                     res.get("activity_metrics_inp_temp")?.value.toString(),
-                    res.get("activity_metrics_inp_cough_strength")?.value.toString().toInt(),
+                    cough_strength_value,
                     res.get("activity_metrics_chk_cough_wet")?.value as Boolean
                 )
             }

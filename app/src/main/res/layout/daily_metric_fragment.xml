@@ -7,6 +7,26 @@
     tools:context=".ui.fragments.dailtyMetric.DailyMetricFragment">
 
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintTop_toTopOf="@+id/cough_strength"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/cough_emoji" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintTop_toTopOf="@+id/cough_strength"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/smail_emoji" />
+
     <TextView
         android:id="@+id/daily_metrics_message"
         android:layout_width="wrap_content"
@@ -15,8 +35,8 @@
         android:text="@string/daily_metric_message"
         android:textAppearance="@style/appSubHeader"
         app:layout_constraintBottom_toTopOf="@+id/guideline_metric"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -39,25 +59,31 @@
             android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:id="@+id/cough_strength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="@string/coughStrength"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <SeekBar
         android:id="@+id/activity_metrics_inp_cough_strength"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="48dp"
         android:hint="@string/coughStrength"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
+        android:max="10"
+        android:progress="0"
         app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
 
     <CheckBox
         android:id="@+id/activity_metrics_chk_cough_wet"
@@ -89,8 +115,8 @@
 
     <Button
         android:id="@+id/button_metricSubmit"
-        android:text="@string/next"
-        style="@style/customButton"/>
+        style="@style/customButton"
+        android:text="@string/next" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
