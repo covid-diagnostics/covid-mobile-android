@@ -7,6 +7,26 @@
     tools:context=".ui.fragments.dailtyMetric.DailyMetricFragment">
 
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintTop_toTopOf="@+id/cough_strength"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/cough_emoji" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintTop_toTopOf="@+id/cough_strength"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/smail_emoji" />
+
     <TextView
         android:id="@+id/daily_metrics_message"
         android:layout_width="wrap_content"
