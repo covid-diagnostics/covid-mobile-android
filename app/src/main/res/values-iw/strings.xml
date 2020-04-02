@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="header_instructions">שלום לכם!</string>
+    <string name="body_instructions">האם תירצו להתחיל\nאת תהליך האבחון?</string>
+    <string name="start">התחל</string>
+    <string name="daily_metric_message">נתונים רפואיים</string>
+    <string name="temperature">חום</string>
+    <string name="coughStrength">עוצמת שיעול</string>
+    <string name="isCoughWet">שיעול רטוב?</string>
+    <string name="next">הבא</string>
+    <string name="header_camera">האם אתה מוכן\nלמבחן?</string>
+    <string name="camera_body">במסכים הבאים תתבקש\nלצלם סרטון ולהקליט הקלטה קצרה.\nנתונים אלו ייסיעו בתהליך האבחון.\nאל דאגה, מידע זה יהיה זמין\nרק לצוותי הרפואה.</string>
+    <string name="im_ready">אני מוכן!</string>
+
+
+
+
+
+
+</resources>

@@ -1,27 +1,41 @@
 package com.example.coronadiagnosticapp.ui.activities;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.PowerManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment;
+import com.opencsv.CSVWriter;
 
+import retrofit2.http.HEAD;
+
+import static android.view.animation.Animation.RELATIVE_TO_SELF;
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 
@@ -34,20 +48,21 @@ public class OxymeterActivity extends Activity {
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
 
-    //Toast
-    private Toast mainToast;
-
-
-    //ProgressBar
-//    private ProgressBar ProgO2;
-//    public int ProgP =0;
-//    public int inc=0;
+    //Initialize an object that calculates the rolling average of last 15 samples
+    private SMA calc_mov_avg = new SMA(15);
 
     //Button
     private Button readyBtn;
 
     //TextView
     private TextView alert;
+
+    //ProgressBar
+    ProgressBar progressBarView;
+    TextView tv_time;
+    int progress;
+    CountDownTimer countDownTimer;
+    int endTime = 250;
 
     //Freq + timer variable
     private static long startTime = 0;
@@ -62,6 +77,8 @@ public class OxymeterActivity extends Activity {
     double sumgreen = 0;
     public int o2;
 
+    RotateAnimation makeVertical;
+
     //RespirationRate variable
     public int Breath = 0;
     public double bufferAvgBr = 0;
@@ -69,12 +86,23 @@ public class OxymeterActivity extends Activity {
     // Heart Rate vaiables
     public double bufferAvgB = 0;
     public int Beats = 0;
+    public double peakBpm = 0;
 
     //Arraylist
     public ArrayList<Double> RedAvgList = new ArrayList<Double>();
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
+    public ArrayList<Double> MovAvgRed = new ArrayList<Double>();
     public int counter = 0;
+
+    //CSV Writing
+    String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+    String fileName = "AnalysisData.csv";
+    String[] HEADER = new String[]{"id","RED_VALUE","RED_AVG_VALUE"};
+    String filePath = baseDir + File.separator + fileName;
+    File f = new File(filePath);
+    CSVWriter writer;
+
 
 
     @Override
@@ -91,21 +119,74 @@ public class OxymeterActivity extends Activity {
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         readyBtn = (Button) findViewById(R.id.ready_btn);
+        progressBarView = (ProgressBar) findViewById(R.id.barTimer);
+        tv_time= (TextView)findViewById(R.id.textTimer);
+
+
+
+        /*Animation*/
+        makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
+        makeVertical.setFillAfter(true);
+        progressBarView.startAnimation(makeVertical);
+        progressBarView.setSecondaryProgress(endTime);
+        progressBarView.setProgress(0);
 
         readyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                fn_countdown();
                 startTime = System.currentTimeMillis();
-                //   previewHolder.addCallback(surfaceCallback);
-                //   previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+                Log.e(TAG,"Time has started = " + Long.toString(startTime));
             }
         });
 
 
-        //   ProgO2 = (ProgressBar)findViewById(R.id.O2PB);
-        //   ProgO2.setProgress(0);
+    }
+    private void fn_countdown() {
 
+
+        try {
+            countDownTimer.cancel();
+
+        } catch (Exception e) {
+
+        }
+
+        progress = 1;
+        endTime = 30;
+
+        countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                setProgress(progress, endTime);
+                progress = progress + 1;
+                Log.e(TAG,"ticking progress = " + progress);
+                int seconds = (int) (millisUntilFinished / 1000) % 60;
+                String newtime =  seconds + " seconds";
+
+                if (newtime.equals("0")) {
+                    tv_time.setText("Press start");
+                } else {
+                    tv_time.setText(seconds + " seconds");
+                }
+
+            }
+
+            @Override
+            public void onFinish() {
+                progress = 0;
+                setProgress(progress, 30);
+            }
+        };
+        countDownTimer.start();
+
+
+    }
+
+    public void setProgress(int startTime, int endTime) {
+        progressBarView.setMax(endTime);
+        progressBarView.setSecondaryProgress(endTime);
+        progressBarView.setProgress(startTime);
 
     }
 
@@ -130,8 +211,6 @@ public class OxymeterActivity extends Activity {
         camera = Camera.open();
 
         camera.setDisplayOrientation(90);
-
-//        startTime = System.currentTimeMillis();
 
         Log.e("OnResume():", "Called.");
     }
@@ -188,27 +267,116 @@ public class OxymeterActivity extends Activity {
             GreenAvgList.add(GreenAvg);
 
             //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-            if (RedAvg < 150) {
-                alert.setVisibility(View.VISIBLE);
-//                inc=0;
-//                ProgP=inc;
-//                ProgO2.setProgress(ProgP);
+            if (RedAvg < 200) {
+                alert.setVisibility(View.VISIBLE); // Make alert no finger - visible
+                sumred = 0;
+                sumblue = 0;
+                RedAvgList.clear();
+                BlueAvgList.clear();
+                counter =0;
                 processing.set(false);
+                countDownTimer.cancel();
+                setProgress(0,30);
+                progress=0;
+                fn_countdown();
+                if(progressBarView.getVisibility() == View.VISIBLE) {
+                    progressBarView.clearAnimation();
+                    progressBarView.setVisibility(View.GONE);
+                }
                 startTime = System.currentTimeMillis();
                 return;
             } else {
                 alert.setVisibility(View.INVISIBLE);
+                if(!(progressBarView.getVisibility() == View.VISIBLE)) {
+                    progressBarView.startAnimation(makeVertical);
+                    progressBarView.setVisibility(View.VISIBLE);
+                }
+
+                progressBarView.setVisibility(View.VISIBLE);
             }
+            if(counter == 0)
+                Log.e(TAG,"First count of counter, time =" + Long.toString(startTime));
+
 
 
             ++counter; //countes number of frames in 30 seconds
-
+            Log.e(TAG,"Counter is at = " + counter);
 
             long endTime = System.currentTimeMillis();
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
+                Log.e(TAG,"30 secondes passed ! totalTimeInSecs is now = " + Double.toString(totalTimeInSecs));
+                Log.e(TAG,"The sampling frequent is = " + Double.toString(counter/totalTimeInSecs));
+                double avg_hr = (sumred) / (RedAvgList.size());
+                List<String[]> rows = new ArrayList<String[]>(); // Initializing List of string array's to generate CSV file
+                rows.add(HEADER); // Adding Header to the CSV file
+                Log.e(TAG,"The average red is = " + avg_hr);
+                for (int i = 0; i<RedAvgList.size(); i++)
+                {
+                    if(i<15) {                                   //Assign the average red received to the first 15 samples
+                        calc_mov_avg.compute(avg_hr);           //Add the value to the moving average object
+                        //  r.add(avg_hr);
+                        MovAvgRed.add(i, avg_hr);               //Add the value to the MobAvgRed list
+                        rows.add(new String[]{Integer.toString(i),RedAvgList.get(i).toString(),Double.toString(avg_hr)});       ///Add to CSV
+                    }else{
+                        // r.add(RedAvgList.get(i));
+                        MovAvgRed.add(calc_mov_avg.compute(RedAvgList.get(i)));
+                        Log.e(TAG,"Current Average = " + calc_mov_avg.currentAverage());
+                        rows.add(new String[]{Integer.toString(i),RedAvgList.get(i).toString(),Double.toString(calc_mov_avg.currentAverage())});
+                    }
 
-                startTime = System.currentTimeMillis();
+                }
+//--------------------------CSV Writing-------------------------------
+                try {
+                    writer = new CSVWriter(new FileWriter(filePath));
+                    writer.writeAll(rows);
+                    writer.close();
+                } catch (IOException ex) {
+                    Log.e(TAG, "FileWriter Exception" + ex);
+                }
+//--------------------------------------------------------------------
+
+                //Create window which start's when RedAvg > MovAvg and ends when RedAvg < MovAvg and calculate's the highest point (peak) within the window
+                ArrayList<Double> window = new ArrayList<Double>();
+                ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
+                int windowIndex = 0;
+                for(int i=0;i<RedAvgList.size();i++)
+                {
+                    if(MovAvgRed.get(i) > RedAvgList.get(i) && window.isEmpty())
+                        continue;
+                    else
+                    if(RedAvgList.get(i) > MovAvgRed.get(i)) {
+                        window.add(windowIndex, RedAvgList.get(i));
+                        windowIndex++;
+                    }
+                    else{
+                        if(window.isEmpty())
+                            continue;
+                        //Finding the maximum value within the window calculating it's position then storing it at peakPositionList variable
+                        Object maximum = Collections.max(window);
+                        int beatposition = i - window.size() + window.indexOf(maximum);
+                        peakPositionList.add(beatposition);
+                        window.clear();
+                        windowIndex = 0;
+                    }
+                }
+                //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
+                ArrayList<Double> RR_List = new ArrayList<Double>();
+                for(int i = 0 ;i<peakPositionList.size() - 1;i++)
+                {
+                    int RR_interval = peakPositionList.get(i+1) - peakPositionList.get(i);
+                    double ms_dist = ((RR_interval/(counter / totalTimeInSecs)) * 1000d);
+                    RR_List.add(ms_dist);
+                }
+                //Calculating the average interval
+                double sumRR_List = 0;
+                for ( int i=0; i < RR_List.size() ; i++) {
+                    sumRR_List += RR_List.get(i);
+                }
+                double avgRR_List = (sumRR_List)/RR_List.size();
+
+                //Providing result
+                peakBpm = 60000 / (avgRR_List);
                 SamplingFreq = (counter / totalTimeInSecs);
                 Double[] Red = RedAvgList.toArray(new Double[RedAvgList.size()]);
                 Double[] Blue = BlueAvgList.toArray(new Double[BlueAvgList.size()]);
@@ -242,8 +410,8 @@ public class OxymeterActivity extends Activity {
                 }
 
 
-                if ((bpmGreen > 45 || bpmGreen < 200) || (breathGreen > 10 || breathGreen < 20)) {
-                    if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 24)) {
+                if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
+                    if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
 
                         bufferAvgB = (bpmGreen + bpmRed) / 2;
                         bufferAvgBr = (breathGreen + breathRed) / 2;
@@ -252,7 +420,7 @@ public class OxymeterActivity extends Activity {
                         bufferAvgB = bpmGreen;
                         bufferAvgBr = breathGreen;
                     }
-                } else if ((bpmRed > 45 || bpmRed < 200) || (breathRed > 10 || breathRed < 20)) {
+                } else if ((bpmRed > 45 && bpmRed < 200) || (breathRed > 10 && breathRed < 20)) {
 
                     bufferAvgB = bpmRed;
                     bufferAvgBr = breathRed;
@@ -267,39 +435,65 @@ public class OxymeterActivity extends Activity {
 
                 double spo2 = 100 - 5 * (R);
                 o2 = (int) (spo2);
+                Log.e(TAG,"Value testBpm = " + Double.toString(peakBpm));
                 Log.e("O2 Value = ", "" + Integer.toString(o2));
+
 //-----------------Measurement failed, doing start-over by setting counter to 0 and setting startTime to current---------------------------------------------//
-                if ((o2 < 80 || o2 > 99) || (bufferAvgB < 45 || bufferAvgB > 200)) {
-//                    inc=0;
-//                    ProgP=inc;
-//                    ProgO2.setProgress(ProgP);
+                if ((o2 < 80 || o2 > 99) || ((bufferAvgB < 45 || bufferAvgB > 200) && (peakBpm <45 || peakBpm >200))) {
                     Log.e("O2 Value before Toast = ", "" + Integer.toString(o2));
-                    mainToast = Toast.makeText(getApplicationContext(), "Measurement Failed, Starting over please dont move your finger!!", Toast.LENGTH_SHORT);
-                    mainToast.show();
-                    startTime = System.currentTimeMillis();
+                    Toast.makeText(getApplicationContext(), "Measurement Failed, Please start the button again when you are ready !", Toast.LENGTH_SHORT).show();
+                    sumred = 0;
+                    sumblue = 0;
+                    RedAvgList.clear();
+                    BlueAvgList.clear();
                     counter = 0;
-                    processing.set(false);
                     o2 = 0;
+                    processing.set(false);
+                    countDownTimer.cancel();
+                    progress=0;
+                    setProgress(0,30);
+                    startTime = 0;
                     return;
                 }
                 Beats = (int) bufferAvgB;
                 Breath = (int) bufferAvgBr;
 
+
+                camera.setPreviewCallback(null);
+                camera.stopPreview();
             }
 
-            if ((Beats != 0) && (o2 != 0) && (Breath != 0)) {
+
+            if ((Beats != 0)  && (o2 != 0) && (Breath != 0 ) && (peakBpm != 0)) {
                 Intent returnIntent = new Intent();
-                //TODO Need to pass Bats o2 and Breath
+                if (!(o2 < 80 || o2 > 99) && !(Beats <45 || Beats > 200) && !(peakBpm<45 || peakBpm>200)) {
+                    int BpmAvg = (int)ceil((Beats + peakBpm) /2);
+                    //TODO Need to pass Bats o2 and Breath
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString(BpmAvg));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else if(!(o2 < 80 || o2 > 99) && (Beats <45 || Beats > 200) && !(peakBpm<45 || peakBpm>200))
+                {
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString((int)peakBpm));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+                else if(!(o2 < 80 || o2 > 99) && !(Beats <45 || Beats > 200) && (peakBpm<45 || peakBpm>200)){
+                    returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
+                    returnIntent.putExtra("BEATS_PER_MINUTE",Integer.toString(Beats));
+                    returnIntent.putExtra("BREATHS_PER_MINUTE",Integer.toString(Breath));
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Please do the test again!",Toast.LENGTH_SHORT).show();
+                }
 
-                returnIntent.putExtra(CameraFragment.CameraCodes.oxygenSaturation(), Integer.toString(o2));
-                returnIntent.putExtra(CameraFragment.CameraCodes.beatsPerMinuteKey(), Integer.toString(Beats));
-                returnIntent.putExtra(CameraFragment.CameraCodes.breathsPerMinute(), Integer.toString(Breath));
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
 
-            if (RedAvg != 0) {
-//                Toast.makeText(getApplicationContext(), " RedAVG != 0", Toast.LENGTH_SHORT).show();
             }
 
             processing.set(true);
@@ -367,8 +561,5 @@ public class OxymeterActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent i = new Intent(OxymeterActivity.this, TargetActivity.class);
-//        startActivity(i);
-//        finish();
     }
 }

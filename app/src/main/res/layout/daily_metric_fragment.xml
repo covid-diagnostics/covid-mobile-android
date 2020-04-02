@@ -13,19 +13,19 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/daily_metric_message"
-        android:textSize="24sp"
+        android:textAppearance="@style/appSubHeader"
         app:layout_constraintBottom_toTopOf="@+id/guideline_metric"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/activity_metrics_inp_temp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
-        android:layout_marginRight="64dp"
+        android:layout_marginEnd="64dp"
         android:hint="@string/temperature"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
@@ -57,16 +57,7 @@
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/button_metricSubmit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:text="@string/submit_daily_metrics"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/submit_daily_metrics" />
+
 
     <CheckBox
         android:id="@+id/activity_metrics_chk_cough_wet"
@@ -95,5 +86,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_metricSubmit"
+        android:text="@string/next"
+        style="@style/customButton"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

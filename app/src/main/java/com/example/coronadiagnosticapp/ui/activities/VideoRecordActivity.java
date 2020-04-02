@@ -185,8 +185,8 @@ public class VideoRecordActivity extends AppCompatActivity {
         }
 
         myCameraSurfaceView = new MyCameraSurfaceView(this, myCamera);
-     //   FrameLayout myCameraPreview = (FrameLayout) findViewById(R.id.videoview);
-    //   myCameraPreview.addView(myCameraSurfaceView);
+        //   FrameLayout myCameraPreview = (FrameLayout) findViewById(R.id.videoview);
+        //   myCameraPreview.addView(myCameraSurfaceView);
 
         myButton = (Button) findViewById(R.id.ready_btn);
         myButton.setOnClickListener(myButtonOnClickListener);

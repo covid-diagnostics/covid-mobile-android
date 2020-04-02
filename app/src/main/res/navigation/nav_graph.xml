@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/instructionsFragment">
 
     <fragment
         android:id="@+id/welcomeFragment"
@@ -62,7 +62,16 @@
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.example.coronadiagnosticapp.ui.resultFragment.ResultFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment"
         android:label="result_fragment"
         tools:layout="@layout/result_fragment" />
+    <fragment
+        android:id="@+id/instructionsFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment"
+        android:label="instructions_fragment"
+        tools:layout="@layout/instructions_fragment" >
+        <action
+            android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
+            app:destination="@id/dailyMetricFragment" />
+    </fragment>
 </navigation>

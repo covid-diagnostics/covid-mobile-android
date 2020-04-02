@@ -16,7 +16,7 @@ import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFrag
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
-import com.example.coronadiagnosticapp.ui.resultFragment.ResultFragment
+import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module

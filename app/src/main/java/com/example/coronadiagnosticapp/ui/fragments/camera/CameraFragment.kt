@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
+import com.example.coronadiagnosticapp.ui.activities.*
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +60,7 @@ class CameraFragment : ScopedFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        startCamera.setOnClickListener {
+        button_startCamera.setOnClickListener {
             // TODO: Ask permission to use the camera
             if (context?.let { it1 ->
                     ActivityCompat.checkSelfPermission(
