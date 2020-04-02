@@ -41,7 +41,7 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 
 public class OxymeterActivity extends Activity {
-
+    public enum RGB{RED,GREEN,BLUE}
         // Variables Initialization
     private static final String TAG = "HeartRateMonitor";;
     private static final AtomicBoolean processing = new AtomicBoolean(false);
@@ -560,6 +560,5 @@ public class OxymeterActivity extends Activity {
         return 0;
     }
 
-public enum RGB{RED,GREEN,BLUE}
 }
 
