@@ -50,6 +50,15 @@
 
     </style>
 
+    <style name="appBodySmall">
+        <item name="android:gravity">center</item>
+
+        <item name="android:textSize">
+            14sp
+        </item>
+
+    </style>
+
     <style name="appParagraph">
         <item name="android:gravity">center</item>
 

@@ -14,10 +14,9 @@ interface Repository {
     fun isLoggedIn(): Boolean
     suspend fun updateUserPersonalInformation(firstName: String, lastName: String, age: Int)
     suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean)
-
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): LiveData<HealthResult>
-
+    fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
 
 }

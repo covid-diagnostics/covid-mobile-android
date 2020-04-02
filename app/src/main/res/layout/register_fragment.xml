@@ -14,14 +14,13 @@
         android:text="@string/welcome_message"
         android:textAlignment="center"
         android:textSize="24sp"
-
         app:layout_constraintBottom_toTopOf="@+id/guideline_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_signup_inp_email"
+        android:id="@+id/textInputLayout_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="64dp"
@@ -41,7 +40,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_signup_inp_password"
+        android:id="@+id/textInputLayout_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -50,9 +49,9 @@
         app:helperTextEnabled="false"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/activity_signup_inp_email"
-        app:layout_constraintStart_toStartOf="@+id/activity_signup_inp_email"
-        app:layout_constraintTop_toBottomOf="@+id/activity_signup_inp_email"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout_email"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout_email"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_email"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +62,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_signup_inp_password_repeat"
+        android:id="@+id/TextInputLayout_passwordRepeat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -71,9 +70,9 @@
         app:errorEnabled="true"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/activity_signup_inp_password"
-        app:layout_constraintStart_toStartOf="@+id/activity_signup_inp_password"
-        app:layout_constraintTop_toBottomOf="@+id/activity_signup_inp_password"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout_password"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout_password"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -90,11 +89,21 @@
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_signup_inp_password_repeat" />
+        app:layout_constraintTop_toBottomOf="@+id/TextInputLayout_passwordRepeat" />
+
+    <Button
+        android:id="@+id/button_login"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_an_account"
+        app:layout_constraintLeft_toLeftOf="@id/button_register"
+        app:layout_constraintRight_toRightOf="@id/button_register"
+        app:layout_constraintTop_toBottomOf="@id/button_register" />
 
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar_register"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,6 +119,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

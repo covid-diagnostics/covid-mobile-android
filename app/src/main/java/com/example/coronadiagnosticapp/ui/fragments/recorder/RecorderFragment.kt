@@ -2,7 +2,6 @@ package com.example.coronadiagnosticapp.ui.fragments.recorder
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.SystemClock
@@ -11,11 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.coroutines.Dispatchers

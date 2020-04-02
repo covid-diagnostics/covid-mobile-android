@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <SurfaceView
         android:id="@+id/preview"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Please put your finger on camera"
+        android:text="@string/please_put_your_finger_on_camera"
         android:layout_marginTop="10dp"
         android:textSize="16sp"
         android:textStyle="bold"

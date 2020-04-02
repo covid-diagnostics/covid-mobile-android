@@ -1,22 +1,27 @@
 package com.example.coronadiagnosticapp.ui.fragments.instruction
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
+import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import kotlinx.android.synthetic.main.instructions_fragment.*
 import javax.inject.Inject
 
 class InstructionsFragment : Fragment() {
 
+    @Inject
+    lateinit var viewModel: InstructionViewModel
 
-
-    @Inject lateinit var viewModel: InsturcationViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.applicationContext.let { ctx ->
+            (ctx as MyApplication).getAppComponent().inject(this)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +32,9 @@ class InstructionsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        textView_header_instructions.apply {
+            text = "$text ${viewModel.getUserName()}"
+        }
         button_instructions.setOnClickListener {
             findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
         }

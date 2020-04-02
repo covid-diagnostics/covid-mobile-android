@@ -8,15 +8,14 @@ import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
-import com.example.coronadiagnosticapp.data.providers.TokenProvider
+import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import java.io.File
-import java.lang.Exception
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     val networkDataSource: NetworkDataSource,
     val dao: DbDao,
-    val tokenProvider: TokenProvider,
+    val sharedProvider: SharedProvider,
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
 
@@ -29,13 +28,24 @@ class RepositoryImpl @Inject constructor(
             val responseUser = networkDataSource.registerUser(userRegister)
             dao.upsertUser(responseUser.user)
             tokenServiceInterceptor.sessionToken = responseUser.token.access
+            sharedProvider.setToken(responseUser.token.access)
         } catch (e: Exception) {
             error.postValue(e.message)
         }
 
     }
 
-    override fun isLoggedIn(): Boolean = !tokenServiceInterceptor.sessionToken.isNullOrBlank()
+    override fun isLoggedIn(): Boolean {
+        val tokenInterceptor = tokenServiceInterceptor.sessionToken
+        val tokenFromPreference = sharedProvider.getToken()
+        if (!tokenInterceptor.isNullOrBlank()) return true
+        return if (!tokenFromPreference.isNullOrBlank()) {
+            tokenServiceInterceptor.sessionToken = tokenFromPreference
+            true
+        } else {
+            false
+        }
+    }
 
     override suspend fun updateUserPersonalInformation(
         firstName: String,
@@ -51,8 +61,8 @@ class RepositoryImpl @Inject constructor(
         val userRes = networkDataSource.updateUserPersonalInformation(user)
         if (userRes != null) {
             dao.upsertUser(userRes)
+            sharedProvider.setName(userRes.firstName)
         }
-
     }
 
     override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
@@ -71,6 +81,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun getLastResult(): LiveData<HealthResult> = dao.getLastHealthResult()
+    override fun getUserName() = sharedProvider.getName()
 
     override suspend fun uploadAudioRecording(file: File) {
         try {

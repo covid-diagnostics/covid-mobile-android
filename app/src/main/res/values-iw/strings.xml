@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
-    <string name="header_instructions">שלום לכם!</string>
-    <string name="body_instructions">האם תירצו להתחיל\nאת תהליך האבחון?</string>
+    <string name="header_instructions">שלום</string>
+    <string name="body_instructions">הקליקו התחל על מנת\nלהתחיל את תהליך האבחון</string>
     <string name="start">התחל</string>
     <string name="daily_metric_message">נתונים רפואיים</string>
     <string name="temperature">חום</string>
@@ -13,10 +11,23 @@
     <string name="header_camera">האם אתה מוכן\nלמבחן?</string>
     <string name="camera_body">במסכים הבאים תתבקש\nלצלם סרטון ולהקליט הקלטה קצרה.\nנתונים אלו ייסיעו בתהליך האבחון.\nאל דאגה, מידע זה יהיה זמין\nרק לצוותי הרפואה.</string>
     <string name="im_ready">אני מוכן!</string>
-
-
-
-
-
-
+    <string name="already_have_an_account">כבר יש לך משתמש?</string>
+    <string name="we_re_glad_you_ve_joined_the_effort">אנחנו שמחים שהצטרפתם למאמץ הלאומי</string>
+    <string name="thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus">אלפי ישראלים יכולים לסבול מתסמינים\nשל וירוס הקורונה</string>
+    <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל\n את חייך וחיים של רבים אחרים!</string>
+    esources>
+    <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
+    <string name="password">סיסמא</string>
+    <string name="email">דואר אלקטרוני</string>
+    <string name="repeat_password">חזור על הסיסמא</string>
+    <string name="sign_up">הירשם</string>
+    <string name="required">שדה חובה</string>
+    <string name="must_valid_email">כתובת דואר אלקטרוני לא תקינה</string>
+    <string name="passwords_match">הסיסמא חייבת להיות זהה</string>
+    <string name="personal_info_request">בבקשה, מלא את פרטייך</string>
+    <string name="age">גיל</string>
+    <string name="first_name">שם פרטי</string>
+    <string name="last_name">שם משפחה</string>
+    <string name="submit_personal_info">אישור</string>
+    <string name="please_put_your_finger_on_camera">הנח את האצבע על המצלמה</string>
 </resources>

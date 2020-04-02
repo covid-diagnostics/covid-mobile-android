@@ -56,7 +56,6 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
                 isCoughDry = isWet
             )
         ).await()
-
     }
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
@@ -65,9 +64,7 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
             file.name,
             RequestBody.create(MediaType.parse("audio/*"), file)
         )
-
         val idPart = MultipartBody.Part.createFormData("id", id.toString())
-
 
         return api.uploadAudioRecording(filePart, idPart).await()
     }

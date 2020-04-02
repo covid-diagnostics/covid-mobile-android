@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/instructionsFragment">
+    app:startDestination="@id/welcomeFragment">
 
     <fragment
         android:id="@+id/welcomeFragment"
@@ -11,17 +11,20 @@
         android:label="fragment_welcome"
         tools:layout="@layout/fragment_welcome" >
         <action
+            android:id="@+id/action_welcomeFragment_to_instructionsFragment"
+            app:destination="@id/instructionsFragment" />
+        <action
             android:id="@+id/action_welcomeFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/action_welcomeFragment_to_dailyMetricFragment"
-            app:destination="@id/dailyMetricFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment"
         android:label="register_fragment"
         tools:layout="@layout/register_fragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_registerFragment_to_informationFragment"
             app:destination="@id/informationFragment" />
@@ -31,8 +34,8 @@
         android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
         android:label="InformationFragment" >
         <action
-            android:id="@+id/action_informationFragment_to_dailyMetricFragment"
-            app:destination="@id/dailyMetricFragment" />
+            android:id="@+id/action_informationFragment_to_instructionsFragment"
+            app:destination="@id/instructionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyMetricFragment"
@@ -73,5 +76,14 @@
         <action
             android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.coronadiagnosticapp.ui.login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_instructionsFragment"
+            app:destination="@id/instructionsFragment" />
     </fragment>
 </navigation>
