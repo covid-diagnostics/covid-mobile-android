@@ -105,9 +105,7 @@ public class OxymeterActivity extends Activity {
                 processing.set(true);
 
             //Atomically sets the value to the given updated value if the current value == the expected value.
-            if (processing.compareAndSet(false, true)) {
-                return;
-            }
+            if (processing.compareAndSet(false, true)) return;
 
             //put width + height of the camera inside the variables
             int width = size.width;
