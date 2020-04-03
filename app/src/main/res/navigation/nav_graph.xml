@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/instructionsFragment">
+    app:startDestination="@id/cameraFragment">
 
     <fragment
         android:id="@+id/welcomeFragment"
@@ -49,17 +49,13 @@
         android:label="camera_fragment"
         tools:layout="@layout/camera_fragment" >
         <action
-            android:id="@+id/action_cameraFragment_to_recorderFragment"
-            app:destination="@id/recorderFragment" />
+            android:id="@+id/action_cameraFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment"
-        android:label="RecorderFragment" >
-        <action
-            android:id="@+id/action_recorderFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
-    </fragment>
+        android:label="RecorderFragment" />
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment"

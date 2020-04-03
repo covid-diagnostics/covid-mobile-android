@@ -406,6 +406,11 @@ public class OxymeterActivity extends Activity {
 
     }
 
+    @Override
+    public void attachBaseContext(Context newBase) {
+        super.attachBaseContext(ApplicationLanguageHelper.Companion.wrap(newBase, "he"));
+    }
+
     //Prevent the system from restarting your activity during certain configuration changes,
     // but receive a callback when the configurations do change, so that you can manually update your activity as necessary.
     //such as screen orientation, keyboard availability, and language

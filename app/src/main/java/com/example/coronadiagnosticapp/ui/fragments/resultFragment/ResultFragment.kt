@@ -30,6 +30,7 @@ class ResultFragment : ScopedFragment() {
         return inflater.inflate(R.layout.result_fragment, container, false)
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

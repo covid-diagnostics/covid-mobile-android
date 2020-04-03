@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="The Result"
+        android:text="@string/results"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@id/guideline_result"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:text="Heart Rate:"
+        android:text="@string/bpm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline_result" />
 
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Oxygen Saturation:"
+        android:text="@string/spo2"
         app:layout_constraintStart_toStartOf="@+id/textView_heartRate"
         app:layout_constraintTop_toBottomOf="@+id/textView_heartRate" />
 
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Blood Pressure:"
+        android:text="@string/blood_pressure"
         app:layout_constraintStart_toStartOf="@+id/textView_Oxygen"
         app:layout_constraintTop_toBottomOf="@+id/textView_Oxygen" />
 
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Respiration Rate:"
+        android:text="@string/respiration_rate"
         app:layout_constraintStart_toStartOf="@+id/textView_Blood"
         app:layout_constraintTop_toBottomOf="@+id/textView_Blood" />
 
