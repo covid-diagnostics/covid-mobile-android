@@ -30,35 +30,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/record_header_image" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="192dp"
-        android:background="#231f20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp">
 
-        <com.example.coronadiagnosticapp.ui.fragments.recorder.VisualizerView
-            android:id="@+id/visualizer"
-            android:layout_width="220dp"
-            android:layout_height="75dp"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp" />
-
-        <TextView
-            android:id="@+id/txtRecord"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
-            android:gravity="center"
-            android:text="Start Recording"
-            android:textColor="@android:color/white"
-            android:textSize="30sp" />
-
-    </RelativeLayout>
+    <com.example.coronadiagnosticapp.ui.fragments.recorder.VisualizerView
+        android:id="@+id/visualizer"
+        android:layout_width="220dp"
+        android:layout_height="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginEnd="91dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/record_timer" />
 
     <Chronometer
         android:id="@+id/record_timer"

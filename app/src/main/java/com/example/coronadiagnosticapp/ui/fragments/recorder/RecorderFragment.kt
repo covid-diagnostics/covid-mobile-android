@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
-import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.android.synthetic.main.recorder_fragment.visualizer
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -42,7 +42,7 @@ class RecorderFragment : ScopedFragment() {
     private var isRecording = false
     private val recordPermission = Manifest.permission.RECORD_AUDIO
     private var PERMISSION_CODE: Int = 21
-    private val VISUALIZATION_FREQUENCY: Long = 5
+    private val VISUALIZATION_FREQUENCY: Long = 40
 
     private var mediaRecorder: MediaRecorder? = null
     private var recordFile: String? = null
@@ -146,7 +146,6 @@ class RecorderFragment : ScopedFragment() {
         //Setup Media Recorder for recording
         mediaRecorder = MediaRecorder()
         val visualizerView = visualizer;
-        val handler = Handler()
         mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
         mediaRecorder!!.setOutputFile(fileLocation)
@@ -178,24 +177,15 @@ class RecorderFragment : ScopedFragment() {
         }
 
         //Start Recording
-        fun runnable(body: Runnable.(Runnable)->Unit) = object: Runnable {
-            override fun run() {
-                this.body(this)
-            }
-        }
-
-        val runnableCode = runnable {
-            if (isRecording)
-            {
+        mediaRecorder!!.start()
+        launch {
+            while (isRecording) {
                 var x = mediaRecorder!!.maxAmplitude
                 visualizerView.addAmplitude(x.toFloat())
                 visualizerView.invalidate()
-                handler.postDelayed(this, VISUALIZATION_FREQUENCY)
+                delay(VISUALIZATION_FREQUENCY)
             }
         }
-        handler.post(runnableCode)
-        mediaRecorder!!.start()
-
     }
 
     private fun showLoading(show: Boolean) {
