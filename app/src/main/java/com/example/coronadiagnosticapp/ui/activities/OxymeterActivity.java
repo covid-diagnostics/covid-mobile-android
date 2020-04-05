@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-import com.opencsv.CSVWriter;
 
 import retrofit2.http.HEAD;
 
@@ -62,19 +61,7 @@ public class OxymeterActivity extends Activity {
     CountDownTimer countDownTimer;
     int endTime = 250;
     RotateAnimation makeVertical;
-    //CSV Writing
-    String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
-    String fileName = "AnalysisData.csv";
-    String[] HEADER = new String[]{"id", "RED_VALUE", "RED_AVG_VALUE"};
-    List<String[]> rows = new ArrayList<String[]>() {{
-        add(HEADER);
-    }}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
-    String filePath = baseDir + File.separator + fileName;
-    File f = new File(filePath);
-    CSVWriter writer;
     private SurfaceView preview = null;
-    //Initialize an object that calculates the rolling average of last 15 samples
-    private SMA calc_mov_avg = new SMA(15);
     //Button
     private Button readyBtn;
     //TextView
@@ -130,11 +117,8 @@ public class OxymeterActivity extends Activity {
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
                 SamplingFreq = (counter / totalTimeInSecs);
                 ArrayList<Double> RedMoveAverage = calculateMovingAverage(RedAvgList);
-                ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage);
+                ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, RedAvgList);
                 double peakBpm = FindIntervalsAndCalculateBPM(peaksList);
-                //--------------------------CSV Writing-------------------------------
-                writeCSV(rows);
-                //--------------------------------------------------------------------
                 int o2 = (int) calculateSPO2(RedAvgList, BlueAvgList);
                 double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList);
                 int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
@@ -157,12 +141,8 @@ public class OxymeterActivity extends Activity {
                     failedProcessing();
                     return;
                 }
-
-
             }
-
             processing.set(true);
-
         }
 
         public double[] calculateAverageFourierBreathAndBPM(ArrayList<Double> RedList, ArrayList<Double> GreenList) {
@@ -220,17 +200,17 @@ public class OxymeterActivity extends Activity {
         }
 
         public ArrayList<Double> calculateMovingAverage(ArrayList<Double> list) {
+            //Initialize an object that calculates the rolling average of last 15 samples
+            SMA calc_mov_avg = new SMA(15);
             ArrayList<Double> MovAvgRed = new ArrayList<Double>();
             double avg_hr = (sumDouble(list)) / (list.size());
             for (int i = 0; i < list.size(); i++) {
                 if (i < 15) {                                   //Assign the average red received to the first 15 samples
                     calc_mov_avg.compute(avg_hr);               //Add the value to the moving average object
                     MovAvgRed.add(i, avg_hr);                   //Add the value to the MobAvgRed list
-                    rows.add(new String[]{Integer.toString(i), list.get(i).toString(), Double.toString(avg_hr)});       ///Add to CSV
                 } else {
                     MovAvgRed.add(calc_mov_avg.compute(list.get(i)));
                     Log.e(TAG, "Current Average = " + calc_mov_avg.currentAverage());
-                    rows.add(new String[]{Integer.toString(i), list.get(i).toString(), Double.toString(calc_mov_avg.currentAverage())});
                 }
             }
             return MovAvgRed;
@@ -252,17 +232,17 @@ public class OxymeterActivity extends Activity {
             return sum;
         }
 
-        private ArrayList<Integer> createWindowsToFindPeaks(ArrayList<Double> MovAvgRed) {
+        private ArrayList<Integer> createWindowsToFindPeaks(ArrayList<Double> MovAvgRed, ArrayList<Double> list) {
             //peakPositionList represents a list which containts the peak positions
             ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
             //Create window which start's when RedAvg > MovAvg and ends when RedAvg < MovAvg and calculate's the highest point (peak) within the window
             ArrayList<Double> window = new ArrayList<Double>();
             int windowIndex = 0;
-            for (int i = 0; i < RedAvgList.size(); i++) {
-                if (MovAvgRed.get(i) > RedAvgList.get(i) && window.isEmpty())
+            for (int i = 0; i < list.size(); i++) {
+                if (MovAvgRed.get(i) > list.get(i) && window.isEmpty())
                     continue;
-                else if (RedAvgList.get(i) > MovAvgRed.get(i)) {
-                    window.add(windowIndex, RedAvgList.get(i));
+                else if (list.get(i) > MovAvgRed.get(i)) {
+                    window.add(windowIndex, list.get(i));
                     windowIndex++;
                 } else {
                     if (window.isEmpty())
@@ -492,16 +472,6 @@ public class OxymeterActivity extends Activity {
         progress = 0;
         fn_countdown();
         startTime = System.currentTimeMillis();
-    }
-
-    private void writeCSV(List<String[]> data) {
-        try {
-            writer = new CSVWriter(new FileWriter(filePath));
-            writer.writeAll(data);
-            writer.close();
-        } catch (IOException ex) {
-            Log.e(TAG, "FileWriter Exception: " + ex);
-        }
     }
 
     private void removeProgressBar() {
