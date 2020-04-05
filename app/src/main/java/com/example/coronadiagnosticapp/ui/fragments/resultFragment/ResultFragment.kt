@@ -22,11 +22,7 @@ class ResultFragment : ScopedFragment() {
     val NORMAL_COLOR = Color.parseColor(GREEN_COLOR_CODE)
     val RISKY_COLOR = Color.parseColor(YELLOW_COLOR_CODE)
     val SEVERE_COLOR = Color.parseColor(RED_COLOR_CODE)
-    val NORMAL_TEXT = colorizeText(resources.getString(R.string.normal), GREEN_COLOR_CODE)
-    val SEVERELY_LOW_TEXT = colorizeText(resources.getString(R.string.severely_low), RED_COLOR_CODE)
-    val SEVERELY_HIGH_TEXT = colorizeText(resources.getString(R.string.severely_high), RED_COLOR_CODE)
-    val HIGH_TEXT = colorizeText(resources.getString(R.string.high), YELLOW_COLOR_CODE)
-    val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
+
     @Inject
     lateinit var viewModel: ResultViewModel
 
@@ -60,6 +56,12 @@ class ResultFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val NORMAL_TEXT = colorizeText(resources.getString(R.string.normal), GREEN_COLOR_CODE)
+        val SEVERELY_LOW_TEXT = colorizeText(resources.getString(R.string.severely_low), RED_COLOR_CODE)
+        val SEVERELY_HIGH_TEXT = colorizeText(resources.getString(R.string.severely_high), RED_COLOR_CODE)
+        val HIGH_TEXT = colorizeText(resources.getString(R.string.high), YELLOW_COLOR_CODE)
+        val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
 
         var normalRates = 0
 

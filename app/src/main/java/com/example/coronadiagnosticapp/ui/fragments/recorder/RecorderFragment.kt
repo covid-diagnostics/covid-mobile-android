@@ -108,6 +108,7 @@ class RecorderFragment : ScopedFragment() {
         //Stop media recorder and set it to null for further use to record new audio
         //Stop media recorder and set it to null for further use to record new audio
         mediaRecorder!!.stop()
+        mediaRecorder!!.reset()
         mediaRecorder!!.release()
         mediaRecorder = null
 
