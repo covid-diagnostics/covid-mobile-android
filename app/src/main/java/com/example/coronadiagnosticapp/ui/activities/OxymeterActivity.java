@@ -87,7 +87,6 @@ public class OxymeterActivity extends Activity {
             //put width + height of the camera inside the variables
             int width = size.width;
             int height = size.height;
-` `
             // Get color intensity
             double RedAvg = getColorIntensities(data.clone(), height, width, RGB.RED);
             double BlueAvg = getColorIntensities(data.clone(), height, width, RGB.BLUE);
