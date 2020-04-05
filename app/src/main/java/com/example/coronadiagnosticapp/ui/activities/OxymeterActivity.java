@@ -87,14 +87,11 @@ public class OxymeterActivity extends Activity {
             //put width + height of the camera inside the variables
             int width = size.width;
             int height = size.height;
-            double RedAvg;
-            double BlueAvg;
-            double GreenAvg;
-
+` `
             // Get color intensity
-            RedAvg = getColorIntensities(data.clone(), height, width, RGB.RED);
-            BlueAvg = getColorIntensities(data.clone(), height, width, RGB.BLUE);
-            GreenAvg = getColorIntensities(data.clone(), height, width, RGB.GREEN);
+            double RedAvg = getColorIntensities(data.clone(), height, width, RGB.RED);
+            double BlueAvg = getColorIntensities(data.clone(), height, width, RGB.BLUE);
+            double GreenAvg = getColorIntensities(data.clone(), height, width, RGB.GREEN);
 
             RedAvgList.add(RedAvg);
             BlueAvgList.add(BlueAvg);
@@ -161,20 +158,16 @@ public class OxymeterActivity extends Activity {
             double breathRed = (int) ceil(RR1Freq * 60);
             if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
                 if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
-
                     bufferAvgB = (bpmGreen + bpmRed) / 2;
                     bufferAvgBr = (breathGreen + breathRed) / 2;
-
                 } else {
                     bufferAvgB = bpmGreen;
                     bufferAvgBr = breathGreen;
                 }
             } else if ((bpmRed > 45 && bpmRed < 200) || (breathRed > 10 && breathRed < 20)) {
-
                 bufferAvgB = bpmRed;
                 bufferAvgBr = breathRed;
             }
-
             return new double[]{bufferAvgBr, bufferAvgB};
         }
 
@@ -259,7 +252,6 @@ public class OxymeterActivity extends Activity {
         }
 
         private double FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList) {
-
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
             for (int i = 0; i < peakPositionList.size() - 1; i++) {
@@ -273,7 +265,6 @@ public class OxymeterActivity extends Activity {
                 sumRR_List += RR_List.get(i);
             }
             double avgRR_List = (sumRR_List) / RR_List.size();
-
             //Providing result
             return 60000 / (avgRR_List);
         }
