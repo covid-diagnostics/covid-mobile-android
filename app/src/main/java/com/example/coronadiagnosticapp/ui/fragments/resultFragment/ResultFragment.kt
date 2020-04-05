@@ -16,14 +16,17 @@ import kotlinx.android.synthetic.main.result_fragment.*
 import javax.inject.Inject
 
 class ResultFragment : ScopedFragment() {
-    val NORMAL_COLOR = Color.parseColor("green")
-    val RISKY_COLOR = Color.parseColor("yellow")
-    val SEVERE_COLOR = Color.parseColor("red")
-    val NORMAL_TEXT = colorizeText("normal", "green")
-    val SEVERELY_LOW_TEXT = colorizeText("severely low", "red")
-    val SEVERELY_HIGH_TEXT = colorizeText("severely high", "red")
-    val HIGH_TEXT = colorizeText("high", "yellow")
-    val LOW_TEXT = colorizeText("low", "yellow")
+    val GREEN_COLOR_CODE = "#3b9b19"
+    val YELLOW_COLOR_CODE = "#ffcc00"
+    val RED_COLOR_CODE = "#cc3300"
+    val NORMAL_COLOR = Color.parseColor(GREEN_COLOR_CODE)
+    val RISKY_COLOR = Color.parseColor(YELLOW_COLOR_CODE)
+    val SEVERE_COLOR = Color.parseColor(RED_COLOR_CODE)
+    val NORMAL_TEXT = colorizeText(resources.getString(R.string.normal), GREEN_COLOR_CODE)
+    val SEVERELY_LOW_TEXT = colorizeText(resources.getString(R.string.severely_low), RED_COLOR_CODE)
+    val SEVERELY_HIGH_TEXT = colorizeText(resources.getString(R.string.severely_high), RED_COLOR_CODE)
+    val HIGH_TEXT = colorizeText(resources.getString(R.string.high), YELLOW_COLOR_CODE)
+    val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
     @Inject
     lateinit var viewModel: ResultViewModel
 
@@ -130,7 +133,7 @@ class ResultFragment : ScopedFragment() {
             }
 
             if (normalRates <= 1) {
-                textView_summaryText.text = "An MDA representative will contact you as soon as possible"
+                textView_summaryText.text = resources.getString(R.string.call_mda)
                 imageView_summary.setImageResource(R.drawable.attention)
             }
         })

@@ -28,7 +28,7 @@
             android:layout_marginStart="100dp"
             android:layout_marginTop="10dp"
             android:text="@string/things_look_ok"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
@@ -54,7 +54,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/your_heart_rate_is"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 
@@ -105,7 +106,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/your_oxygen_saturation_is"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 
@@ -155,7 +157,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/your_respiration_rate_is"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 

@@ -54,6 +54,12 @@
     <string name="your_oxygen_saturation_is">Your oxygen saturation is</string>
     <string name="your_respiration_rate_is">Your respiration rate is</string>
     <string name="finish">finish</string>
+    <string name="normal">normal</string>
+    <string name="high">high</string>
+    <string name="low">low</string>
+    <string name="severely_high">severely high</string>
+    <string name="severely_low">severely low</string>
     <string name="things_look_ok">Things look OK</string>
+    <string name="call_mda">Please consult MDA regarding your test results</string>
 
 </resources>
