@@ -139,7 +139,9 @@ public class OxymeterActivity extends Activity {
                 double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList);
                 int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
                 int Beats = (int) breathAndBPM[1]; // 1 stands for Heart Rate value
-
+                if ((Breath == 0) || (Beats == 0)) {
+                    failedProcessing();
+                }
                 // Calculate final result
                 if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
                     int BpmAvg = (int) ceil((Beats + peakBpm) / 2);
@@ -152,10 +154,7 @@ public class OxymeterActivity extends Activity {
                     setMetricsResult(o2, Beats, Breath);
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
-                    resetProcessing();
-                    startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
-                    processing.set(false);
+                    failedProcessing();
                     return;
                 }
 
@@ -477,11 +476,18 @@ public class OxymeterActivity extends Activity {
         super.onBackPressed();
     }
 
+    private void failedProcessing() {
+        Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
+        resetProcessing();
+        startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
+        processing.set(false);
+        removeProgressBar();
+    }
+
     private void resetProcessing() {
         RedAvgList.clear();
         BlueAvgList.clear();
         counter = 0;
-        countDownTimer.cancel();
         setProgress(0, 30);
         progress = 0;
         fn_countdown();
@@ -498,12 +504,16 @@ public class OxymeterActivity extends Activity {
         }
     }
 
-    private void removeProgressBarAndShowAlert() {
-        alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
+    private void removeProgressBar() {
         if (progressBarView.getVisibility() == View.VISIBLE) {
             progressBarView.clearAnimation();
             progressBarView.setVisibility(View.GONE);
         }
+    }
+
+    private void removeProgressBarAndShowAlert() {
+        alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
+        removeProgressBar();
     }
 
     private void showProgressBarAndHideAlert() {
