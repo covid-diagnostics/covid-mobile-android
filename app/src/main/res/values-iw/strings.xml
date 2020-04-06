@@ -41,4 +41,5 @@
     <string name="severely_high">גבוה באופן חריג</string>
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
+    <string name="putFinger">הנח את האצבע על המצלמה</string>
 </resources>

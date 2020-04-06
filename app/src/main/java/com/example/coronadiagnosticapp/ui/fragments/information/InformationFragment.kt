@@ -81,7 +81,7 @@ class InformationFragment : ScopedFragment() {
             )
             withContext(Dispatchers.Main) {
                 showLoading(false)
-                findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)
+                findNavController().navigate(R.id.action_informationFragment_to_dailyMetricFragment)
             }
         }
 

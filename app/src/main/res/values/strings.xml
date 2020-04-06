@@ -69,5 +69,6 @@
     <string name="severely_low">severely low</string>
     <string name="things_look_ok">Things look OK</string>
     <string name="call_mda">Please consult MDA regarding your test results</string>
+    <string name="putFinger">Put your finger on the camera</string>
 
 </resources>

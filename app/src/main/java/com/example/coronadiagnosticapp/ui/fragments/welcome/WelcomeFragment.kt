@@ -33,8 +33,8 @@ class WelcomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         button_start.setOnClickListener {
             when (viewModel.isLoggedIn()) {
-                true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
-                false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+//                true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
+//                false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
             }
         }
     }
