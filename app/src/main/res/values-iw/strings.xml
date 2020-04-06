@@ -8,7 +8,8 @@
     <string name="coughStrength">עוצמת שיעול</string>
     <string name="isCoughWet">שיעול רטוב?</string>
     <string name="next">הבא</string>
-    <string name="header_camera">האם אתה מוכן\nלמבחן?</string>
+    <string name="header_camera">האם אתה מוכן\nלבדיקה?</string>
+    <string name="camera_message">הנח את האצבע על עדשת המצלמה ולחץ התחל כאשר תהיה מוכן להתחלת הבדיקה</string>
     <string name="camera_body">במסכים הבאים תתבקש\nלצלם סרטון ולהקליט הקלטה קצרה.\nנתונים אלו ייסיעו בתהליך האבחון.\nאל דאגה, מידע זה יהיה זמין\nרק לצוותי הרפואה.</string>
     <string name="im_ready">אני מוכן!</string>
     <string name="already_have_an_account">כבר יש לך משתמש?</string>

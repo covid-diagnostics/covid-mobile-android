@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/header_camera"
+        android:text="@string/camera_message"
         android:textAppearance="@style/appSubHeader"
         app:layout_constraintBottom_toTopOf="@id/guideline_cameraActivity"
         app:layout_constraintLeft_toLeftOf="parent"

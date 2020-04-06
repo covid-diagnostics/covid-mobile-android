@@ -43,6 +43,7 @@
     <string name="thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus">Thousands of Israelis could suffer the ill effects of the coronavirus.</string>
     <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">That\'s why timely diagnosis and isolation can save your life!</string>
     <string name="button_welcome_start">start</string>
+    <string name="camera_message">Press start when ready</string>
 
 
     <!--    those are string for VideoRecordActivity-->
