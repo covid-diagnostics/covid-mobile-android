@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
+    <com.tayfuncesur.stepper.Stepper
+        android:id="@+id/Stepper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <View
+            android:id="@+id/StepperView"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:background="@drawable/gradient" />
+
+    </com.tayfuncesur.stepper.Stepper>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

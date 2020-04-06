@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.tayfuncesur.stepper.Stepper
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,6 +54,7 @@ class RecorderFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<Stepper>(R.id.Stepper)?.forward()
         recordFile = context!!.externalCacheDir!!.absolutePath
 
     }

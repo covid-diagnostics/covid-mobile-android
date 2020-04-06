@@ -12,6 +12,7 @@ import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.tayfuncesur.stepper.Stepper
 import kotlinx.android.synthetic.main.result_fragment.*
 import javax.inject.Inject
 
@@ -31,6 +32,7 @@ class ResultFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<Stepper>(R.id.Stepper)?.forward()
     }
 
     override fun onCreateView(
