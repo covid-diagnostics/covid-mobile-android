@@ -158,7 +158,7 @@ class RecorderFragment : ScopedFragment() {
                     withContext(Dispatchers.Main) {
                         showLoading(false)
                         Log.d("Record", "file finish")
-                        //findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
+                        findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
                     }
                 }
             }

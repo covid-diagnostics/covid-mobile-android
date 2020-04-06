@@ -141,7 +141,7 @@ class CameraFragment : ScopedFragment() {
                             )
                             withContext(Dispatchers.Main) {
                                 showLoading(false)
-                                findNavController().navigate(R.id.action_cameraFragment_to_resultFragment)//(R.id.action_cameraFragment_to_recorderFragment)
+                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)//(R.id.action_cameraFragment_to_recorderFragment)
                             }
                         }
                     }
