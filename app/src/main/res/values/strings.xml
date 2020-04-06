@@ -56,10 +56,18 @@
     <string name="header_camera">Are you ready for\nthe test?</string>
     <string name="camera_body">In the following screens\nyou will be asked to take\n a video and record\na short recording.</string>
     <string name="im_ready">I\'m Ready!</string>
-    <string name="putFinger">Please put your finger on camera</string>
-    <string name="respiration_rate">Respiration Rate</string>
-    <string name="bpm">BPM</string>
-    <string name="spo2">Oxygen Saturation</string>
-    <string name="blood_pressure">Blood Pressure</string>
+    <string name="already_have_an_account">already have an account?</string>
+    <string name="please_put_your_finger_on_camera">Please put your finger on camera</string>
+    <string name="your_heart_rate_is">Your heart rate is</string>
+    <string name="your_oxygen_saturation_is">Your oxygen saturation is</string>
+    <string name="your_respiration_rate_is">Your respiration rate is</string>
+    <string name="finish">finish</string>
+    <string name="normal">normal</string>
+    <string name="high">high</string>
+    <string name="low">low</string>
+    <string name="severely_high">severely high</string>
+    <string name="severely_low">severely low</string>
+    <string name="things_look_ok">Things look OK</string>
+    <string name="call_mda">Please consult MDA regarding your test results</string>
 
 </resources>

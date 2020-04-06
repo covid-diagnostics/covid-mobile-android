@@ -1,10 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.register
 
-import android.opengl.Visibility
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +12,12 @@ import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.register_fragment.*
-import kotlinx.android.synthetic.main.register_fragment.activity_signup_inp_email
-import kotlinx.android.synthetic.main.register_fragment.activity_signup_inp_password
-import kotlinx.android.synthetic.main.register_fragment.activity_signup_inp_password_repeat
+import kotlinx.android.synthetic.main.register_fragment.textInputLayout_email
+import kotlinx.android.synthetic.main.register_fragment.textInputLayout_password
+import kotlinx.android.synthetic.main.register_fragment.TextInputLayout_passwordRepeat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -58,18 +52,18 @@ class RegisterFragment : ScopedFragment() {
 
     private fun initForm() {
         form {
-            inputLayout(activity_signup_inp_email) {
+            inputLayout(textInputLayout_email) {
                 isNotEmpty().description(getString(R.string.required))
                 isEmail().description(getString(R.string.must_valid_email))
             }
-            inputLayout(activity_signup_inp_password) {
+            inputLayout(textInputLayout_password) {
                 isNotEmpty()
             }
-            inputLayout(activity_signup_inp_password_repeat) {
+            inputLayout(TextInputLayout_passwordRepeat) {
                 isNotEmpty()
                 assert(getString(R.string.passwords_match)) { view ->
                     val repeatPass = view.editText?.text.toString()
-                    val password = activity_signup_inp_password.editText?.text.toString()
+                    val password = textInputLayout_password.editText?.text.toString()
                     password == repeatPass
                 }
             }
@@ -77,16 +71,15 @@ class RegisterFragment : ScopedFragment() {
                 showLoading(show = true)
                 launch(Dispatchers.IO) {
                     viewModel.registerUser(
-                        res.get("activity_signup_inp_email")?.value.toString(),
-                        res.get("activity_signup_inp_password")?.value.toString()
+                        res["textInputLayout_email"]?.value.toString(),
+                        res["textInputLayout_password"]?.value.toString()
                     )
                     withContext(Dispatchers.Main) {
-                        //update views
                         showLoading(false)
                         if (viewModel.isLoggedIn()) {
                             findNavController().navigate(R.id.action_registerFragment_to_informationFragment)
                         } else {
-                            Toast.makeText(context, "Too bad :/", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -97,8 +90,8 @@ class RegisterFragment : ScopedFragment() {
 
     private fun showLoading(show: Boolean) {
         when (show) {
-            true -> progressBar.visibility = View.VISIBLE
-            false -> progressBar.visibility = View.GONE
+            true -> progressBar_register.visibility = View.VISIBLE
+            false -> progressBar_register.visibility = View.GONE
         }
     }
 

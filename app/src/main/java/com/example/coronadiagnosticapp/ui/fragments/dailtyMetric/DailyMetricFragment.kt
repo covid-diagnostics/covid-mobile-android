@@ -1,8 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.dailtyMetric
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +8,16 @@ import android.widget.SeekBar
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
-
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
-import kotlinx.android.synthetic.main.information_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DailyMetricFragment : ScopedFragment() {
-    private var cough_strength_value = 0
+    private var coughStrengthValue = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.applicationContext.let { ctx ->
@@ -41,13 +36,20 @@ class DailyMetricFragment : ScopedFragment() {
     }
 
     private fun updateCoughStrength(strength: Int) {
-        cough_strength_value = strength
-        cough_strength.text = "Cough Strength : $strength"
+        coughStrengthValue = strength
+        cough_strength.apply {
+            text = "${getString(R.string.coughStrength)}: $strength"
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        updateCoughStrength(cough_strength_value);
+        initCoughStrength()
+        initForm()
+    }
+
+    private fun initCoughStrength() {
+        updateCoughStrength(coughStrengthValue)
         activity_metrics_inp_cough_strength.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
@@ -57,7 +59,6 @@ class DailyMetricFragment : ScopedFragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
-        initForm()
     }
 
     private fun initForm() {
@@ -69,9 +70,9 @@ class DailyMetricFragment : ScopedFragment() {
             }
             submitWith(button_metricSubmit) { res ->
                 submitDailyMetrics(
-                    res.get("activity_metrics_inp_temp")?.value.toString(),
-                    cough_strength_value,
-                    res.get("activity_metrics_chk_cough_wet")?.value as Boolean
+                    res["activity_metrics_inp_temp"]?.value.toString(),
+                    coughStrengthValue,
+                    res["activity_metrics_chk_cough_wet"]?.value as Boolean
                 )
             }
         }
@@ -87,7 +88,6 @@ class DailyMetricFragment : ScopedFragment() {
                 findNavController().navigate(R.id.action_dailyMetricFragment_to_cameraFragment)
             }
         }
-
     }
 
     private fun showLoading(show: Boolean) {

@@ -7,16 +7,18 @@ import com.example.coronadiagnosticapp.data.network.ApiServer
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.NetworkDataSourceImpl
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
-import com.example.coronadiagnosticapp.data.providers.TokenProvider
-import com.example.coronadiagnosticapp.data.providers.TokenProviderImpl
+import com.example.coronadiagnosticapp.data.providers.SharedProvider
+import com.example.coronadiagnosticapp.data.providers.SharedProviderImpl
 import com.example.coronadiagnosticapp.data.repository.Repository
 import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
+import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment
+import com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
@@ -33,14 +35,14 @@ interface AppComponent {
     fun inject(fragment: ResultFragment)
     fun inject(fragment: RecorderFragment)
     fun inject(fragment: CameraFragment)
+    fun inject(fragment: WelcomeFragment)
+    fun inject(fragment: InstructionsFragment)
+
 
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
-
     }
-
-
 }
 
 @Module
@@ -49,10 +51,10 @@ class DataRepositoryModule {
     fun provideDataRepository(
         networkDataSource: NetworkDataSource,
         dbDao: DbDao,
-        tokenProvider: TokenProvider,
+        sharedProvider: SharedProvider,
         tokenServiceInterceptor: TokenServiceInterceptor
     ): Repository =
-        RepositoryImpl(networkDataSource, dbDao, tokenProvider, tokenServiceInterceptor)
+        RepositoryImpl(networkDataSource, dbDao, sharedProvider, tokenServiceInterceptor)
 
     @Provides
     fun provideNetworkDataSource(api: ApiServer): NetworkDataSource = NetworkDataSourceImpl(api)
@@ -65,18 +67,13 @@ class DataRepositoryModule {
     fun provideDatabaseDao(database: AppDatabase): DbDao = database.getUserDao()
 
     @Provides
-    fun provideRetrofitApi(tokenServiceInterceptor: TokenServiceInterceptor): ApiServer {
-        return ApiServer.invoke(tokenServiceInterceptor)
-    }
+    fun provideRetrofitApi(tokenServiceInterceptor: TokenServiceInterceptor): ApiServer =
+        ApiServer.invoke(tokenServiceInterceptor)
 
     @Provides
-    fun provideTokenProvider(context: Context): TokenProvider = TokenProviderImpl(context)
+    fun provideTokenProvider(context: Context): SharedProvider = SharedProviderImpl(context)
 
     @Provides
     @Singleton
-    fun provideNetworkInterceptor(): TokenServiceInterceptor {
-        return TokenServiceInterceptor()
-    }
-
-
+    fun provideNetworkInterceptor(): TokenServiceInterceptor = TokenServiceInterceptor()
 }
