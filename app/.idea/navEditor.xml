@@ -19,7 +19,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_cameraFragment_to_resultFragment">
+                            <entry key="action_cameraFragment_to_recorderFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -97,9 +97,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="1272" />
+                            <option name="y" value="761" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_recorderFragment_to_resultFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -130,8 +139,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1232" />
-                            <option name="y" value="724" />
+                            <option name="x" value="1592" />
+                            <option name="y" value="742" />
                           </Point>
                         </option>
                       </LayoutPositions>

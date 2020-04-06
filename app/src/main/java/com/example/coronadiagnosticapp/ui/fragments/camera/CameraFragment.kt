@@ -145,12 +145,6 @@ class CameraFragment : ScopedFragment() {
                             }
                         }
                     }
-                    Toast.makeText(
-                        context,
-                        "Result: " + data.getStringExtra("result"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
                 }
             } else {
                 Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show()
