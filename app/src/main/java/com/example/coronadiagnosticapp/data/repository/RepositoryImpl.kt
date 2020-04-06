@@ -9,14 +9,15 @@ import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 import java.io.File
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    val networkDataSource: NetworkDataSource,
-    val dao: DbDao,
-    val sharedProvider: SharedProvider,
-    val tokenServiceInterceptor: TokenServiceInterceptor
+        val networkDataSource: NetworkDataSource,
+        val dao: DbDao,
+        val sharedProvider: SharedProvider,
+        val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
 
     private lateinit var responseUser: ResponseUser
@@ -48,9 +49,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserPersonalInformation(
-        firstName: String,
-        lastName: String,
-        age: Int
+            firstName: String,
+            lastName: String,
+            age: Int
     ) {
         val user = dao.getUser()
         user.apply {
@@ -75,12 +76,6 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-
-    override suspend fun saveResult(healthResult: HealthResult) {
-        dao.insertHealth(healthResult)
-    }
-
-    override fun getLastResult(): LiveData<HealthResult> = dao.getLastHealthResult()
     override fun getUserName() = sharedProvider.getName()
 
     override suspend fun uploadAudioRecording(file: File) {
@@ -93,5 +88,14 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun insertBasicsInformation(basicsInformation: BasicsInformation) {
+        dao.insertBasicsInformation(basicsInformation)
+    }
 
+
+    override fun getBasicsInformationExist(): LiveData<BasicsInformation> = dao.getBasicsInformation()
+
+    override fun getLastHealth(): LiveData<HealthResult> {
+        return dao.getLastHealthResult()
+    }
 }

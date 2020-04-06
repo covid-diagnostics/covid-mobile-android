@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.cleveroad:audiovisualization:1.0.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f9b1fd89f6bb6ee839136d594abfedf/jetified-audiovisualization-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f9b1fd89f6bb6ee839136d594abfedf/jetified-audiovisualization-1.0.0/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.cleveroad/audiovisualization/1.0.0/aea993891f375a67b2af34cce11096364ffe161b/audiovisualization-1.0.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.cleveroad/audiovisualization/1.0.0/daf2fb13ea09d1b4d2fe0debcb7e69649b3d0651/audiovisualization-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

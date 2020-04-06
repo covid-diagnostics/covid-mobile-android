@@ -10,10 +10,11 @@ import com.example.coronadiagnosticapp.data.db.entity.Converters
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 
 @Database(
-    entities = [User::class, ResponseMetric::class, HealthResult::class],
-    version = 5
+    entities = [User::class, ResponseMetric::class, HealthResult::class,BasicsInformation::class],
+    version = 6
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

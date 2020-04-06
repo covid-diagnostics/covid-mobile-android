@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 
 @Dao
 interface DbDao {
@@ -49,5 +50,12 @@ interface DbDao {
 
     @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
     fun getLastHealthResult(): LiveData<HealthResult>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBasicsInformation(basicsInformation: BasicsInformation)
+
+    @Query("SELECT * FROM basics_information LIMIT 1")
+    fun getBasicsInformation(): LiveData<BasicsInformation>
+
 
 }

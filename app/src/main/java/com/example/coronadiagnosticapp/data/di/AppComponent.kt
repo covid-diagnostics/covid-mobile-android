@@ -11,6 +11,9 @@ import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.data.providers.SharedProviderImpl
 import com.example.coronadiagnosticapp.data.repository.Repository
 import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsFragment
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.SecondFragment
+import com.example.coronadiagnosticapp.ui.activities.testing_flow.TestingActivity
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
@@ -37,6 +40,10 @@ interface AppComponent {
     fun inject(fragment: CameraFragment)
     fun inject(fragment: WelcomeFragment)
     fun inject(fragment: InstructionsFragment)
+    fun inject(activity: TestingActivity)
+    fun inject(fragment: BasicsFragment)
+    fun inject(fragment: SecondFragment)
+
 
 
     @Component.Factory
@@ -49,12 +56,12 @@ interface AppComponent {
 class DataRepositoryModule {
     @Provides
     fun provideDataRepository(
-        networkDataSource: NetworkDataSource,
-        dbDao: DbDao,
-        sharedProvider: SharedProvider,
-        tokenServiceInterceptor: TokenServiceInterceptor
+            networkDataSource: NetworkDataSource,
+            dbDao: DbDao,
+            sharedProvider: SharedProvider,
+            tokenServiceInterceptor: TokenServiceInterceptor
     ): Repository =
-        RepositoryImpl(networkDataSource, dbDao, sharedProvider, tokenServiceInterceptor)
+            RepositoryImpl(networkDataSource, dbDao, sharedProvider, tokenServiceInterceptor)
 
     @Provides
     fun provideNetworkDataSource(api: ApiServer): NetworkDataSource = NetworkDataSourceImpl(api)
@@ -68,7 +75,7 @@ class DataRepositoryModule {
 
     @Provides
     fun provideRetrofitApi(tokenServiceInterceptor: TokenServiceInterceptor): ApiServer =
-        ApiServer.invoke(tokenServiceInterceptor)
+            ApiServer.invoke(tokenServiceInterceptor)
 
     @Provides
     fun provideTokenProvider(context: Context): SharedProvider = SharedProviderImpl(context)

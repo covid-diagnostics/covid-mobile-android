@@ -61,7 +61,6 @@ class CameraFragment : ScopedFragment() {
         super.onActivityCreated(savedInstanceState)
 
         button_startCamera.setOnClickListener {
-            // TODO: Ask permission to use the camera
             if (context?.let { it1 ->
                     ActivityCompat.checkSelfPermission(
                         it1,
@@ -112,19 +111,6 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == REQUEST_CODE_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
-//                    val fileName = data.getStringExtra("result")
-//                    val file = File(fileName)
-//
-//                    Log.d("CameraFragment", file.totalSpace.toString())
-//                    showLoading(true)
-//                    launch(Dispatchers.IO) {
-//                        viewModel.uploadVideo(File("csd"))
-//                        withContext(Dispatchers.Main) {
-//                            showLoading(false)
-//                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-//                        }
-//                    }
-
                     showLoading(true)
                     // get data from OxymeterActivity
                     val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
