@@ -533,7 +533,7 @@ public class OxymeterActivity extends Activity {
     }
 
     public boolean checkImageIsBad(double redIntensity){
-        if(redIntensity < 200)          //Image is bad!
+        if(redIntensity < 150)          //Image is bad!
             return true;
 
         return false;

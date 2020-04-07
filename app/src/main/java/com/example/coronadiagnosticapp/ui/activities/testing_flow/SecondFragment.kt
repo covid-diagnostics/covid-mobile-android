@@ -123,7 +123,7 @@ class SecondFragment : ScopedFragment() {
         textView_test_results.visibility = View.VISIBLE
         group_submit.visibility = View.VISIBLE
 
-        button_finish.setOnClickListener {
+        button_test_finish.setOnClickListener {
             // send to db
             launch(Dispatchers.IO) {
                 delay(3000)
