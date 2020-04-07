@@ -178,7 +178,7 @@ public class OxymeterActivity extends Activity {
         private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
             ArrayList<Double> RedMoveAverage = calculateMovingAverage(redList);
             ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
-            double peakBpm = FindIntervalsAndCalculateBPM(peaksList, samplingFreq);
+            double peakBpm = findIntervalsAndCalculateBPM(peaksList, samplingFreq);
             double o2 = calculateSPO2(redList, blueList);
             Log.e("rere", "" + o2 + " " + peakBpm);
 
@@ -298,7 +298,7 @@ public class OxymeterActivity extends Activity {
             return peakPositionList; //Return list of peak positions
         }
 
-        private double FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList, double samplingFreq) {
+        private double findIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList, double samplingFreq) {
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
             for (int i = 0; i < peakPositionList.size() - 1; i++) {
