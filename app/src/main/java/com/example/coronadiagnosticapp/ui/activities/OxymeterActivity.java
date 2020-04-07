@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,6 +33,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import retrofit2.http.HEAD;
 
@@ -54,6 +57,9 @@ public class OxymeterActivity extends Activity {
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
     public int counter = 0;
+    // window sample consts
+    public final int WINDOW_TIME = 10; // the number of seconds for each window
+    public final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
     //ProgressBar
     ProgressBar progressBarView;
     TextView tv_time;
@@ -66,7 +72,6 @@ public class OxymeterActivity extends Activity {
     private Button readyBtn;
     //TextView
     private TextView alert;
-    private double SamplingFreq;
     //getting frames data from the camera and start the heartbeat process
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
@@ -112,27 +117,29 @@ public class OxymeterActivity extends Activity {
             long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
-                SamplingFreq = (counter / totalTimeInSecs);
-                ArrayList<Double> RedMoveAverage = calculateMovingAverage(RedAvgList);
-                ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, RedAvgList);
-                double peakBpm = FindIntervalsAndCalculateBPM(peaksList);
-                int o2 = (int) calculateSPO2(RedAvgList, BlueAvgList);
-                double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList);
-                int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
-                int Beats = (int) breathAndBPM[1]; // 1 stands for Heart Rate value
-                if ((Breath == 0) || (Beats == 0)) {
+                double samplingFreq = (counter / totalTimeInSecs);
+                int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
+                int o2 = peekBpmAndO2[0];
+                int peakBpm = peekBpmAndO2[1];
+                int failed = peekBpmAndO2[2];
+                if (failed == 1) {
                     failedProcessing();
+                    return;
                 }
+
+                double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList, samplingFreq);
+                int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
+                double Beats = breathAndBPM[1]; // 1 stands for Heart Rate value
                 // Calculate final result
                 if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
-                    int BpmAvg = (int) ceil((Beats + peakBpm) / 2);
-                    setMetricsResult(o2, BpmAvg, Breath);
+                    double BpmAvg = ceil((Beats + peakBpm) / 2);
+                    setMetricsResult(o2, (int) BpmAvg, Breath);
                     finish();
                 } else if (!(o2 < 80 || o2 > 99) && (Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
-                    setMetricsResult(o2, (int) peakBpm, Breath);
+                    setMetricsResult(o2, peakBpm, Breath);
                     finish();
                 } else if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && (peakBpm < 45 || peakBpm > 200)) {
-                    setMetricsResult(o2, Beats, Breath);
+                    setMetricsResult(o2, (int) Beats, Breath);
                     finish();
                 } else {
                     failedProcessing();
@@ -142,19 +149,61 @@ public class OxymeterActivity extends Activity {
             processing.set(true);
         }
 
-        public double[] calculateAverageFourierBreathAndBPM(ArrayList<Double> RedList, ArrayList<Double> GreenList) {
+        private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
+            final double WINDOW_FRAMES = samplingFreq * WINDOW_TIME;
+            double[] results;
+            double[] o2 = new double[30 - WINDOW_TIME + 1];
+            double[] peakBpm = new double[30 - WINDOW_TIME + 1];
+            int failed = 0;
+            for (int i = 0; i <= 30 - WINDOW_TIME; i++) {
+                int from = (int) (samplingFreq * i);
+                int to = (int) (WINDOW_FRAMES + (int) (samplingFreq * i));
+                results = calculateWindowSampleBpmAndO2(
+                        new ArrayList(redList.subList(from, to)),
+                        new ArrayList(blueList.subList(from, to)),
+                        samplingFreq);
+                o2[i] = results[0];     // if failed the result is 0
+                peakBpm[i] = results[1];// if failed the result is 0
+                failed += (int) results[2];
+            }
+            if (failed > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
+                return new int[]{0, 0, 1};
+            } else {
+                return new int[]{
+                        (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(o2))) / (o2.length - failed)),
+                        (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(peakBpm))) / (peakBpm.length - failed)),
+                        0};
+            }
+        }
+
+        private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
+            ArrayList<Double> RedMoveAverage = calculateMovingAverage(redList);
+            ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
+            double peakBpm = FindIntervalsAndCalculateBPM(peaksList, samplingFreq);
+            double o2 = calculateSPO2(redList, blueList);
+            Log.e("rere", "" + o2 + " " + peakBpm);
+
+            int peakBpmi = (int) peakBpm, o2i = (int) o2;
+            // Calculate final result
+            if (!(o2i < 80 || o2i > 99) && !(peakBpmi < 45 || peakBpmi > 200)) { // if any of the measurements is bad, the windows is bad sample
+                return new double[]{o2, peakBpm, 0};
+            }
+            return new double[]{0, 0, 1};
+        }
+
+        public double[] calculateAverageFourierBreathAndBPM(ArrayList<Double> RedList, ArrayList<Double> GreenList, double samplingFreq) {
             double bufferAvgBr = 0;
             double bufferAvgB = 0;
             Double[] Red = RedList.toArray(new Double[RedList.size()]);
             Double[] Green = GreenList.toArray(new Double[GreenList.size()]);
-            double HRFreq = Fft.FFT(Green, counter, SamplingFreq);
+            double HRFreq = Fft.FFT(Green, Green.length, samplingFreq);
             double bpmGreen = (int) ceil(HRFreq * 60);
-            double HR1Freq = Fft.FFT(Red, counter, SamplingFreq);
+            double HR1Freq = Fft.FFT(Red, Red.length, samplingFreq);
             double bpmRed = (int) ceil(HR1Freq * 60);
 
-            double RRFreq = Fft2.FFT(Green, counter, SamplingFreq);
+            double RRFreq = Fft2.FFT(Green, Green.length, samplingFreq);
             double breathGreen = (int) ceil(RRFreq * 60);
-            double RR1Freq = Fft2.FFT(Red, counter, SamplingFreq);
+            double RR1Freq = Fft2.FFT(Red, Red.length, samplingFreq);
             double breathRed = (int) ceil(RR1Freq * 60);
             if ((bpmGreen > 40 && bpmGreen < 200) || (breathGreen > 6 && breathGreen < 20)) {
                 if ((bpmRed > 40 && bpmRed < 200) || (breathRed > 6 && breathRed < 24)) {
@@ -174,16 +223,16 @@ public class OxymeterActivity extends Activity {
         public double calculateSPO2(ArrayList<Double> red, ArrayList<Double> blue) {
             double Stdr = 0;
             double Stdb = 0;
-            double meanr = sumDouble(red) / counter;
-            double meanb = sumDouble(blue) / counter;
-            for (int i = 0; i < counter - 1; i++) {
+            double meanr = sumDouble(red) / red.size();
+            double meanb = sumDouble(blue) / blue.size();
+            for (int i = 0; i < red.size() - 1; i++) {
                 Double bufferb = blue.get(i);
                 Stdb = Stdb + ((bufferb - meanb) * (bufferb - meanb));
                 Double bufferr = red.get(i);
                 Stdr = Stdr + ((bufferr - meanr) * (bufferr - meanr));
             }
-            double varr = sqrt(Stdr / (counter - 1));
-            double varb = sqrt(Stdb / (counter - 1));
+            double varr = sqrt(Stdr / (red.size() - 1)); // should it really be -1 ?
+            double varb = sqrt(Stdb / (red.size() - 1)); // should it really be -1 ?
 
             double R = (varr / meanr) / (varb / meanb);
 
@@ -203,7 +252,6 @@ public class OxymeterActivity extends Activity {
                     MovAvgRed.add(i, avg_hr);                   //Add the value to the MobAvgRed list
                 } else {
                     MovAvgRed.add(calc_mov_avg.compute(list.get(i)));
-                    Log.e(TAG, "Current Average = " + calc_mov_avg.currentAverage());
                 }
             }
             return MovAvgRed;
@@ -218,7 +266,7 @@ public class OxymeterActivity extends Activity {
 
         }
 
-        private double sumDouble(ArrayList<Double> list) {
+        private double sumDouble(List<Double> list) {
             double sum = 0;
             for (Double d : list)
                 sum += d;
@@ -251,12 +299,12 @@ public class OxymeterActivity extends Activity {
             return peakPositionList; //Return list of peak positions
         }
 
-        private double FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList) {
+        private double FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList, double samplingFreq) {
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
             for (int i = 0; i < peakPositionList.size() - 1; i++) {
                 int RR_interval = peakPositionList.get(i + 1) - peakPositionList.get(i);
-                double ms_dist = ((RR_interval / SamplingFreq) * 1000d);
+                double ms_dist = ((RR_interval / samplingFreq) * 1000d);
                 RR_List.add(ms_dist);
             }
             //Calculating the average interval
