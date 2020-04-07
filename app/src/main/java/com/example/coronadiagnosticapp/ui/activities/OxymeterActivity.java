@@ -180,8 +180,6 @@ public class OxymeterActivity extends Activity {
             ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
             double peakBpm = findIntervalsAndCalculateBPM(peaksList, samplingFreq);
             double o2 = calculateSPO2(redList, blueList);
-            Log.e("rere", "" + o2 + " " + peakBpm);
-
             int peakBpmi = (int) peakBpm, o2i = (int) o2;
             // Calculate final result
             if (!(o2i < 80 || o2i > 99) && !(peakBpmi < 45 || peakBpmi > 200)) { // if any of the measurements is bad, the windows is bad sample
