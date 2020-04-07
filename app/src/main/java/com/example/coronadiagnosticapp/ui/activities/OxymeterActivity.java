@@ -92,7 +92,6 @@ public class OxymeterActivity extends Activity {
             //put width + height of the camera inside the variables
             int width = size.width;
             int height = size.height;
-` `
             // Get color intensity
             double RedAvg = getColorIntensities(data.clone(), height, width, RGB.RED);
             double BlueAvg = getColorIntensities(data.clone(), height, width, RGB.BLUE);
@@ -496,7 +495,7 @@ public class OxymeterActivity extends Activity {
     }
 
     private void failedProcessing() {
-        Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.measurement_failed, Toast.LENGTH_LONG).show();
         resetProcessing();
         startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
         processing.set(false);
