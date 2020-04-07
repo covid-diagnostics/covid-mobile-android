@@ -15,7 +15,9 @@ import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.recorder_fragment.*
+import kotlinx.android.synthetic.main.recorder_fragment.visualizer
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -37,6 +39,7 @@ class RecorderFragment : ScopedFragment() {
     private var isRecording = false
     private val recordPermission = Manifest.permission.RECORD_AUDIO
     private var PERMISSION_CODE: Int = 21
+    private val VISUALIZATION_FREQUENCY: Long = 40
 
     private var mediaRecorder: MediaRecorder? = null
     private var recordFile: String? = null
@@ -54,7 +57,6 @@ class RecorderFragment : ScopedFragment() {
             (ctx as MyApplication).getAppComponent().inject(this)
         }
         recordFile = context!!.externalCacheDir!!.absolutePath
-
     }
 
 
@@ -141,6 +143,7 @@ class RecorderFragment : ScopedFragment() {
         //Setup Media Recorder for recording
         //Setup Media Recorder for recording
         mediaRecorder = MediaRecorder()
+        val visualizerView = visualizer;
         mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
         mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
         mediaRecorder!!.setOutputFile(fileLocation)
@@ -172,9 +175,15 @@ class RecorderFragment : ScopedFragment() {
         }
 
         //Start Recording
-        //Start Recording
         mediaRecorder!!.start()
-
+        launch {
+            while (isRecording) {
+                var x = mediaRecorder!!.maxAmplitude
+                visualizerView.addAmplitude(x.toFloat())
+                visualizerView.invalidate()
+                delay(VISUALIZATION_FREQUENCY)
+            }
+        }
     }
 
     private fun showLoading(show: Boolean) {

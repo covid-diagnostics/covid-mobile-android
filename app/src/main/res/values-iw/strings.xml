@@ -41,4 +41,6 @@
     <string name="severely_high">גבוה באופן חריג</string>
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
+    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
+
 </resources>
