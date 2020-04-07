@@ -50,5 +50,6 @@
     <string name="im_ready">I\'m Ready!</string>
     <string name="already_have_an_account">already have an account?</string>
     <string name="please_put_your_finger_on_camera">Please put your finger on camera</string>
+    <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
 
 </resources>

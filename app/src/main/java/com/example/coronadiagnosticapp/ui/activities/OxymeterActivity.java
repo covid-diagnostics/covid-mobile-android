@@ -114,7 +114,7 @@ public class OxymeterActivity extends Activity {
                 SamplingFreq = (counter / totalTimeInSecs);
                 ArrayList<Double> RedMoveAverage = calculateMovingAverage(RedAvgList);
                 ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, RedAvgList);
-                double peakBpm = FindIntervalsAndCalculateBPM(peaksList);
+                double peakBpm = findIntervalsAndCalculateBPM(peaksList);
                 int o2 = (int) calculateSPO2(RedAvgList, BlueAvgList);
                 double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList);
                 int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
@@ -250,7 +250,7 @@ public class OxymeterActivity extends Activity {
             return peakPositionList; //Return list of peak positions
         }
 
-        private double FindIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList) {
+        private double findIntervalsAndCalculateBPM(ArrayList<Integer> peakPositionList) {
             //Calculating the intervals or distance between the peaks, between then storing the result in milliseconds into RR_List ArrayList
             ArrayList<Double> RR_List = new ArrayList<Double>();
             for (int i = 0; i < peakPositionList.size() - 1; i++) {
@@ -447,7 +447,7 @@ public class OxymeterActivity extends Activity {
     }
 
     private void failedProcessing() {
-        Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.measurement_failed, Toast.LENGTH_LONG).show();
         resetProcessing();
         startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
         processing.set(false);
