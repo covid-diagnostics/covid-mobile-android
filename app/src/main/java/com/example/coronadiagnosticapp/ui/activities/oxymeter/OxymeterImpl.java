@@ -247,13 +247,10 @@ public class OxymeterImpl implements Oxymeter {
         if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
             double BpmAvg = ceil((Beats + peakBpm) / 2);
             return new OxymeterData(o2, (int) BpmAvg, Breath);
-            finish();
         } else if (!(o2 < 80 || o2 > 99) && (Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
             return new OxymeterData(o2, peakBpm, Breath);
-            finish();
         } else if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && (peakBpm < 45 || peakBpm > 200)) {
             return new OxymeterData(o2, (int) Beats, Breath);
-            finish();
         } else {
             return null;
         }

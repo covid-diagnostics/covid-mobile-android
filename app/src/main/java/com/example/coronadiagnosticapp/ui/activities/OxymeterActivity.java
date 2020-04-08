@@ -166,7 +166,7 @@ public class OxymeterActivity extends Activity {
         makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
         makeVertical.setFillAfter(true);
         progressBarView.startAnimation(makeVertical);
-        progressBarView.setSecondaryProgress(totalTime);
+        progressBarView.setSecondaryProgress(totalTime * 1000);
         progressBarView.setProgress(0);
 
         OxymeterActivity thisActivity = this;
