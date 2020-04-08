@@ -58,8 +58,7 @@ class OxymeterThread extends Thread {
 
 
 public class OxymeterActivity extends Activity {
-    public enum RGB{RED,GREEN,BLUE}
-        // Variables Initialization
+    // Variables Initialization
     private static final String TAG = "HeartRateMonitor";;
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
@@ -70,7 +69,6 @@ public class OxymeterActivity extends Activity {
     TextView tv_time;
     int progress;
     CountDownTimer countDownTimer;
-    int endTime = 250;
     RotateAnimation makeVertical;
     //TextView
     private TextView alert;
@@ -78,6 +76,7 @@ public class OxymeterActivity extends Activity {
     private Queue<byte[]> framesQueue;
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
+    private int totalTime = 30;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         @Override
@@ -100,7 +99,6 @@ public class OxymeterActivity extends Activity {
                 Log.e(TAG, "Exception in setPreviewDisplay()", t);
             }
         }
-
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -168,7 +166,7 @@ public class OxymeterActivity extends Activity {
         makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
         makeVertical.setFillAfter(true);
         progressBarView.startAnimation(makeVertical);
-        progressBarView.setSecondaryProgress(endTime);
+        progressBarView.setSecondaryProgress(totalTime);
         progressBarView.setProgress(0);
 
         OxymeterActivity thisActivity = this;
@@ -200,13 +198,11 @@ public class OxymeterActivity extends Activity {
         }
 
         progress = 1;
-        endTime = 30;
-
-        countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
+        countDownTimer = new CountDownTimer(totalTime * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 Log.i(TAG, "Millies until finished:" + millisUntilFinished);
-                setProgress(progress, endTime);
+                setProgress(progress, totalTime);
                 progress = progress + 1;
                 int seconds = (int) (millisUntilFinished / 1000) % 60;
                 String newtime = seconds + " seconds";
@@ -227,7 +223,7 @@ public class OxymeterActivity extends Activity {
     }
 
     public void finishOxymeter() {
-        OxymeterData result = oxymeter.finish();
+        OxymeterData result = oxymeter.finish(totalTime);
         stopAndReset();
         if (result != null) {
             Log.i(TAG, "Oxymeter finished successfully!");
@@ -300,10 +296,7 @@ public class OxymeterActivity extends Activity {
 
     private void removeProgressBarAndShowAlert() {
         alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
-        if (progressBarView.getVisibility() == View.VISIBLE) {
-            progressBarView.clearAnimation();
-            progressBarView.setVisibility(View.GONE);
-        }
+        progressBarView.setVisibility(View.INVISIBLE);
     }
 
     private void showProgressBarAndHideAlert() {
@@ -312,7 +305,6 @@ public class OxymeterActivity extends Activity {
             progressBarView.startAnimation(makeVertical);
             progressBarView.setVisibility(View.VISIBLE);
         }
-        progressBarView.setVisibility(View.VISIBLE);
     }
 }
 
