@@ -1,11 +1,16 @@
 package com.example.coronadiagnosticapp.ui.activities.Math;
 
-public class Fft {
+import org.apache.commons.math3.analysis.function.Max;
 
-    public static double FFT(Double[] in, int size, double samplingFrequency) {
+import java.util.Arrays;
+
+public class FftAmp {
+
+    public static double FftAmp(Double[] in, int size) {
         double temp = 0;
         double POMP = 0;
         double frequency;
+        double max=0;
         double[] output = new double[2*size];
 
         for(int i=0;i<output.length;i++)
@@ -22,19 +27,15 @@ public class Fft {
             output[x]= Math.abs(output[x]);
         }
 
+
         for(int p=35; p<size; p++) {// 12 was chosen because it is a minimum frequency that we think people can get to determine heart rate.
-            if(temp < output[p]) {
-                temp = output[p];
-                POMP = p;
+            if(max < output[p]) {
+                max = output[p];
 
             }
         }
 
-        /*if (POMP < 35) {
-            POMP = 0;
-        }*/
-
-        frequency = POMP*samplingFrequency/(2*size);
-        return frequency;
+        //String fftSring = "red=" + Arrays.toString(in)+"\nred_fft="+ Arrays.toString(output);
+        return max;
     }
 }

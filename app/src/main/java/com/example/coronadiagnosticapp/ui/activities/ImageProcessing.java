@@ -9,7 +9,7 @@ public abstract class ImageProcessing {
 
         final int frameSize = width * height;
 
-        int sum=0;
+        int sum = 0;
         int sumr = 0;
         int sumg = 0;
         int sumb = 0;
@@ -37,18 +37,21 @@ public abstract class ImageProcessing {
                 int pixel = 0xff000000 | ((r << 6) & 0xff0000) | ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
                 int red = (pixel >> 16) & 0xff;
                 int green = (pixel >> 8) & 0xff;
-                int blue = pixel&0xff;
+                int blue = pixel & 0xff;
                 sumr += red;
-                sumg +=green;
-                sumb +=blue;
+                sumg += green;
+                sumb += blue;
             }
         }
-        switch(type){
-            case (1): sum =sumr;
+        switch (type) {
+            case (1):
+                sum = sumr;
                 break;
-            case (2): sum =sumb;
+            case (2):
+                sum = sumb;
                 break;
-            case (3): sum =sumg;
+            case (3):
+                sum = sumg;
                 break;
         }
         return sum;
@@ -58,12 +61,9 @@ public abstract class ImageProcessing {
      * Given a byte array representing a yuv420sp image, determine the average
      * amount of red in the image. Note: returns 0 if the byte array is NULL.
      *
-     * @param yuv420sp
-     *            Byte array representing a yuv420sp image
-     * @param width
-     *            Width of the image.
-     * @param height
-     *            Height of the image.
+     * @param yuv420sp Byte array representing a yuv420sp image
+     * @param width    Width of the image.
+     * @param height   Height of the image.
      * @return int representing the average amount of red in the image.
      */
     public static double decodeYUV420SPtoRedBlueGreenAvg(byte[] yuv420sp, int width, int height, int type) {
@@ -71,7 +71,7 @@ public abstract class ImageProcessing {
         final int frameSize = width * height;
 
         int sum = decodeYUV420SPtoRedBlueGreenSum(yuv420sp, width, height, type);
-        int mean = (sum / frameSize);
+        double mean = (double) sum / (double) frameSize;
 
         return mean;
     }
