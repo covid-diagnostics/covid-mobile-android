@@ -326,8 +326,11 @@ public class OxymeterActivity extends Activity {
         @Override
         public void onImageAvailable(ImageReader reader) {
             Image img = reader.acquireNextImage();
-            ByteBuffer data = img.getPlanes()[0].getBuffer();
-            framesQueue.add(OxymeterActivity.clone(data));
+            if (framesQueue != null) {
+                ByteBuffer data = img.getPlanes()[0].getBuffer();
+                framesQueue.add(OxymeterActivity.clone(data));
+            }
+
             img.close();
         }
     };
