@@ -1,6 +1,8 @@
 package com.example.coronadiagnosticapp.ui.activities.oxymeter;
 
 import android.hardware.Camera;
+import android.hardware.camera2.CameraCharacteristics;
+import android.media.Image;
 import android.util.Log;
 
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +34,7 @@ import static java.lang.Math.sqrt;
 
 public class OxymeterImpl implements Oxymeter {
     public enum RGB {RED, GREEN, BLUE}
+
     private static final String TAG = "Oxymeter";
     private int counter = 0;
     private static long startTime;
@@ -51,7 +55,9 @@ public class OxymeterImpl implements Oxymeter {
     private SMA calc_mov_avg = new SMA(15);
 
     private String[] HEADER = new String[]{"id", "RED_VALUE", "RED_AVG_VALUE"};
-    private List<String[]> rows = new ArrayList<String[]>(){{add(HEADER);}}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
+    private List<String[]> rows = new ArrayList<String[]>() {{
+        add(HEADER);
+    }}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
     private Function0<Unit> onBadFinger;
 
     //CSV Writing
@@ -59,15 +65,60 @@ public class OxymeterImpl implements Oxymeter {
     private String fileName = "AnalysisData.csv";
     private String filePath = baseDir + File.separator + fileName;
 
+    // Sensor info
+    private int width;
+    private int height;
+    private int bayer;
 
     @Inject
-    public OxymeterImpl() {
+    public OxymeterImpl(int rawWidth, int rawHeight, int bayer) {
+        this.width = rawWidth;
+        this.height = rawHeight;
+        this.bayer = bayer;
         startTime = System.currentTimeMillis();
     }
 
     @Override
-    public void updateWithFrame(@NotNull byte[] data, @NotNull Camera cam) {
-        Camera.Size size = cam.getParameters().getPreviewSize();
+    public void updateWithFrame(@NotNull ByteBuffer data) {
+        double totalRed = 0;
+        double totalBlue = 0;
+        switch (bayer) {
+            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_BGGR:
+                for (int i = 0; i < height; i = i + 2) {
+                    for (int j = 0; j < width; j = j + 2) {
+                        totalBlue += data.getDouble(i * width + j);
+                        totalRed += data.getDouble((i + 1) * width + j + 1);
+                    }
+                }
+                break;
+            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_GBRG:
+                for (int i = 0; i < height; i = i + 2) {
+                    for (int j = 0; j < width; j = j + 2) {
+                        totalBlue += data.getDouble(i * width + j + 1);
+                        totalRed += data.getDouble((i + 1) * width + j);
+                    }
+                }
+                break;
+            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_GRBG:
+                for (int i = 0; i < height; i = i + 2) {
+                    for (int j = 0; j < width; j = j + 2) {
+                        totalRed += data.getDouble(i * width + j + 1);
+                        totalBlue += data.getDouble((i + 1) * width + j);
+                    }
+                }
+                break;
+            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_RGGB:
+                for (int i = 0; i < height; i = i + 2) {
+                    for (int j = 0; j < width; j = j + 2) {
+                        totalRed += data.getDouble(i * width + j);
+                        totalBlue += data.getDouble((i + 1) * width + j + 1);
+                    }
+                }
+                break;
+        }
+
+
+        /*Camera.Size size = cam.getParameters().getPreviewSize();
         if (size == null) throw new NullPointerException();
         //put width + height of the camera inside the variables
         int width = size.width;
@@ -81,14 +132,16 @@ public class OxymeterImpl implements Oxymeter {
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
 
+        //TODO:Add this back later
         //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
         if (checkImageIsBad(RedAvg)) {
             badFinger();
             return;
-        }
+        }*/
 
         ++counter; //countes number of frames in 30 seconds
-
+        RedAvgList.add(totalRed / (width * height));
+        BlueAvgList.add(totalBlue / (width * height));
         long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
         double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
     }
@@ -203,17 +256,17 @@ public class OxymeterImpl implements Oxymeter {
         return 60000 / (avgRR_List);
     }
 
-    private double getColorIntensities(byte[] data, int height, int width, RGB choice){
-        if(choice == RGB.RED)
-            return  ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, width, height, 1); //1 stands for red intensity, 2 for blue, 3 for green
-        if(choice == RGB.BLUE)
+    private double getColorIntensities(byte[] data, int height, int width, RGB choice) {
+        if (choice == RGB.RED)
+            return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, width, height, 1); //1 stands for red intensity, 2 for blue, 3 for green
+        if (choice == RGB.BLUE)
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, width, height, 2); //1 stands for red intensity, 2 for blue, 3 for green
-        if(choice == RGB.GREEN)
+        if (choice == RGB.GREEN)
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, width, height, 3); //1 stands for red intensity, 2 for blue, 3 for green
         return 0;
     }
 
-    private boolean checkImageIsBad(double redIntensity){
+    private boolean checkImageIsBad(double redIntensity) {
         //Image is bad!
         return redIntensity < 200;
     }
@@ -302,7 +355,6 @@ public class OxymeterImpl implements Oxymeter {
             sum += d;
         return sum;
     }
-
 
 
     private void badFinger() {

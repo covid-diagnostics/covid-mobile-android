@@ -1,12 +1,26 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.hardware.Camera;
+import android.graphics.ImageFormat;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.Size;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -16,6 +30,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.Oxymeter;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterData;
@@ -23,34 +40,40 @@ import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterImpl;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 
 class OxymeterThread extends Thread {
     private Oxymeter oxymeter;
-    private Queue<byte[]> framesQueue;
-    private Camera cam;
+    private Queue<ByteBuffer> framesQueue;
+    private CameraCharacteristics chars;
     private boolean doStop = false;
 
-    OxymeterThread(Oxymeter oxymeter, Queue<byte[]> framesQueue, Camera cam) {
+    OxymeterThread(Oxymeter oxymeter, Queue<ByteBuffer> framesQueue, CameraCharacteristics chars) {
         this.oxymeter = oxymeter;
         this.framesQueue = framesQueue;
-        this.cam = cam;
+        this.chars = chars;
     }
 
     public synchronized void doStop() {
         this.doStop = true;
     }
 
-    public void run(){
+    public void run() {
         // Keep running until we need to stop and we cleared the queue
         while (!(framesQueue.isEmpty() && doStop)) {
             // push any available frames to the oxymeter
             if (!framesQueue.isEmpty()) {
-                oxymeter.updateWithFrame(framesQueue.remove(), cam);
+                oxymeter.updateWithFrame(framesQueue.remove());
             }
         }
     }
@@ -59,9 +82,13 @@ class OxymeterThread extends Thread {
 
 public class OxymeterActivity extends Activity {
     // Variables Initialization
-    private static final String TAG = "HeartRateMonitor";;
+    private static final String TAG = "HeartRateMonitor";
+    ;
     private static SurfaceHolder previewHolder = null;
-    private static Camera camera = null;
+    private static CameraDevice camera = null;
+    private static CameraManager manager = null;
+    private static CameraCharacteristics chars = null;
+    private static ImageReader reader = null;
     //Freq + timer variable
     private static long startTime = 0;
     //ProgressBar
@@ -73,12 +100,13 @@ public class OxymeterActivity extends Activity {
     //TextView
     private TextView alert;
 
-    private Queue<byte[]> framesQueue;
+
+    private Queue<ByteBuffer> framesQueue;
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
     private int totalTime = 30;
 
-    private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    /*private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
             // if we have started recording
@@ -86,15 +114,29 @@ public class OxymeterActivity extends Activity {
                 framesQueue.add(data);
             }
         }
-    };
+    };*/
 
     private SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             try {
-                camera.setPreviewDisplay(previewHolder);
-                camera.setPreviewCallback(previewCallback);
+                manager = (CameraManager) OxymeterActivity.this.getSystemService(Context.CAMERA_SERVICE);
+                if (ActivityCompat.checkSelfPermission(OxymeterActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                try {
+                    manager.openCamera("0", cameraStateCallback, null);
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
             } catch (Throwable t) {
                 Log.e(TAG, "Exception in setPreviewDisplay()", t);
             }
@@ -102,7 +144,7 @@ public class OxymeterActivity extends Activity {
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            Log.e("surfaceChanged:", "OK");
+            /*og.e("surfaceChanged:", "OK");
             Camera.Parameters parameters = camera.getParameters();
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
 
@@ -114,7 +156,7 @@ public class OxymeterActivity extends Activity {
             }
 
             camera.setParameters(parameters);
-            camera.startPreview();
+            camera.startPreview();*/
         }
 
 
@@ -123,8 +165,11 @@ public class OxymeterActivity extends Activity {
             // Ignore
         }
     };
+    private int rawHeight;
+    private int rawWidth;
+    private int bayer;
 
-    private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
+    /*private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
         Camera.Size result = null;
 
         for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
@@ -141,13 +186,15 @@ public class OxymeterActivity extends Activity {
         }
 
         return result;
-    }
+    }*/
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_record);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
         // XML - Java Connecting
         SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
@@ -174,13 +221,13 @@ public class OxymeterActivity extends Activity {
             @Override
             public void onClick(View view) {
                 showProgressBarAndHideAlert();
-                oxymeter = new OxymeterImpl();
+                oxymeter = new OxymeterImpl(rawWidth, rawHeight, bayer);
                 oxymeter.setOnBadFinger(() -> {
                     thisActivity.badFinger();
                     return null;
                 });
-                framesQueue = new LinkedList<>();
-                oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, camera);
+                framesQueue = new LinkedList<ByteBuffer>();
+                oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, chars);
                 oxymeterUpdater.start();
                 startCountdown();
             }
@@ -264,6 +311,96 @@ public class OxymeterActivity extends Activity {
         super.onConfigurationChanged(newConfig);
     }
 
+    public static ByteBuffer clone(ByteBuffer original) {
+        ByteBuffer clone = ByteBuffer.allocate(original.capacity());
+        original.rewind();//copy from the beginning
+        clone.put(original);
+        original.rewind();
+        clone.flip();
+        return clone;
+    }
+
+
+    ImageReader.OnImageAvailableListener imageAvailableCallback = new ImageReader.OnImageAvailableListener() {
+
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            Image img = reader.acquireNextImage();
+            ByteBuffer data = img.getPlanes()[0].getBuffer();
+            framesQueue.add(OxymeterActivity.clone(data));
+            img.close();
+        }
+    };
+
+    CameraCaptureSession.StateCallback cameraSessionCallback = new CameraCaptureSession.StateCallback() {
+        @Override
+        public void onConfigured(CameraCaptureSession session) {
+            CaptureRequest.Builder captureRequest;
+            try {
+                captureRequest = OxymeterActivity.this.camera.createCaptureRequest(OxymeterActivity.this.camera.TEMPLATE_PREVIEW);
+                captureRequest.addTarget(reader.getSurface());
+                captureRequest.addTarget(previewHolder.getSurface());
+                session.setRepeatingRequest(captureRequest.build(), null, null);
+
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+
+        }
+    };
+
+    CameraDevice.StateCallback cameraStateCallback = new CameraDevice.StateCallback() {
+        @Override
+        public void onOpened(@NonNull CameraDevice camera) {
+            OxymeterActivity.this.camera = camera;
+
+            ArrayList<Surface> targets = new ArrayList<Surface>();
+            targets.add(previewHolder.getSurface());
+
+            try {
+                chars = manager.getCameraCharacteristics("0");
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+            StreamConfigurationMap map = chars.get(SCALER_STREAM_CONFIGURATION_MAP);
+            Size largestRaw = Collections.max(
+                    Arrays.asList(map.getOutputSizes(ImageFormat.RAW_SENSOR)),
+                    new CompareSizesByArea());
+
+            OxymeterActivity.this.rawWidth = largestRaw.getWidth();
+            OxymeterActivity.this.rawHeight = largestRaw.getHeight();
+            OxymeterActivity.this.bayer = chars.get(CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT);
+
+            OxymeterActivity.this.reader = ImageReader.newInstance(largestRaw.getWidth(), largestRaw.getHeight(), ImageFormat.RAW_SENSOR, 50);
+            reader.setOnImageAvailableListener(imageAvailableCallback, null);
+            targets.add(reader.getSurface());
+
+            try {
+                camera.createCaptureSession(targets, cameraSessionCallback, null);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onDisconnected(@NonNull CameraDevice camera) {
+
+        }
+
+        @Override
+        public void onError(@NonNull CameraDevice camera, int error) {
+
+        }
+
+
+    };
+
     //Wakelock + Open device camera + set orientation to 90 degree
     //store system time as a start time for the analyzing process
     //your activity to start interacting with the user.
@@ -271,8 +408,8 @@ public class OxymeterActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        camera = Camera.open();
-        camera.setDisplayOrientation(90);
+
+        //camera.setDisplayOrientation(90);
     }
 
     //call back the frames then release the camera + wakelock and Initialize the camera to null
@@ -282,10 +419,10 @@ public class OxymeterActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        camera.setPreviewCallback(null);
-        camera.stopPreview();
-        camera.release();
-        camera = null;
+        //camera.setPreviewCallback(null);
+        //camera.stopPreview();
+        //camera.release();
+        //camera = null;
     }
 
     @Override
@@ -306,5 +443,16 @@ public class OxymeterActivity extends Activity {
             progressBarView.setVisibility(View.VISIBLE);
         }
     }
+}
+
+class CompareSizesByArea implements Comparator<Size> {
+
+    @Override
+    public int compare(Size lhs, Size rhs) {
+        // We cast here to ensure the multiplications won't overflow
+        return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
+                (long) rhs.getWidth() * rhs.getHeight());
+    }
+
 }
 
