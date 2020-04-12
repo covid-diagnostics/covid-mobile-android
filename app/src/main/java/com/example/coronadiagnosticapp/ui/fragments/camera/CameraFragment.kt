@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.*
+import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +38,7 @@ class CameraFragment : ScopedFragment() {
         fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
         fun breathsPerMinute() = "BREATHS_PER_MINUTE"
         fun oxygenSaturation() = "OXYGEN_SATURATION"
+        fun filePath() = "FILE_PATH"
     }
 
     @Inject
@@ -51,8 +52,8 @@ class CameraFragment : ScopedFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
@@ -62,22 +63,22 @@ class CameraFragment : ScopedFragment() {
 
         button_startCamera.setOnClickListener {
             if (context?.let { it1 ->
-                    ActivityCompat.checkSelfPermission(
-                        it1,
-                        Manifest.permission.CAMERA
-                    )
-                } != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
+                        ActivityCompat.checkSelfPermission(
+                                it1,
+                                Manifest.permission.CAMERA
+                        )
+                    } != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(
+                            context!!,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
             ) {
                 activity?.let { it1 ->
                     ActivityCompat.requestPermissions(
-                        it1, arrayOf(
+                            it1, arrayOf(
                             Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), 200
+                    ), 200
                     )
                 }
             } else {
@@ -88,9 +89,9 @@ class CameraFragment : ScopedFragment() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String?>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 200) {
@@ -101,7 +102,7 @@ class CameraFragment : ScopedFragment() {
                 }
             } else {
                 Toast.makeText(context, "cannot continue without permissions", Toast.LENGTH_LONG)
-                    .show()
+                        .show()
                 activity?.finish()//FIXME not sure if correct
             }
         }
@@ -119,11 +120,11 @@ class CameraFragment : ScopedFragment() {
                     if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
                         launch(Dispatchers.IO) {
                             viewModel.saveResult(
-                                HealthResult(
-                                    beatsPerMinute,
-                                    breathsPerMinute,
-                                    oxygenSaturation
-                                )
+                                    HealthResult(
+                                            beatsPerMinute,
+                                            breathsPerMinute,
+                                            oxygenSaturation
+                                    )
                             )
                             withContext(Dispatchers.Main) {
                                 showLoading(false)
@@ -132,9 +133,9 @@ class CameraFragment : ScopedFragment() {
                         }
                     }
                     Toast.makeText(
-                        context,
-                        "Result: " + data.getStringExtra("result"),
-                        Toast.LENGTH_SHORT
+                            context,
+                            "Result: " + data.getStringExtra("result"),
+                            Toast.LENGTH_SHORT
                     ).show()
 
                 }

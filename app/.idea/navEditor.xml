@@ -208,18 +208,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="basicsFragment">
+                  <entry key="basicsTestingFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-384" />
-                            <option name="y" value="-364" />
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_basicsFragment_to_secondFragment">
+                            <entry key="action_basicsTestingFragment_to_resultTestingFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -229,18 +229,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="secondFragment">
+                  <entry key="resultTestingFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="45" />
-                            <option name="y" value="-349" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_secondFragment_to_basicsFragment">
+                            <entry key="action_resultTestingFragment_to_basicsTestingFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

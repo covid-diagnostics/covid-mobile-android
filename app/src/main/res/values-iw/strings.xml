@@ -41,4 +41,24 @@
     <string name="severely_high">גבוה באופן חריג</string>
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
+    <string name="basics_information">פרטים בסיסים:</string>
+    <string name="medical_history">היסטוריה רפואית</string>
+    <string name="saturation">סטורציה</string>
+    <string name="thanks_for_taking_the_test">תודה שביצעת את המבחן/nהתוצאה היא:</string>
+    <string name="heartbeats">דופק</string>
+    <string name="thanks">תודה!</string>
+
+    <string-array name="string_array_testing_position">
+        <item>יושב</item>
+        <item>שוכב</item>
+        <item>עומד</item>
+    </string-array>
+
+    <string-array name="string_array_testing_lighting">
+        <item>מנורה צהובה</item>
+        <item>מנורה לבנה</item>
+        <item>חדר חשוך</item>
+        <item>אור שמש</item>
+    </string-array>
+
 </resources>

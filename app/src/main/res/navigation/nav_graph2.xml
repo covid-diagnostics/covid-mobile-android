@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph2"
-    app:startDestination="@id/basicsFragment">
+    app:startDestination="@id/basicsTestingFragment">
     <fragment
-        android:id="@+id/basicsFragment"
+        android:id="@+id/basicsTestingFragment"
         android:name="com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsFragment"
-        android:label="fragment_basics"
-        tools:layout="@layout/fragment_basics" >
+        android:label="fragment_basicsTesting"
+        tools:layout="@layout/fragment_basics">
         <action
-            android:id="@+id/action_basicsFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
+            android:id="@+id/action_basicsTestingFragment_to_resultTestingFragment"
+            app:destination="@id/resultTestingFragment" />
     </fragment>
     <fragment
-        android:id="@+id/secondFragment"
+        android:id="@+id/resultTestingFragment"
         android:name="com.example.coronadiagnosticapp.ui.activities.testing_flow.SecondFragment"
-        android:label="fragment_second"
-        tools:layout="@layout/fragment_second" >
+        android:label="fragment_resultTesting"
+        tools:layout="@layout/fragment_testing_result">
         <action
-            android:id="@+id/action_secondFragment_to_basicsFragment"
-            app:destination="@id/basicsFragment" />
+            android:id="@+id/action_resultTestingFragment_to_basicsTestingFragment"
+            app:destination="@id/basicsTestingFragment" />
     </fragment>
 </navigation>

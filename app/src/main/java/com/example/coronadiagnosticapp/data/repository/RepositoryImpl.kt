@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
+import com.example.coronadiagnosticapp.data.db.entity.AnonymousMetrics
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
@@ -11,6 +12,7 @@ import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -97,5 +99,29 @@ class RepositoryImpl @Inject constructor(
 
     override fun getLastHealth(): LiveData<HealthResult> {
         return dao.getLastHealthResult()
+    }
+
+    override suspend fun sendTestResult(date: Date, appHeartRate: Int, deviceHeartRate: Int?, appSaturation: Int, deviceSaturation: Int?, deviceModel: String, file: File) {
+        val basicsInformation = dao.getBasicsInformationWithoutLiveData()
+
+        val anonymousMetrics = AnonymousMetrics(
+                date,
+                appHeartRate,
+                deviceHeartRate,
+                appSaturation,
+                deviceSaturation,
+                deviceModel,
+                basicsInformation.position,
+                basicsInformation.lighting,
+                basicsInformation.age,
+                basicsInformation.medicalHistory,
+                file
+        )
+
+        try {
+            networkDataSource.sendTestResult(anonymousMetrics)
+        } catch (e: Error) {
+            error.postValue(e.message)
+        }
     }
 }

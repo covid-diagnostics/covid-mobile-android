@@ -63,10 +63,24 @@
     <string name="call_mda">Please consult MDA regarding your test results</string>
     <string name="title_activity_testing">TestingActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="basics_information">Basics Information</string>
+    <string name="medical_history">medical history</string>
+    <string name="saturation">Saturation</string>
+    <string name="thanks_for_taking_the_test">Thanks for taking the test!\n The results are:</string>
+    <string name="heartbeats">Heartbeats</string>
+    <string name="thanks">thanks</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string-array name="string_array_testing_position">
+        <item>Sitting</item>
+        <item>Laying down</item>
+        <item>Standing</item>
+    </string-array>
+
+    <string-array name="string_array_testing_lighting">
+        <item>Yellow lamp</item>
+        <item>White lamp</item>
+        <item>Dark room</item>
+        <item>Sunlight</item>
+    </string-array>
 
 </resources>

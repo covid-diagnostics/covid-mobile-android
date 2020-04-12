@@ -9,15 +9,16 @@ import javax.inject.Inject
 
 class TestingActivity : AppCompatActivity() {
 
-    @Inject lateinit var viewModel:TestingViewModel
+    @Inject
+    lateinit var viewModel: TestingViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_testing)
         setSupportActionBar(toolbar)
-
         applicationContext?.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+
 
     }
 

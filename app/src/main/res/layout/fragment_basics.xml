@@ -10,7 +10,7 @@
         android:id="@+id/textview_first"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Basics Information"
+        android:text="@string/basics_information"
         android:textAppearance="@style/appSubHeader"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="64dp"
-        android:hint="medical history"
+        android:hint="@string/medical_history"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +33,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
+            android:maxLength="500"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +45,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="64dp"
-        android:hint="age"
+        android:hint="@string/age"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -100,5 +101,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.38030097" />
+        app:layout_constraintGuide_begin="150dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,11 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.PowerManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,30 +17,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
 import com.opencsv.CSVWriter;
 
-import retrofit2.http.HEAD;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 
 public class OxymeterActivity extends Activity {
-    public enum RGB{RED,GREEN,BLUE}
-        // Variables Initialization
-    private static final String TAG = "HeartRateMonitor";;
+    public enum RGB {RED, GREEN, BLUE}
+
+    // Variables Initialization
+    private static final String TAG = "HeartRateMonitor";
+    ;
     private static final AtomicBoolean processing = new AtomicBoolean(false);
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
@@ -75,7 +71,9 @@ public class OxymeterActivity extends Activity {
     String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
     String fileName = "AnalysisData.csv";
     String[] HEADER = new String[]{"id", "RED_VALUE", "RED_AVG_VALUE"};
-    List<String[]> rows = new ArrayList<String[]>(){{add(HEADER);}}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
+    List<String[]> rows = new ArrayList<String[]>() {{
+        add(HEADER);
+    }}; // Initializing List of string array's to generate CSV file, adding the HEADER which will be the fields inside the CSV
     String filePath = baseDir + File.separator + fileName;
     File f = new File(filePath);
     CSVWriter writer;
@@ -111,11 +109,11 @@ public class OxymeterActivity extends Activity {
             double BlueAvg;
             double GreenAvg;
 
-            RedAvg = getColorIntensities(data.clone(),height,width,RGB.RED); // Get red intensity
+            RedAvg = getColorIntensities(data.clone(), height, width, RGB.RED); // Get red intensity
             sumred = sumred + RedAvg;
-            BlueAvg = getColorIntensities(data.clone(),height,width,RGB.BLUE); // Get red intensity
+            BlueAvg = getColorIntensities(data.clone(), height, width, RGB.BLUE); // Get red intensity
             sumblue = sumblue + BlueAvg;
-            GreenAvg = getColorIntensities(data.clone(),height,width,RGB.GREEN); // Get red intensity
+            GreenAvg = getColorIntensities(data.clone(), height, width, RGB.GREEN); // Get red intensity
 
             RedAvgList.add(RedAvg);
             BlueAvgList.add(BlueAvg);
@@ -152,15 +150,16 @@ public class OxymeterActivity extends Activity {
                 // double bpm = (int) ceil(HRFreq * 60);
 
 
-                o2 = (int) calculateSPO2(Red,Blue);
-                Breath = (int) calculateAverageFourierBreathAndBPM(Red,Green,Blue)[0]; // 0 stands for breath respiration value
-                Beats = (int) calculateAverageFourierBreathAndBPM(Red,Green,Blue)[1]; // 0 stands for Heart Rate value
+                o2 = (int) calculateSPO2(Red, Blue);
+                Breath = (int) calculateAverageFourierBreathAndBPM(Red, Green, Blue)[0]; // 0 stands for breath respiration value
+                Beats = (int) calculateAverageFourierBreathAndBPM(Red, Green, Blue)[1]; // 0 stands for Heart Rate value
 
             }
 
 
             if ((Beats != 0) && (o2 != 0) && (Breath != 0) && (peakBpm != 0)) {
                 Intent returnIntent = new Intent();
+                returnIntent.putExtra("FILE_PATH", filePath);
                 if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
                     int BpmAvg = (int) ceil((Beats + peakBpm) / 2);
                     returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(o2));
@@ -180,7 +179,7 @@ public class OxymeterActivity extends Activity {
                     returnIntent.putExtra("BREATHS_PER_MINUTE", Integer.toString(Breath));
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
-                } else  {
+                } else {
                     Toast.makeText(getApplicationContext(), "Measurement Failed, Please press the start button again when you are ready !", Toast.LENGTH_LONG).show();
                     resetProcessing();
                     startTime = 0; //Re-assign startTime to 0, because the resetProcessing() sets it to current time and we want to stop the process until user press the start button.
@@ -195,7 +194,7 @@ public class OxymeterActivity extends Activity {
 
         }
 
-        public double[] calculateAverageFourierBreathAndBPM(Double[] Red, Double[] Green, Double[] Blue){
+        public double[] calculateAverageFourierBreathAndBPM(Double[] Red, Double[] Green, Double[] Blue) {
             double bufferAvgBr = 0;
             double bufferAvgB = 0;
             double HRFreq = Fft.FFT(Green, counter, SamplingFreq);
@@ -223,10 +222,10 @@ public class OxymeterActivity extends Activity {
                 bufferAvgBr = breathRed;
             }
 
-            return new double[]{bufferAvgBr,bufferAvgB};
+            return new double[]{bufferAvgBr, bufferAvgB};
         }
 
-        public double calculateSPO2(Double[] red, Double[] blue){
+        public double calculateSPO2(Double[] red, Double[] blue) {
             double Stdr = 0;
             double Stdb = 0;
             double meanr = sumred / counter;
@@ -247,7 +246,7 @@ public class OxymeterActivity extends Activity {
             return spo2;
         }
 
-        public ArrayList<Double> calculateMovingAverage(){
+        public ArrayList<Double> calculateMovingAverage() {
             ArrayList<Double> MovAvgRed = new ArrayList<Double>();
             double avg_hr = (sumred) / (RedAvgList.size());
             for (int i = 0; i < RedAvgList.size(); i++) {
@@ -265,7 +264,7 @@ public class OxymeterActivity extends Activity {
             return MovAvgRed;
         }
 
-        private ArrayList<Integer> createWindowsToFindPeaks(ArrayList<Double> MovAvgRed){
+        private ArrayList<Integer> createWindowsToFindPeaks(ArrayList<Double> MovAvgRed) {
             //peakPositionList represents a list which containts the peak positions
             ArrayList<Integer> peakPositionList = new ArrayList<Integer>();
             //Create window which start's when RedAvg > MovAvg and ends when RedAvg < MovAvg and calculate's the highest point (peak) within the window
@@ -532,8 +531,8 @@ public class OxymeterActivity extends Activity {
         progressBarView.setVisibility(View.VISIBLE);
     }
 
-    public boolean checkImageIsBad(double redIntensity){
-        if(redIntensity < 150)          //Image is bad!
+    public boolean checkImageIsBad(double redIntensity) {
+        if (redIntensity < 150)          //Image is bad!
             return true;
 
         return false;
@@ -546,15 +545,15 @@ public class OxymeterActivity extends Activity {
 //        sumblue += blue;
 //    }
 
-    private double getColorIntensities(byte[] data, int height, int width, RGB choice){
+    private double getColorIntensities(byte[] data, int height, int width, RGB choice) {
         double RedAvg;
         double BlueAvg;
         double GreenAvg;
-        if(choice == RGB.RED)
-            return  ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 1); //1 stands for red intensity, 2 for blue, 3 for green
-        if(choice == RGB.BLUE)
+        if (choice == RGB.RED)
+            return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 1); //1 stands for red intensity, 2 for blue, 3 for green
+        if (choice == RGB.BLUE)
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 2); //1 stands for red intensity, 2 for blue, 3 for green
-        if(choice == RGB.GREEN)
+        if (choice == RGB.GREEN)
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 3); //1 stands for red intensity, 2 for blue, 3 for green
 
         return 0;

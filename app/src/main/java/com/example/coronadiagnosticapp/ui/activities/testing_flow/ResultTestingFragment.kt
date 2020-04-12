@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +18,12 @@ import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
-import kotlinx.android.synthetic.main.fragment_second.*
-import kotlinx.android.synthetic.main.fragment_welcome.*
-import kotlinx.android.synthetic.main.result_fragment.*
+import kotlinx.android.synthetic.main.fragment_testing_result.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -50,7 +50,7 @@ class SecondFragment : ScopedFragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false)
+        return inflater.inflate(R.layout.fragment_testing_result, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,12 +101,9 @@ class SecondFragment : ScopedFragment() {
                     val beatsPerMinute = data.getStringExtra(CameraFragment.beatsPerMinuteKey())?.toInt()
                     val breathsPerMinute = data.getStringExtra(CameraFragment.breathsPerMinute())?.toInt()
                     val oxygenSaturation = data.getStringExtra(CameraFragment.oxygenSaturation())?.toInt()
-                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
-                        updateUiAfterTest(beatsPerMinute, oxygenSaturation)
-                        launch(Dispatchers.IO) {
-                            withContext(Dispatchers.Main) {
-                            }
-                        }
+                    val filePath = data.getStringExtra(CameraFragment.filePath())
+                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null && filePath != null) {
+                        updateUiAfterTest(beatsPerMinute, oxygenSaturation, filePath)
                     }
                 }
             } else {
@@ -116,19 +113,32 @@ class SecondFragment : ScopedFragment() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun updateUiAfterTest(beatsPerMinute: Int, oxygenSaturation: Int) {
-        textView_test_header.text = "Thanks for taking the test!\n The results are:"
+    private fun updateUiAfterTest(appHeartRate: Int, appSaturation: Int, filePath: String) {
+        textView_test_header.text = getString(R.string.thanks_for_taking_the_test)
         button_test_start.visibility = View.GONE
-        textView_test_results.text = "Saturation: $oxygenSaturation, Heartbeats: $beatsPerMinute"
+        textView_test_results.text = "${getString(R.string.saturation)} $appSaturation, ${getString(R.string.heartbeats)}: $appHeartRate"
         textView_test_results.visibility = View.VISIBLE
         group_submit.visibility = View.VISIBLE
 
+
         button_test_finish.setOnClickListener {
-            // send to db
+            val deviceHeartRate = input_test_heartbeats.editText.toString().toIntOrNull()
+            val deviceSaturation = input_test_heartbeats.editText.toString().toIntOrNull()
+
             launch(Dispatchers.IO) {
-                delay(3000)
+                viewModel.sendTestResult(
+                        Date(),
+                        appHeartRate,
+                        deviceHeartRate,
+                        appSaturation,
+                        deviceSaturation,
+                        "${Build.MANUFACTURER} ${Build.MODEL}",
+                        File(filePath))
+
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Thanks!", Toast.LENGTH_SHORT).show()
+                    // hideLoading
+
+                    Toast.makeText(context, getString(R.string.thanks), Toast.LENGTH_SHORT).show()
                 }
             }
 

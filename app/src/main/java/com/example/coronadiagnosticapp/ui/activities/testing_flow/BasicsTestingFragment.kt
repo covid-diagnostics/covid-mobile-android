@@ -44,8 +44,8 @@ class BasicsFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        spinner_basics_lighting.setItems("Dark room", "Sunlight", "Yellow lamp", "White lamp")
-        spinner_basics_position.setItems("Standing", "Laying down", "Sitting")
+        spinner_basics_lighting.setItems(resources.getStringArray(R.array.string_array_testing_lighting).toMutableList())
+        spinner_basics_position.setItems(resources.getStringArray(R.array.string_array_testing_position).toMutableList())
         button_basics_next.setOnClickListener {
             progressBar_basicsFragment.visibility = View.VISIBLE
             launch(Dispatchers.IO) {
@@ -58,7 +58,7 @@ class BasicsFragment : ScopedFragment() {
                         ))
                 withContext(Dispatchers.Main) {
                     progressBar_basicsFragment.visibility = View.GONE
-                    findNavController().navigate(R.id.action_basicsFragment_to_secondFragment)
+                    findNavController().navigate(R.id.action_basicsTestingFragment_to_resultTestingFragment)
                 }
             }
         }
@@ -73,17 +73,19 @@ class BasicsFragment : ScopedFragment() {
 
                 val lightingItems = spinner_basics_lighting.getItems<String>()
                 var index = lightingItems.indexOf(basicsInformation.lighting)
-                var temp = lightingItems.first()
-                lightingItems[index] = temp
-                lightingItems[0] = basicsInformation.lighting
-                spinner_basics_lighting.setItems(lightingItems)
+                if (index != -1) {
+                    var temp = lightingItems.first()
+                    lightingItems[index] = temp
+                    lightingItems[0] = basicsInformation.lighting
+                    spinner_basics_lighting.setItems(lightingItems)
 
-                val positionItems = spinner_basics_position.getItems<String>()
-                index = positionItems.indexOf(basicsInformation.position)
-                temp = positionItems.first()
-                positionItems[index] = temp
-                positionItems[0] = basicsInformation.position
-                spinner_basics_position.setItems(positionItems)
+                    val positionItems = spinner_basics_position.getItems<String>()
+                    index = positionItems.indexOf(basicsInformation.position)
+                    temp = positionItems.first()
+                    positionItems[index] = temp
+                    positionItems[0] = basicsInformation.position
+                    spinner_basics_position.setItems(positionItems)
+                }
             }
         })
     }

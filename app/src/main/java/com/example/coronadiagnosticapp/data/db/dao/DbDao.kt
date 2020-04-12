@@ -57,5 +57,8 @@ interface DbDao {
     @Query("SELECT * FROM basics_information LIMIT 1")
     fun getBasicsInformation(): LiveData<BasicsInformation>
 
+    @Query("SELECT * FROM basics_information LIMIT 1")
+    fun getBasicsInformationWithoutLiveData(): BasicsInformation
+
 
 }

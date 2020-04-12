@@ -14,7 +14,7 @@ import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformat
 
 @Database(
     entities = [User::class, ResponseMetric::class, HealthResult::class,BasicsInformation::class],
-    version = 6
+    version = 7
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

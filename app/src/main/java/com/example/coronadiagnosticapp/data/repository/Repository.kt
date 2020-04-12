@@ -7,6 +7,7 @@ import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
 import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 import java.io.File
+import java.util.*
 
 interface Repository {
     val error: MutableLiveData<String>
@@ -20,5 +21,6 @@ interface Repository {
     suspend fun insertBasicsInformation(basicsInformation: BasicsInformation)
     fun getBasicsInformationExist(): LiveData<BasicsInformation>
     fun getLastHealth(): LiveData<HealthResult>
+    suspend fun sendTestResult(date: Date, appHeartRate: Int, deviceHeartRate: Int?, appSaturation: Int, deviceSaturation: Int?, deviceModel: String, file: File)
 
 }
