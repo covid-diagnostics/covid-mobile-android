@@ -8,7 +8,7 @@ import java.nio.ByteBuffer
 class OxymeterData (var oxSaturation: Int, var heartRate: Int, var breathRate: Int) {}
 
 interface Oxymeter {
-    fun updateWithFrame(data: ByteBuffer)
+    fun updateWithFrame(data: Array<Double>)
     fun finish(totalTimeInSecs: Double): OxymeterData? // returns null in case of invalid measurement
     fun setOnBadFinger(callback: () -> Unit)
 }

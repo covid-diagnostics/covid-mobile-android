@@ -79,10 +79,10 @@ public class OxymeterImpl implements Oxymeter {
     }
 
     @Override
-    public void updateWithFrame(@NotNull ByteBuffer data) {
-        double totalRed = 0;
-        double totalBlue = 0;
-        switch (bayer) {
+    public void updateWithFrame(@NotNull Double[] data) {
+        double redAvg = data[0];
+        double blueAvg = data[1];
+        /*switch (bayer) {
             case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_BGGR:
                 for (int i = 0; i < height; i = i + 2) {
                     for (int j = 0; j < width; j = j + 2) {
@@ -115,7 +115,7 @@ public class OxymeterImpl implements Oxymeter {
                     }
                 }
                 break;
-        }
+        }*/
 
 
         /*Camera.Size size = cam.getParameters().getPreviewSize();
@@ -140,8 +140,8 @@ public class OxymeterImpl implements Oxymeter {
         }*/
 
         ++counter; //countes number of frames in 30 seconds
-        RedAvgList.add(totalRed / (width * height));
-        BlueAvgList.add(totalBlue / (width * height));
+        RedAvgList.add(redAvg);
+        BlueAvgList.add(blueAvg);
         long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
         double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
     }

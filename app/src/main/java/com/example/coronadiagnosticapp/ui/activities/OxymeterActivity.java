@@ -54,11 +54,11 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 class OxymeterThread extends Thread {
     private Oxymeter oxymeter;
-    private Queue<ByteBuffer> framesQueue;
+    private Queue<Double[]> framesQueue;
     private CameraCharacteristics chars;
     private boolean doStop = false;
 
-    OxymeterThread(Oxymeter oxymeter, Queue<ByteBuffer> framesQueue, CameraCharacteristics chars) {
+    OxymeterThread(Oxymeter oxymeter, Queue<Double[]> framesQueue, CameraCharacteristics chars) {
         this.oxymeter = oxymeter;
         this.framesQueue = framesQueue;
         this.chars = chars;
@@ -101,7 +101,7 @@ public class OxymeterActivity extends Activity {
     private TextView alert;
 
 
-    private Queue<ByteBuffer> framesQueue;
+    private Queue<Double[]> framesQueue;
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
     private int totalTime = 30;
@@ -220,15 +220,27 @@ public class OxymeterActivity extends Activity {
         readyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showProgressBarAndHideAlert();
                 oxymeter = new OxymeterImpl(rawWidth, rawHeight, bayer);
                 oxymeter.setOnBadFinger(() -> {
                     thisActivity.badFinger();
                     return null;
                 });
-                framesQueue = new LinkedList<ByteBuffer>();
+                framesQueue = new LinkedList<Double[]>();
                 oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, chars);
                 oxymeterUpdater.start();
+
+                ArrayList<Surface> targets = new ArrayList<Surface>();
+                targets.add(reader.getSurface());
+                targets.add(previewHolder.getSurface());
+
+                try {
+                    camera.createCaptureSession(targets, cameraSessionCallback, null);
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
+
                 startCountdown();
             }
         });
@@ -326,11 +338,14 @@ public class OxymeterActivity extends Activity {
         @Override
         public void onImageAvailable(ImageReader reader) {
             Image img = reader.acquireNextImage();
-            if (framesQueue != null) {
+            /*if (framesQueue != null) {
                 ByteBuffer data = img.getPlanes()[0].getBuffer();
                 framesQueue.add(OxymeterActivity.clone(data));
+            }*/
+            Double[] decoded = RawImageProcessing.decodeCentralSquareInRawImage(img, rawHeight, rawWidth, bayer);
+            if (framesQueue != null) {
+                framesQueue.add(decoded);
             }
-
             img.close();
         }
     };
@@ -362,8 +377,6 @@ public class OxymeterActivity extends Activity {
         public void onOpened(@NonNull CameraDevice camera) {
             OxymeterActivity.this.camera = camera;
 
-            ArrayList<Surface> targets = new ArrayList<Surface>();
-            targets.add(previewHolder.getSurface());
 
             try {
                 chars = manager.getCameraCharacteristics("0");
@@ -371,23 +384,18 @@ public class OxymeterActivity extends Activity {
                 e.printStackTrace();
             }
             StreamConfigurationMap map = chars.get(SCALER_STREAM_CONFIGURATION_MAP);
-            Size largestRaw = Collections.max(
+            Size smallestRaw = Collections.min(
                     Arrays.asList(map.getOutputSizes(ImageFormat.RAW_SENSOR)),
                     new CompareSizesByArea());
 
-            OxymeterActivity.this.rawWidth = largestRaw.getWidth();
-            OxymeterActivity.this.rawHeight = largestRaw.getHeight();
+            OxymeterActivity.this.rawWidth = smallestRaw.getWidth();
+            OxymeterActivity.this.rawHeight = smallestRaw.getHeight();
             OxymeterActivity.this.bayer = chars.get(CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT);
 
-            OxymeterActivity.this.reader = ImageReader.newInstance(largestRaw.getWidth(), largestRaw.getHeight(), ImageFormat.RAW_SENSOR, 50);
+            OxymeterActivity.this.reader = ImageReader.newInstance(rawWidth, rawHeight, ImageFormat.RAW_SENSOR, 50);
             reader.setOnImageAvailableListener(imageAvailableCallback, null);
-            targets.add(reader.getSurface());
 
-            try {
-                camera.createCaptureSession(targets, cameraSessionCallback, null);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
+
 
         }
 
