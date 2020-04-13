@@ -69,7 +69,8 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         return api.uploadAudioRecording(filePart, idPart).await()
     }
 
-    override suspend fun sendTestResult(anonymousMetrics: AnonymousMetrics) {
-        TODO("Not yet implemented")
+    override suspend fun sendTestResult(anonymousMetrics: AnonymousMetrics): AnonymousMetrics {
+        Log.i("NetworkData", anonymousMetrics.toString())
+        return api.sendTestResult(anonymousMetrics).await()
     }
 }

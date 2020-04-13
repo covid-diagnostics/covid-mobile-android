@@ -133,7 +133,7 @@ public class OxymeterActivity extends Activity {
 
             long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
-            if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
+            if (totalTimeInSecs >= 4 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
                 SamplingFreq = (counter / totalTimeInSecs);
                 ArrayList<Double> RedMoveAverage = calculateMovingAverage();
 //--------------------------CSV Writing-------------------------------
@@ -419,7 +419,7 @@ public class OxymeterActivity extends Activity {
         }
 
         progress = 1;
-        endTime = 30;
+        endTime = 4;
 
         countDownTimer = new CountDownTimer(endTime * 1000, 1000) {
             @Override
@@ -440,7 +440,7 @@ public class OxymeterActivity extends Activity {
             @Override
             public void onFinish() {
                 progress = 0;
-                setProgress(progress, 30);
+                setProgress(progress, 4);
             }
         };
         countDownTimer.start();
@@ -498,7 +498,7 @@ public class OxymeterActivity extends Activity {
         BlueAvgList.clear();
         counter = 0;
         countDownTimer.cancel();
-        setProgress(0, 30);
+        setProgress(0, 4);
         progress = 0;
         fn_countdown();
         startTime = System.currentTimeMillis();

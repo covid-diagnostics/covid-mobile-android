@@ -1,46 +1,46 @@
 package com.example.coronadiagnosticapp.data.db.entity
 
-import java.io.File
-import java.util.*
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "anonymous_metrics_table")
 data class AnonymousMetrics(
-        val id: Int,
-        val filledOn: String,
-        val appHeartRate: Int,
-        val deviceHeartRate: Int?,
-        val appSaturation: Int,
-        val deviceSaturation: Int?,
-        val deviceType: String,
-        // position
-        val measurementMethod: String,
-        val lighting: String,
-        val age: Int,
-        val pastMedicalStatus: String,
-        val file: File?
+    val appHeartRate: Int,
+    val deviceHeartRate: Int?,
+    val appSaturation: Int,
+    val deviceSaturation: Int?,
+    val deviceType: String,
+    var measurementMethod: String,
+    var position: String,
+    var lighting: String,
+    val age: Int,
+    val pastMedicalStatus: String,
+    @PrimaryKey val id: Int,
+    val filledOn: String
 ) {
     constructor(
-            filledOn: Date,
-            appHeartRate: Int,
-            deviceHeartRate: Int?,
-            appSaturation: Int,
-            deviceSaturation: Int?,
-            deviceType: String,
-            measurementMethod: String,
-            lighting: String,
-            age: Int,
-            pastMedicalStatus: String,
-            file: File?
+        appHeartRate: Int,
+        deviceHeartRate: Int?,
+        appSaturation: Int,
+        deviceSaturation: Int?,
+        deviceType: String,
+        measurementMethod: String,
+        position: String,
+        lighting: String,
+        age: Int,
+        pastMedicalStatus: String
     ) : this(
-            System.currentTimeMillis().toInt(),
-            filledOn.toString(),
-            appHeartRate,
-            deviceHeartRate,
-            appSaturation,
-            deviceSaturation,
-            deviceType,
-            measurementMethod,
-            lighting,
-            age,
-            pastMedicalStatus,
-            file)
+        appHeartRate,
+        deviceHeartRate,
+        appSaturation,
+        deviceSaturation,
+        deviceType,
+        measurementMethod,
+        position,
+        lighting,
+        age,
+        pastMedicalStatus,
+        0,
+        ""
+    )
 }

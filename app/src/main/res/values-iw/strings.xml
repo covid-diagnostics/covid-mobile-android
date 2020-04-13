@@ -55,10 +55,15 @@
     </string-array>
 
     <string-array name="string_array_testing_lighting">
-        <item>מנורה צהובה</item>
-        <item>מנורה לבנה</item>
         <item>חדר חשוך</item>
-        <item>אור שמש</item>
+        <item>אור טבעי</item>
+        <item>מנורה</item>
+    </string-array>
+
+    <string-array name="string_array_testing_measurement_method">
+        <item>הטלפון ביד שעליה מתבצע הבדיקה</item>
+        <item>הטלפון ביד שעליה לא מתבצע הבדיקה</item>
+        <item>הטלפון על השולחן</item>
     </string-array>
 
 </resources>

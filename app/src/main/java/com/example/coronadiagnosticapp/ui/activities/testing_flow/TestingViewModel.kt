@@ -16,17 +16,12 @@ class TestingViewModel @Inject constructor(val repository: Repository) : ViewMod
 
     fun getBasicsInformation() = repository.getBasicsInformationExist()
 
-    suspend fun sendTestResult(date: Date, appHeartRate: Int,deviceHeartRate:Int?, appSaturation: Int, deviceSaturation:Int?, deviceModel: String, file: File) {
+    suspend fun sendTestResult(appHeartRate: Int,deviceHeartRate:Int?, appSaturation: Int, deviceSaturation:Int?, deviceModel: String) {
         repository.sendTestResult(
-                date,
                 appHeartRate,
                 deviceHeartRate,
                 appSaturation,
                 deviceSaturation,
-                deviceModel,
-                file)
-
-
-    }
+                deviceModel)}
 
 }

@@ -2,6 +2,7 @@ package com.example.coronadiagnosticapp.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.coronadiagnosticapp.data.db.entity.AnonymousMetrics
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.User
@@ -59,6 +60,13 @@ interface DbDao {
 
     @Query("SELECT * FROM basics_information LIMIT 1")
     fun getBasicsInformationWithoutLiveData(): BasicsInformation
+
+
+    @Insert
+    fun insertAnonymousMetrics(anonymousMetrics: AnonymousMetrics)
+
+    @Query("SELECT * FROM anonymous_metrics_table")
+    fun getAllAnonymousMetrics(): LiveData<List<AnonymousMetrics>>
 
 
 }

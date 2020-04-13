@@ -21,6 +21,6 @@ interface Repository {
     suspend fun insertBasicsInformation(basicsInformation: BasicsInformation)
     fun getBasicsInformationExist(): LiveData<BasicsInformation>
     fun getLastHealth(): LiveData<HealthResult>
-    suspend fun sendTestResult(date: Date, appHeartRate: Int, deviceHeartRate: Int?, appSaturation: Int, deviceSaturation: Int?, deviceModel: String, file: File)
+    suspend fun sendTestResult(appHeartRate: Int,deviceHeartRate:Int?, appSaturation: Int, deviceSaturation:Int?, deviceModel: String)
 
 }

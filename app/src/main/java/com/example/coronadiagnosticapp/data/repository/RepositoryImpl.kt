@@ -12,14 +12,13 @@ import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 import java.io.File
-import java.util.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-        val networkDataSource: NetworkDataSource,
-        val dao: DbDao,
-        val sharedProvider: SharedProvider,
-        val tokenServiceInterceptor: TokenServiceInterceptor
+    val networkDataSource: NetworkDataSource,
+    val dao: DbDao,
+    val sharedProvider: SharedProvider,
+    val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
 
     private lateinit var responseUser: ResponseUser
@@ -51,9 +50,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserPersonalInformation(
-            firstName: String,
-            lastName: String,
-            age: Int
+        firstName: String,
+        lastName: String,
+        age: Int
     ) {
         val user = dao.getUser()
         user.apply {
@@ -95,33 +94,36 @@ class RepositoryImpl @Inject constructor(
     }
 
 
-    override fun getBasicsInformationExist(): LiveData<BasicsInformation> = dao.getBasicsInformation()
+    override fun getBasicsInformationExist(): LiveData<BasicsInformation> =
+        dao.getBasicsInformation()
 
     override fun getLastHealth(): LiveData<HealthResult> {
         return dao.getLastHealthResult()
     }
 
-    override suspend fun sendTestResult(date: Date, appHeartRate: Int, deviceHeartRate: Int?, appSaturation: Int, deviceSaturation: Int?, deviceModel: String, file: File) {
-        val basicsInformation = dao.getBasicsInformationWithoutLiveData()
 
-        val anonymousMetrics = AnonymousMetrics(
-                date,
+    override suspend fun sendTestResult(
+        appHeartRate: Int,
+        deviceHeartRate: Int?,
+        appSaturation: Int,
+        deviceSaturation: Int?,
+        deviceModel: String
+    ) {
+        val info = dao.getBasicsInformationWithoutLiveData()
+        val item = networkDataSource.sendTestResult(
+            AnonymousMetrics(
                 appHeartRate,
                 deviceHeartRate,
                 appSaturation,
                 deviceSaturation,
                 deviceModel,
-                basicsInformation.position,
-                basicsInformation.lighting,
-                basicsInformation.age,
-                basicsInformation.medicalHistory,
-                file
+                info.measurement,
+                info.position,
+                info.lighting,
+                info.age,
+                info.medicalHistory
+            )
         )
-
-        try {
-            networkDataSource.sendTestResult(anonymousMetrics)
-        } catch (e: Error) {
-            error.postValue(e.message)
-        }
+        dao.insertAnonymousMetrics(item)
     }
 }

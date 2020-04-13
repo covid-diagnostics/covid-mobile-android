@@ -22,8 +22,6 @@ import kotlinx.android.synthetic.main.fragment_testing_result.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -46,8 +44,8 @@ class SecondFragment : ScopedFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_testing_result, container, false)
@@ -68,22 +66,22 @@ class SecondFragment : ScopedFragment() {
 
         button_test_start.setOnClickListener {
             if (context?.let { it1 ->
-                        ActivityCompat.checkSelfPermission(
-                                it1,
-                                Manifest.permission.CAMERA
-                        )
-                    } != PackageManager.PERMISSION_GRANTED ||
-                    ContextCompat.checkSelfPermission(
-                            context!!,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED
+                    ActivityCompat.checkSelfPermission(
+                        it1,
+                        Manifest.permission.CAMERA
+                    )
+                } != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
                 activity?.let { it1 ->
                     ActivityCompat.requestPermissions(
-                            it1, arrayOf(
+                        it1, arrayOf(
                             Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ), 200
+                        ), 200
                     )
                 }
             } else {
@@ -98,9 +96,12 @@ class SecondFragment : ScopedFragment() {
             if (resultCode == Activity.RESULT_OK) {
                 if (data != null) {
                     // get data from OxymeterActivity
-                    val beatsPerMinute = data.getStringExtra(CameraFragment.beatsPerMinuteKey())?.toInt()
-                    val breathsPerMinute = data.getStringExtra(CameraFragment.breathsPerMinute())?.toInt()
-                    val oxygenSaturation = data.getStringExtra(CameraFragment.oxygenSaturation())?.toInt()
+                    val beatsPerMinute =
+                        data.getStringExtra(CameraFragment.beatsPerMinuteKey())?.toInt()
+                    val breathsPerMinute =
+                        data.getStringExtra(CameraFragment.breathsPerMinute())?.toInt()
+                    val oxygenSaturation =
+                        data.getStringExtra(CameraFragment.oxygenSaturation())?.toInt()
                     val filePath = data.getStringExtra(CameraFragment.filePath())
                     if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null && filePath != null) {
                         updateUiAfterTest(beatsPerMinute, oxygenSaturation, filePath)
@@ -116,7 +117,8 @@ class SecondFragment : ScopedFragment() {
     private fun updateUiAfterTest(appHeartRate: Int, appSaturation: Int, filePath: String) {
         textView_test_header.text = getString(R.string.thanks_for_taking_the_test)
         button_test_start.visibility = View.GONE
-        textView_test_results.text = "${getString(R.string.saturation)} $appSaturation, ${getString(R.string.heartbeats)}: $appHeartRate"
+        textView_test_results.text =
+            "${getString(R.string.saturation)} $appSaturation, ${getString(R.string.heartbeats)}: $appHeartRate"
         textView_test_results.visibility = View.VISIBLE
         group_submit.visibility = View.VISIBLE
 
@@ -127,13 +129,12 @@ class SecondFragment : ScopedFragment() {
 
             launch(Dispatchers.IO) {
                 viewModel.sendTestResult(
-                        Date(),
-                        appHeartRate,
-                        deviceHeartRate,
-                        appSaturation,
-                        deviceSaturation,
-                        "${Build.MANUFACTURER} ${Build.MODEL}",
-                        File(filePath))
+                    appHeartRate,
+                    deviceHeartRate,
+                    appSaturation,
+                    deviceSaturation,
+                    "${Build.MANUFACTURER} ${Build.MODEL}"
+                )
 
                 withContext(Dispatchers.Main) {
                     // hideLoading

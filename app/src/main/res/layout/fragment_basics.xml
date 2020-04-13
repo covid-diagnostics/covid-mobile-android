@@ -75,6 +75,14 @@
         app:layout_constraintEnd_toEndOf="@id/spinner_basics_position"
         app:layout_constraintStart_toStartOf="@id/spinner_basics_position"
         app:layout_constraintTop_toBottomOf="@id/spinner_basics_position" />
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinner_basics_measurementMethod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@id/spinner_basics_lighting"
+        app:layout_constraintStart_toStartOf="@id/spinner_basics_lighting"
+        app:layout_constraintTop_toBottomOf="@id/spinner_basics_lighting" />
 
     <Button
         android:id="@+id/button_basics_next"
@@ -84,7 +92,8 @@
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_basics_measurementMethod" />
 
     <ProgressBar
         android:id="@+id/progressBar_basicsFragment"

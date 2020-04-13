@@ -6,15 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
-import com.example.coronadiagnosticapp.data.db.entity.Converters
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
-import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.ui.activities.testing_flow.BasicsInformation
 
 @Database(
-    entities = [User::class, ResponseMetric::class, HealthResult::class,BasicsInformation::class],
-    version = 7
+    entities = [User::class, ResponseMetric::class, HealthResult::class, BasicsInformation::class, AnonymousMetrics::class],
+    version = 9
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

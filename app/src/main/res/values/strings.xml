@@ -76,11 +76,33 @@
         <item>Standing</item>
     </string-array>
 
-    <string-array name="string_array_testing_lighting">
-        <item>Yellow lamp</item>
-        <item>White lamp</item>
-        <item>Dark room</item>
-        <item>Sunlight</item>
+    <string-array name="string_array_testing_positionKeys">
+        <item>SITTING</item>
+        <item>LAYING_DOWN</item>
+        <item>STANDING</item>
     </string-array>
 
+    <string-array name="string_array_testing_lighting">
+        <item>Dark room</item>
+        <item>Natural</item>
+        <item>Lamp</item>
+    </string-array>
+
+    <string-array name="string_array_testing_lightingKeys">
+        <item>DARK_ROOM</item>
+        <item>NATURAL</item>
+        <item>LAMP</item>
+    </string-array>
+
+    <string-array name="string_array_testing_measurement_method">
+        <item>Phone on the measuring hand</item>
+        <item>Phone on the other hand</item>
+        <item>Phone on table</item>
+    </string-array>
+
+    <string-array name="string_array_testing_measurement_methodKeys">
+        <item>PHONE_ON_THE_MEASURING_HAND</item>
+        <item>PHONE_ON_THE_OTHER_HAND</item>
+        <item>PHONE_ON_TABLE</item>
+    </string-array>
 </resources>
