@@ -19,6 +19,7 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.Range;
 import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -356,6 +357,9 @@ public class OxymeterActivity extends Activity {
             CaptureRequest.Builder captureRequest;
             try {
                 captureRequest = OxymeterActivity.this.camera.createCaptureRequest(OxymeterActivity.this.camera.TEMPLATE_PREVIEW);
+                // TODO: We should use one of the ranges in chars.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+                // I am guessing that [30, 30] will always be supported...
+                captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<Integer>(30, 30));
                 captureRequest.addTarget(reader.getSurface());
                 captureRequest.addTarget(previewHolder.getSurface());
                 session.setRepeatingRequest(captureRequest.build(), null, null);
@@ -383,6 +387,8 @@ public class OxymeterActivity extends Activity {
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
+//            Range<Integer> availableRanges[] = chars.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
+//            Log.e(TAG, "CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES: " + Arrays.asList(availableRanges));
             StreamConfigurationMap map = chars.get(SCALER_STREAM_CONFIGURATION_MAP);
             Size smallestRaw = Collections.min(
                     Arrays.asList(map.getOutputSizes(ImageFormat.RAW_SENSOR)),
