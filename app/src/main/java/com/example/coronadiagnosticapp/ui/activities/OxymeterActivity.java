@@ -18,6 +18,8 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.util.Range;
 import android.util.Size;
@@ -46,45 +48,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.Queue;
 
 import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
-
-class OxymeterThread extends Thread {
-    private Oxymeter oxymeter;
-    private Queue<Double[]> framesQueue;
-    private CameraCharacteristics chars;
-    private boolean doStop = false;
-
-    OxymeterThread(Oxymeter oxymeter, Queue<Double[]> framesQueue, CameraCharacteristics chars) {
-        this.oxymeter = oxymeter;
-        this.framesQueue = framesQueue;
-        this.chars = chars;
-    }
-
-    public synchronized void doStop() {
-        this.doStop = true;
-    }
-
-    public void run() {
-        // Keep running until we need to stop and we cleared the queue
-        while (!(framesQueue.isEmpty() && doStop)) {
-            // push any available frames to the oxymeter
-            if (!framesQueue.isEmpty()) {
-                oxymeter.updateWithFrame(framesQueue.remove());
-            }
-        }
-    }
-}
-
-
 public class OxymeterActivity extends Activity {
     // Variables Initialization
     private static final String TAG = "HeartRateMonitor";
-    ;
     private static SurfaceHolder previewHolder = null;
     private static CameraDevice camera = null;
     private static CameraManager manager = null;
@@ -101,10 +72,8 @@ public class OxymeterActivity extends Activity {
     //TextView
     private TextView alert;
 
-
-    private Queue<Double[]> framesQueue;
     private Oxymeter oxymeter;
-    private OxymeterThread oxymeterUpdater;
+    private HandlerThread oxymeterUpdaterThread;
     private int totalTime = 30;
 
     /*private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -228,9 +197,6 @@ public class OxymeterActivity extends Activity {
                     thisActivity.badFinger();
                     return null;
                 });
-                framesQueue = new LinkedList<Double[]>();
-                oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, chars);
-                oxymeterUpdater.start();
 
                 ArrayList<Surface> targets = new ArrayList<Surface>();
                 targets.add(reader.getSurface());
@@ -310,7 +276,8 @@ public class OxymeterActivity extends Activity {
         progress = 0;
         setProgress(progress, 30);
         countDownTimer.cancel();
-        oxymeterUpdater.doStop();
+        // TODO: call handler.removeCallback...
+        oxymeterUpdaterThread.quit();
     }
 
     public void setProgress(int startTime, int endTime) {
@@ -338,16 +305,14 @@ public class OxymeterActivity extends Activity {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
+            long start = System.nanoTime();
             Image img = reader.acquireNextImage();
-            /*if (framesQueue != null) {
-                ByteBuffer data = img.getPlanes()[0].getBuffer();
-                framesQueue.add(OxymeterActivity.clone(data));
-            }*/
+            long timestamp = img.getTimestamp();
             Double[] decoded = RawImageProcessing.decodeCentralSquareInRawImage(img, rawHeight, rawWidth, bayer);
-            if (framesQueue != null) {
-                framesQueue.add(decoded);
-            }
+            oxymeter.updateWithFrame(decoded);
             img.close();
+            long end = System.nanoTime();
+            Log.e(TAG, "{'timestamp': " + timestamp + ", 'start': " + start + ", 'end': " + end + ", 'handler_time': " + ((double) end - start) / 1e9 + "},");
         }
     };
 
@@ -399,10 +364,10 @@ public class OxymeterActivity extends Activity {
             OxymeterActivity.this.bayer = chars.get(CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT);
 
             OxymeterActivity.this.reader = ImageReader.newInstance(rawWidth, rawHeight, ImageFormat.RAW_SENSOR, 50);
-            reader.setOnImageAvailableListener(imageAvailableCallback, null);
 
-
-
+            oxymeterUpdaterThread = new HandlerThread("OxymeterUpdaterThread");
+            oxymeterUpdaterThread.start();
+            reader.setOnImageAvailableListener(imageAvailableCallback, new Handler(oxymeterUpdaterThread.getLooper()));
         }
 
         @Override
