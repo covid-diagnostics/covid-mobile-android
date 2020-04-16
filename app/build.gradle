@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.github.kittinunf.fuel:fuel-android:2.2.1'
     implementation 'com.github.kittinunf.fuel:fuel-json:2.2.1'
     implementation 'com.github.kittinunf.fuel:fuel-jackson:2.2.1'
-    implementation 'com.github.TayfunCesur:Stepper:1.0.2'
+    implementation 'com.github.rakshakhegde:stepper-indicator:2.0.0-alpha'
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.10.3"
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
