@@ -117,10 +117,10 @@ public class OxymeterActivity extends Activity {
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
                 double samplingFreq = (counter / totalTimeInSecs);
-                int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
-                int o2 = peekBpmAndO2[0];
-                int peakBpm = peekBpmAndO2[1];
-                int failed = peekBpmAndO2[2];
+                int[] peakBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq, WINDOW_TIME, FAILED_WINDOWS_MAX);
+                int o2 = peakBpmAndO2[0];
+                int peakBpm = peakBpmAndO2[1];
+                int failed = peakBpmAndO2[2];
                 if (failed == 1) {
                     failedProcessing();
                     return;
@@ -148,13 +148,13 @@ public class OxymeterActivity extends Activity {
             processing.set(true);
         }
 
-        private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
-            final double WINDOW_FRAMES = samplingFreq * WINDOW_TIME;
+        private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq, int window_time, int failed_windows_max) {
+            final double WINDOW_FRAMES = samplingFreq * window_time;
             double[] results;
-            double[] o2 = new double[30 - WINDOW_TIME + 1];
-            double[] peakBpm = new double[30 - WINDOW_TIME + 1];
+            double[] o2 = new double[30 - window_time + 1];
+            double[] peakBpm = new double[30 - window_time + 1];
             int failed = 0;
-            for (int i = 0; i <= 30 - WINDOW_TIME; i++) {
+            for (int i = 0; i <= 30 - window_time; i++) {
                 int from = (int) (samplingFreq * i);
                 int to = (int) (WINDOW_FRAMES + (int) (samplingFreq * i));
                 results = calculateWindowSampleBpmAndO2(
@@ -165,7 +165,7 @@ public class OxymeterActivity extends Activity {
                 peakBpm[i] = results[1];// if failed the result is 0
                 failed += (int) results[2];
             }
-            if (failed > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
+            if (failed > failed_windows_max) { // too many failed windows, the samples are bad
                 return new int[]{0, 0, 1};
             } else {
                 return new int[]{
@@ -228,8 +228,8 @@ public class OxymeterActivity extends Activity {
                 Double bufferr = red.get(i);
                 Stdr = Stdr + ((bufferr - meanr) * (bufferr - meanr));
             }
-            double varr = sqrt(Stdr / (red.size() - 1)); // should it really be -1 ?
-            double varb = sqrt(Stdb / (red.size() - 1)); // should it really be -1 ?
+            double varr = sqrt(Stdr / (red.size() - 1));
+            double varb = sqrt(Stdb / (red.size() - 1));
 
             double R = (varr / meanr) / (varb / meanb);
 
