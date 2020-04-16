@@ -44,4 +44,6 @@
     <string name="medical_questionnaire">שאלון רפואי</string>
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
+    <string name="please_improve_lightning">תאורה חלשה זוהתה. בבקשה צא החוצה או הגבר את התאורה</string>
+    <string name="go_outside">לתוצאות מיטביות צא החוצה לאור שמש</string>
 </resources>
