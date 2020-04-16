@@ -62,5 +62,9 @@
     <string name="things_look_ok">Things look OK</string>
     <string name="call_mda">Please consult MDA regarding your test results</string>
     <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
-
+    <string name="medical_questionnaire">Medical Questionnaire</string>
+    <string name="recorder_test">Recorder Test</string>
+    <string name="camera_test">Camera Test</string>
+    <string name="please_improve_lightning">Weak lightning detected. Please go outside or turn on stronger light</string>
+    <string name="go_outside">For best results, go outside</string>
 </resources>

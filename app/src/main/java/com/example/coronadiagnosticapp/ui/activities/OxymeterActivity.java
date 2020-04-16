@@ -1,14 +1,15 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.PowerManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,20 +21,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-
-import retrofit2.http.HEAD;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 import static java.lang.Math.ceil;
@@ -45,6 +39,7 @@ public class OxymeterActivity extends Activity {
     // Variables Initialization
     private static final String TAG = "HeartRateMonitor";
     private static final AtomicBoolean processing = new AtomicBoolean(false);
+    private static final int MIN_LIGHT_VALUE = 170; // lux units.
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     //Freq + timer variable
@@ -65,7 +60,8 @@ public class OxymeterActivity extends Activity {
     //Button
     private Button readyBtn;
     //TextView
-    private TextView alert;
+    private TextView put_finger_alert;
+    private TextView improve_lightning_alert;
     private double SamplingFreq;
     //getting frames data from the camera and start the heartbeat process
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -332,7 +328,8 @@ public class OxymeterActivity extends Activity {
 
         // XML - Java Connecting
         preview = (SurfaceView) findViewById(R.id.preview);
-        alert = (TextView) findViewById(R.id.putfinger);
+        put_finger_alert = (TextView) findViewById(R.id.putfinger);
+        improve_lightning_alert = (TextView) findViewById(R.id.improve_lightning);
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -357,8 +354,44 @@ public class OxymeterActivity extends Activity {
             }
         });
 
+        SensorManager mySensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        Sensor lightSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if(lightSensor != null){
+            mySensorManager.registerListener(
+                    lightSensorListener,
+                    lightSensor,
+                    SensorManager.SENSOR_DELAY_FASTEST);
 
+
+        } else {
+            Log.e(TAG, "Couldn't find light sensor.");
+        }
     }
+
+
+
+    private final SensorEventListener lightSensorListener
+            = new SensorEventListener(){
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if(event.sensor.getType() == Sensor.TYPE_LIGHT){
+                Log.d(TAG, "light sensor value:" + event.values[0]);
+                if(event.values[0] < MIN_LIGHT_VALUE) {
+                    improve_lightning_alert.setVisibility(View.VISIBLE);
+                }
+                else
+                    improve_lightning_alert.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    };
 
     //Prevent the system from restarting your activity during certain configuration changes,
     // but receive a callback when the configurations do change, so that you can manually update your activity as necessary.
@@ -472,12 +505,12 @@ public class OxymeterActivity extends Activity {
     }
 
     private void removeProgressBarAndShowAlert() {
-        alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
+        put_finger_alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
         removeProgressBar();
     }
 
     private void showProgressBarAndHideAlert() {
-        alert.setVisibility(View.INVISIBLE);
+        put_finger_alert.setVisibility(View.INVISIBLE);
         if (!(progressBarView.getVisibility() == View.VISIBLE)) {
             progressBarView.startAnimation(makeVertical);
             progressBarView.setVisibility(View.VISIBLE);
