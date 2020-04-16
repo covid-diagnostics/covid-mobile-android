@@ -30,22 +30,11 @@ class MainActivity : AppCompatActivity() {
         val res: Resources = this.resources
         val dm: DisplayMetrics = res.displayMetrics
         val conf: Configuration = res.configuration
-        conf.setLocale(Locale("iw")) // API 17+ only.
-
-        // Use conf.locale = new Locale(...) if targeting lower versions
-        // Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm)
+//        conf.setLocale(Locale("iw")) // API 17+ only.
+//        res.updateConfiguration(conf, dm)
 //
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val stepsLabels = arrayOf(
-
-            resources.getString(R.string.medical_questionnaire),
-            resources.getString(R.string.camera_test),
-            resources.getString(R.string.recorder_test)
-        )
-        stepperIndicator.setLabels(stepsLabels)
-        stepperIndicator.layoutDirection = View.LAYOUT_DIRECTION_LTR
     }
 
 }
