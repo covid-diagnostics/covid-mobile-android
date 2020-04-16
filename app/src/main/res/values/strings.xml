@@ -66,5 +66,6 @@
     <string name="camera_test">Camera Test</string>
     <string name="please_improve_lightning">Weak lightning detected. Please go outside or turn on stronger light</string>
     <string name="go_outside">For best results, go outside</string>
+    <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
 
 </resources>
