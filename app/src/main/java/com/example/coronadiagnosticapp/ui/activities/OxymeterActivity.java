@@ -59,6 +59,7 @@ public class OxymeterActivity extends Activity {
     public int counter = 0;
     private double RedTotalAvg;
     private SMA RedRollingAvg = null;
+    final private int SMA_SIZE = 15;
     // window sample consts
     public final int WINDOW_TIME = 10; // the number of seconds for each window
     public final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
@@ -246,10 +247,10 @@ public class OxymeterActivity extends Activity {
         public ArrayList<Double> calculateMovingRedWindowAverage(ArrayList<Double> list) {
             ArrayList<Double> MovAvgRed = new ArrayList<Double>();
             if (RedRollingAvg == null) {
-                //Initialize an object that calculates the rolling average of last 15 samples
-                RedRollingAvg = new SMA(15);
+                //Initialize an object that calculates the rolling average of last `SMA_SIZE` samples
+                RedRollingAvg = new SMA(SMA_SIZE);
                 for (int i = 0; i < list.size(); i++) {
-                    if (i < 15) {                                   //Assign the average red received to the first 15 samples
+                    if (i < SMA_SIZE) {                                   //Assign the average red received to the first `SMA_SIZE` samples
                         RedRollingAvg.compute(RedTotalAvg);               //Add the value to the moving average object
                         MovAvgRed.add(i, RedTotalAvg);                   //Add the value to the MobAvgRed list
                     } else {
