@@ -32,7 +32,6 @@ import static java.lang.Math.sqrt;
 public class OxymeterImpl implements Oxymeter {
     public enum RGB {RED, GREEN, BLUE}
     private static final String TAG = "Oxymeter";
-    private int counter = 0;
     private static long startTime;
     private double sumred = 0;
     private double sumblue = 0;
@@ -86,11 +85,6 @@ public class OxymeterImpl implements Oxymeter {
             badFinger();
             return;
         }
-
-        ++counter; //countes number of frames in 30 seconds
-
-        long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
-        double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
     }
 
     public double[] calculateAverageFourierBreathAndBPM(ArrayList<Double> RedList, ArrayList<Double> GreenList, double samplingFreq) {
@@ -231,7 +225,7 @@ public class OxymeterImpl implements Oxymeter {
 
     @Override
     public OxymeterData finish(double totalTimeInSecs) {
-        double samplingFreq = (counter / totalTimeInSecs);
+        double samplingFreq = 30;
         int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
         int o2 = peekBpmAndO2[0];
         int peakBpm = peekBpmAndO2[1];

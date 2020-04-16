@@ -28,31 +28,50 @@ import java.util.Queue;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
+interface OxymeterThreadEventListener {
+    void onFrame(int frameNumber);
+    void onSuccess();
+}
 
 class OxymeterThread extends Thread {
+    private static final String TAG = "OxThread";
     private Oxymeter oxymeter;
     private Queue<byte[]> framesQueue;
     private Camera cam;
-    private boolean doStop = false;
+    private boolean enabled = true;
+    private int totalFrames;
+    private OxymeterThreadEventListener eventListener;
 
-    OxymeterThread(Oxymeter oxymeter, Queue<byte[]> framesQueue, Camera cam) {
+    OxymeterThread(Oxymeter oxymeter, Queue<byte[]> framesQueue, Camera cam, int totalFrames, OxymeterThreadEventListener eventListener) {
         this.oxymeter = oxymeter;
         this.framesQueue = framesQueue;
         this.cam = cam;
+        this.totalFrames = totalFrames;
+        this.eventListener = eventListener;
     }
 
     public synchronized void doStop() {
-        this.doStop = true;
+        enabled = false;
     }
 
     public void run(){
-        // Keep running until we need to stop and we cleared the queue
-        while (!(framesQueue.isEmpty() && doStop)) {
+        Log.i(TAG, "starting.");
+        int framesPassedToOxymeter = 0;
+        // Keep running until we passed `totalFrames` frames to the oxymeter
+        while (framesPassedToOxymeter < totalFrames && enabled) {
             // push any available frames to the oxymeter
             if (!framesQueue.isEmpty()) {
+                Log.i(TAG, "Processing Frame...");
                 oxymeter.updateWithFrame(framesQueue.remove(), cam);
+                framesPassedToOxymeter++;
+                eventListener.onFrame(framesPassedToOxymeter);
             }
         }
+        if (enabled) {
+            Log.i(TAG, "Oxymeter processed all frames.");
+            eventListener.onSuccess();
+        }
+        Log.i(TAG, "Finished Oxymeter!");
     }
 }
 
@@ -67,8 +86,6 @@ public class OxymeterActivity extends Activity {
     //ProgressBar
     ProgressBar progressBarView;
     TextView tv_time;
-    int progress;
-    CountDownTimer countDownTimer;
     RotateAnimation makeVertical;
     //TextView
     private TextView alert;
@@ -170,56 +187,36 @@ public class OxymeterActivity extends Activity {
         progressBarView.setProgress(0);
 
         OxymeterActivity thisActivity = this;
-        readyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgressBarAndHideAlert();
-                oxymeter = new OxymeterImpl();
-                oxymeter.setOnBadFinger(() -> {
-                    thisActivity.badFinger();
-                    return null;
-                });
-                framesQueue = new LinkedList<>();
-                oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, camera);
-                oxymeterUpdater.start();
-                startCountdown();
-            }
-        });
-    }
-
-    //Prevent the system from restarting your activity during certain configuration changes,
-    // but receive a callback when the configurations do change, so that you can manually update your activity as necessary.
-    //such as screen orientation, keyboard availability, and language
-
-    private void startCountdown() {
-        try {
-            countDownTimer.cancel();
-        } catch (Exception e) {
-        }
-
-        progress = 1;
-        countDownTimer = new CountDownTimer(totalTime * 1000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                Log.i(TAG, "Millies until finished:" + millisUntilFinished);
-                setProgress(progress, totalTime);
-                progress = progress + 1;
-                int seconds = (int) (millisUntilFinished / 1000) % 60;
-                String newtime = seconds + " seconds";
-
-                if (newtime.equals("0")) {
-                    tv_time.setText("Press start");
-                } else {
-                    tv_time.setText(seconds + " seconds");
+        readyBtn.setOnClickListener(view -> {
+            Log.i(TAG, "Pressed start oxymeter button.");
+            showProgressBarAndHideAlert();
+            oxymeter = new OxymeterImpl();
+            oxymeter.setOnBadFinger(() -> {
+                thisActivity.badFinger();
+                return null;
+            });
+            framesQueue = new LinkedList<>();
+            final int totalFrames = 900;
+            oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, camera, totalFrames, new OxymeterThreadEventListener() {
+                @Override
+                public void onFrame(int frameNumber) {
+                    Log.i(TAG, "Current frame:" + frameNumber);
+                    float approximateFinishTime = (totalFrames - frameNumber) / 30f;
+                    runOnUiThread(() -> {
+                        setProgress(frameNumber, totalFrames);
+                        tv_time.setText((int) approximateFinishTime + " seconds");
+                    });
                 }
-            }
 
-            @Override
-            public void onFinish() {
-                finishOxymeter();
-            }
-        };
-        countDownTimer.start();
+                @Override
+                public void onSuccess() {
+                    Log.i(TAG, "finished processing all frames");
+                    finishOxymeter();
+                }
+            });
+            Log.i(TAG, "starting oxymeter.");
+            oxymeterUpdater.start();
+        });
     }
 
     public void finishOxymeter() {
@@ -235,7 +232,7 @@ public class OxymeterActivity extends Activity {
             finish();
         } else {
             Log.w(TAG, "Oxymeter returned null");
-            removeProgressBarAndShowAlert();
+            runOnUiThread(this::removeProgressBarAndShowAlert);
         }
     }
 
@@ -247,16 +244,13 @@ public class OxymeterActivity extends Activity {
 
     public void stopAndReset() {
         Log.i(TAG, "Stopping Oxymeter");
-        progress = 0;
-        setProgress(progress, 30);
-        countDownTimer.cancel();
         oxymeterUpdater.doStop();
     }
 
-    public void setProgress(int startTime, int endTime) {
-        progressBarView.setMax(endTime);
-        progressBarView.setSecondaryProgress(endTime);
-        progressBarView.setProgress(startTime);
+    public void setProgress(int currentProgress, int maxProgress) {
+        progressBarView.setMax(maxProgress);
+        progressBarView.setSecondaryProgress(maxProgress);
+        progressBarView.setProgress(currentProgress);
     }
 
     @Override
