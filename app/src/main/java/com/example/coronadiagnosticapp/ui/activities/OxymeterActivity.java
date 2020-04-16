@@ -57,6 +57,8 @@ public class OxymeterActivity extends Activity {
     public ArrayList<Double> BlueAvgList = new ArrayList<Double>();
     public ArrayList<Double> GreenAvgList = new ArrayList<Double>();
     public int counter = 0;
+    private double RedTotalAvg;
+    private SMA RedRollingAvg = null;
     // window sample consts
     public final int WINDOW_TIME = 10; // the number of seconds for each window
     public final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
@@ -117,6 +119,7 @@ public class OxymeterActivity extends Activity {
             double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
             if (totalTimeInSecs >= 30 && startTime != 0) { //when 30 seconds of measuring passes do the following " we chose 30 seconds to take half sample since 60 seconds is normally a full sample of the heart beat
                 double samplingFreq = (counter / totalTimeInSecs);
+                RedTotalAvg = sumDouble(RedAvgList) / RedAvgList.size();
                 int[] peakBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq, WINDOW_TIME, FAILED_WINDOWS_MAX);
                 int o2 = peakBpmAndO2[0];
                 int peakBpm = peakBpmAndO2[1];
@@ -176,7 +179,7 @@ public class OxymeterActivity extends Activity {
         }
 
         private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
-            ArrayList<Double> RedMoveAverage = calculateMovingAverage(redList);
+            ArrayList<Double> RedMoveAverage = calculateMovingRedWindowAverage(redList);
             ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
             double peakBpm = findIntervalsAndCalculateBPM(peaksList, samplingFreq);
             double o2 = calculateSPO2(redList, blueList);
@@ -185,6 +188,8 @@ public class OxymeterActivity extends Activity {
             if (!(o2i < 80 || o2i > 99) && !(peakBpmi < 45 || peakBpmi > 200)) { // if any of the measurements is bad, the windows is bad sample
                 return new double[]{o2, peakBpm, 0};
             }
+            // this is a bad measurement
+            RedRollingAvg = null;
             return new double[]{0, 0, 1};
         }
 
@@ -238,17 +243,22 @@ public class OxymeterActivity extends Activity {
             return spo2;
         }
 
-        public ArrayList<Double> calculateMovingAverage(ArrayList<Double> list) {
-            //Initialize an object that calculates the rolling average of last 15 samples
-            SMA calc_mov_avg = new SMA(15);
+        public ArrayList<Double> calculateMovingRedWindowAverage(ArrayList<Double> list) {
             ArrayList<Double> MovAvgRed = new ArrayList<Double>();
-            double avg_hr = (sumDouble(list)) / (list.size());
-            for (int i = 0; i < list.size(); i++) {
-                if (i < 15) {                                   //Assign the average red received to the first 15 samples
-                    calc_mov_avg.compute(avg_hr);               //Add the value to the moving average object
-                    MovAvgRed.add(i, avg_hr);                   //Add the value to the MobAvgRed list
-                } else {
-                    MovAvgRed.add(calc_mov_avg.compute(list.get(i)));
+            if (RedRollingAvg == null) {
+                //Initialize an object that calculates the rolling average of last 15 samples
+                RedRollingAvg = new SMA(15);
+                for (int i = 0; i < list.size(); i++) {
+                    if (i < 15) {                                   //Assign the average red received to the first 15 samples
+                        RedRollingAvg.compute(RedTotalAvg);               //Add the value to the moving average object
+                        MovAvgRed.add(i, RedTotalAvg);                   //Add the value to the MobAvgRed list
+                    } else {
+                        MovAvgRed.add(RedRollingAvg.compute(list.get(i)));
+                    }
+                }
+            } else {
+                for (int i = 0; i < list.size(); i++) {
+                    MovAvgRed.add(RedRollingAvg.compute(list.get(i)));
                 }
             }
             return MovAvgRed;
