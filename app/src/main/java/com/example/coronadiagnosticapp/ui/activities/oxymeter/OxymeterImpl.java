@@ -224,8 +224,7 @@ public class OxymeterImpl implements Oxymeter {
 
 
     @Override
-    public OxymeterData finish(double totalTimeInSecs) {
-        double samplingFreq = 30;
+    public OxymeterData finish(double totalTimeInSecs, double samplingFreq) {
         int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
         int o2 = peekBpmAndO2[0];
         int peakBpm = peekBpmAndO2[1];

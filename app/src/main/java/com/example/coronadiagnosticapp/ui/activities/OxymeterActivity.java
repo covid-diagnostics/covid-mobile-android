@@ -24,6 +24,7 @@ import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
@@ -89,7 +90,8 @@ public class OxymeterActivity extends Activity {
     RotateAnimation makeVertical;
     //TextView
     private TextView alert;
-
+    // This value actually stores FPS * 1000 (because that's how the `Camera` module handles it's data).
+    private int previewFps = -1;
     private Queue<byte[]> framesQueue;
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
@@ -129,6 +131,24 @@ public class OxymeterActivity extends Activity {
                 parameters.setPreviewSize(size.width, size.height);
                 Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
             }
+            // Finds the fastest stable fps the preview can support.
+            List<int[]> fpsRanges = parameters.getSupportedPreviewFpsRange();
+            Log.i(TAG, "Available preview fps ranges:");
+            for (int[] range: fpsRanges) {
+                Log.i(TAG, "Range: " + range[0] + " - " + range[1]);
+                // The fps range should be stable (min fps equals max fps)
+                if (range[0] == range[1] && range[0] > previewFps) {
+                    previewFps = range[0];
+                }
+            }
+            if (previewFps == -1) {
+                throw new RuntimeException("Could not find any stable fps range");
+            }
+            if ((previewFps % 1000) != 0) {
+                Log.w(TAG, "Preview FPS is not a whole number");
+            }
+            Log.i(TAG, "Preview running on " + previewFps + " FPS");
+            parameters.setPreviewFpsRange(previewFps, previewFps);
 
             camera.setParameters(parameters);
             camera.startPreview();
@@ -220,7 +240,7 @@ public class OxymeterActivity extends Activity {
     }
 
     public void finishOxymeter() {
-        OxymeterData result = oxymeter.finish(totalTime);
+        OxymeterData result = oxymeter.finish(totalTime, previewFps / 1000D);
         stopAndReset();
         if (result != null) {
             Log.i(TAG, "Oxymeter finished successfully!");

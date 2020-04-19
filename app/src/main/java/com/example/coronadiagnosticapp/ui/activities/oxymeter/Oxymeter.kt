@@ -6,6 +6,6 @@ class OxymeterData (var oxSaturation: Int, var heartRate: Int, var breathRate: I
 
 interface Oxymeter {
     fun updateWithFrame(data: ByteArray, cam: Camera)
-    fun finish(totalTimeInSecs: Double): OxymeterData? // returns null in case of invalid measurement
+    fun finish(totalTimeInSecs: Double, samplingFreq: Double): OxymeterData? // returns null in case of invalid measurement
     fun setOnBadFinger(callback: () -> Unit)
 }
