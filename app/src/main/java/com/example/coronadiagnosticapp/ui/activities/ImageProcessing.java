@@ -58,20 +58,17 @@ public abstract class ImageProcessing {
      * Given a byte array representing a yuv420sp image, determine the average
      * amount of red in the image. Note: returns 0 if the byte array is NULL.
      *
-     * @param yuv420sp
-     *            Byte array representing a yuv420sp image
-     * @param width
-     *            Width of the image.
-     * @param height
-     *            Height of the image.
+     * @param yuv420sp Byte array representing a yuv420sp image
+     * @param height   Height of the image.
+     * @param width    Width of the image.
      * @return int representing the average amount of red in the image.
      */
-    public static double decodeYUV420SPtoRedBlueGreenAvg(byte[] yuv420sp, int width, int height, int type) {
+    public static double decodeYUV420SPtoRedBlueGreenAvg(byte[] yuv420sp, int height, int width, int type) {
         if (yuv420sp == null) return 0;
         final int frameSize = width * height;
 
         int sum = decodeYUV420SPtoRedBlueGreenSum(yuv420sp, width, height, type);
-        int mean = (sum / frameSize);
+        double mean = (double)sum / (double)frameSize;
 
         return mean;
     }
