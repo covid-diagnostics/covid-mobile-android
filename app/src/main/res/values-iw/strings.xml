@@ -15,7 +15,6 @@
     <string name="we_re_glad_you_ve_joined_the_effort">אנחנו שמחים שהצטרפתם למאמץ הלאומי</string>
     <string name="thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus">אלפי ישראלים יכולים לסבול מתסמינים\nשל וירוס הקורונה</string>
     <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל\n את חייך וחיים של רבים אחרים!</string>
-    esources>
     <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
     <string name="password">סיסמא</string>
     <string name="email">דואר אלקטרוני</string>
@@ -41,6 +40,9 @@
     <string name="severely_high">גבוה באופן חריג</string>
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
+    <string name="medical_questionnaire">שאלון רפואי</string>
+    <string name="recorder_test">הקלטה</string>
+    <string name="camera_test">צילום</string>
     <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
 
 </resources>
