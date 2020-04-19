@@ -81,42 +81,8 @@ public class OxymeterImpl implements Oxymeter {
     @Override
     public void updateWithFrame(@NotNull Double[] data) {
         double redAvg = data[0];
-        double blueAvg = data[1];
-        /*switch (bayer) {
-            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_BGGR:
-                for (int i = 0; i < height; i = i + 2) {
-                    for (int j = 0; j < width; j = j + 2) {
-                        totalBlue += data.getDouble(i * width + j);
-                        totalRed += data.getDouble((i + 1) * width + j + 1);
-                    }
-                }
-                break;
-            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_GBRG:
-                for (int i = 0; i < height; i = i + 2) {
-                    for (int j = 0; j < width; j = j + 2) {
-                        totalBlue += data.getDouble(i * width + j + 1);
-                        totalRed += data.getDouble((i + 1) * width + j);
-                    }
-                }
-                break;
-            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_GRBG:
-                for (int i = 0; i < height; i = i + 2) {
-                    for (int j = 0; j < width; j = j + 2) {
-                        totalRed += data.getDouble(i * width + j + 1);
-                        totalBlue += data.getDouble((i + 1) * width + j);
-                    }
-                }
-                break;
-            case CameraCharacteristics.SENSOR_INFO_COLOR_FILTER_ARRANGEMENT_RGGB:
-                for (int i = 0; i < height; i = i + 2) {
-                    for (int j = 0; j < width; j = j + 2) {
-                        totalRed += data.getDouble(i * width + j);
-                        totalBlue += data.getDouble((i + 1) * width + j + 1);
-                    }
-                }
-                break;
-        }*/
-
+        double greenAvg = data[1];
+        double blueAvg = data[2];
 
         /*Camera.Size size = cam.getParameters().getPreviewSize();
         if (size == null) throw new NullPointerException();
@@ -141,6 +107,7 @@ public class OxymeterImpl implements Oxymeter {
 
         ++counter; //countes number of frames in 30 seconds
         RedAvgList.add(redAvg);
+        GreenAvgList.add(greenAvg);
         BlueAvgList.add(blueAvg);
         long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
         double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
@@ -284,6 +251,16 @@ public class OxymeterImpl implements Oxymeter {
 
     @Override
     public OxymeterData finish(double totalTimeInSecs) {
+        // Round averages and log them.
+//        for (int i = 0; i < RedAvgList.size(); i++) {
+//            RedAvgList.set(i, new Double(Math.round(RedAvgList.get(i) * 100)) / 100);
+//            GreenAvgList.set(i, new Double(Math.round(GreenAvgList.get(i) * 100)) / 100);
+//            BlueAvgList.set(i, new Double(Math.round(BlueAvgList.get(i) * 100)) / 100);
+//        }
+//        Log.e(TAG, "red = " + RedAvgList);
+//        Log.e(TAG, "green = " + GreenAvgList);
+//        Log.e(TAG, "blue = " + BlueAvgList);
+
         double samplingFreq = (counter / totalTimeInSecs);
         int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
         int o2 = peekBpmAndO2[0];

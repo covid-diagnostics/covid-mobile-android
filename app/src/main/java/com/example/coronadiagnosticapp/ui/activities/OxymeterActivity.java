@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Queue;
 
 import static android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
@@ -274,7 +273,7 @@ public class OxymeterActivity extends Activity {
     public void stopAndReset() {
         Log.i(TAG, "Stopping Oxymeter");
         progress = 0;
-        setProgress(progress, 30);
+        setProgress(progress, totalTime);
         countDownTimer.cancel();
         // TODO: call handler.removeCallback...
         oxymeterUpdaterThread.quit();
@@ -325,6 +324,7 @@ public class OxymeterActivity extends Activity {
                 // TODO: We should use one of the ranges in chars.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES);
                 // I am guessing that [30, 30] will always be supported...
                 captureRequest.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, new Range<Integer>(30, 30));
+                captureRequest.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
                 captureRequest.addTarget(reader.getSurface());
                 captureRequest.addTarget(previewHolder.getSurface());
                 session.setRepeatingRequest(captureRequest.build(), null, null);
