@@ -30,17 +30,4 @@
     <string name="last_name">שם משפחה</string>
     <string name="submit_personal_info">אישור</string>
     <string name="please_put_your_finger_on_camera">הנח את האצבע על המצלמה</string>
-    <string name="your_heart_rate_is">"קצב פעימות הלב שלך "</string>
-    <string name="your_oxygen_saturation_is">מדד החמצן בדם שלך</string>
-    <string name="your_respiration_rate_is">קצב הנשימות שלך</string>
-    <string name="finish">סיום</string>
-    <string name="things_look_ok">הכל נראה בסדר</string>
-    <string name="normal">תקין</string>
-    <string name="high">גבוה מהרגיל</string>
-    <string name="low">נמוך מהרגיל</string>
-    <string name="severely_high">גבוה באופן חריג</string>
-    <string name="severely_low">נמוך באופן חריג</string>
-    <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
-    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
-
 </resources>
