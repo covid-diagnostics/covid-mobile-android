@@ -1,15 +1,16 @@
 package com.example.coronadiagnosticapp.ui.activities
 
 import android.Manifest
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronadiagnosticapp.R
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.DexterBuilder
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+
 
 // This is an arbitrary number we are using to keep track of the permission
 // request. Where an app has multiple context for requesting permission,
@@ -26,6 +27,12 @@ private val REQUIRED_PERMISSIONS = arrayOf(
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val res: Resources = this.resources
+        val dm: DisplayMetrics = res.displayMetrics
+        val conf: Configuration = res.configuration
+//        conf.setLocale(Locale("iw")) // API 17+ only.
+//        res.updateConfiguration(conf, dm)
+//
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }

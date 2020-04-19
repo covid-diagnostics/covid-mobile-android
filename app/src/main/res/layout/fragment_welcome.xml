@@ -12,36 +12,39 @@
         android:id="@+id/textView_welcome_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="96dp"
         android:gravity="center"
         android:text="@string/we_re_glad_you_ve_joined_the_effort"
         android:textAppearance="@style/appSubHeader"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_welcome_first_sub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus"
-        android:textAppearance="@style/appBodySmall"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_welcome_title" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="@string/that_s_why_timely_diagnosis_and_isolation_can_save_your_life"
         android:textAppearance="@style/appBodySmall"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_welcome_first_sub" />
+
+    <TextView
+        android:id="@+id/textView_welcome_first_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus"
+        android:textAppearance="@style/appBodySmall"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_welcome_title" />
 
     <Button
         android:id="@+id/button_start"

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.android.synthetic.main.recorder_fragment.visualizer
 import kotlinx.coroutines.Dispatchers
@@ -56,6 +57,7 @@ class RecorderFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 2
         recordFile = context!!.externalCacheDir!!.absolutePath
     }
 
