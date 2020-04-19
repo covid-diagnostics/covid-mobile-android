@@ -31,7 +31,6 @@ class ResultFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
-//        activity?.findViewById<Stepper>(R.id.Stepper)?.forward()
     }
 
     override fun onCreateView(
