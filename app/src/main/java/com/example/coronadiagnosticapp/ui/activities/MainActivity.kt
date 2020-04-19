@@ -1,15 +1,14 @@
 package com.example.coronadiagnosticapp.ui.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronadiagnosticapp.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
 
 
 // This is an arbitrary number we are using to keep track of the permission
@@ -33,6 +32,10 @@ class MainActivity : AppCompatActivity() {
 //        conf.setLocale(Locale("iw")) // API 17+ only.
 //        res.updateConfiguration(conf, dm)
 //
+        //Reminder.createNotification2(applicationContext, getSystemService(Context.ALARM_SERVICE) as AlarmManager);
+        val i = Intent(applicationContext,  RegisterNotificationService::class.java)
+        startService(i)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
