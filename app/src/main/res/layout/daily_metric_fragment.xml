@@ -18,6 +18,28 @@
         app:srcCompat="@drawable/cough_emoji" />
 
     <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="29dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fatigue"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_fatigue"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/fatigue"
+        app:srcCompat="@drawable/tired_emoji" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fatigue"
+        app:layout_constraintEnd_toStartOf="@+id/fatigue"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_fatigue"
+        app:srcCompat="@drawable/smail_emoji" />
+
+    <ImageView
         android:id="@+id/imageView6"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -72,6 +94,30 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength"
         app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/fatigue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:text="@string/fatigue"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_fatigue"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_fatigue"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_fatigue"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/muscle_weakness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:text="@string/muscle_weakness"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_muscle_weakness"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_muscle_weakness"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_muscle_weakness" />
+
     <SeekBar
         android:id="@+id/activity_metrics_inp_cough_strength"
         android:layout_width="0dp"
@@ -82,6 +128,32 @@
         android:progress="0"
         app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
+
+    <SeekBar
+        android:id="@+id/activity_metrics_inp_fatigue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:hint="@string/coughStrength"
+        android:max="10"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
+
+    <SeekBar
+        android:id="@+id/activity_metrics_inp_muscle_weakness"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:hint="@string/coughStrength"
+        android:max="10"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
         app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
 
@@ -116,7 +188,28 @@
     <Button
         android:id="@+id/button_metricSubmit"
         style="@style/customButton"
-        android:text="@string/next" />
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="26dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/muscle_emoji"
+        app:layout_constraintBottom_toBottomOf="@+id/muscle_weakness"
+        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_muscle_weakness" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="29dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/bone_emoji"
+        app:layout_constraintBottom_toBottomOf="@+id/muscle_weakness"
+        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_muscle_weakness" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

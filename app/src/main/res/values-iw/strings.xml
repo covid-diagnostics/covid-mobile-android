@@ -23,7 +23,6 @@
     <string name="required">שדה חובה</string>
     <string name="must_valid_email">כתובת דואר אלקטרוני לא תקינה</string>
     <string name="passwords_match">הסיסמא חייבת להיות זהה</string>
-    <string name="personal_info_request">בבקשה, מלא את פרטייך</string>
     <string name="age">גיל</string>
     <string name="first_name">שם פרטי</string>
     <string name="last_name">שם משפחה</string>
@@ -44,5 +43,8 @@
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
     <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
+    <string name="fatigue">עייפות</string>
+    <string name="muscle_weakness">חולשת שרירים</string>
+    <string name="personal_info_request">עזרו לנו להכיר אתכם טוב יותר</string>
 
 </resources>
