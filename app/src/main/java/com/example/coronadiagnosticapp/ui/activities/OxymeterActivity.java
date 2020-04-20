@@ -79,7 +79,7 @@ class OxymeterThread extends Thread {
 
 public class OxymeterActivity extends Activity {
     // Variables Initialization
-    private static final String TAG = "HeartRateMonitor";;
+    private static final String TAG = "HeartRateMonitor";
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     //Freq + timer variable
@@ -210,7 +210,7 @@ public class OxymeterActivity extends Activity {
         readyBtn.setOnClickListener(view -> {
             Log.i(TAG, "Pressed start oxymeter button.");
             showProgressBarAndHideAlert();
-            oxymeter = new OxymeterImpl();
+            oxymeter = new OxymeterImpl(previewFps / 1000);
             oxymeter.setOnBadFinger(() -> {
                 thisActivity.badFinger();
                 return null;
