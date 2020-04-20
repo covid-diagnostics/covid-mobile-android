@@ -50,6 +50,7 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> RedAvgList = new ArrayList<>();
     private ArrayList<Double> BlueAvgList = new ArrayList<>();
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
+    private ArrayList<Double> TimestampList = new ArrayList<>();
 
     //Initialize an object that calculates the rolling average of last 15 samples
     private SMA calc_mov_avg = new SMA(15);
@@ -109,6 +110,7 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(redAvg);
         GreenAvgList.add(greenAvg);
         BlueAvgList.add(blueAvg);
+        TimestampList.add(data[3]);
         long endTime = System.currentTimeMillis(); // Set an endTime each frame to check exactly when the timer reach 30 secondes
         double totalTimeInSecs = (endTime - startTime) / 1000d; //to convert time to seconds
     }
@@ -248,7 +250,6 @@ public class OxymeterImpl implements Oxymeter {
         }
     }
 
-
     @Override
     public OxymeterData finish(double totalTimeInSecs) {
         // Round averages and log them.
@@ -262,6 +263,9 @@ public class OxymeterImpl implements Oxymeter {
 //        Log.e(TAG, "blue = " + BlueAvgList);
 
         double samplingFreq = (counter / totalTimeInSecs);
+        Log.e(TAG, "Total images" + counter);
+        String vals = "red=" + Arrays.toString(RedAvgList.toArray()) + "\nblue=" + Arrays.toString(BlueAvgList.toArray()) + "\ngreen=" +
+                Arrays.toString(GreenAvgList.toArray()) + "\ntimes=" + Arrays.toString(TimestampList.toArray());
         int[] peekBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq);
         int o2 = peekBpmAndO2[0];
         int peakBpm = peekBpmAndO2[1];

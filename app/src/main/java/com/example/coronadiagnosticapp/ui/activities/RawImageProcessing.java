@@ -83,6 +83,6 @@ public abstract class RawImageProcessing {
         double avgGreen = totGreen / (squareSize * squareSize / 4.);
         double avgBlue = totBlue / (squareSize * squareSize / 4.);
 
-        return new Double[]{avgRed, avgGreen, avgBlue};
+        return new Double[]{avgRed, avgGreen, avgBlue, Double.valueOf(img.getTimestamp())};
     }
 }

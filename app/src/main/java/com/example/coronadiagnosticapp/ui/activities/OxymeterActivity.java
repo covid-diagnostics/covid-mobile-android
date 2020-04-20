@@ -304,14 +304,14 @@ public class OxymeterActivity extends Activity {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            long start = System.nanoTime();
+            //long start = System.nanoTime();
             Image img = reader.acquireNextImage();
-            long timestamp = img.getTimestamp();
+            //long timestamp = img.getTimestamp();
             Double[] decoded = RawImageProcessing.decodeCentralSquareInRawImage(img, rawHeight, rawWidth, bayer);
             oxymeter.updateWithFrame(decoded);
             img.close();
-            long end = System.nanoTime();
-            Log.e(TAG, "{'timestamp': " + timestamp + ", 'start': " + start + ", 'end': " + end + ", 'handler_time': " + ((double) end - start) / 1e9 + "},");
+            //long end = System.nanoTime();
+            //Log.e(TAG, "{'timestamp': " + timestamp + ", 'start': " + start + ", 'end': " + end + ", 'handler_time': " + ((double) end - start) / 1e9 + "},");
         }
     };
 
