@@ -1,20 +1,15 @@
 package com.example.coronadiagnosticapp.ui.activities.oxymeter;
 
 import android.hardware.Camera;
-import android.util.Log;
 
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity;
 import com.example.coronadiagnosticapp.ui.activities.SMA;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

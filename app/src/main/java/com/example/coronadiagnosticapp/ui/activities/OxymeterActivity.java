@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -56,13 +55,12 @@ class OxymeterThread extends Thread {
     }
 
     public void run(){
-        Log.i(TAG, "starting.");
+        Log.i(TAG, "Starting oxymeter thread.");
         int framesPassedToOxymeter = 0;
         // Keep running until we passed `totalFrames` frames to the oxymeter
         while (framesPassedToOxymeter < totalFrames && enabled) {
             // push any available frames to the oxymeter
             if (!framesQueue.isEmpty()) {
-                Log.i(TAG, "Processing Frame...");
                 oxymeter.updateWithFrame(framesQueue.remove(), cam);
                 framesPassedToOxymeter++;
                 eventListener.onFrame(framesPassedToOxymeter);
@@ -252,13 +250,13 @@ public class OxymeterActivity extends Activity {
             finish();
         } else {
             Log.w(TAG, "Oxymeter returned null");
-            runOnUiThread(this::removeProgressBarAndShowAlert);
+            runOnUiThread(() -> removeProgressBarAndShowAlert(getString(R.string.measurement_failed)));
         }
     }
 
     public void badFinger() {
         Log.w(TAG, "Finger not recognised!");
-        runOnUiThread(this::removeProgressBarAndShowAlert);
+        runOnUiThread(() -> removeProgressBarAndShowAlert(getString(R.string.please_put_your_finger_on_camera)));
         stopAndReset();
     }
 
@@ -308,14 +306,16 @@ public class OxymeterActivity extends Activity {
         stopAndReset();
     }
 
-    private void removeProgressBarAndShowAlert() {
+    private void removeProgressBarAndShowAlert(String text) {
         alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
+        alert.setText(text);
+        progressBarView.clearAnimation();
         progressBarView.setVisibility(View.INVISIBLE);
     }
 
     private void showProgressBarAndHideAlert() {
         alert.setVisibility(View.INVISIBLE);
-        if (!(progressBarView.getVisibility() == View.VISIBLE)) {
+        if (progressBarView.getVisibility() != View.VISIBLE) {
             progressBarView.startAnimation(makeVertical);
             progressBarView.setVisibility(View.VISIBLE);
         }
