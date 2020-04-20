@@ -18,6 +18,9 @@ class RepositoryImpl @Inject constructor(
     val sharedProvider: SharedProvider,
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
+    companion object {
+        private var lastHealthResult : HealthResult? = null
+    }
 
     private lateinit var responseUser: ResponseUser
     override val error: MutableLiveData<String> = MutableLiveData()
@@ -77,10 +80,11 @@ class RepositoryImpl @Inject constructor(
 
 
     override suspend fun saveResult(healthResult: HealthResult) {
+        lastHealthResult = healthResult
         dao.insertHealth(healthResult)
     }
 
-    override fun getLastResult(): LiveData<HealthResult> = dao.getLastHealthResult()
+    override fun getLastResult() = lastHealthResult
     override fun getUserName() = sharedProvider.getName()
 
     override suspend fun uploadAudioRecording(file: File) {
