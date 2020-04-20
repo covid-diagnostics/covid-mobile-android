@@ -177,7 +177,7 @@ public class OxymeterImpl implements Oxymeter {
         if (RedRollingAvg == null) {
             //Initialize an object that calculates the rolling average of last `SMA_SIZE` samples
             RedRollingAvg = new SMA(SMA_SIZE);
-            double avg = sumDouble(RedAvgList) / RedAvgList.size();
+            double avg = sumDouble(list) / list.size();
             for (int i = 0; i < list.size(); i++) {
                 if (i < SMA_SIZE) {                                   //Assign the average red received to the first `SMA_SIZE` samples
                     RedRollingAvg.compute(avg);               //Add the value to the moving average object
