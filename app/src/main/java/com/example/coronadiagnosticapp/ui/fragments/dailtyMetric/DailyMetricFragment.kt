@@ -10,6 +10,7 @@ import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class DailyMetricFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
     }
 
     @Inject
