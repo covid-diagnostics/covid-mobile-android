@@ -65,5 +65,6 @@
     <string name="recorder_test">Recorder Test</string>
     <string name="camera_test">Camera Test</string>
     <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
+    <string name="seconds">seconds left</string>
 
 </resources>

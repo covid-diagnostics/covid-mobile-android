@@ -44,5 +44,6 @@
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
     <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
+    <string name="seconds">שניות נשארו</string>
 
 </resources>

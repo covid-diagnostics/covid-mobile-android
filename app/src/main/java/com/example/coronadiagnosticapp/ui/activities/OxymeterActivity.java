@@ -84,7 +84,7 @@ public class OxymeterActivity extends Activity {
     private static long startTime = 0;
     //ProgressBar
     ProgressBar progressBarView;
-    TextView tv_time;
+    TextView timeLeftView;
     RotateAnimation makeVertical;
     //TextView
     private TextView alert;
@@ -194,7 +194,7 @@ public class OxymeterActivity extends Activity {
         //Button
         Button readyBtn = (Button) findViewById(R.id.ready_btn);
         progressBarView = (ProgressBar) findViewById(R.id.barTimer);
-        tv_time = (TextView) findViewById(R.id.textTimer);
+        timeLeftView = (TextView) findViewById(R.id.textTimer);
 
 
         /*Animation*/
@@ -219,10 +219,8 @@ public class OxymeterActivity extends Activity {
                 @Override
                 public void onFrame(int frameNumber) {
                     Log.i(TAG, "Current frame:" + frameNumber);
-                    float approximateFinishTime = (totalFrames - frameNumber) / 30f;
                     runOnUiThread(() -> {
                         setProgress(frameNumber, totalFrames);
-                        tv_time.setText((int) approximateFinishTime + " seconds");
                     });
                 }
 
@@ -265,10 +263,13 @@ public class OxymeterActivity extends Activity {
         oxymeterUpdater.doStop();
     }
 
-    public void setProgress(int currentProgress, int maxProgress) {
-        progressBarView.setMax(maxProgress);
-        progressBarView.setSecondaryProgress(maxProgress);
-        progressBarView.setProgress(currentProgress);
+    public void setProgress(int currentFrame, int totalFrames) {
+        progressBarView.setMax(totalFrames);
+        progressBarView.setSecondaryProgress(totalFrames);
+        progressBarView.setProgress(currentFrame);
+
+        double secondsLeft = (totalFrames - currentFrame) / ((double) previewFps / 1000);
+        timeLeftView.setText((int) secondsLeft + " " + getString(R.string.seconds));
     }
 
     @Override
@@ -311,6 +312,7 @@ public class OxymeterActivity extends Activity {
         alert.setText(text);
         progressBarView.clearAnimation();
         progressBarView.setVisibility(View.INVISIBLE);
+        timeLeftView.setVisibility(View.INVISIBLE);
     }
 
     private void showProgressBarAndHideAlert() {
@@ -318,6 +320,7 @@ public class OxymeterActivity extends Activity {
         if (progressBarView.getVisibility() != View.VISIBLE) {
             progressBarView.startAnimation(makeVertical);
             progressBarView.setVisibility(View.VISIBLE);
+            timeLeftView.setVisibility(View.VISIBLE);
         }
     }
 }
