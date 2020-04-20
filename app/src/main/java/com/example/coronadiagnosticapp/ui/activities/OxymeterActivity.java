@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -84,6 +86,7 @@ public class OxymeterActivity extends Activity {
     private static long startTime = 0;
     //ProgressBar
     ProgressBar progressBarView;
+    ImageView tickImageView;
     TextView timeLeftView;
     RotateAnimation makeVertical;
     //TextView
@@ -187,6 +190,7 @@ public class OxymeterActivity extends Activity {
         // XML - Java Connecting
         SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
         alert = (TextView) findViewById(R.id.putfinger);
+        tickImageView = findViewById(R.id.tickImage);
         previewHolder = preview.getHolder();
         previewHolder.addCallback(surfaceCallback);
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -207,7 +211,7 @@ public class OxymeterActivity extends Activity {
         OxymeterActivity thisActivity = this;
         readyBtn.setOnClickListener(view -> {
             Log.i(TAG, "Pressed start oxymeter button.");
-            showProgressBarAndHideAlert();
+            showProgressBarAndShowAlert(getString(R.string.things_look_ok));
             oxymeter = new OxymeterImpl();
             oxymeter.setOnBadFinger(() -> {
                 thisActivity.badFinger();
@@ -269,7 +273,7 @@ public class OxymeterActivity extends Activity {
         progressBarView.setProgress(currentFrame);
 
         double secondsLeft = (totalFrames - currentFrame) / ((double) previewFps / 1000);
-        timeLeftView.setText((int) secondsLeft + " " + getString(R.string.seconds));
+        timeLeftView.setText(String.format("%s", (int) secondsLeft));
     }
 
     @Override
@@ -307,16 +311,17 @@ public class OxymeterActivity extends Activity {
         stopAndReset();
     }
 
-    private void removeProgressBarAndShowAlert(String text) {
-        alert.setVisibility(View.VISIBLE); // Make alert "no finger" - visible
-        alert.setText(text);
+    private void removeProgressBarAndShowAlert(String alertText) {
+        tickImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_warning));
+        alert.setText(alertText);
         progressBarView.clearAnimation();
         progressBarView.setVisibility(View.INVISIBLE);
         timeLeftView.setVisibility(View.INVISIBLE);
     }
 
-    private void showProgressBarAndHideAlert() {
-        alert.setVisibility(View.INVISIBLE);
+    private void showProgressBarAndShowAlert(String alertText) {
+        tickImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_tick));
+        alert.setText(alertText);
         if (progressBarView.getVisibility() != View.VISIBLE) {
             progressBarView.startAnimation(makeVertical);
             progressBarView.setVisibility(View.VISIBLE);

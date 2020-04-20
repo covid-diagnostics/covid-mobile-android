@@ -59,12 +59,11 @@
     <string name="low">low</string>
     <string name="severely_high">severely high</string>
     <string name="severely_low">severely low</string>
-    <string name="things_look_ok">Things look OK</string>
+    <string name="things_look_ok">Great!\nKeep holding your finger</string>
     <string name="call_mda">Please consult MDA regarding your test results</string>
     <string name="medical_questionnaire">Medical Questionnaire</string>
     <string name="recorder_test">Recorder Test</string>
     <string name="camera_test">Camera Test</string>
     <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
-    <string name="seconds">seconds left</string>
 
 </resources>
