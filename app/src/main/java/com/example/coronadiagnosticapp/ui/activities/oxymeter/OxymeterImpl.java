@@ -1,29 +1,23 @@
 package com.example.coronadiagnosticapp.ui.activities.oxymeter;
 
 import android.hardware.Camera;
-import android.util.Log;
 
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity;
 import com.example.coronadiagnosticapp.ui.activities.SMA;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -49,10 +43,9 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> BlueAvgList = new ArrayList<>();
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
 
-    //Initialize an object that calculates the rolling average of last 15 samples
     private int frameCounter = 0;
     private Function0<Unit> onBadFinger;
-    private SMA calc_mov_avg = new SMA(15);
+    private Function1<? super Integer, Unit> onUpdateView;
 
     public OxymeterImpl(double samplingFreq) {
         this.samplingFreq = (int) samplingFreq;
@@ -95,6 +88,7 @@ public class OxymeterImpl implements Oxymeter {
                 badFinger();
                 return;
             }
+            UpdateView((int) results[1]);
         }
     }
 
@@ -272,7 +266,6 @@ public class OxymeterImpl implements Oxymeter {
         return sum;
     }
 
-
     private void badFinger() {
         // Invokes the onBadFinger callback
         if (onBadFinger != null)
@@ -282,5 +275,16 @@ public class OxymeterImpl implements Oxymeter {
     @Override
     public void setOnBadFinger(@NotNull Function0<Unit> callback) {
         onBadFinger = callback;
+    }
+
+    private void UpdateView(int heartRate) {
+        // Invokes the onUpdateView callback
+        if (onUpdateView != null)
+            onUpdateView.invoke(heartRate);
+    }
+
+    @Override
+    public void setUpdateView(@NotNull Function1<? super Integer, Unit> callback) {
+        onUpdateView = callback;
     }
 }

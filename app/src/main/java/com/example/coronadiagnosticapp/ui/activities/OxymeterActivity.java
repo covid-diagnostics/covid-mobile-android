@@ -31,6 +31,7 @@ import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 interface OxymeterThreadEventListener {
     void onFrame(int frameNumber);
+
     void onSuccess();
 }
 
@@ -55,7 +56,7 @@ class OxymeterThread extends Thread {
         enabled = false;
     }
 
-    public void run(){
+    public void run() {
         Log.i(TAG, "starting.");
         int framesPassedToOxymeter = 0;
         // Keep running until we passed `totalFrames` frames to the oxymeter
@@ -87,6 +88,7 @@ public class OxymeterActivity extends Activity {
     //ProgressBar
     ProgressBar progressBarView;
     TextView tv_time;
+    TextView heartRate;
     RotateAnimation makeVertical;
     //TextView
     private TextView alert;
@@ -96,6 +98,7 @@ public class OxymeterActivity extends Activity {
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
     private int totalTime = 30;
+    public int currentHeartRate;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         @Override
@@ -134,7 +137,7 @@ public class OxymeterActivity extends Activity {
             // Finds the fastest stable fps the preview can support.
             List<int[]> fpsRanges = parameters.getSupportedPreviewFpsRange();
             Log.i(TAG, "Available preview fps ranges:");
-            for (int[] range: fpsRanges) {
+            for (int[] range : fpsRanges) {
                 Log.i(TAG, "Range: " + range[0] + " - " + range[1]);
                 // The fps range should be stable (min fps equals max fps)
                 if (range[0] == range[1] && range[0] > previewFps) {
@@ -197,6 +200,7 @@ public class OxymeterActivity extends Activity {
         Button readyBtn = (Button) findViewById(R.id.ready_btn);
         progressBarView = (ProgressBar) findViewById(R.id.barTimer);
         tv_time = (TextView) findViewById(R.id.textTimer);
+        heartRate = (TextView) findViewById(R.id.heartRate);
 
 
         /*Animation*/
@@ -215,6 +219,10 @@ public class OxymeterActivity extends Activity {
                 thisActivity.badFinger();
                 return null;
             });
+            oxymeter.setUpdateView(heartRate -> {
+                thisActivity.updateView(heartRate);
+                return null;
+            });
             framesQueue = new LinkedList<>();
             final int totalFrames = 900;
             oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, camera, totalFrames, new OxymeterThreadEventListener() {
@@ -224,7 +232,7 @@ public class OxymeterActivity extends Activity {
                     float approximateFinishTime = (totalFrames - frameNumber) / 30f;
                     runOnUiThread(() -> {
                         setProgress(frameNumber, totalFrames);
-                        tv_time.setText((int) approximateFinishTime + " seconds");
+                        tv_time.setText(Integer.toString((int) approximateFinishTime));
                     });
                 }
 
@@ -260,6 +268,15 @@ public class OxymeterActivity extends Activity {
         Log.w(TAG, "Finger not recognised!");
         runOnUiThread(this::removeProgressBarAndShowAlert);
         stopAndReset();
+    }
+
+    public void updateView(int heartRate) {
+        currentHeartRate = heartRate;
+        runOnUiThread(this::updateMeasurements);
+    }
+
+    private void updateMeasurements() {
+        heartRate.setText(Integer.toString(currentHeartRate));
     }
 
     public void stopAndReset() {
