@@ -32,11 +32,11 @@ class MainActivity : AppCompatActivity() {
 //        conf.setLocale(Locale("iw")) // API 17+ only.
 //        res.updateConfiguration(conf, dm)
 //
-        //Reminder.createNotification2(applicationContext, getSystemService(Context.ALARM_SERVICE) as AlarmManager);
+        super.onCreate(savedInstanceState)
+
         val i = Intent(applicationContext,  RegisterNotificationService::class.java)
         startService(i)
 
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 

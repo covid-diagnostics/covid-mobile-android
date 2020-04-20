@@ -33,10 +33,10 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         builder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Zodiac")
+                .setSmallIcon(R.mipmap.ic_launcher) // TODO set a notification icon.
+                .setContentTitle(context.getString(R.string.reminder_notification_title))
                 .setContentIntent(pendingIntent)
-                .setContentText("Check out your horoscope")
+                .setContentText(context.getString(R.string.reminder_notification_content))
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
                 .setContentInfo("Info");
 

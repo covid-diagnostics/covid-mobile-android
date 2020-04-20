@@ -6,9 +6,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.Calendar;
 
 public class RegisterNotificationService extends Service {
+    private static final String TAG = "RegisterNotification";
+
     public RegisterNotificationService() {
     }
 
@@ -19,6 +24,12 @@ public class RegisterNotificationService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d(TAG, "oncreate RegisterNotificationService.");
+        Toast.makeText(
+                this,
+                "oncreate RegisterNotification",
+                Toast.LENGTH_LONG).show();
+
         super.onCreate();
         startAlarm();
     }
@@ -28,14 +39,18 @@ public class RegisterNotificationService extends Service {
         return START_NOT_STICKY;
     }
 
+    /**
+     * This function schedules the daily notification.
+     */
     private void startAlarm() {
+        Log.d(TAG,"string an alarm");
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;
 
         Calendar calendar= Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 23);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        calendar.set(Calendar.MINUTE, 39);
         //calendar.set(Calendar.HOUR_OF_DAY, 10);
         //calendar.set(Calendar.MINUTE, 0);
 
