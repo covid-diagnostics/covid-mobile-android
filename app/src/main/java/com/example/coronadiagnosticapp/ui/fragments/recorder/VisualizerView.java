@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -11,8 +12,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class VisualizerView extends View {
-    private static final int LINE_WIDTH = 6; // width of visualizer lines
-    private static final int LINE_SCALE = 40; // scales visualizer lines
+    private static final int LINE_WIDTH = 1; // width of visualizer lines
+    private static final int LINE_SCALE = 1; // scales visualizer lines
     private List<Float> amplitudes; // amplitudes for line lengths
     private int width; // width of this View
     private int height; // height of this View
@@ -32,6 +33,7 @@ public class VisualizerView extends View {
         width = w; // new width of this View
         height = h; // new height of this View
         amplitudes = new ArrayList<Float>(width / LINE_WIDTH);
+        Collections.fill(amplitudes, 1F);
     }
 
     // clear all amplitudes to prepare for a new visualization
@@ -41,7 +43,7 @@ public class VisualizerView extends View {
 
     // add the given amplitude to the amplitudes ArrayList
     public void addAmplitude(float amplitude) {
-        amplitudes.add(amplitude); // add newest to the amplitudes ArrayList
+        amplitudes.add(amplitude + 1F); // add newest to the amplitudes ArrayList
 
         // if the power lines completely fill the VisualizerView
         if (amplitudes.size() * LINE_WIDTH >= width) {
