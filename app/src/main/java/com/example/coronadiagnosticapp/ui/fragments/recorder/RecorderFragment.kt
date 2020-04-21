@@ -11,12 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
+import be.tarsos.dsp.io.PipedAudioStream
+import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.android.synthetic.main.recorder_fragment.visualizer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,7 +38,7 @@ private val REQUIRED_PERMISSIONS = arrayOf(
 
 class RecorderFragment : ScopedFragment() {
 
-    private val MAX_DURATION = 1000 * 3
+    private val MAX_DURATION = 1000 * 2
     private var isRecording = false
     private val recordPermission = Manifest.permission.RECORD_AUDIO
     private var PERMISSION_CODE: Int = 21
@@ -102,21 +104,18 @@ class RecorderFragment : ScopedFragment() {
 
     private fun stopRecording() {
         //Stop Timer, very obvious
-        //Stop Timer, very obvious
         record_timer.stop()
 
         //Change text on page to file saved
-        //Change text on page to file saved
         record_filename.text = "Recording Stopped, File Saved : $recordFile"
 
-        //Stop media recorder and set it to null for further use to record new audio
         //Stop media recorder and set it to null for further use to record new audio
         mediaRecorder!!.stop()
         mediaRecorder!!.reset()
         mediaRecorder!!.release()
         mediaRecorder = null
-
-
+        Log.i("ASQWEQWE", "asd")
+        processRecording()
     }
 
     private fun startRecording() {
@@ -217,6 +216,15 @@ class RecorderFragment : ScopedFragment() {
         if (isRecording) {
             stopRecording()
         }
+    }
+
+    private fun processRecording() {
+        AndroidFFMPEGLocator(this.context)
+        Log.e("RECORDER", "@@@@@@@@@")
+        val audioStream = PipedAudioStream(recordFile).getMonoStream(6000, 0.0)
+        val heartRate = AudioAnalyzerImpl().heartRateFromAudioStream(audioStream)
+
+        Log.e("RECORDER", heartRate.toString())
     }
 
 }
