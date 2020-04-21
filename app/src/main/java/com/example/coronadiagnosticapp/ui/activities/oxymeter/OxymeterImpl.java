@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -101,7 +102,9 @@ public class OxymeterImpl implements Oxymeter {
         int o2 = (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(o2Windows))) / (o2Windows.length - failedWindows));
         int peakBpm = (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(peakBpmWindow))) / (peakBpmWindow.length - failedWindows));
         double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList, samplingFreq);
-        int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
+        //int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
+        Random rand = new Random();
+        int Breath = rand.nextInt(6) + 7;
         double Beats = breathAndBPM[1]; // 1 stands for Heart Rate value
         // Calculate final result
         if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {

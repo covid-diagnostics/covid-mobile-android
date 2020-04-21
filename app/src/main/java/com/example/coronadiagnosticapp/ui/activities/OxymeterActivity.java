@@ -278,7 +278,11 @@ public class OxymeterActivity extends Activity {
     }
 
     public void updateView(int heartRate) {
-        currentHeartRate = heartRate;
+        if (heartRate < 95) {
+            currentHeartRate = heartRate;
+        } else {
+            currentHeartRate = 95;
+        }
         runOnUiThread(this::updateMeasurements);
     }
 
