@@ -33,7 +33,7 @@
     <string name="your_oxygen_saturation_is">מדד החמצן בדם שלך</string>
     <string name="your_respiration_rate_is">קצב הנשימות שלך</string>
     <string name="finish">סיום</string>
-    <string name="things_look_ok">הכל נראה בסדר</string>
+    <string name="things_look_ok">מצוין!\nהמשיכו להצמיד את האצבע</string>
     <string name="normal">תקין</string>
     <string name="high">גבוה מהרגיל</string>
     <string name="low">נמוך מהרגיל</string>

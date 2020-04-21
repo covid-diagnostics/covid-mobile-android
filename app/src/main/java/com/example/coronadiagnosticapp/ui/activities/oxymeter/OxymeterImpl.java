@@ -67,11 +67,6 @@ public class OxymeterImpl implements Oxymeter {
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
 
-        //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-        if (checkImageIsBad(RedAvg)) {
-            badFinger();
-            return;
-        }
         frameCounter++;
 
         // we have at list 1 window and its a perfect window size
@@ -92,9 +87,8 @@ public class OxymeterImpl implements Oxymeter {
         }
     }
 
-
     @Override
-    public OxymeterData finish(double totalTimeInSecs, double samplingFreq) {
+    public OxymeterData finish(double samplingFreq) {
         if (failedWindows > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
             return null;
         }
@@ -237,12 +231,6 @@ public class OxymeterImpl implements Oxymeter {
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 3); //1 stands for red intensity, 2 for blue, 3 for green
         return 0;
     }
-
-    private boolean checkImageIsBad(double redIntensity) {
-        //Image is bad!
-        return redIntensity < 200;
-    }
-
 
     private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
         ArrayList<Double> RedMoveAverage = calculateMovingRedWindowAverage(redList);
