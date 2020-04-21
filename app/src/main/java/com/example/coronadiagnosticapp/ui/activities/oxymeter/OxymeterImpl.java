@@ -43,7 +43,6 @@ public class OxymeterImpl implements Oxymeter {
 
     //Initialize an object that calculates the rolling average of last 15 samples
     private SMA calc_mov_avg = new SMA(15);
-    private Function0<Unit> onBadFinger;
 
     @Inject
     public OxymeterImpl() {
@@ -65,16 +64,10 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(RedAvg);
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
-
-        //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-        if (checkImageIsBad(RedAvg)) {
-            badFinger();
-            return;
-        }
     }
 
     @Override
-    public OxymeterData finish(double totalTimeInSecs, double samplingFreq) {
+    public OxymeterData finish(double samplingFreq) {
         RedTotalAvg = sumDouble(RedAvgList) / RedAvgList.size();
         int[] peakBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq, WINDOW_TIME, FAILED_WINDOWS_MAX);
         int o2 = peakBpmAndO2[0];
@@ -225,12 +218,6 @@ public class OxymeterImpl implements Oxymeter {
         return 0;
     }
 
-    private boolean checkImageIsBad(double redIntensity) {
-        //Image is bad!
-        return redIntensity < 200;
-    }
-
-
     private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq, int window_time, int failed_windows_max) {
         final double WINDOW_FRAMES = samplingFreq * window_time;
         double[] results;
@@ -278,17 +265,5 @@ public class OxymeterImpl implements Oxymeter {
         for (Double d : list)
             sum += d;
         return sum;
-    }
-
-
-    private void badFinger() {
-        // Invokes the onBadFinger callback
-        if (onBadFinger != null)
-            onBadFinger.invoke();
-    }
-
-    @Override
-    public void setOnBadFinger(@NotNull Function0<Unit> callback) {
-        onBadFinger = callback;
     }
 }
