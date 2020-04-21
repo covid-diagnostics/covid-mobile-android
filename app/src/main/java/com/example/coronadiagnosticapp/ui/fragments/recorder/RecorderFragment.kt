@@ -40,7 +40,7 @@ class RecorderFragment : ScopedFragment() {
     private var isRecording = false
     private val recordPermission = Manifest.permission.RECORD_AUDIO
     private var PERMISSION_CODE: Int = 21
-    private val VISUALIZATION_FREQUENCY: Long = 40
+    private val VISUALIZATION_FREQUENCY: Long = 200
 
     private var mediaRecorder: MediaRecorder? = null
     private var recordFile: String? = null
