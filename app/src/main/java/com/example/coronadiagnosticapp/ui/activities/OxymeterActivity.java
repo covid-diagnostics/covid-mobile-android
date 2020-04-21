@@ -106,7 +106,7 @@ class OxymeterThread extends Thread {
 }
 
 
-public class OxymeterActivity extends Activity {
+public class OxymeterActivity extends AppCompatActivity {
     // Variables Initialization
     private static final String TAG = "HeartRateMonitor";;
     private static SurfaceHolder previewHolder = null;
