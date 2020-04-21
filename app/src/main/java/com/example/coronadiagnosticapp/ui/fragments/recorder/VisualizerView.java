@@ -25,7 +25,7 @@ public class VisualizerView extends View {
     public VisualizerView(Context context, AttributeSet attrs) {
         super(context, attrs); // call superclass constructor
         linePaint = new Paint(); // create Paint for lines
-        linePaint.setColor(Color.RED); // set color to red
+        linePaint.setColor(0xFF5928E4); // set color to red
         linePaint.setStrokeWidth(LINE_WIDTH); // set stroke width
     }
 

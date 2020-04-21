@@ -32,13 +32,14 @@
 
     <com.example.coronadiagnosticapp.ui.fragments.recorder.VisualizerView
         android:id="@+id/visualizer"
-        android:layout_width="220dp"
-        android:layout_height="75dp"
+        android:layout_width="311dp"
+        android:layout_height="63dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="91dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/record_timer" />
 
