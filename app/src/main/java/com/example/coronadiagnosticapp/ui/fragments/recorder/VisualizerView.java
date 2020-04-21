@@ -1,6 +1,8 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class VisualizerView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         width = w; // new width of this View
         height = h; // new height of this View
-        amplitudes = new ArrayList<Float>(width / LINE_WIDTH);
+        amplitudes = new ArrayList<Float>(Arrays.asList(new Float[width / LINE_WIDTH]));
         Collections.fill(amplitudes, 1F);
     }
 
