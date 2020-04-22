@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import kotlinx.android.synthetic.main.fragment_welcome.*
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class WelcomeFragment : Fragment() {
