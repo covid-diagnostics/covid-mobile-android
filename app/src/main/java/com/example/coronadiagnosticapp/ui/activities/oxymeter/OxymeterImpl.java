@@ -27,14 +27,17 @@ public class OxymeterImpl implements Oxymeter {
     public enum RGB {RED, GREEN, BLUE}
 
     private static final String TAG = "Oxymeter";
-    private static long startTime;
+    private int samplingFreq;
 
     // window samples
     private final int WINDOW_TIME = 10; // the number of seconds for each window
     private final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
-    private double RedTotalAvg;
+
+    private int failedWindows = 0;
+    private final int SMA_SIZE = 15;
     private SMA RedRollingAvg = null;
-    final private int SMA_SIZE = 15;
+    private double[] o2Windows = new double[30 - WINDOW_TIME + 1];
+    private double[] peakBpmWindow = new double[30 - WINDOW_TIME + 1];
 
     //Arraylist
     private ArrayList<Double> RedAvgList = new ArrayList<>();
@@ -42,11 +45,11 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
 
     //Initialize an object that calculates the rolling average of last 15 samples
+    private int frameCounter = 0;
     private SMA calc_mov_avg = new SMA(15);
 
-    @Inject
-    public OxymeterImpl() {
-        startTime = System.currentTimeMillis();
+    public OxymeterImpl(double samplingFreq) {
+        this.samplingFreq = (int) samplingFreq;
     }
 
     @Override
@@ -64,19 +67,28 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(RedAvg);
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
+        // we have at list 1 window and its a perfect window size
+        if ((frameCounter >= samplingFreq * WINDOW_TIME) && (frameCounter % samplingFreq == 0)) {
+            int windowIndex = (frameCounter / samplingFreq) - WINDOW_TIME;
+            double[] results = calculateWindowSampleBpmAndO2(
+                    new ArrayList(RedAvgList.subList(windowIndex * samplingFreq, (windowIndex + WINDOW_TIME) * samplingFreq)),
+                    new ArrayList(BlueAvgList.subList(windowIndex * samplingFreq, (windowIndex + WINDOW_TIME) * samplingFreq)),
+                    samplingFreq);
+            o2Windows[windowIndex] = results[0];     // if failed the result is 0
+            peakBpmWindow[windowIndex] = results[1];// if failed the result is 0
+            failedWindows += (int) results[2];
+        }
+        frameCounter++;
     }
+
 
     @Override
     public OxymeterData finish(double samplingFreq) {
-        RedTotalAvg = sumDouble(RedAvgList) / RedAvgList.size();
-        int[] peakBpmAndO2 = calculateByWindowsBpmAndO2(RedAvgList, BlueAvgList, samplingFreq, WINDOW_TIME, FAILED_WINDOWS_MAX);
-        int o2 = peakBpmAndO2[0];
-        int peakBpm = peakBpmAndO2[1];
-        int failed = peakBpmAndO2[2];
-        if (failed == 1) {
+        if (failedWindows > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
             return null;
         }
-
+        int o2 = (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(o2Windows))) / (o2Windows.length - failedWindows));
+        int peakBpm = (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(peakBpmWindow))) / (peakBpmWindow.length - failedWindows));
         double[] breathAndBPM = calculateAverageFourierBreathAndBPM(RedAvgList, GreenAvgList, samplingFreq);
         int Breath = (int) breathAndBPM[0]; // 0 stands for breath respiration value
         double Beats = breathAndBPM[1]; // 1 stands for Heart Rate value
@@ -148,10 +160,11 @@ public class OxymeterImpl implements Oxymeter {
         if (RedRollingAvg == null) {
             //Initialize an object that calculates the rolling average of last `SMA_SIZE` samples
             RedRollingAvg = new SMA(SMA_SIZE);
+            double avg = sumDouble(list) / list.size();
             for (int i = 0; i < list.size(); i++) {
                 if (i < SMA_SIZE) {                                   //Assign the average red received to the first `SMA_SIZE` samples
-                    RedRollingAvg.compute(RedTotalAvg);               //Add the value to the moving average object
-                    MovAvgRed.add(i, RedTotalAvg);                   //Add the value to the MobAvgRed list
+                    RedRollingAvg.compute(avg);               //Add the value to the moving average object
+                    MovAvgRed.add(i, avg);                   //Add the value to the MobAvgRed list
                 } else {
                     MovAvgRed.add(RedRollingAvg.compute(list.get(i)));
                 }
@@ -199,11 +212,7 @@ public class OxymeterImpl implements Oxymeter {
             RR_List.add(ms_dist);
         }
         //Calculating the average interval
-        double sumRR_List = 0;
-        for (int i = 0; i < RR_List.size(); i++) {
-            sumRR_List += RR_List.get(i);
-        }
-        double avgRR_List = (sumRR_List) / RR_List.size();
+        double avgRR_List = sumDouble(RR_List) / RR_List.size();
         //Providing result
         return 60000 / (avgRR_List);
     }
@@ -217,6 +226,12 @@ public class OxymeterImpl implements Oxymeter {
             return ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, height, width, 3); //1 stands for red intensity, 2 for blue, 3 for green
         return 0;
     }
+
+    private boolean checkImageIsBad(double redIntensity) {
+        //Image is bad!
+        return redIntensity < 200;
+    }
+
 
     private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq, int window_time, int failed_windows_max) {
         final double WINDOW_FRAMES = samplingFreq * window_time;

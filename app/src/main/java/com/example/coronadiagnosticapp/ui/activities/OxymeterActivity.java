@@ -43,14 +43,16 @@ class OxymeterThread extends Thread {
     private Queue<byte[]> framesQueue;
     private Camera cam;
     private Camera.Size previewSize;
+    private Double samplingFrequency;
     private boolean enabled = false;
     private int totalFrames;
     private OxymeterThreadEventListener eventListener;
 
-    OxymeterThread(Queue<byte[]> framesQueue, Camera cam, Camera.Size previewSize, int totalFrames, OxymeterThreadEventListener eventListener) {
+    OxymeterThread(Queue<byte[]> framesQueue, Camera cam, Camera.Size previewSize, Double samplingFrequency, int totalFrames, OxymeterThreadEventListener eventListener) {
         this.framesQueue = framesQueue;
         this.cam = cam;
         this.previewSize = previewSize;
+        this.samplingFrequency = samplingFrequency;
         this.totalFrames = totalFrames;
         this.eventListener = eventListener;
     }
@@ -62,7 +64,7 @@ class OxymeterThread extends Thread {
     }
 
     private synchronized void startWithNewOxymeter() {
-        oxymeter = new OxymeterImpl();
+        oxymeter = new OxymeterImpl(samplingFrequency);
         enabled = true;
         framesQueue.clear();
         framesPassedToOxymeter = 0;
@@ -108,7 +110,7 @@ class OxymeterThread extends Thread {
 
 public class OxymeterActivity extends AppCompatActivity {
     // Variables Initialization
-    private static final String TAG = "HeartRateMonitor";;
+    private static final String TAG = "HeartRateMonitor";
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     //Freq + timer variable
@@ -246,7 +248,7 @@ public class OxymeterActivity extends AppCompatActivity {
     public void initializeOxymeterUpdater() {
         framesQueue = new LinkedList<>();
         final int totalFrames = 900;
-        oxymeterUpdater = new OxymeterThread(framesQueue, camera, previewSize, totalFrames, new OxymeterThreadEventListener() {
+        oxymeterUpdater = new OxymeterThread(framesQueue, camera, previewSize, previewFps / 1000.0, totalFrames, new OxymeterThreadEventListener() {
             @Override
             public void onFrame(int frameNumber) {
                 Log.i(TAG, "Current frame:" + frameNumber);
