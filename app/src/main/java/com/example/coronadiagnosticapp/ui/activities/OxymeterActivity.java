@@ -98,7 +98,7 @@ public class OxymeterActivity extends Activity {
     private Queue<byte[]> framesQueue;
     private Oxymeter oxymeter;
     private OxymeterThread oxymeterUpdater;
-    private int totalTime = 30;
+    private int totalTime = 20;
     public int currentHeartRate;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -231,7 +231,7 @@ public class OxymeterActivity extends Activity {
                 return null;
             });
             framesQueue = new LinkedList<>();
-            final int totalFrames = 900;
+            final int totalFrames = 600;
             oxymeterUpdater = new OxymeterThread(oxymeter, framesQueue, camera, totalFrames, new OxymeterThreadEventListener() {
                 @Override
                 public void onFrame(int frameNumber) {
