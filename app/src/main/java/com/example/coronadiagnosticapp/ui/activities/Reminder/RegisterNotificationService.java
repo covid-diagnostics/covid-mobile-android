@@ -27,8 +27,7 @@ public class RegisterNotificationService extends Service {
         Log.d(TAG, "onCreate RegisterNotificationService.");
 
         super.onCreate();
-        //setDailyNotification(10, 0);
-        setDailyNotification(2, 45);
+        setDailyNotification(10, 0);
     }
 
     @Override
