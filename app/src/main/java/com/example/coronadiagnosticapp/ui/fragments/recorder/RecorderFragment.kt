@@ -137,7 +137,7 @@ class RecorderFragment : ScopedFragment() {
         //initialize filename variable with date and time at the end to ensure the new file wont overwrite previous file
         //initialize filename variable with date and time at the end to ensure the new file wont overwrite previous file
         //recordFile = "Recording_" + formatter.format(now) + ".3gp"
-        recordFile = "Recording_.3gp"
+        recordFile = "Recording_.m4a"
 
         fileLocation = "$recordPath/$recordFile"
 
@@ -146,9 +146,14 @@ class RecorderFragment : ScopedFragment() {
         mediaRecorder = MediaRecorder()
         val visualizerView = visualizer;
         mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        //mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        ;
+
+
         mediaRecorder!!.setOutputFile(fileLocation)
-        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        //mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
         mediaRecorder!!.setMaxDuration(MAX_DURATION)
         mediaRecorder!!.setOnInfoListener { mr, what, extra ->
             if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
@@ -221,7 +226,7 @@ class RecorderFragment : ScopedFragment() {
     private fun processRecording() {
         AndroidFFMPEGLocator(this.context)
         Log.e("RECORDER", "@@@@@@@@@")
-        val audioStream = PipedAudioStream(recordFile).getMonoStream(6000, 0.0)
+        val audioStream = PipedAudioStream(fileLocation).getMonoStream(44100, 0.0)
         val heartRate = AudioAnalyzerImpl().heartRateFromAudioStream(audioStream)
 
         Log.e("RECORDER", heartRate.toString())
