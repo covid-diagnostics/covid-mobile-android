@@ -65,8 +65,7 @@ class ResultFragment : ScopedFragment() {
         val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
 
         var normalRates = 0
-//        val healthResult : HealthResult = viewModel.getLastHealth()!!
-        val healthResult : HealthResult = HealthResult(1, 2, 3)
+        val healthResult : HealthResult = viewModel.getLastHealth()!!
         val breathingRate = viewModel.getBreathingRate()
         textView_Oxygen.text = "${healthResult.oxygenSaturation}"
         textView_heartRate.text = "${healthResult.beatsPerMinute}"
