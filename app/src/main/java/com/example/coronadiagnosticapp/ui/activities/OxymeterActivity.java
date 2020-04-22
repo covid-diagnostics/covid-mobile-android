@@ -15,7 +15,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.Oxymeter;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterData;
@@ -27,12 +29,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
 interface OxymeterThreadEventListener {
     void onFrame(int frameNumber);
+
     void onSuccess(Oxymeter oxymeter);
-    void onBadFinger();
+
+    void onFingerRemoved();
+
+    void onInvalidData();
+
     void onStartWithNewOxymeter();
 }
 
@@ -45,44 +55,57 @@ class OxymeterThread extends Thread {
     private Camera.Size previewSize;
     private boolean enabled = false;
     private int totalFrames;
+    private double previewFps;
+    private Function1<? super Integer, Unit> onUpdateView;
     private OxymeterThreadEventListener eventListener;
 
-    OxymeterThread(Queue<byte[]> framesQueue, Camera cam, Camera.Size previewSize, int totalFrames, OxymeterThreadEventListener eventListener) {
+    OxymeterThread(Queue<byte[]> framesQueue, Camera cam, Camera.Size previewSize, int totalFrames, double previewFps, Function1<? super Integer, Unit> onUpdateView, OxymeterThreadEventListener eventListener) {
         this.framesQueue = framesQueue;
         this.cam = cam;
         this.previewSize = previewSize;
         this.totalFrames = totalFrames;
+        this.previewFps = previewFps;
+        this.onUpdateView = onUpdateView;
         this.eventListener = eventListener;
     }
 
-    private synchronized void onBadFinger() {
+    private synchronized void onFingerRemoved() {
         enabled = false;
         this.oxymeter = null;
-        eventListener.onBadFinger();
+        eventListener.onFingerRemoved();
+    }
+
+    private synchronized void onInvalidData() {
+        eventListener.onInvalidData();
+        this.interrupt();
     }
 
     private synchronized void startWithNewOxymeter() {
         oxymeter = new OxymeterImpl(previewFps / 1000);
-        oxymeter.setUpdateView(heartRate -> {
-            thisActivity.updateView(heartRate);
+        oxymeter.setUpdateView(onUpdateView);
+        oxymeter.setOnInvalidData(() -> {
+            this.onInvalidData();
             return null;
-        });        enabled = true;
+        });
+        enabled = true;
         framesQueue.clear();
         framesPassedToOxymeter = 0;
         eventListener.onStartWithNewOxymeter();
     }
 
-    public void run(){
+    public void run() {
         Log.i(TAG, "Starting oxymeter thread.");
         // Keep running until we passed `totalFrames` frames to the oxymeter
         while (framesPassedToOxymeter < totalFrames) {
-            if (interrupted()) { return; }
+            if (interrupted()) {
+                return;
+            }
             if (!framesQueue.isEmpty()) {
                 byte[] frame = framesQueue.remove();
                 boolean fingerOnCamera = isFingerOnCamera(frame);
                 if (enabled && !fingerOnCamera) {
                     // Should stop
-                    onBadFinger();
+                    onFingerRemoved();
                 } else if (!enabled && fingerOnCamera) {
                     // Should start
                     startWithNewOxymeter();
@@ -252,31 +275,42 @@ public class OxymeterActivity extends AppCompatActivity {
     public void initializeOxymeterUpdater() {
         framesQueue = new LinkedList<>();
         final int totalFrames = 900;
-        oxymeterUpdater = new OxymeterThread(framesQueue, camera, previewSize, totalFrames, new OxymeterThreadEventListener() {
-            @Override
-            public void onFrame(int frameNumber) {
-                Log.i(TAG, "Current frame:" + frameNumber);
-                runOnUiThread(() -> {
-                    setProgress(frameNumber, totalFrames);
+        oxymeterUpdater = new OxymeterThread(framesQueue, camera, previewSize, totalFrames, previewFps,
+                heartRate -> {
+                    this.updateView(heartRate);
+                    return null;
+                },
+                new OxymeterThreadEventListener() {
+                    @Override
+                    public void onFrame(int frameNumber) {
+                        Log.i(TAG, "Current frame:" + frameNumber);
+                        runOnUiThread(() -> {
+                            setProgress(frameNumber, totalFrames);
+                        });
+                    }
+
+                    @Override
+                    public void onSuccess(Oxymeter oxymeter) {
+                        Log.i(TAG, "finished processing all frames");
+                        finishWithOxymeter(oxymeter);
+                    }
+
+                    @Override
+                    public void onFingerRemoved() {
+                        fingerRemoved();
+                    }
+
+                    @Override
+                    public void onInvalidData() {
+                        Log.w(TAG, "Invalid measurement");
+                        measurementFailed();
+                    }
+
+                    @Override
+                    public void onStartWithNewOxymeter() {
+                        runOnUiThread(() -> showProgressBarAndShowAlert(getString(R.string.things_look_ok)));
+                    }
                 });
-            }
-
-            @Override
-            public void onSuccess(Oxymeter oxymeter) {
-                Log.i(TAG, "finished processing all frames");
-                finishWithOxymeter(oxymeter);
-            }
-
-            @Override
-            public void onBadFinger() {
-                badFinger();
-            }
-
-            @Override
-            public void onStartWithNewOxymeter() {
-                runOnUiThread(() -> showProgressBarAndShowAlert(getString(R.string.things_look_ok)));
-            }
-        });
         Log.i(TAG, "starting oxymeter.");
         oxymeterUpdater.start();
     }
@@ -293,16 +327,20 @@ public class OxymeterActivity extends AppCompatActivity {
             finish();
         } else {
             Log.w(TAG, "Oxymeter returned null");
-            runOnUiThread(() -> {
-                readyBtn.setClickable(true);
-                removeProgressBarAndShowAlert(getString(R.string.measurement_failed));
-            });
+            measurementFailed();
         }
     }
 
-    public void badFinger() {
+    public void fingerRemoved() {
         Log.w(TAG, "Finger not recognised!");
         runOnUiThread(() -> removeProgressBarAndShowAlert(getString(R.string.please_put_your_finger_on_camera)));
+    }
+
+    public void measurementFailed() {
+        runOnUiThread(() -> {
+            removeProgressBarAndShowAlert(getString(R.string.measurement_failed));
+            readyBtn.setClickable(true);
+        });
     }
 
     public void updateView(int heartRate) {
@@ -364,6 +402,7 @@ public class OxymeterActivity extends AppCompatActivity {
         progressBarView.clearAnimation();
         progressBarView.setVisibility(View.INVISIBLE);
         timeLeftView.setVisibility(View.INVISIBLE);
+        heartRate.setText("-");
     }
 
     private void showProgressBarAndShowAlert(String alertText) {

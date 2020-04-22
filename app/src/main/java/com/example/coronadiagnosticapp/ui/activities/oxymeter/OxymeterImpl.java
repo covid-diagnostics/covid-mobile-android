@@ -44,7 +44,7 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
 
     private int frameCounter = 0;
-    private Function0<Unit> onBadFinger;
+    private Function0<Unit> onInvalidData;
     private Function1<? super Integer, Unit> onUpdateView;
 
     public OxymeterImpl(double samplingFreq) {
@@ -80,7 +80,7 @@ public class OxymeterImpl implements Oxymeter {
             peakBpmWindow[windowIndex] = results[1];// if failed the result is 0
             failedWindows += (int) results[2];
             if (failedWindows > FAILED_WINDOWS_MAX) {
-                badFinger();
+                InvalidData();
                 return;
             }
             UpdateView((int) results[1]);
@@ -254,15 +254,15 @@ public class OxymeterImpl implements Oxymeter {
         return sum;
     }
 
-    private void badFinger() {
-        // Invokes the onBadFinger callback
-        if (onBadFinger != null)
-            onBadFinger.invoke();
+    private void InvalidData() {
+        // Invokes the onInvalidData callback
+        if (onInvalidData != null)
+            onInvalidData.invoke();
     }
 
     @Override
-    public void setOnBadFinger(@NotNull Function0<Unit> callback) {
-        onBadFinger = callback;
+    public void setOnInvalidData(@NotNull Function0<Unit> callback) {
+        onInvalidData = callback;
     }
 
     private void UpdateView(int heartRate) {
