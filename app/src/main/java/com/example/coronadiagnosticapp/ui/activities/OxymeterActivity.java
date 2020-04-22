@@ -53,6 +53,7 @@ class OxymeterThread extends Thread {
     private Queue<byte[]> framesQueue;
     private Camera cam;
     private Camera.Size previewSize;
+    private Double samplingFrequency;
     private boolean enabled = false;
     private int totalFrames;
     private double previewFps;
