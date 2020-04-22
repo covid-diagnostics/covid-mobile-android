@@ -13,6 +13,9 @@ import java.util.Calendar;
 
 public class RegisterNotificationService extends Service {
     private static final String TAG = "RegisterNotification";
+    private static final int DAILY_NOTIFICATION_HOUR = 10;
+    private static final int DAILY_NOTIFICATION_MINUTE = 0;
+
 
     public RegisterNotificationService() {
     }
@@ -27,7 +30,7 @@ public class RegisterNotificationService extends Service {
         Log.d(TAG, "onCreate RegisterNotificationService.");
 
         super.onCreate();
-        setDailyNotification(10, 0);
+        setDailyNotification(DAILY_NOTIFICATION_HOUR, DAILY_NOTIFICATION_MINUTE);
     }
 
     @Override
