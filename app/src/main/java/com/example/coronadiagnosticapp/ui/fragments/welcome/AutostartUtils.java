@@ -23,8 +23,8 @@ import java.util.List;
 
 public class AutostartUtils {
 
-    public static void startPowerSaverIntent(Context context) {
-        final List<Intent> POWERMANAGER_INTENTS = Arrays.asList(
+    public static void requestAutostartPermissions(Context context) {
+        final List<Intent> SETTINGS_INTENTS = Arrays.asList(
                 new Intent().setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")),
                 new Intent().setComponent(new ComponentName("com.letv.android.letvsafe", "com.letv.android.letvsafe.AutobootManageActivity")),
                 new Intent().setComponent(new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity")),
@@ -51,11 +51,11 @@ public class AutostartUtils {
         if (!skipMessage) {
             final SharedPreferences.Editor editor = settings.edit();
             boolean foundCorrectIntent = false;
-            for (Intent intent : POWERMANAGER_INTENTS) {
+            for (Intent intent : SETTINGS_INTENTS) {
                 if (isCallable(context, intent)) {
                     foundCorrectIntent = true;
                     final AppCompatCheckBox dontShowAgain = new AppCompatCheckBox(context);
-                    dontShowAgain.setText("Do not show again");
+                    dontShowAgain.setText(context.getString(R.string.dont_show_again));
                     dontShowAgain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -65,15 +65,18 @@ public class AutostartUtils {
                     });
 
                     new AlertDialog.Builder(context)
-                            .setTitle(Build.MANUFACTURER + " Protected Apps")
-                            .setMessage(String.format("%s requires to be enabled in 'Protected Apps' to function properly.%n", context.getString(R.string.app_name)))
+                            .setTitle(context.getString(R.string.autostart_dialog_title))
+                            .setMessage(String.format(context.getString(R.string.autostart_dialog_content), context.getString(R.string.app_name)))
                             .setView(dontShowAgain)
-                            .setPositiveButton("Go to settings", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(context.getString(R.string.settings), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     context.startActivity(intent);
+                                    // Don't show this message again.
+                                    editor.putBoolean("skipProtectedAppCheck", true);
+                                    editor.apply();
                                 }
                             })
-                            .setNegativeButton(android.R.string.cancel, null)
+                            .setNegativeButton(context.getString(R.string.cancel), null)
                             .show();
                     break;
                 }

@@ -24,14 +24,11 @@ public class RegisterNotificationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "oncreate RegisterNotificationService.");
-        Toast.makeText(
-                this,
-                "oncreate RegisterNotification",
-                Toast.LENGTH_LONG).show();
+        Log.d(TAG, "onCreate RegisterNotificationService.");
 
         super.onCreate();
-        startAlarm();
+        //setDailyNotification(10, 0);
+        setDailyNotification(2, 45);
     }
 
     @Override
@@ -42,17 +39,15 @@ public class RegisterNotificationService extends Service {
     /**
      * This function schedules the daily notification.
      */
-    private void startAlarm() {
-        Log.d(TAG,"string an alarm");
+    private void setDailyNotification(int hour, int minute) {
+        Log.d(TAG,"Setting an alarm for - " + hour + ":" + minute);
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;
 
-        Calendar calendar= Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 39);
-        //calendar.set(Calendar.HOUR_OF_DAY, 10);
-        //calendar.set(Calendar.MINUTE, 0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
 
         myIntent = new Intent(this,AlarmNotificationReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this,0,myIntent,0);

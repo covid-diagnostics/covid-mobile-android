@@ -9,6 +9,7 @@ import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
+import java.util.*
 
 
 // This is an arbitrary number we are using to keep track of the permission
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val conf: Configuration = res.configuration
 //        conf.setLocale(Locale("iw")) // API 17+ only.
 //        res.updateConfiguration(conf, dm)
-//
+
         super.onCreate(savedInstanceState)
 
         val i = Intent(applicationContext,  RegisterNotificationService::class.java)

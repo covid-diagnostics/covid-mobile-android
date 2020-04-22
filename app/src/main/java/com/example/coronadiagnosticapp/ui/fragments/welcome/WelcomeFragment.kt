@@ -1,6 +1,5 @@
 package com.example.coronadiagnosticapp.ui.fragments.welcome
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
 
@@ -39,7 +37,7 @@ class WelcomeFragment : Fragment() {
                 false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
             }
         }
-        AutostartUtils.startPowerSaverIntent(context)
+        AutostartUtils.requestAutostartPermissions(context)
     }
 
 }
