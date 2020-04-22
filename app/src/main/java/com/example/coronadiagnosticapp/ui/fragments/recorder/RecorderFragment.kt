@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.android.synthetic.main.recorder_fragment.visualizer
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +40,7 @@ class RecorderFragment : ScopedFragment() {
     private var isRecording = false
     private val recordPermission = Manifest.permission.RECORD_AUDIO
     private var PERMISSION_CODE: Int = 21
-    private val VISUALIZATION_FREQUENCY: Long = 40
+    private val VISUALIZATION_FREQUENCY: Long = 20
 
     private var mediaRecorder: MediaRecorder? = null
     private var recordFile: String? = null
@@ -56,6 +57,7 @@ class RecorderFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 2
         recordFile = context!!.externalCacheDir!!.absolutePath
     }
 
@@ -80,7 +82,7 @@ class RecorderFragment : ScopedFragment() {
                 // Stop
                 stopRecording()
 
-                record_btn.setImageResource(R.drawable.record_btn_stopped)
+                record_btn.setImageResource(R.drawable.mic_button)
                 isRecording = false
             } else {
                 // Check permission
@@ -89,7 +91,7 @@ class RecorderFragment : ScopedFragment() {
                     startRecording()
 
                     record_btn.apply {
-                        setImageResource(R.drawable.record_btn_recording)
+                        setImageResource(R.drawable.mic_button_recording)
                         isEnabled = false
                     }
                     isRecording = true

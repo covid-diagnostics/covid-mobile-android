@@ -17,6 +17,7 @@ import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.*
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +49,7 @@ class CameraFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
     }
 
     override fun onCreateView(
@@ -59,7 +61,7 @@ class CameraFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
         button_startCamera.setOnClickListener {
             // TODO: Ask permission to use the camera
             if (context?.let { it1 ->
@@ -145,12 +147,6 @@ class CameraFragment : ScopedFragment() {
                             }
                         }
                     }
-                    Toast.makeText(
-                        context,
-                        "Result: " + data.getStringExtra("result"),
-                        Toast.LENGTH_SHORT
-                    ).show()
-
                 }
             } else {
                 Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show()
