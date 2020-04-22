@@ -20,7 +20,11 @@ class RepositoryImpl @Inject constructor(
 ) : Repository {
     companion object {
         private var lastHealthResult : HealthResult? = null
+        private var breathingRate_: Double = -1.0
     }
+    override var breathingRate : Double
+        get() = breathingRate_
+        set(value) { breathingRate_ = value }
 
     private lateinit var responseUser: ResponseUser
     override val error: MutableLiveData<String> = MutableLiveData()

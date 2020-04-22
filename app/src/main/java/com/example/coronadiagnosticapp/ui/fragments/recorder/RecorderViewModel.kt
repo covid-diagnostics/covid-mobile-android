@@ -11,6 +11,9 @@ class RecorderViewModel @Inject constructor(val repository: Repository) : ViewMo
 
     suspend fun uploadFile(file: File){
         repository.uploadAudioRecording(file)
+    }
 
+    fun setBreathingRate(x: Double){
+        repository.breathingRate = x
     }
 }

@@ -65,10 +65,12 @@ class ResultFragment : ScopedFragment() {
         val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
 
         var normalRates = 0
-        val healthResult : HealthResult = viewModel.getLastHealth()!!
+//        val healthResult : HealthResult = viewModel.getLastHealth()!!
+        val healthResult : HealthResult = HealthResult(1, 2, 3)
+        val breathingRate = viewModel.getBreathingRate()
         textView_Oxygen.text = "${healthResult.oxygenSaturation}"
         textView_heartRate.text = "${healthResult.beatsPerMinute}"
-        textView_respiration.text = "${healthResult.breathsPerMinute}"
+        textView_respiration.text = "%.1f".format(breathingRate * 60)
         when {
             healthResult.oxygenSaturation < 90 -> {
 //                 VERY LOW
@@ -111,18 +113,18 @@ class ResultFragment : ScopedFragment() {
             }
         }
         when {
-            healthResult.breathsPerMinute < 5 -> {
+            breathingRate < 5 -> {
 //                 LOW
                 textView_respiration.setTextColor(RISKY_COLOR)
                 textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${LOW_TEXT}"))
             }
-            healthResult.breathsPerMinute < 15 -> {
+            breathingRate < 15 -> {
 //                 NORMAL
                 textView_respiration.setTextColor(NORMAL_COLOR)
                 textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${NORMAL_TEXT}"))
                 normalRates++
             }
-            healthResult.breathsPerMinute < 20 -> {
+            breathingRate < 20 -> {
 //                 HIGH
                 textView_respiration.setTextColor(RISKY_COLOR)
                 textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${HIGH_TEXT}"))
