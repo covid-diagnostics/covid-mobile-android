@@ -14,7 +14,7 @@
     <string name="already_have_an_account">כבר יש לך משתמש?</string>
     <string name="we_re_glad_you_ve_joined_the_effort">אנחנו שמחים שהצטרפתם למאמץ הלאומי</string>
     <string name="thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus">אלפי ישראלים יכולים לסבול מתסמינים\nשל וירוס הקורונה</string>
-    <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל\n את חייך וחיים של רבים אחרים!</string>
+    <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל  את חייך וחיים של רבים אחרים!</string>
     <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
     <string name="password">סיסמא</string>
     <string name="email">דואר אלקטרוני</string>
@@ -23,7 +23,6 @@
     <string name="required">שדה חובה</string>
     <string name="must_valid_email">כתובת דואר אלקטרוני לא תקינה</string>
     <string name="passwords_match">הסיסמא חייבת להיות זהה</string>
-    <string name="personal_info_request">בבקשה, מלא את פרטייך</string>
     <string name="age">גיל</string>
     <string name="first_name">שם פרטי</string>
     <string name="last_name">שם משפחה</string>
@@ -33,7 +32,7 @@
     <string name="your_oxygen_saturation_is">מדד החמצן בדם שלך</string>
     <string name="your_respiration_rate_is">קצב הנשימות שלך</string>
     <string name="finish">סיום</string>
-    <string name="things_look_ok">הכל נראה בסדר</string>
+    <string name="things_look_ok">מצוין!\nהמשיכו להצמיד את האצבע</string>
     <string name="normal">תקין</string>
     <string name="high">גבוה מהרגיל</string>
     <string name="low">נמוך מהרגיל</string>
@@ -51,4 +50,7 @@
     <string name="settings">הגדרות</string>
     <string name="cancel">ביטול</string>
     <string name="dont_show_again">אל תראה שוב</string>
+    <string name="fatigue">עייפות</string>
+    <string name="muscle_weakness">חולשת שרירים</string>
+    <string name="personal_info_request">עזרו לנו להכיר אתכם טוב יותר</string>
 </resources>

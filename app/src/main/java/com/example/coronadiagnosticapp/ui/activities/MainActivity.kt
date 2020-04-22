@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
 import java.util.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 // This is an arbitrary number we are using to keep track of the permission
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         startService(i)
 
         setContentView(R.layout.activity_main)
+        stepperLayout.visibility = View.INVISIBLE
     }
 
 }
