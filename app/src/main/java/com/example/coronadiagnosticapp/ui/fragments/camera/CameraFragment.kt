@@ -61,7 +61,7 @@ class CameraFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
         button_startCamera.setOnClickListener {
             // TODO: Ask permission to use the camera
             if (context?.let { it1 ->

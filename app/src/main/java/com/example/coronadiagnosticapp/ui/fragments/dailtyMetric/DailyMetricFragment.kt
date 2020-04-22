@@ -50,6 +50,7 @@ class DailyMetricFragment : ScopedFragment() {
         super.onActivityCreated(savedInstanceState)
         initCoughStrength()
         initForm()
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
     }
 
     private fun initCoughStrength() {
