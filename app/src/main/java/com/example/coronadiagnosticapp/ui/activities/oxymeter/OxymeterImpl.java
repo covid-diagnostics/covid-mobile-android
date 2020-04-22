@@ -21,6 +21,7 @@ import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 
 import static java.lang.Math.ceil;
+import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 
 public class OxymeterImpl implements Oxymeter {
@@ -30,14 +31,14 @@ public class OxymeterImpl implements Oxymeter {
     private int samplingFreq;
 
     // window samples
-    private final int WINDOW_TIME = 10; // the number of seconds for each window
+    private final int WINDOW_TIME = 5; // the number of seconds for each window
     private final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
 
     private int failedWindows = 0;
     private final int SMA_SIZE = 15;
     private SMA RedRollingAvg = null;
-    private double[] o2Windows = new double[30 - WINDOW_TIME + 1];
-    private double[] peakBpmWindow = new double[30 - WINDOW_TIME + 1];
+    private double[] o2Windows = new double[20 - WINDOW_TIME + 1];
+    private double[] peakBpmWindow = new double[20 - WINDOW_TIME + 1];
 
     //Arraylist
     private ArrayList<Double> RedAvgList = new ArrayList<>();
@@ -109,11 +110,11 @@ public class OxymeterImpl implements Oxymeter {
         // Calculate final result
         if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
             double BpmAvg = ceil((Beats + peakBpm) / 2);
-            return new OxymeterData(o2, (int) BpmAvg, Breath);
+            return new OxymeterData(o2, (int) min(BpmAvg, 95), Breath);
         } else if (!(o2 < 80 || o2 > 99) && (Beats < 45 || Beats > 200) && !(peakBpm < 45 || peakBpm > 200)) {
-            return new OxymeterData(o2, peakBpm, Breath);
+            return new OxymeterData(o2, min(peakBpm, 95), Breath);
         } else if (!(o2 < 80 || o2 > 99) && !(Beats < 45 || Beats > 200) && (peakBpm < 45 || peakBpm > 200)) {
-            return new OxymeterData(o2, (int) Beats, Breath);
+            return new OxymeterData(o2, (int) min(Beats, 95), Breath);
         } else {
             return null;
         }

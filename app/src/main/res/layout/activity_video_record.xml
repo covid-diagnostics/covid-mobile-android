@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/barTimer"
         android:layout_marginTop="20dp"
-        android:text="30"
+        android:text="20"
         android:textSize="30sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
