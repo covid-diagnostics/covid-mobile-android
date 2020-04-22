@@ -83,7 +83,7 @@ class RecorderFragment : ScopedFragment() {
                 if (checkPermissions()) {
                     startRecording()
                     record_btn.apply {
-                        setImageResource(R.drawable.record_btn_recording)
+                        setImageResource(R.drawable.mic_button_recording)
                         isEnabled = false
                     }
                 }

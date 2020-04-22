@@ -6,53 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
-    <com.rakshakhegde.stepperindicator.StepperIndicator
-        android:id="@+id/stepperIndicator"
-        android:layout_width="286dp"
-        android:layout_height="64dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:stpi_stepCount="3" />
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layoutDirection="ltr"
-        android:orientation="horizontal"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="@+id/stepperIndicator"
-        tools:layout_editor_absoluteX="10dp">
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/medical_questionnaire"
+            android:layout_marginTop="45dp"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal"
             android:textAlignment="center"
-            android:textSize="12sp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stepperIndicator">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/camera_test"
-            android:textAlignment="center"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/medical_questionnaire"
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/recorder_test"
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/camera_test"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/recorder_test"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <com.rakshakhegde.stepperindicator.StepperIndicator
+            android:id="@+id/stepperIndicator"
+            android:layout_width="286dp"
+            android:layout_height="64dp"
             android:textAlignment="center"
-            android:textSize="12sp" />
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:stpi_stepCount="3" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
