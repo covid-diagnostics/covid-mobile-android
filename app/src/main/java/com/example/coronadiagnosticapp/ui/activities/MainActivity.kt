@@ -9,7 +9,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coronadiagnosticapp.R
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
 // This is an arbitrary number we are using to keep track of the permission

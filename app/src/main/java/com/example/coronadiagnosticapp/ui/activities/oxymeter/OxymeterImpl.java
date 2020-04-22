@@ -1,20 +1,15 @@
 package com.example.coronadiagnosticapp.ui.activities.oxymeter;
 
 import android.hardware.Camera;
-import android.util.Log;
 
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft;
 import com.example.coronadiagnosticapp.ui.activities.Math.Fft2;
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity;
 import com.example.coronadiagnosticapp.ui.activities.SMA;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,7 +46,6 @@ public class OxymeterImpl implements Oxymeter {
 
     //Initialize an object that calculates the rolling average of last 15 samples
     private int frameCounter = 0;
-    private Function0<Unit> onBadFinger;
     private SMA calc_mov_avg = new SMA(15);
 
     public OxymeterImpl(double samplingFreq) {
@@ -73,14 +67,6 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(RedAvg);
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
-
-        //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-        if (checkImageIsBad(RedAvg)) {
-            badFinger();
-            return;
-        }
-        frameCounter++;
-
         // we have at list 1 window and its a perfect window size
         if ((frameCounter >= samplingFreq * WINDOW_TIME) && (frameCounter % samplingFreq == 0)) {
             int windowIndex = (frameCounter / samplingFreq) - WINDOW_TIME;
@@ -91,16 +77,13 @@ public class OxymeterImpl implements Oxymeter {
             o2Windows[windowIndex] = results[0];     // if failed the result is 0
             peakBpmWindow[windowIndex] = results[1];// if failed the result is 0
             failedWindows += (int) results[2];
-            if (failedWindows > FAILED_WINDOWS_MAX) {
-                badFinger();
-                return;
-            }
         }
+        frameCounter++;
     }
 
 
     @Override
-    public OxymeterData finish(double totalTimeInSecs, double samplingFreq) {
+    public OxymeterData finish(double samplingFreq) {
         if (failedWindows > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
             return null;
         }
@@ -250,6 +233,33 @@ public class OxymeterImpl implements Oxymeter {
     }
 
 
+    private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq, int window_time, int failed_windows_max) {
+        final double WINDOW_FRAMES = samplingFreq * window_time;
+        double[] results;
+        double[] o2 = new double[30 - window_time + 1];
+        double[] peakBpm = new double[30 - window_time + 1];
+        int failed = 0;
+        for (int i = 0; i <= 30 - window_time; i++) {
+            int from = (int) (samplingFreq * i);
+            int to = (int) (WINDOW_FRAMES + (int) (samplingFreq * i));
+            results = calculateWindowSampleBpmAndO2(
+                    new ArrayList(redList.subList(from, to)),
+                    new ArrayList(blueList.subList(from, to)),
+                    samplingFreq);
+            o2[i] = results[0];     // if failed the result is 0
+            peakBpm[i] = results[1];// if failed the result is 0
+            failed += (int) results[2];
+        }
+        if (failed > failed_windows_max) { // too many failed windows, the samples are bad
+            return new int[]{0, 0, 1};
+        } else {
+            return new int[]{
+                    (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(o2))) / (o2.length - failed)),
+                    (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(peakBpm))) / (peakBpm.length - failed)),
+                    0};
+        }
+    }
+
     private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
         ArrayList<Double> RedMoveAverage = calculateMovingRedWindowAverage(redList);
         ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
@@ -270,17 +280,5 @@ public class OxymeterImpl implements Oxymeter {
         for (Double d : list)
             sum += d;
         return sum;
-    }
-
-
-    private void badFinger() {
-        // Invokes the onBadFinger callback
-        if (onBadFinger != null)
-            onBadFinger.invoke();
-    }
-
-    @Override
-    public void setOnBadFinger(@NotNull Function0<Unit> callback) {
-        onBadFinger = callback;
     }
 }
