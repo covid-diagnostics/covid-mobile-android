@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -278,6 +279,7 @@ public class OxymeterActivity extends AppCompatActivity {
         graphHeartRate = (GraphView) findViewById(R.id.graphHeartRate);
 
         mSeries = new LineGraphSeries<DataPoint>();
+        mSeries.setColor(Color.WHITE);
         graphHeartRate.removeAllSeries();
         graphHeartRate.addSeries(mSeries);
         graphHeartRate.getViewport().setXAxisBoundsManual(true);
@@ -286,6 +288,7 @@ public class OxymeterActivity extends AppCompatActivity {
         graphHeartRate.getGridLabelRenderer().setVerticalLabelsVisible(false);
         graphHeartRate.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graphHeartRate.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphHeartRate.setBackgroundColor(Color.rgb(0x62, 0x00, 0xEE));
         /*Animation*/
         makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
         makeVertical.setFillAfter(true);
