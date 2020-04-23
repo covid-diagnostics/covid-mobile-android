@@ -160,7 +160,7 @@ public class OxymeterActivity extends BaseActivity {
     private static final String TAG = "HeartRateMonitor";
     private static final AtomicBoolean processing = new AtomicBoolean(false);
     private static final int MIN_LIGHT_VALUE = 170; // lux units.
-    private static final int DATA_POINTS = 100;
+    private static final int DATA_POINTS = 200;
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     //Freq + timer variable
