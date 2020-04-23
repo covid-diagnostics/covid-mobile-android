@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">אבחון קורונה</string>
     <string name="header_instructions">שלום</string>
     <string name="body_instructions">הקליקו התחל על מנת\nלהתחיל את תהליך האבחון</string>
     <string name="start">התחל</string>

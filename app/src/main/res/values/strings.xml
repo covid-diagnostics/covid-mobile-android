@@ -27,7 +27,6 @@
     <string name="temperature">Temperature</string>
     <string name="coughStrength">Cough Strength</string>
     <string name="isCoughWet">Is the cough wet?</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
