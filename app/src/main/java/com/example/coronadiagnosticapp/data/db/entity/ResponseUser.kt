@@ -28,7 +28,7 @@ data class User(
 )
 
 data class UserRegister(
-    var email:String,
+    var userId:String,
     var password:String,
     var deviceId: String
 )

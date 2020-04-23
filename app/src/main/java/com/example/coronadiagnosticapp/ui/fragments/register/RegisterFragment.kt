@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.register_fragment.TextInputLayout_password
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.security.MessageDigest
 import javax.inject.Inject
 
 class RegisterFragment : ScopedFragment() {
@@ -50,6 +51,13 @@ class RegisterFragment : ScopedFragment() {
 
     }
 
+    fun hash(text: String): String {
+        val bytes = text.toString().toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
+
     private fun initForm() {
         form {
             inputLayout(textInputLayout_email) {
@@ -71,7 +79,7 @@ class RegisterFragment : ScopedFragment() {
                 showLoading(show = true)
                 launch(Dispatchers.IO) {
                     viewModel.registerUser(
-                        res["textInputLayout_email"]?.value.toString(),
+                        hash(res["textInputLayout_email"]?.value.toString()),
                         res["textInputLayout_password"]?.value.toString()
                     )
                     withContext(Dispatchers.Main) {
