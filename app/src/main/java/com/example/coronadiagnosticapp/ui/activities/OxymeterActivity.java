@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.Oxymeter;
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterData;
@@ -133,7 +131,7 @@ class OxymeterThread extends Thread {
 }
 
 
-public class OxymeterActivity extends AppCompatActivity {
+public class OxymeterActivity extends BaseActivity {
     // Variables Initialization
     private static final String TAG = "HeartRateMonitor";
     private static SurfaceHolder previewHolder = null;
