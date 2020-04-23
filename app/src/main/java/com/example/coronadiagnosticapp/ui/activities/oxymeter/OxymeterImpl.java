@@ -18,6 +18,7 @@ import java.util.List;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -46,6 +47,7 @@ public class OxymeterImpl implements Oxymeter {
     private int frameCounter = 0;
     private Function0<Unit> onInvalidData;
     private Function1<? super Integer, Unit> onUpdateView;
+    private Function2<? super Integer, ? super Double, Unit> setUpdateGraphView;
 
     public OxymeterImpl(double samplingFreq) {
         this.samplingFreq = (int) samplingFreq;
@@ -85,6 +87,7 @@ public class OxymeterImpl implements Oxymeter {
             }
             UpdateView((int) results[1]);
         }
+        UpdateGraphView(frameCounter, RedAvg);
     }
 
     @Override
@@ -274,5 +277,17 @@ public class OxymeterImpl implements Oxymeter {
     @Override
     public void setUpdateView(@NotNull Function1<? super Integer, Unit> callback) {
         onUpdateView = callback;
+    }
+
+
+    private void UpdateGraphView(int frame, double point) {
+        // Invokes the onUpdateView callback
+        if (setUpdateGraphView != null)
+            setUpdateGraphView.invoke(frame, point);
+    }
+
+    @Override
+    public void setUpdateGraphView(@NotNull Function2<? super Integer, ? super Double, Unit> callback) {
+        setUpdateGraphView = callback;
     }
 }

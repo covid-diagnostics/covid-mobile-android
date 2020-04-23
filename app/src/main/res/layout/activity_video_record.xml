@@ -85,12 +85,24 @@
         app:layout_constraintTop_toTopOf="@+id/barTimer"
         app:layout_constraintVertical_bias="0.5" />
 
+    <com.jjoe64.graphview.helper.GraphViewXML
+        android:id="@+id/graphHeartRate"
+        android:layout_width="225dp"
+        android:layout_height="99dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/barTimer"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/putfinger"
+        app:seriesData="0=0" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="@+id/barTimer"
+        android:layout_height="99dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="@+id/barTimer"
         app:layout_constraintTop_toBottomOf="@+id/putfinger"
         app:srcCompat="@drawable/heart" />
