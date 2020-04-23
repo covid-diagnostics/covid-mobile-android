@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">אבחון קורונה</string>
     <string name="header_instructions">שלום</string>
     <string name="body_instructions">הקליקו התחל על מנת\nלהתחיל את תהליך האבחון</string>
     <string name="start">התחל</string>
@@ -40,11 +41,12 @@
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
     <string name="medical_questionnaire">שאלון רפואי</string>
+    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
-    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
+    <string name="please_improve_lightning">תאורה חלשה זוהתה. בבקשה צא החוצה או הגבר את התאורה</string>
+    <string name="go_outside">לתוצאות מיטביות צא החוצה לאור שמש</string>
     <string name="fatigue">עייפות</string>
     <string name="muscle_weakness">חולשת שרירים</string>
     <string name="personal_info_request">עזרו לנו להכיר אתכם טוב יותר</string>
-
 </resources>

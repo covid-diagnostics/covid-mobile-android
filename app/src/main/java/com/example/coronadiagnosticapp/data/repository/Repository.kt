@@ -7,6 +7,7 @@ import java.io.File
 
 interface Repository {
     val error: MutableLiveData<String>
+    var breathingRate: Double
 
     suspend fun registerUser(userRegister: UserRegister)
     fun isLoggedIn(): Boolean
