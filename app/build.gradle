@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'com.jjoe64:graphview:4.2.2'
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.kittinunf.result:result:3.0.0' //for jvm
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

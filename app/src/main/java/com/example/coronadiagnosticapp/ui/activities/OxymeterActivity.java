@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -36,6 +37,12 @@ import java.util.Queue;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -63,15 +70,24 @@ class OxymeterThread extends Thread {
     private int totalFrames;
     private double previewFps;
     private Function1<? super Integer, Unit> onUpdateView;
+    private Function2<? super Integer, ? super Double, Unit> onUpdateGraphView;
     private OxymeterThreadEventListener eventListener;
 
-    OxymeterThread(Queue<byte[]> framesQueue, Camera cam, Camera.Size previewSize, int totalFrames, double previewFps, Function1<? super Integer, Unit> onUpdateView, OxymeterThreadEventListener eventListener) {
+    OxymeterThread(Queue<byte[]> framesQueue,
+                   Camera cam,
+                   Camera.Size previewSize,
+                   int totalFrames,
+                   double previewFps,
+                   Function1<? super Integer, Unit> onUpdateView,
+                   Function2<? super Integer, ? super Double, Unit> onUpdateGraphView,
+                   OxymeterThreadEventListener eventListener) {
         this.framesQueue = framesQueue;
         this.cam = cam;
         this.previewSize = previewSize;
         this.totalFrames = totalFrames;
         this.previewFps = previewFps;
         this.onUpdateView = onUpdateView;
+        this.onUpdateGraphView = onUpdateGraphView;
         this.eventListener = eventListener;
     }
 
@@ -89,6 +105,7 @@ class OxymeterThread extends Thread {
     private synchronized void startWithNewOxymeter() {
         oxymeter = new OxymeterImpl(previewFps / 1000);
         oxymeter.setUpdateView(onUpdateView);
+        oxymeter.setUpdateGraphView(onUpdateGraphView);
         oxymeter.setOnInvalidData(() -> {
             this.onInvalidData();
             return null;
@@ -143,6 +160,7 @@ public class OxymeterActivity extends BaseActivity {
     private static final String TAG = "HeartRateMonitor";
     private static final AtomicBoolean processing = new AtomicBoolean(false);
     private static final int MIN_LIGHT_VALUE = 170; // lux units.
+    private static final int DATA_POINTS = 200;
     private static SurfaceHolder previewHolder = null;
     private static Camera camera = null;
     //Freq + timer variable
@@ -154,6 +172,8 @@ public class OxymeterActivity extends BaseActivity {
     ImageView lightningImageView;
     TextView timeLeftView;
     TextView heartRate;
+    GraphView graphHeartRate;
+    LineGraphSeries<DataPoint> mSeries;
     RotateAnimation makeVertical;
     //TextView
     private TextView putFingerAlert;
@@ -267,8 +287,19 @@ public class OxymeterActivity extends BaseActivity {
         progressBarView = (ProgressBar) findViewById(R.id.barTimer);
         timeLeftView = (TextView) findViewById(R.id.textTimer);
         heartRate = (TextView) findViewById(R.id.heartRate);
+        graphHeartRate = (GraphView) findViewById(R.id.graphHeartRate);
 
-
+        mSeries = new LineGraphSeries<DataPoint>();
+        mSeries.setColor(Color.WHITE);
+        graphHeartRate.removeAllSeries();
+        graphHeartRate.addSeries(mSeries);
+        graphHeartRate.getViewport().setXAxisBoundsManual(true);
+        graphHeartRate.getViewport().setMinX(0);
+        graphHeartRate.getViewport().setMaxX(DATA_POINTS);
+        graphHeartRate.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graphHeartRate.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graphHeartRate.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graphHeartRate.setBackgroundColor(Color.rgb(0x62, 0x00, 0xEE));
         /*Animation*/
         makeVertical = new RotateAnimation(0, -90, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
         makeVertical.setFillAfter(true);
@@ -329,6 +360,11 @@ public class OxymeterActivity extends BaseActivity {
                     this.updateView(heartRate);
                     return null;
                 },
+                (frame, point) -> {
+                    this.updateGraphView(frame, point);
+                    return null;
+                }
+                ,
                 new OxymeterThreadEventListener() {
                     @Override
                     public void onFrame(int frameNumber) {
@@ -401,6 +437,17 @@ public class OxymeterActivity extends BaseActivity {
         heartRate.setText(Integer.toString(currentHeartRate));
     }
 
+
+    private void updateGraphView(int frame, double point) {
+        runOnUiThread(() -> this.updateGraph(frame, point));
+    }
+
+    private void updateGraph(int frame, double point) {
+        mSeries.appendData(new DataPoint(frame, point), true, DATA_POINTS, false);
+        graphHeartRate.onDataChanged(false, false);
+    }
+
+
     public void setProgress(int currentFrame, int totalFrames) {
         progressBarView.setMax(totalFrames);
         progressBarView.setSecondaryProgress(totalFrames);
@@ -451,6 +498,7 @@ public class OxymeterActivity extends BaseActivity {
         progressBarView.clearAnimation();
         progressBarView.setVisibility(View.INVISIBLE);
         timeLeftView.setVisibility(View.INVISIBLE);
+        mSeries.resetData(new DataPoint[]{});
         heartRate.setText("-");
     }
 
