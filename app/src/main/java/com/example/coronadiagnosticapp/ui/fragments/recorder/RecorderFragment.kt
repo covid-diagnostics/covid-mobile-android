@@ -13,13 +13,17 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,9 +54,8 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        context?.getAppComponent()?.inject(this)
+
         recordFile = context!!.externalCacheDir!!.absolutePath
     }
 
@@ -65,9 +68,7 @@ class RecorderFragment : ScopedFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.recorder_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.recorder_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -78,15 +79,11 @@ class RecorderFragment : ScopedFragment() {
     private fun initButton() {
         record_btn.setOnClickListener {
             // The button can only start the recording
-            if (!isRecording) {
-                // Check permission
-                if (checkPermissions()) {
-                    startRecording()
-                    record_btn.apply {
-                        setImageResource(R.drawable.mic_button_recording)
-                        isEnabled = false
-                    }
-                }
+            if (!isRecording && checkPermissions()) {
+                startRecording()
+
+                record_btn.setImageResource(R.drawable.mic_button_recording)
+                record_btn.isEnabled = false
             }
         }
     }
@@ -101,11 +98,13 @@ class RecorderFragment : ScopedFragment() {
         record_filename.text = "Recording Stopped, File Saved : $recordFile"
 
         //Stop media recorder and set it to null for further use to record new audio
-        mediaRecorder!!.stop()
-        mediaRecorder!!.reset()
-        mediaRecorder!!.release()
+        mediaRecorder!!.apply {
+            stop()
+            reset()
+            release()
+        }
         mediaRecorder = null
-        Log.i("ASQWEQWE", "asd")
+        Log.i(TAG, "stop recording")
         processRecording()
     }
 
@@ -127,27 +126,33 @@ class RecorderFragment : ScopedFragment() {
         fileLocation = "$recordPath/$recordFile"
 
         //Setup Media Recorder for recording
-        mediaRecorder = MediaRecorder()
-        mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder!!.setOutputFile(fileLocation)
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(fileLocation)
+        }
         launch {
             delay(MAX_DURATION.toLong())
             stopRecording()
-            showLoading(true)
+
+            val progress = progressBar_recordFragment
+
+            showLoading(progress, true)
             // Upload file
             launch(Dispatchers.IO) {
                 viewModel.uploadFile(File(fileLocation!!))
-                withContext(Dispatchers.Main) { showLoading(false) }
+                withContext(Dispatchers.Main) { showLoading(progress, false) }
                 Log.d(TAG, "File finished uploading!")
                 findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
             }
             processRecording()
         }
 
-        mediaRecorder!!.prepare()
-        mediaRecorder!!.start()
+        mediaRecorder!!.apply {
+            prepare()//TODO use prepare async + listener
+            start()//TODO call start when prepared
+        }
         startUpdatingVisualizer()
     }
 
@@ -158,13 +163,6 @@ class RecorderFragment : ScopedFragment() {
                 visualizer.invalidate()
                 delay(VISUALIZATION_FREQUENCY)
             }
-        }
-    }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_recordFragment.visibility = View.VISIBLE
-            false -> progressBar_recordFragment.visibility = View.GONE
         }
     }
 
@@ -188,7 +186,7 @@ class RecorderFragment : ScopedFragment() {
     override fun onStop() {
         super.onStop()
         // Stop recording is someone presses back
-        if (isRecording) { stopRecording() }
+        if (isRecording) stopRecording()
     }
 
 

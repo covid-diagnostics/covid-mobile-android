@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
+import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.information_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,9 +22,7 @@ class InformationFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        context?.getAppComponent()?.inject(this)
     }
 
     @Inject
@@ -32,18 +31,15 @@ class InformationFragment : ScopedFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.information_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.information_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         initForm()
 
-        viewModel.error.observe(viewLifecycleOwner, Observer { msg ->
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            toast(it)
         })
     }
 
@@ -63,35 +59,36 @@ class InformationFragment : ScopedFragment() {
             }
 
             submitWith(button_informationNext) { res ->
-                submitPersonalInfoForm(
-                    res.get("activity_personal_inp_first_name")?.value.toString(),
-                    res.get("activity_personal_inp_last_name")?.value.toString(),
-                    res.get("activity_personal_inp_age")?.value.toString().toInt()
-                )
+                val firstName = res["activity_personal_inp_first_name"]?.value
+                    ?.toString()
+                    ?: return@submitWith
 
+                val lastName = res["activity_personal_inp_last_name"]?.value
+                    ?.toString()
+                    ?: return@submitWith
+
+                val age = res["activity_personal_inp_age"]?.value
+                    ?.toString()?.toIntOrNull()
+                    ?: return@submitWith
+
+                submitPersonalInfoForm(firstName, lastName, age)
             }
         }
     }
 
     private fun submitPersonalInfoForm(firstName: String, lastName: String, age: Int) {
-        showLoading(show = true)
+        val progress = progressBar_informationFragment
+        showLoading(progress, true)
         launch(Dispatchers.IO) {
             viewModel.updateUserPersonalInformation(
                 firstName, lastName, age
             )
             withContext(Dispatchers.Main) {
-                showLoading(false)
+                showLoading(progress, false)
                 findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)
             }
         }
 
-    }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_informationFragment.visibility = View.VISIBLE
-            false -> progressBar_informationFragment.visibility = View.GONE
-        }
     }
 
 }

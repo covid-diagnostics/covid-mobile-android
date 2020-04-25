@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.data.db.entity
+package com.example.coronadiagnosticapp.data.db.entity.responseMetric
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,7 +12,3 @@ data class ResponseMetric(
     val temperature: String
 )
 
-data class SendMetric(
-    val coughStrength: Int, val isCoughDry: Boolean,
-    val temperature: String
-)

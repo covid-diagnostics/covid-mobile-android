@@ -2,7 +2,7 @@ package com.example.coronadiagnosticapp.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import java.io.File
 
 interface Repository {

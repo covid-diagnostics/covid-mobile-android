@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.example.coronadiagnosticapp.R
 
 
@@ -20,23 +21,20 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun setupUI(view: View) {
         if (view !is EditText) {
             view.setOnTouchListener { _, _ ->
-                hideSoftKeyboard(this)
+                hideSoftKeyboard()
                 false
             }
         }
         //If a layout container, iterate over children and seed recursion.
         if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                val innerView = view.getChildAt(i)
-                setupUI(innerView)
-            }
+            view.children.forEach(this::setupUI)
         }
     }
 
-    private fun hideSoftKeyboard(activity: Activity) {
-        val inputMethodManager: InputMethodManager = activity.getSystemService(
-            Activity.INPUT_METHOD_SERVICE
-        ) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
+    private fun hideSoftKeyboard() {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 }

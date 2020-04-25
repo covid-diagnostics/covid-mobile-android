@@ -9,7 +9,7 @@
         android:id="@+id/welcomeFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment"
         android:label="fragment_welcome"
-        tools:layout="@layout/fragment_welcome" >
+        tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_welcomeFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
@@ -21,7 +21,7 @@
         android:id="@+id/registerFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment"
         android:label="register_fragment"
-        tools:layout="@layout/register_fragment" >
+        tools:layout="@layout/register_fragment">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/informationFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
-        android:label="InformationFragment" >
+        android:label="InformationFragment">
         <action
             android:id="@+id/action_informationFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
@@ -41,7 +41,7 @@
         android:id="@+id/dailyMetricFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment"
         android:label="daily_metric_fragment"
-        tools:layout="@layout/daily_metric_fragment" >
+        tools:layout="@layout/daily_metric_fragment">
         <action
             android:id="@+id/action_dailyMetricFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
@@ -50,7 +50,7 @@
         android:id="@+id/cameraFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment"
         android:label="camera_fragment"
-        tools:layout="@layout/camera_fragment" >
+        tools:layout="@layout/camera_fragment">
         <action
             android:id="@+id/action_cameraFragment_to_recorderFragment"
             app:destination="@id/recorderFragment" />
@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/recorderFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment"
-        android:label="RecorderFragment" >
+        android:label="RecorderFragment">
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
@@ -72,16 +72,16 @@
         android:id="@+id/instructionsFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment"
         android:label="instructions_fragment"
-        tools:layout="@layout/instructions_fragment" >
+        tools:layout="@layout/instructions_fragment">
         <action
             android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.coronadiagnosticapp.ui.login.LoginFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.login.LoginFragment"
         android:label="login_fragment"
-        tools:layout="@layout/login_fragment" >
+        tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />

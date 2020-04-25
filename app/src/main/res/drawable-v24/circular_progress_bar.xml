@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@android:id/secondaryProgress">
         <shape
             android:shape="ring"
-            android:useLevel="true"
-            android:thicknessRatio="15" >
+            android:thicknessRatio="15"
+            android:useLevel="true">
             <solid android:color="#9811FF" />
         </shape>
     </item>
@@ -13,8 +13,8 @@
     <item android:id="@android:id/progress">
         <shape
             android:shape="ring"
-            android:useLevel="true"
-            android:thicknessRatio="15" >
+            android:thicknessRatio="15"
+            android:useLevel="true">
             <solid android:color="#D5C3E2" />
         </shape>
     </item>

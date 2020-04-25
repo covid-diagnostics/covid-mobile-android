@@ -25,7 +25,7 @@
     <string name="daily_metric_message">Please check your\ntemperature and cough</string>
     <string name="submit_daily_metrics">Submit</string>
     <string name="temperature">Temperature</string>
-    <string name="coughStrength">Cough Strength</string>
+    <string name="coughStrength">Cough Strength %d</string>
     <string name="isCoughWet">Is the cough wet?</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>

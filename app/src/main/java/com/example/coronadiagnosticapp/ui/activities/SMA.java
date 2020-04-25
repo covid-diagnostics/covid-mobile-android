@@ -12,33 +12,28 @@ public class SMA {
     private double average = 0;
 
     /**
-     *
      * @param length the maximum length
      */
-    public SMA(int length)
-    {
-        if (length <= 0)
-        {
+    public SMA(int length) {
+        if (length <= 0) {
             throw new IllegalArgumentException("length must be greater than zero");
         }
         this.length = length;
     }
 
-    public double currentAverage()
-    {
+    public double currentAverage() {
         return average;
     }
 
     /**
      * Compute the moving average.
      * Synchronised so that no changes in the underlying data is made during calculation.
+     *
      * @param value The value
      * @return The average
      */
-    public synchronized double compute(double value)
-    {
-        if (values.size() == length && length > 0)
-        {
+    public synchronized double compute(double value) {
+        if (values.size() == length && length > 0) {
             sum -= ((Double) values.getFirst()).doubleValue();
             values.removeFirst();
         }

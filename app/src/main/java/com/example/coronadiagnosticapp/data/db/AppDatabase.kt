@@ -8,8 +8,8 @@ import androidx.room.TypeConverters
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.Converters
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
-import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
 @Database(
     entities = [User::class, ResponseMetric::class, HealthResult::class],

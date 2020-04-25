@@ -53,16 +53,13 @@ package com.example.coronadiagnosticapp.ui.activities.Math;
  */
 
 
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexUtils;
 
 /**
- *
  * The mother of all filters. It contains the coefficients of all
  * filter stages as a sequence of 2nd order filters and the states
  * of the 2nd order filters which also imply if it's direct form I or II
- *
  */
 public class Cascade {
 
@@ -77,18 +74,18 @@ public class Cascade {
 
     private int numPoles;
 
+    public Cascade() {
+        m_numBiquads = 0;
+        m_biquads = null;
+        m_states = null;
+    }
+
     public int getNumBiquads() {
         return m_numBiquads;
     }
 
     public Biquad getBiquad(int index) {
         return m_biquads[index];
-    }
-
-    public Cascade() {
-        m_numBiquads = 0;
-        m_biquads = null;
-        m_states = null;
     }
 
     public void reset() {
@@ -131,7 +128,7 @@ public class Cascade {
     public void applyScale(double scale) {
         // For higher order filters it might be helpful
         // to spread this factor between all the stages.
-        if (m_biquads.length>0) {
+        if (m_biquads.length > 0) {
             m_biquads[0].applyScale(scale);
         }
     }
@@ -164,4 +161,4 @@ public class Cascade {
                 / ((response(proto.getNormalW() / (2 * Math.PI)))).abs());
     }
 
-};
+}

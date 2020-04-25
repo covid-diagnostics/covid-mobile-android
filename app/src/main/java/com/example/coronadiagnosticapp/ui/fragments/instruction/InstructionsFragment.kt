@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.instructions_fragment.*
 import javax.inject.Inject
 
@@ -18,9 +18,7 @@ class InstructionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        context?.getAppComponent()?.inject(this)
     }
 
     override fun onCreateView(
@@ -34,6 +32,7 @@ class InstructionsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         textView_header_instructions.apply {
             text = "$text ${viewModel.getUserName()}"
+//            TODO use string rss for with %s
         }
         button_instructions.setOnClickListener {
             findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)

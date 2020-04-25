@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlueActivity">#FF488AFF</color>
+
+    <color name="colorNormal">#3B9B19</color>
+    <color name="colorRisky">#FFCC00</color>
+    <color name="colorSevere">#CC3300</color>
+
+    <color name="heartRateGraph">#FF6200E9</color>
 </resources>

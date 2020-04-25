@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.login
+package com.example.coronadiagnosticapp.ui.fragments.login
 
 import androidx.lifecycle.ViewModel
 

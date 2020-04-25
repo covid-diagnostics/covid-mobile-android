@@ -24,39 +24,14 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexUtils;
 
 /**
- *         User facing class which contains all the methods the user uses
- *         to create Butterworth filters. This done in this way:
- *         Butterworth butterworth = new Butterworth(); 
- *         Then call one of the methods below to create
- *         low-,high-,band-, or stopband filters. For example:
- *         butterworth.bandPass(2,250,50,5);
+ * User facing class which contains all the methods the user uses
+ * to create Butterworth filters. This done in this way:
+ * Butterworth butterworth = new Butterworth();
+ * Then call one of the methods below to create
+ * low-,high-,band-, or stopband filters. For example:
+ * butterworth.bandPass(2,250,50,5);
  */
 public class Butterworth extends Cascade {
-
-    class AnalogLowPass extends LayoutBase {
-
-        private int nPoles;
-
-        public AnalogLowPass(int _nPoles) {
-            super(_nPoles);
-            nPoles = _nPoles;
-            setNormal(0, 1);
-        }
-
-        public void design() {
-            reset();
-            double n2 = 2 * nPoles;
-            int pairs = nPoles / 2;
-            for (int i = 0; i < pairs; ++i) {
-                Complex c = ComplexUtils.polar2Complex(1F, Math.PI/2.0
-                        + (2 * i + 1) * Math.PI / n2);
-                addPoleZeroConjugatePairs(c, Complex.INF);
-            }
-
-            if ((nPoles & 1) == 1)
-                add(new Complex(-1), Complex.INF);
-        }
-    }
 
     private void setupLowPass(int order, double sampleRate,
                               double cutoffFrequency, int directFormType) {
@@ -75,12 +50,9 @@ public class Butterworth extends Cascade {
     /**
      * Butterworth Lowpass filter with default topology
      *
-     * @param order
-     *            The order of the filter
-     * @param sampleRate
-     *            The sampling rate of the system
-     * @param cutoffFrequency
-     *            the cutoff frequency
+     * @param order           The order of the filter
+     * @param sampleRate      The sampling rate of the system
+     * @param cutoffFrequency the cutoff frequency
      */
     public void lowPass(int order, double sampleRate, double cutoffFrequency) {
         setupLowPass(order, sampleRate, cutoffFrequency,
@@ -90,23 +62,16 @@ public class Butterworth extends Cascade {
     /**
      * Butterworth Lowpass filter with custom topology
      *
-     * @param order
-     *            The order of the filter
-     * @param sampleRate
-     *            The sampling rate of the system
-     * @param cutoffFrequency
-     *            The cutoff frequency
-     * @param directFormType
-     *            The filter topology. This is either
-     *            DirectFormAbstract.DIRECT_FORM_I or DIRECT_FORM_II
+     * @param order           The order of the filter
+     * @param sampleRate      The sampling rate of the system
+     * @param cutoffFrequency The cutoff frequency
+     * @param directFormType  The filter topology. This is either
+     *                        DirectFormAbstract.DIRECT_FORM_I or DIRECT_FORM_II
      */
     public void lowPass(int order, double sampleRate, double cutoffFrequency,
                         int directFormType) {
         setupLowPass(order, sampleRate, cutoffFrequency, directFormType);
     }
-
-
-
 
     private void setupHighPass(int order, double sampleRate,
                                double cutoffFrequency, int directFormType) {
@@ -125,14 +90,10 @@ public class Butterworth extends Cascade {
     /**
      * Highpass filter with custom topology
      *
-     * @param order
-     *            Filter order (ideally only even orders)
-     * @param sampleRate
-     *            Sampling rate of the system
-     * @param cutoffFrequency
-     *            Cutoff of the system
-     * @param directFormType
-     *            The filter topology. See DirectFormAbstract.
+     * @param order           Filter order (ideally only even orders)
+     * @param sampleRate      Sampling rate of the system
+     * @param cutoffFrequency Cutoff of the system
+     * @param directFormType  The filter topology. See DirectFormAbstract.
      */
     public void highPass(int order, double sampleRate, double cutoffFrequency,
                          int directFormType) {
@@ -142,20 +103,14 @@ public class Butterworth extends Cascade {
     /**
      * Highpass filter with default filter topology
      *
-     * @param order
-     *            Filter order (ideally only even orders)
-     * @param sampleRate
-     *            Sampling rate of the system
-     * @param cutoffFrequency
-     *            Cutoff of the system
+     * @param order           Filter order (ideally only even orders)
+     * @param sampleRate      Sampling rate of the system
+     * @param cutoffFrequency Cutoff of the system
      */
     public void highPass(int order, double sampleRate, double cutoffFrequency) {
         setupHighPass(order, sampleRate, cutoffFrequency,
                 DirectFormAbstract.DIRECT_FORM_II);
     }
-
-
-
 
     private void setupBandStop(int order, double sampleRate,
                                double centerFrequency, double widthFrequency, int directFormType) {
@@ -174,14 +129,10 @@ public class Butterworth extends Cascade {
     /**
      * Bandstop filter with default topology
      *
-     * @param order
-     *            Filter order (actual order is twice)
-     * @param sampleRate
-     *            Samping rate of the system
-     * @param centerFrequency
-     *            Center frequency
-     * @param widthFrequency
-     *            Width of the notch
+     * @param order           Filter order (actual order is twice)
+     * @param sampleRate      Samping rate of the system
+     * @param centerFrequency Center frequency
+     * @param widthFrequency  Width of the notch
      */
     public void bandStop(int order, double sampleRate, double centerFrequency,
                          double widthFrequency) {
@@ -192,25 +143,17 @@ public class Butterworth extends Cascade {
     /**
      * Bandstop filter with custom topology
      *
-     * @param order
-     *            Filter order (actual order is twice)
-     * @param sampleRate
-     *            Samping rate of the system
-     * @param centerFrequency
-     *            Center frequency
-     * @param widthFrequency
-     *            Width of the notch
-     * @param directFormType
-     *            The filter topology
+     * @param order           Filter order (actual order is twice)
+     * @param sampleRate      Samping rate of the system
+     * @param centerFrequency Center frequency
+     * @param widthFrequency  Width of the notch
+     * @param directFormType  The filter topology
      */
     public void bandStop(int order, double sampleRate, double centerFrequency,
                          double widthFrequency, int directFormType) {
         setupBandStop(order, sampleRate, centerFrequency, widthFrequency,
                 directFormType);
     }
-
-
-
 
     private void setupBandPass(int order, double sampleRate,
                                double centerFrequency, double widthFrequency, int directFormType) {
@@ -230,14 +173,10 @@ public class Butterworth extends Cascade {
     /**
      * Bandpass filter with default topology
      *
-     * @param order
-     *            Filter order
-     * @param sampleRate
-     *            Sampling rate
-     * @param centerFrequency
-     *            Center frequency
-     * @param widthFrequency
-     *            Width of the notch
+     * @param order           Filter order
+     * @param sampleRate      Sampling rate
+     * @param centerFrequency Center frequency
+     * @param widthFrequency  Width of the notch
      */
     public void bandPass(int order, double sampleRate, double centerFrequency,
                          double widthFrequency) {
@@ -248,21 +187,41 @@ public class Butterworth extends Cascade {
     /**
      * Bandpass filter with custom topology
      *
-     * @param order
-     *            Filter order
-     * @param sampleRate
-     *            Sampling rate
-     * @param centerFrequency
-     *            Center frequency
-     * @param widthFrequency
-     *            Width of the notch
-     * @param directFormType
-     *            The filter topology (see DirectFormAbstract)
+     * @param order           Filter order
+     * @param sampleRate      Sampling rate
+     * @param centerFrequency Center frequency
+     * @param widthFrequency  Width of the notch
+     * @param directFormType  The filter topology (see DirectFormAbstract)
      */
     public void bandPass(int order, double sampleRate, double centerFrequency,
                          double widthFrequency, int directFormType) {
         setupBandPass(order, sampleRate, centerFrequency, widthFrequency,
                 directFormType);
+    }
+
+    class AnalogLowPass extends LayoutBase {
+
+        private int nPoles;
+
+        public AnalogLowPass(int _nPoles) {
+            super(_nPoles);
+            nPoles = _nPoles;
+            setNormal(0, 1);
+        }
+
+        public void design() {
+            reset();
+            double n2 = 2 * nPoles;
+            int pairs = nPoles / 2;
+            for (int i = 0; i < pairs; ++i) {
+                Complex c = ComplexUtils.polar2Complex(1F, Math.PI / 2.0
+                        + (2 * i + 1) * Math.PI / n2);
+                addPoleZeroConjugatePairs(c, Complex.INF);
+            }
+
+            if ((nPoles & 1) == 1)
+                add(new Complex(-1), Complex.INF);
+        }
     }
 
 }

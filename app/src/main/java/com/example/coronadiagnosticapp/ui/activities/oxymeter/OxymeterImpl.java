@@ -24,31 +24,24 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
 
 public class OxymeterImpl implements Oxymeter {
-    public enum RGB {RED, GREEN, BLUE}
-
     private static final String TAG = "Oxymeter";
-    private int samplingFreq;
-
     // window samples
     private final int WINDOW_TIME = 10; // the number of seconds for each window
     private final int FAILED_WINDOWS_MAX = 5; // the number of bad windows we allow to "throw away"
-
-    private int failedWindows = 0;
     private final int SMA_SIZE = 15;
+    private int samplingFreq;
+    private int failedWindows = 0;
     private SMA RedRollingAvg = null;
     private double[] o2Windows = new double[30 - WINDOW_TIME + 1];
     private double[] peakBpmWindow = new double[30 - WINDOW_TIME + 1];
-
     //Arraylist
     private ArrayList<Double> RedAvgList = new ArrayList<>();
     private ArrayList<Double> BlueAvgList = new ArrayList<>();
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
-
     private int frameCounter = 0;
     private Function0<Unit> onInvalidData;
     private Function1<? super Integer, Unit> onUpdateView;
     private Function2<? super Integer, ? super Double, Unit> setUpdateGraphView;
-
     public OxymeterImpl(double samplingFreq) {
         this.samplingFreq = (int) samplingFreq;
     }
@@ -279,7 +272,6 @@ public class OxymeterImpl implements Oxymeter {
         onUpdateView = callback;
     }
 
-
     private void UpdateGraphView(int frame, double point) {
         // Invokes the onUpdateView callback
         if (setUpdateGraphView != null)
@@ -290,4 +282,6 @@ public class OxymeterImpl implements Oxymeter {
     public void setUpdateGraphView(@NotNull Function2<? super Integer, ? super Double, Unit> callback) {
         setUpdateGraphView = callback;
     }
+
+    public enum RGB {RED, GREEN, BLUE}
 }

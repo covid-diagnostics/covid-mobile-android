@@ -1,6 +1,5 @@
-package com.example.coronadiagnosticapp
+package com.example.coronadiagnosticapp.utils
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.example.coronadiagnosticapp.data.di.AppComponent
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
@@ -13,5 +12,5 @@ class MyApplication : MultiDexApplication() {
         appComponent = DaggerAppComponent.factory().create(applicationContext)
     }
 
-    fun getAppComponent(): AppComponent = appComponent
+    fun getAppComponent() = appComponent
 }

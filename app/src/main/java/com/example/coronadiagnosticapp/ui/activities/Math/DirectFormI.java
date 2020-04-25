@@ -13,20 +13,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  *  Copyright (c) 2009 by Vinnie Falco
  *  Copyright (c) 2016 by Bernd Porr
  */
 
 package com.example.coronadiagnosticapp.ui.activities.Math;
+
 /**
- * 
  * Implementation of a Direct Form I filter with its states. The coefficients
  * are supplied from the outside.
- *
  */
 public class DirectFormI extends DirectFormAbstract {
 
+    double m_x2; // x[n-2]
+    double m_y2; // y[n-2]
+    double m_x1; // x[n-1]
+    double m_y1; // y[n-1]
     public DirectFormI() {
         reset();
     }
@@ -49,9 +52,4 @@ public class DirectFormI extends DirectFormAbstract {
 
         return out;
     }
-
-    double m_x2; // x[n-2]
-    double m_y2; // y[n-2]
-    double m_x1; // x[n-1]
-    double m_y1; // y[n-1]
-};
+}

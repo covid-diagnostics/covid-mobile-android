@@ -58,6 +58,6 @@
 
     <Button
         android:id="@+id/button_instructions"
-        android:text="@string/start"
-        style="@style/customButton" />
+        style="@style/customButton"
+        android:text="@string/start" />
 </androidx.constraintlayout.widget.ConstraintLayout>

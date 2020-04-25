@@ -1,143 +1,138 @@
 package com.example.coronadiagnosticapp.ui.fragments.resultFragment
 
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import com.example.coronadiagnosticapp.MyApplication
-
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.R.color.*
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.result_fragment.*
 import javax.inject.Inject
 
 class ResultFragment : ScopedFragment() {
-    val GREEN_COLOR_CODE = "#3b9b19"
-    val YELLOW_COLOR_CODE = "#ffcc00"
-    val RED_COLOR_CODE = "#cc3300"
-    val NORMAL_COLOR = Color.parseColor(GREEN_COLOR_CODE)
-    val RISKY_COLOR = Color.parseColor(YELLOW_COLOR_CODE)
-    val SEVERE_COLOR = Color.parseColor(RED_COLOR_CODE)
 
     @Inject
     lateinit var viewModel: ResultViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        context?.getAppComponent()?.inject(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.result_fragment, container, false)
+    ): View? = inflater.inflate(R.layout.result_fragment, container, false)
+
+    private fun setTextHTML(html: String) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(html)
     }
 
-    fun setTextHTML(html: String): Spanned
-    {
-        val result: Spanned = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            Html.fromHtml(html)
-        }
-        return result
-    }
-
-    fun colorizeText(text: String, color: String): String {
-        return "<font color='${color}'>${text}</font>"
+    //    TODO move to HTML Helper
+    private fun colorizeText(@StringRes textRes: Int, @ColorRes colorRes: Int): String {
+        val colorInt = resources.getColor(colorRes)
+        val hexColor = Integer.toHexString(colorInt)
+        val text = resources.getText(textRes)
+        return "<font color='#$hexColor'>$text</font>"
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val NORMAL_TEXT = colorizeText(resources.getString(R.string.normal), GREEN_COLOR_CODE)
-        val SEVERELY_LOW_TEXT = colorizeText(resources.getString(R.string.severely_low), RED_COLOR_CODE)
-        val SEVERELY_HIGH_TEXT = colorizeText(resources.getString(R.string.severely_high), RED_COLOR_CODE)
-        val HIGH_TEXT = colorizeText(resources.getString(R.string.high), YELLOW_COLOR_CODE)
-        val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
+        val normalText = colorizeText(R.string.normal, colorNormal)
+
+        val severelyLowText = colorizeText(R.string.severely_low, colorSevere)
+
+        val severelyHighText = colorizeText(R.string.severely_high, colorSevere)
+
+        val highText = colorizeText(R.string.high, colorRisky)
+
+        val lowText = colorizeText(R.string.low, colorRisky)
 
         var normalRates = 0
-        val healthResult : HealthResult = viewModel.getLastHealth()!!
+        val healthResult: HealthResult = viewModel.getLastHealth()!!
         val breathingRate = viewModel.getBreathingRate()
-        textView_Oxygen.text = "${healthResult.oxygenSaturation}"
-        textView_heartRate.text = "${healthResult.beatsPerMinute}"
+
+        val oxygenSaturation = healthResult.oxygenSaturation
+        textView_Oxygen.text = "$oxygenSaturation"
+
+        val beatsPerMinute = healthResult.beatsPerMinute
+        textView_heartRate.text = "$beatsPerMinute"
+
         textView_respiration.text = "%.1f".format(breathingRate * 60)
+
         when {
-            healthResult.oxygenSaturation < 90 -> {
 //                 VERY LOW
-                textView_Oxygen.setTextColor(SEVERE_COLOR)
-                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${SEVERELY_LOW_TEXT}"))
-            }
-            healthResult.oxygenSaturation < 95 -> {
+            oxygenSaturation < 90 -> setOxygenText(severelyLowText, colorSevere)
 //                 LOW
-                textView_Oxygen.setTextColor(RISKY_COLOR)
-                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${LOW_TEXT}"))
-            }
+            oxygenSaturation < 95 -> setOxygenText(lowText, colorRisky)
             else -> {
-//                 normal
-                textView_Oxygen.setTextColor(NORMAL_COLOR)
-                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${NORMAL_TEXT}"))
+//                 NORMAL
+                setOxygenText(normalText, colorNormal)
                 normalRates++
             }
         }
         when {
-            healthResult.beatsPerMinute < 60 -> {
 //                 LOW
-                textView_heartRate.setTextColor(RISKY_COLOR)
-                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${LOW_TEXT}"))
-            }
-            healthResult.beatsPerMinute < 100 -> {
-//                 NORAML
-                textView_heartRate.setTextColor(NORMAL_COLOR)
-                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${NORMAL_TEXT}"))
+            beatsPerMinute < 60 -> setHRText(lowText, colorRisky)
+            beatsPerMinute < 100 -> {
+//                 NORMAL
+                setHRText(normalText, colorNormal)
                 normalRates++
             }
-            healthResult.beatsPerMinute < 120 -> {
 //                 HIGH
-                textView_heartRate.setTextColor(RISKY_COLOR)
-                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${HIGH_TEXT}"))
-            }
-            else -> {
-//                 VERY HIGH
-                textView_heartRate.setTextColor(RISKY_COLOR)
-                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${SEVERELY_HIGH_TEXT}"))
-            }
+            beatsPerMinute < 120 -> setHRText(highText, colorRisky)
+            //                 VERY HIGH
+            else -> setHRText(severelyHighText, colorRisky)
         }
         when {
-            breathingRate < 5 -> {
-//                 LOW
-                textView_respiration.setTextColor(RISKY_COLOR)
-                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${LOW_TEXT}"))
-            }
+            //                 LOW
+            breathingRate < 5 -> setRespirationText(lowText, colorRisky)
             breathingRate < 15 -> {
 //                 NORMAL
-                textView_respiration.setTextColor(NORMAL_COLOR)
-                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${NORMAL_TEXT}"))
+                setRespirationText(normalText, colorNormal)
                 normalRates++
             }
-            breathingRate < 20 -> {
-//                 HIGH
-                textView_respiration.setTextColor(RISKY_COLOR)
-                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${HIGH_TEXT}"))
-            }
-            else -> {
-//                 VERY HIGH
-                textView_respiration.setTextColor(SEVERE_COLOR)
-                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${SEVERELY_HIGH_TEXT}"))
-            }
+            //                 HIGH
+            breathingRate < 20 -> setRespirationText(highText, colorRisky)
+            //                 VERY HIGH
+            else -> setRespirationText(severelyHighText, colorSevere)
         }
 
         if (normalRates <= 1) {
             textView_summaryText.text = resources.getString(R.string.call_mda)
             imageView_summary.setImageResource(R.drawable.attention)
+        }
+    }
+
+    private fun setOxygenText(state: String, @ColorRes color: Int) =
+        setTextWithColor(textView_Oxygen, textView_OxygenText, state, color)
+
+    private fun setRespirationText(state: String, @ColorRes color: Int) =
+        setTextWithColor(textView_Oxygen, textView_OxygenText, state, color)
+
+    private fun setHRText(state: String, @ColorRes color: Int) =
+        setTextWithColor(textView_heartRate, textView_heartRateText, state, color)
+
+
+    private fun setTextWithColor(
+        textViewToColor: TextView, textView: TextView,
+        state: String, @ColorRes colorRes: Int
+    ) {
+        val color = resources.getColor(colorRes)
+        textViewToColor.setTextColor(color)
+        textView.apply {
+            text = setTextHTML("$text $state")
         }
     }
 }

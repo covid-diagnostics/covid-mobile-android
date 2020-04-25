@@ -1,17 +1,15 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder;
 
-import java.lang.reflect.Array;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.AttributeSet;
-import android.view.View;
 
 public class VisualizerView extends View {
     private static final int LINE_WIDTH = 1; // width of visualizer lines

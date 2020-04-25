@@ -1,9 +1,10 @@
 package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
-import com.example.coronadiagnosticapp.data.db.entity.*
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import java.io.File
 
 interface NetworkDataSource {

@@ -6,7 +6,7 @@
     <string name="start">התחל</string>
     <string name="daily_metric_message">נתונים רפואיים</string>
     <string name="temperature">חום</string>
-    <string name="coughStrength">עוצמת שיעול</string>
+    <string name="coughStrength">עוצמת שיעול: %d</string>
     <string name="isCoughWet">שיעול רטוב?</string>
     <string name="next">הבא</string>
     <string name="header_camera">האם אתה מוכן\nלמבחן?</string>

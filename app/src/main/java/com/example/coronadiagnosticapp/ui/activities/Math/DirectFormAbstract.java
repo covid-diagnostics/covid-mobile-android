@@ -13,28 +13,29 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  *  Copyright (c) 2009 by Vinnie Falco
  *  Copyright (c) 2016 by Bernd Porr
  */
 
 package com.example.coronadiagnosticapp.ui.activities.Math;
+
 /**
  * Abstract form of the a filter which can have different state variables
- *
+ * <p>
  * Direct form I or II is derived from it
  */
 public abstract class DirectFormAbstract {
 
-    public DirectFormAbstract () {
+    public static final int DIRECT_FORM_I = 0;
+    public static final int DIRECT_FORM_II = 1;
+
+    public DirectFormAbstract() {
         reset();
     }
 
     public abstract void reset();
 
-    public abstract double process1 (double in, Biquad s);
+    public abstract double process1(double in, Biquad s);
 
-    public static final int DIRECT_FORM_I = 0;
-    public static final int DIRECT_FORM_II = 1;
-
-};
+}

@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.login
+package com.example.coronadiagnosticapp.ui.fragments.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,11 +20,6 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.login_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
 }

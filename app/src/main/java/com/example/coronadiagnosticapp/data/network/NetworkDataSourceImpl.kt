@@ -3,7 +3,11 @@ package com.example.coronadiagnosticapp.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

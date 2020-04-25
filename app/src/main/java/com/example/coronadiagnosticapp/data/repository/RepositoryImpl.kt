@@ -1,11 +1,10 @@
 package com.example.coronadiagnosticapp.data.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
@@ -19,12 +18,15 @@ class RepositoryImpl @Inject constructor(
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
     companion object {
-        private var lastHealthResult : HealthResult? = null
+        private var lastHealthResult: HealthResult? = null
         private var breathingRate_: Double = -1.0
     }
-    override var breathingRate : Double
+
+    override var breathingRate: Double
         get() = breathingRate_
-        set(value) { breathingRate_ = value }
+        set(value) {
+            breathingRate_ = value
+        }
 
     private lateinit var responseUser: ResponseUser
     override val error: MutableLiveData<String> = MutableLiveData()

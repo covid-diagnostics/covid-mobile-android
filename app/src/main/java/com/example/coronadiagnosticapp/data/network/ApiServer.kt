@@ -1,21 +1,25 @@
 package com.example.coronadiagnosticapp.data.network
 
-import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
-import okhttp3.*
+import okhttp3.Interceptor
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.io.File
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 const val BASE_URL = "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/staging/"
-const val SIGNUP_URL =
-    "api/me/sign-up/"
+const val SIGNUP_URL = "api/me/sign-up/"
 
 const val FILL_DETAILS_URL = "api/me/fill-personal-info/"
 
@@ -48,7 +52,10 @@ interface ApiServer {
 
     @Multipart
     @PUT(AUDIO_UPLOAD)
-    fun uploadAudioRecording(@Part chestRecording: MultipartBody.Part, @Part id: MultipartBody.Part) : Deferred<Unit>
+    fun uploadAudioRecording(
+        @Part chestRecording: MultipartBody.Part,
+        @Part id: MultipartBody.Part
+    ): Deferred<Unit>
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {

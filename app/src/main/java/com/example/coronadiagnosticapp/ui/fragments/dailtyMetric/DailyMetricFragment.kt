@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,17 +20,18 @@ import javax.inject.Inject
 
 class DailyMetricFragment : ScopedFragment() {
     private var coughStrengthValue = 0
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
-        activity?.findViewById<View>(R.id.stepperLayout)?.visibility = View.VISIBLE
-    }
 
     @Inject
     lateinit var viewModel: DailyMetricViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.let {
+            it.getAppComponent().inject(this)
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
+            it.findViewById<View>(R.id.stepperLayout)?.visibility = View.VISIBLE
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +42,9 @@ class DailyMetricFragment : ScopedFragment() {
 
     private fun updateCoughStrength(strength: Int) {
         coughStrengthValue = strength
-        cough_strength.apply {
-            text = "${getString(R.string.coughStrength)}: $strength"
-        }
+
+        cough_strength.text =
+            getString(R.string.coughStrength, strength)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -57,6 +58,7 @@ class DailyMetricFragment : ScopedFragment() {
         updateCoughStrength(coughStrengthValue)
         activity_metrics_inp_cough_strength.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
+            //            TODO make adapter for only onProgressChanged impl
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 updateCoughStrength(i)
             }
@@ -66,39 +68,36 @@ class DailyMetricFragment : ScopedFragment() {
         })
     }
 
-    private fun initForm() {
-        form {
-            inputLayout(activity_metrics_inp_temp) {
-                isNotEmpty().description(getString(R.string.required))
-            }
-            checkable(activity_metrics_chk_cough_wet) {
-            }
-            submitWith(button_metricSubmit) { res ->
-                submitDailyMetrics(
-                    res["activity_metrics_inp_temp"]?.value.toString(),
-                    coughStrengthValue,
-                    res["activity_metrics_chk_cough_wet"]?.value as Boolean
-                )
-            }
+    private fun initForm() = form {
+        inputLayout(activity_metrics_inp_temp) {
+            isNotEmpty().description(getString(R.string.required))
+        }
+        checkable(activity_metrics_chk_cough_wet) {
+        }
+
+        submitWith(button_metricSubmit) { res ->
+//                TODO use not hardcoded keys
+            val temp = res["activity_metrics_inp_temp"]?.value?.toString()
+                ?: return@submitWith
+            val coughIsWet = res["activity_metrics_chk_cough_wet"]?.value as? Boolean
+                ?: return@submitWith
+
+            submitDailyMetrics(temp, coughStrengthValue, coughIsWet)
         }
     }
 
+
     private fun submitDailyMetrics(temp: String, cough: Int, isWet: Boolean) {
-        showLoading(true)
+        val progress = progressBar_metricFragment
+        showLoading(progress, true)
         launch(Dispatchers.IO) {
             viewModel.updateUserMetrics(temp, cough, isWet)
 
             withContext(Dispatchers.Main) {
-                showLoading(false)
+                showLoading(progress, false)
                 findNavController().navigate(R.id.action_dailyMetricFragment_to_cameraFragment)
             }
         }
     }
 
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_metricFragment.visibility = View.VISIBLE
-            false -> progressBar_metricFragment.visibility = View.GONE
-        }
-    }
 }

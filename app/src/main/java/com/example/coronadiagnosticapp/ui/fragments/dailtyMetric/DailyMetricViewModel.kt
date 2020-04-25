@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DailyMetricViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     val error = repository.error
 
-    suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean){
+    suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
         repository.updateUserMetrics(temp, cough, isWet)
     }
 }

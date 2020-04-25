@@ -14,7 +14,7 @@ constructor(val repository: Repository) : ViewModel() {
 
     }
 
-    suspend fun saveResult(healthResult: HealthResult){
+    suspend fun saveResult(healthResult: HealthResult) {
         repository.saveResult(healthResult)
     }
 }

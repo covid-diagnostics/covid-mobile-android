@@ -13,13 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  *  Copyright (c) 2009 by Vinnie Falco
  *  Copyright (c) 2016 by Bernd Porr
  */
 
 
 package com.example.coronadiagnosticapp.ui.activities.Math;
+
 import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -27,42 +28,42 @@ import org.apache.commons.math3.complex.Complex;
  */
 public class LowPassTransform {
 
-	private double f;
+    private double f;
 
-	private Complex transform(Complex c) {
-		if (c.isInfinite())
-			return new Complex(-1, 0);
+    public LowPassTransform(double fc, LayoutBase digital, LayoutBase analog) {
+        digital.reset();
 
-		// frequency transform
-		c = c.multiply(f);
+        // prewarp
+        f = Math.tan(Math.PI * fc);
 
-		Complex one = new Complex(1, 0);
+        int numPoles = analog.getNumPoles();
+        int pairs = numPoles / 2;
+        for (int i = 0; i < pairs; ++i) {
+            PoleZeroPair pair = analog.getPair(i);
+            digital.addPoleZeroConjugatePairs(transform(pair.poles.first),
+                    transform(pair.zeros.first));
+        }
 
-		// bilinear low pass transform
-		return (one.add(c)).divide(one.subtract(c));
-	}
+        if ((numPoles & 1) == 1) {
+            PoleZeroPair pair = analog.getPair(pairs);
+            digital.add(transform(pair.poles.first),
+                    transform(pair.zeros.first));
+        }
 
-	public LowPassTransform(double fc, LayoutBase digital, LayoutBase analog) {
-		digital.reset();
+        digital.setNormal(analog.getNormalW(), analog.getNormalGain());
+    }
 
-		// prewarp
-		f = Math.tan(Math.PI * fc);
+    private Complex transform(Complex c) {
+        if (c.isInfinite())
+            return new Complex(-1, 0);
 
-		int numPoles = analog.getNumPoles();
-		int pairs = numPoles / 2;
-		for (int i = 0; i < pairs; ++i) {
-			PoleZeroPair pair = analog.getPair(i);
-			digital.addPoleZeroConjugatePairs(transform(pair.poles.first),
-					transform(pair.zeros.first));
-		}
+        // frequency transform
+        c = c.multiply(f);
 
-		if ((numPoles & 1) == 1) {
-			PoleZeroPair pair = analog.getPair(pairs);
-			digital.add(transform(pair.poles.first),
-					transform(pair.zeros.first));
-		}
+        Complex one = new Complex(1, 0);
 
-		digital.setNormal(analog.getNormalW(), analog.getNormalGain());
-	}
+        // bilinear low pass transform
+        return (one.add(c)).divide(one.subtract(c));
+    }
 
 }
