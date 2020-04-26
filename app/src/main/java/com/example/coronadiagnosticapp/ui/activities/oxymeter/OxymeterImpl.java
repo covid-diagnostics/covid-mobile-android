@@ -19,6 +19,7 @@ import java.util.Random;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.min;
@@ -46,8 +47,9 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
 
     private int frameCounter = 0;
-    private Function0<Unit> onBadFinger;
+    private Function0<Unit> onInvalidData;
     private Function1<? super Integer, Unit> onUpdateView;
+    private Function2<? super Integer, ? super Double, Unit> setUpdateGraphView;
 
     public OxymeterImpl(double samplingFreq) {
         this.samplingFreq = (int) samplingFreq;
@@ -69,11 +71,6 @@ public class OxymeterImpl implements Oxymeter {
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
 
-        //To check if we got a good red intensity to process if not return to the condition and set it again until we get a good red intensity
-        if (checkImageIsBad(RedAvg)) {
-            badFinger();
-            return;
-        }
         frameCounter++;
 
         // we have at list 1 window and its a perfect window size
@@ -87,16 +84,16 @@ public class OxymeterImpl implements Oxymeter {
             peakBpmWindow[windowIndex] = results[1];// if failed the result is 0
             failedWindows += (int) results[2];
             if (failedWindows > FAILED_WINDOWS_MAX) {
-                badFinger();
+                InvalidData();
                 return;
             }
             UpdateView((int) results[1]);
         }
+        UpdateGraphView(frameCounter, RedAvg);
     }
 
-
     @Override
-    public OxymeterData finish(double totalTimeInSecs, double samplingFreq) {
+    public OxymeterData finish(double samplingFreq) {
         if (failedWindows > FAILED_WINDOWS_MAX) { // too many failed windows, the samples are bad
             return null;
         }
@@ -242,12 +239,6 @@ public class OxymeterImpl implements Oxymeter {
         return 0;
     }
 
-    private boolean checkImageIsBad(double redIntensity) {
-        //Image is bad!
-        return redIntensity < 200;
-    }
-
-
     private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
         ArrayList<Double> RedMoveAverage = calculateMovingRedWindowAverage(redList);
         ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
@@ -270,15 +261,15 @@ public class OxymeterImpl implements Oxymeter {
         return sum;
     }
 
-    private void badFinger() {
-        // Invokes the onBadFinger callback
-        if (onBadFinger != null)
-            onBadFinger.invoke();
+    private void InvalidData() {
+        // Invokes the onInvalidData callback
+        if (onInvalidData != null)
+            onInvalidData.invoke();
     }
 
     @Override
-    public void setOnBadFinger(@NotNull Function0<Unit> callback) {
-        onBadFinger = callback;
+    public void setOnInvalidData(@NotNull Function0<Unit> callback) {
+        onInvalidData = callback;
     }
 
     private void UpdateView(int heartRate) {
@@ -290,5 +281,17 @@ public class OxymeterImpl implements Oxymeter {
     @Override
     public void setUpdateView(@NotNull Function1<? super Integer, Unit> callback) {
         onUpdateView = callback;
+    }
+
+
+    private void UpdateGraphView(int frame, double point) {
+        // Invokes the onUpdateView callback
+        if (setUpdateGraphView != null)
+            setUpdateGraphView.invoke(frame, point);
+    }
+
+    @Override
+    public void setUpdateGraphView(@NotNull Function2<? super Integer, ? super Double, Unit> callback) {
+        setUpdateGraphView = callback;
     }
 }

@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.result_fragment.*
 import javax.inject.Inject
@@ -64,83 +65,79 @@ class ResultFragment : ScopedFragment() {
         val LOW_TEXT = colorizeText(resources.getString(R.string.low), YELLOW_COLOR_CODE)
 
         var normalRates = 0
-
-        viewModel.getLastHealth().observe(viewLifecycleOwner, Observer { healthResult ->
-            textView_Oxygen.text = "${healthResult.oxygenSaturation}"
-            textView_heartRate.text = "${healthResult.beatsPerMinute}"
-            textView_respiration.text = "${healthResult.breathsPerMinute}"
-            when {
-                healthResult.oxygenSaturation < 90 -> {
+        val healthResult : HealthResult = viewModel.getLastHealth()!!
+        val breathingRate = viewModel.getBreathingRate()
+        textView_Oxygen.text = "${healthResult.oxygenSaturation}"
+        textView_heartRate.text = "${healthResult.beatsPerMinute}"
+        textView_respiration.text = "%.1f".format(breathingRate * 60)
+        when {
+            healthResult.oxygenSaturation < 90 -> {
 //                 VERY LOW
-                    textView_Oxygen.setTextColor(SEVERE_COLOR)
-                    textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${SEVERELY_LOW_TEXT}"))
-                }
-                healthResult.oxygenSaturation < 95 -> {
+                textView_Oxygen.setTextColor(SEVERE_COLOR)
+                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${SEVERELY_LOW_TEXT}"))
+            }
+            healthResult.oxygenSaturation < 95 -> {
 //                 LOW
-                    textView_Oxygen.setTextColor(RISKY_COLOR)
-                    textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${LOW_TEXT}"))
-                }
-                else -> {
+                textView_Oxygen.setTextColor(RISKY_COLOR)
+                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${LOW_TEXT}"))
+            }
+            else -> {
 //                 normal
-                    textView_Oxygen.setTextColor(NORMAL_COLOR)
-                    textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${NORMAL_TEXT}"))
-                    normalRates++
-                }
+                textView_Oxygen.setTextColor(NORMAL_COLOR)
+                textView_OxygenText.setText(setTextHTML("${textView_OxygenText.text} ${NORMAL_TEXT}"))
+                normalRates++
             }
-            when {
-                healthResult.beatsPerMinute < 60 -> {
+        }
+        when {
+            healthResult.beatsPerMinute < 60 -> {
 //                 LOW
-                    textView_heartRate.setTextColor(RISKY_COLOR)
-                    textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${LOW_TEXT}"))
-                }
-                healthResult.beatsPerMinute < 100 -> {
+                textView_heartRate.setTextColor(RISKY_COLOR)
+                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${LOW_TEXT}"))
+            }
+            healthResult.beatsPerMinute < 100 -> {
 //                 NORAML
-                    textView_heartRate.setTextColor(NORMAL_COLOR)
-                    textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${NORMAL_TEXT}"))
-                    normalRates++
-                }
-                healthResult.beatsPerMinute < 120 -> {
-//                 HIGH
-                    textView_heartRate.setTextColor(RISKY_COLOR)
-                    textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${HIGH_TEXT}"))
-                }
-                else -> {
-//                 VERY HIGH
-                    textView_heartRate.setTextColor(RISKY_COLOR)
-                    textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${SEVERELY_HIGH_TEXT}"))
-                }
+                textView_heartRate.setTextColor(NORMAL_COLOR)
+                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${NORMAL_TEXT}"))
+                normalRates++
             }
-            when {
-                healthResult.breathsPerMinute < 5 -> {
+            healthResult.beatsPerMinute < 120 -> {
+//                 HIGH
+                textView_heartRate.setTextColor(RISKY_COLOR)
+                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${HIGH_TEXT}"))
+            }
+            else -> {
+//                 VERY HIGH
+                textView_heartRate.setTextColor(RISKY_COLOR)
+                textView_heartRateText.setText(setTextHTML("${textView_heartRateText.text} ${SEVERELY_HIGH_TEXT}"))
+            }
+        }
+        when {
+            breathingRate < 5 -> {
 //                 LOW
-                    textView_respiration.setTextColor(RISKY_COLOR)
-                    textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${LOW_TEXT}"))
-                }
-                healthResult.breathsPerMinute < 15 -> {
+                textView_respiration.setTextColor(RISKY_COLOR)
+                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${LOW_TEXT}"))
+            }
+            breathingRate < 15 -> {
 //                 NORMAL
-                    textView_respiration.setTextColor(NORMAL_COLOR)
-                    textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${NORMAL_TEXT}"))
-                    normalRates++
-                }
-                healthResult.breathsPerMinute < 20 -> {
+                textView_respiration.setTextColor(NORMAL_COLOR)
+                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${NORMAL_TEXT}"))
+                normalRates++
+            }
+            breathingRate < 20 -> {
 //                 HIGH
-                    textView_respiration.setTextColor(RISKY_COLOR)
-                    textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${HIGH_TEXT}"))
-                }
-                else -> {
+                textView_respiration.setTextColor(RISKY_COLOR)
+                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${HIGH_TEXT}"))
+            }
+            else -> {
 //                 VERY HIGH
-                    textView_respiration.setTextColor(SEVERE_COLOR)
-                    textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${SEVERELY_HIGH_TEXT}"))
-                }
+                textView_respiration.setTextColor(SEVERE_COLOR)
+                textView_respirationText.setText(setTextHTML("${textView_respirationText.text} ${SEVERELY_HIGH_TEXT}"))
             }
+        }
 
-            if (normalRates <= 1) {
-                textView_summaryText.text = resources.getString(R.string.call_mda)
-                imageView_summary.setImageResource(R.drawable.attention)
-            }
-        })
-
-
+        if (normalRates <= 1) {
+            textView_summaryText.text = resources.getString(R.string.call_mda)
+            imageView_summary.setImageResource(R.drawable.attention)
+        }
     }
-
 }

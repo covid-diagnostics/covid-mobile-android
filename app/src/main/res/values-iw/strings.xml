@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">אבחון קורונה</string>
     <string name="header_instructions">שלום</string>
     <string name="body_instructions">הקליקו התחל על מנת\nלהתחיל את תהליך האבחון</string>
     <string name="start">התחל</string>
@@ -8,14 +9,13 @@
     <string name="coughStrength">עוצמת שיעול</string>
     <string name="isCoughWet">שיעול רטוב?</string>
     <string name="next">הבא</string>
-    <string name="header_camera">האם אתה מוכן\nלבדיקה?</string>
-    <string name="camera_message">הנח את האצבע על עדשת המצלמה ולחץ התחל כאשר תהיה מוכן להתחלת הבדיקה</string>
+    <string name="header_camera">האם אתה מוכן\nלמבחן?</string>
     <string name="camera_body">במסכים הבאים תתבקש\nלצלם סרטון ולהקליט הקלטה קצרה.\nנתונים אלו ייסיעו בתהליך האבחון.\nאל דאגה, מידע זה יהיה זמין\nרק לצוותי הרפואה.</string>
     <string name="im_ready">אני מוכן!</string>
     <string name="already_have_an_account">כבר יש לך משתמש?</string>
     <string name="we_re_glad_you_ve_joined_the_effort">אנחנו שמחים שהצטרפתם למאמץ הלאומי</string>
     <string name="thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus">אלפי ישראלים יכולים לסבול מתסמינים\nשל וירוס הקורונה</string>
-    <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל\n את חייך וחיים של רבים אחרים!</string>
+    <string name="that_s_why_timely_diagnosis_and_isolation_can_save_your_life">וזה למה אבחנה מוקדמת של המחלה יכולה להציל  את חייך וחיים של רבים אחרים!</string>
     <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
     <string name="password">סיסמא</string>
     <string name="email">דואר אלקטרוני</string>
@@ -24,7 +24,6 @@
     <string name="required">שדה חובה</string>
     <string name="must_valid_email">כתובת דואר אלקטרוני לא תקינה</string>
     <string name="passwords_match">הסיסמא חייבת להיות זהה</string>
-    <string name="personal_info_request">בבקשה, מלא את פרטייך</string>
     <string name="age">גיל</string>
     <string name="first_name">שם פרטי</string>
     <string name="last_name">שם משפחה</string>
@@ -34,20 +33,20 @@
     <string name="your_oxygen_saturation_is">מדד החמצן בדם שלך</string>
     <string name="your_respiration_rate_is">קצב הנשימות שלך</string>
     <string name="finish">סיום</string>
-    <string name="things_look_ok">הכל נראה בסדר</string>
+    <string name="things_look_ok">מצוין!\nהמשיכו להצמיד את האצבע</string>
     <string name="normal">תקין</string>
     <string name="high">גבוה מהרגיל</string>
     <string name="low">נמוך מהרגיל</string>
     <string name="severely_high">גבוה באופן חריג</string>
     <string name="severely_low">נמוך באופן חריג</string>
     <string name="call_mda">אנא התייעץ עם מד\"א לגבי תוצאות הבדיקה</string>
-
-    <string name="putFinger">הנח את האצבע על המצלמה</string>
-
     <string name="medical_questionnaire">שאלון רפואי</string>
+    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
-    <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
-
-
+    <string name="please_improve_lightning">תאורה חלשה זוהתה. בבקשה צא החוצה או הגבר את התאורה</string>
+    <string name="go_outside">לתוצאות מיטביות צא החוצה לאור שמש</string>
+    <string name="fatigue">עייפות</string>
+    <string name="muscle_weakness">חולשת שרירים</string>
+    <string name="personal_info_request">עזרו לנו להכיר אתכם טוב יותר</string>
 </resources>
