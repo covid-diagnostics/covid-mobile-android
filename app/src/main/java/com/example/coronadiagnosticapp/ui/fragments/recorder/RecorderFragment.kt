@@ -29,12 +29,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-// This is an array of all the permission specified in the manifest.
-private val REQUIRED_PERMISSIONS = arrayOf(
-    Manifest.permission.RECORD_AUDIO,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
-
 class RecorderFragment : ScopedFragment() {
     companion object {
         private const val TAG = "RecorderFragment"

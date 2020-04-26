@@ -12,8 +12,8 @@ import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMet
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
 @Database(
-    entities = [User::class, ResponseMetric::class, HealthResult::class],
-    version = 5
+    entities = [User::class, ResponseMetric::class, HealthResult::class, Question::class],
+    version = 6
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

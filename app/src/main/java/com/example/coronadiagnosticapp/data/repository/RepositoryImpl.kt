@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.data.repository
 
 import androidx.lifecycle.MutableLiveData
+import com.example.coronadiagnosticapp.data.db.Question
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
@@ -46,14 +47,13 @@ class RepositoryImpl @Inject constructor(
 
     override fun isLoggedIn(): Boolean {
         val tokenInterceptor = tokenServiceInterceptor.sessionToken
-        val tokenFromPreference = sharedProvider.getToken()
         if (!tokenInterceptor.isNullOrBlank()) return true
-        return if (!tokenFromPreference.isNullOrBlank()) {
-            tokenServiceInterceptor.sessionToken = tokenFromPreference
-            true
-        } else {
-            false
-        }
+
+        val tokenFromPreference = sharedProvider.getToken()
+        if (tokenFromPreference.isNullOrBlank()) return false
+
+        tokenServiceInterceptor.sessionToken = tokenFromPreference
+        return true
     }
 
     override suspend fun updateUserPersonalInformation(
@@ -103,5 +103,10 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getQuestions(): List<Question> {
+//        TODO could save a flag after saving for not reloading every time
+        //        dao.insert(questions)//TODO is using room necessary here?
+        return networkDataSource.getQuestions()
+    }
 
 }

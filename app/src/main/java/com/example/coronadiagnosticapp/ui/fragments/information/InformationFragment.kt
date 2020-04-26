@@ -51,8 +51,6 @@ class InformationFragment : ScopedFragment() {
             }
             inputLayout(activity_personal_inp_last_name) {
                 isNotEmpty().description(getString(R.string.required))
-
-
             }
             inputLayout(activity_personal_inp_age) {
                 isNotEmpty().description(getString(R.string.required))

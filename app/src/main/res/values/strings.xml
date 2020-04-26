@@ -68,4 +68,7 @@
     <string name="go_outside">For best results, go outside</string>
     <string name="fatigue">Fatigue</string>
     <string name="muscle_weakness">Muscle Weakness</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

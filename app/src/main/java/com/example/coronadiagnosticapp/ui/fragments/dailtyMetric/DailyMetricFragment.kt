@@ -36,9 +36,7 @@ class DailyMetricFragment : ScopedFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.daily_metric_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.daily_metric_fragment, container, false)
 
     private fun updateCoughStrength(strength: Int) {
         coughStrengthValue = strength

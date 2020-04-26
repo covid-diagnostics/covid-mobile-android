@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.coronadiagnosticapp.data.db.Question
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
@@ -12,11 +13,12 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.HttpException
+import retrofit2.await
 import java.io.File
 import javax.inject.Inject
 
 
-class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDataSource {
+class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : NetworkDataSource {
 
     private val _responseUser = MutableLiveData<ResponseUser>()
     private val _error = MutableLiveData<String>()
@@ -32,8 +34,6 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
             Log.e("HTTP", e.response().toString())
         }
         return api.registerUser(userRegister).await()
-
-
     }
 
     override suspend fun updateUserPersonalInformation(
@@ -71,5 +71,9 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         val idPart = MultipartBody.Part.createFormData("id", id.toString())
 
         return api.uploadAudioRecording(filePart, idPart).await()
+    }
+
+    override suspend fun getQuestions(): List<Question> {
+        return api.getQuestions().await()
     }
 }
