@@ -18,5 +18,5 @@ interface Repository {
     fun getLastResult(): HealthResult?
     fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
-    fun updateUserCameraCharacteristics(cc: CameraCharacteristics)
+    suspend fun updateUserCameraCharacteristics(cc: CameraCharacteristics)
 }

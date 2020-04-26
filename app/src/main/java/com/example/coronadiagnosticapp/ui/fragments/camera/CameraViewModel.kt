@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.camera
 
+import android.hardware.camera2.CameraCharacteristics
 import androidx.lifecycle.ViewModel
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.repository.Repository
@@ -16,5 +17,9 @@ constructor(val repository: Repository) : ViewModel() {
 
     suspend fun saveResult(healthResult: HealthResult){
         repository.saveResult(healthResult)
+    }
+
+    suspend fun updateUserCameraCharacteristics(cameraCharacteristics : CameraCharacteristics) {
+        repository.updateUserCameraCharacteristics(cameraCharacteristics)
     }
 }

@@ -23,6 +23,7 @@ class RepositoryImpl @Inject constructor(
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
     companion object {
+        const val TAG = "Repository"
         private var lastHealthResult : HealthResult? = null
         private var breathingRate_: Double = -1.0
     }
@@ -106,9 +107,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun updateUserCameraCharacteristics(cc: CameraCharacteristics) {
+    override suspend fun updateUserCameraCharacteristics(cc: CameraCharacteristics) {
         val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
-        Log.i("ASDASD", "INSERTED CC")
+        Log.i(TAG, "Sending camera characteristics!")
 
         dao.insertCameraInfo(UserCameraInfo(
             "test",

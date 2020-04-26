@@ -2,9 +2,14 @@ package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,26 +68,15 @@ class CameraFragment : ScopedFragment() {
         super.onActivityCreated(savedInstanceState)
         activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
         button_startCamera.setOnClickListener {
-            // TODO: Ask permission to use the camera
-            if (context?.let { it1 ->
-                    ActivityCompat.checkSelfPermission(
-                        it1,
-                        Manifest.permission.CAMERA
-                    )
-                } != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                activity?.let { it1 ->
-                    ActivityCompat.requestPermissions(
-                        it1, arrayOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), 200
-                    )
-                }
+                requestPermissions(arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    200)
             } else {
                 val intent = Intent(context, OxymeterActivity::class.java)
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)
@@ -97,6 +91,24 @@ class CameraFragment : ScopedFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 200) {
+            for (i in permissions.indices) {
+                // If we got permissions to use the camera, send camera info to the DB.
+                if (permissions[i] == Manifest.permission.CAMERA && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(CameraFragment.TAG, "Got camera permissions.")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        launch (Dispatchers.IO) {
+                            val cameraManager = context?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+                            val cameraCharacteristics : CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.cameraIdList[0])
+                            viewModel.updateUserCameraCharacteristics(cameraCharacteristics)
+                        }
+                    } else {
+                        Log.w(CameraFragment.TAG, "Android API doesn't support camera2, skipping sending camera characteristics.")
+                    }
+                }
+            }
+
+
+
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
                     val intent = Intent(context, OxymeterActivity::class.java)
