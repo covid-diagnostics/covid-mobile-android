@@ -2,6 +2,7 @@ package com.example.coronadiagnosticapp.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.coronadiagnosticapp.data.db.entity.UserCameraInfo
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.User
@@ -46,6 +47,9 @@ interface DbDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertHealth(healthResult: HealthResult)
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insertCameraInfo(cameraInfo: UserCameraInfo)
 
     @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
     fun getLastHealthResult(): LiveData<HealthResult>

@@ -6,13 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
-import com.example.coronadiagnosticapp.data.db.entity.Converters
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
-import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.data.db.entity.*
 
 @Database(
-    entities = [User::class, ResponseMetric::class, HealthResult::class],
+    entities = [User::class, ResponseMetric::class, HealthResult::class, UserCameraInfo::class],
     version = 5
 )
 @TypeConverters(Converters::class)

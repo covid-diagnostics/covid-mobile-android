@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.*
+import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
@@ -34,8 +34,8 @@ private const val REQUEST_CODE_VIDEO = 315
 
 
 class CameraFragment : ScopedFragment() {
-
-    companion object CameraCodes {
+    companion object {
+        const val TAG = "CameraFragment"
         fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
         fun breathsPerMinute() = "BREATHS_PER_MINUTE"
         fun oxygenSaturation() = "OXYGEN_SATURATION"

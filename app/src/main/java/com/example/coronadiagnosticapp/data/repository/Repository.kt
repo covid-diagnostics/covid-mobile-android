@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.data.repository
 
+import android.hardware.camera2.CameraCharacteristics
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
@@ -17,5 +18,5 @@ interface Repository {
     fun getLastResult(): HealthResult?
     fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
-
+    fun updateUserCameraCharacteristics(cc: CameraCharacteristics)
 }

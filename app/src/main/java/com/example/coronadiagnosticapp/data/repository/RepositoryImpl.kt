@@ -1,8 +1,12 @@
 package com.example.coronadiagnosticapp.data.repository
 
-import androidx.lifecycle.LiveData
+import android.hardware.camera2.CameraCharacteristics
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
+import com.example.coronadiagnosticapp.data.db.entity.UserCameraInfo
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.UserRegister
@@ -101,5 +105,26 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun updateUserCameraCharacteristics(cc: CameraCharacteristics) {
+        val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
+        Log.i("ASDASD", "INSERTED CC")
 
+        dao.insertCameraInfo(UserCameraInfo(
+            "test",
+            cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_FORWARD_MATRIX1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_FORWARD_MATRIX2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_INFO_LENS_SHADING_APPLIED],
+            sensitivityRange?.lower,
+            sensitivityRange?.upper,
+            cc[CameraCharacteristics.SENSOR_INFO_WHITE_LEVEL],
+            cc[CameraCharacteristics.SENSOR_MAX_ANALOG_SENSITIVITY],
+            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT1],
+            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT2]
+        ))
+    }
 }

@@ -32,7 +32,6 @@ class RegisterFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
-
     }
 
     override fun onCreateView(
