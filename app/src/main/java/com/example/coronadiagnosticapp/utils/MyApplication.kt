@@ -10,7 +10,6 @@ class MyApplication : MultiDexApplication() {
         super.onCreate()
 
         appComponent = DaggerAppComponent.factory().create(applicationContext)
-        SharedPrefsHelper.initWithContext(this)
     }
 
     fun getAppComponent() = appComponent

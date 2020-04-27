@@ -33,7 +33,9 @@ class InstructionsFragment : Fragment() {
 //            TODO use string rss for with %s
         }
         button_instructions.setOnClickListener {
-            findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
+
+            findNavController().navigate(R.id.action_instructionsFragment_to_questioneerFragment)
+//            findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
         }
     }
 

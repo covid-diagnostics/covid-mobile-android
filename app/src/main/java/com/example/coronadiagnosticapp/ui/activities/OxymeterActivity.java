@@ -513,7 +513,9 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        oxymeterUpdater.interrupt();
+        if (oxymeterUpdater != null) {
+            oxymeterUpdater.interrupt();
+        }
     }
 
     private void removeProgressBarAndShowAlert(String alertText) {

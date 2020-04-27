@@ -1,7 +1,7 @@
 package com.example.coronadiagnosticapp.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.UserAnswers
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
@@ -103,10 +103,8 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getQuestions(): List<Question> {
-//        TODO could save a flag after saving for not reloading every time
-        //        dao.insert(questions)//TODO is using room necessary here?
-        return networkDataSource.getQuestions()
+    override suspend fun getQuestions() = networkDataSource.getQuestions()
+    override suspend fun updateUserAnswers(answers: List<UserAnswers>) {
+        networkDataSource.updateUserAnswers(answers)
     }
-
 }

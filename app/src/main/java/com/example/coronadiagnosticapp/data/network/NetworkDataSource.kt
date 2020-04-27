@@ -2,6 +2,7 @@ package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.UserAnswers
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
@@ -25,4 +26,5 @@ interface NetworkDataSource {
     suspend fun uploadAudioRecording(file: File, id: Int)
 
     suspend fun getQuestions(): List<Question>
+    suspend fun updateUserAnswers(answers: List<UserAnswers>)
 }

@@ -3,7 +3,7 @@ package com.example.coronadiagnosticapp.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.UserAnswers
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
@@ -13,8 +13,8 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.HttpException
-import retrofit2.await
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 
@@ -73,7 +73,9 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
         return api.uploadAudioRecording(filePart, idPart).await()
     }
 
-    override suspend fun getQuestions(): List<Question> {
-        return api.getQuestions().await()
+    override suspend fun getQuestions() = api.getQuestions(Locale.getDefault().language).await()
+    override suspend fun updateUserAnswers(answers: List<UserAnswers>) {
+        api.updateUserAnswers(answers)
     }
+
 }

@@ -31,9 +31,7 @@ class WelcomeFragment : Fragment() {
 
 //            TODO("Ask whether the user has answered to the daily questioner")
             val actionId = if (viewModel.isLoggedIn()) {
-                // TODO remove commenting after done checking
-                //                R.id.action_welcomeFragment_to_instructionsFragment
-                R.id.action_welcomeFragment_to_questionsFragment
+                R.id.action_welcomeFragment_to_instructionsFragment
             } else
                 R.id.action_welcomeFragment_to_registerFragment
 

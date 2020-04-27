@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.data.network
 
 import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.UserAnswers
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
@@ -10,7 +11,6 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -46,7 +46,15 @@ interface ApiServer {
     ): Deferred<Unit>
 
     @GET(QUESTIONS)
-    fun getQuestions(): Call<List<Question>>
+    fun getQuestions(
+        @Header("Accept-Language") language: String
+    ): Deferred<List<Question>>
+//    TODO send locale to server
+
+    @POST(SEND_ANSWERS)
+    fun updateUserAnswers(
+        @Body answers: List<UserAnswers>
+    )
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {

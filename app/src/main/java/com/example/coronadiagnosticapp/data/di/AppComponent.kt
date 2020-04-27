@@ -5,7 +5,7 @@ import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
-import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionsFragment
+import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment
@@ -26,7 +26,7 @@ interface AppComponent {
     fun inject(fragment: CameraFragment)
     fun inject(fragment: WelcomeFragment)
     fun inject(fragment: InstructionsFragment)
-    fun inject(fragment: QuestionsFragment)
+    fun inject(fragment: QuestionnaireFragment)
 
 
     @Component.Factory
