@@ -18,7 +18,7 @@ import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.recorder_fragment.*
+import kotlinx.android.synthetic.main.recorder_fragment2.*
 import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -31,9 +31,9 @@ private val REQUIRED_PERMISSIONS = arrayOf(
     Manifest.permission.WRITE_EXTERNAL_STORAGE
 )
 
-class RecorderFragment : ScopedFragment() {
+class RecorderFragment2 : ScopedFragment() {
     companion object {
-        private const val TAG = "RecorderFragment"
+        private const val TAG = "RecorderFragment2"
         private const val RECORDER_PERMISSION = Manifest.permission.RECORD_AUDIO
         private const val PERMISSION_CODE: Int = 21
         private const val MAX_DURATION = 1000 * 10 // in milliseconds
@@ -141,7 +141,7 @@ class RecorderFragment : ScopedFragment() {
                 viewModel.uploadFile(File(fileLocation!!))
                 withContext(Dispatchers.Main) { showLoading(false) }
                 Log.d(TAG, "File finished uploading!")
-                findNavController().navigate(R.id.action_recorderFragment_to_recorderFragment2)
+                findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
             }
             processRecording()
         }
