@@ -13,6 +13,7 @@ import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.register_fragment.*
 import kotlinx.android.synthetic.main.register_fragment.textInputLayout_email
 import kotlinx.android.synthetic.main.register_fragment.textInputLayout_password
@@ -29,8 +30,13 @@ class RegisterFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                visibility = View.GONE
+            }
         }
 
     }

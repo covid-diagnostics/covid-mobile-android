@@ -18,6 +18,7 @@ import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.*
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,10 +47,15 @@ class CameraFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                currentStep = 1
+                visibility = View.VISIBLE
+            }
         }
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
     }
 
     override fun onCreateView(
@@ -61,7 +67,6 @@ class CameraFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
         button_startCamera.setOnClickListener {
             // TODO: Ask permission to use the camera
             if (context?.let { it1 ->

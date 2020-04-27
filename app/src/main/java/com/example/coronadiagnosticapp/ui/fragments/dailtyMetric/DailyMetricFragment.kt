@@ -11,7 +11,6 @@ import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,11 +21,15 @@ class DailyMetricFragment : ScopedFragment() {
     private var coughStrengthValue = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                currentStep = 0
+                visibility = View.VISIBLE
+            }
         }
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
-        activity?.findViewById<View>(R.id.stepperLayout)?.visibility = View.VISIBLE
     }
 
     @Inject
@@ -50,7 +53,6 @@ class DailyMetricFragment : ScopedFragment() {
         super.onActivityCreated(savedInstanceState)
         initCoughStrength()
         initForm()
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 0
     }
 
     private fun initCoughStrength() {

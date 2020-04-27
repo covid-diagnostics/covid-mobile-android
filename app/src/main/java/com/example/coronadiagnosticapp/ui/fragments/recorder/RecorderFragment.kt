@@ -19,7 +19,10 @@ import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,15 +53,16 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                currentStep = 2
+                visibility = View.VISIBLE
+            }
         }
         recordFile = context!!.externalCacheDir!!.absolutePath
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
-        stepperIndicator?.currentStep = 2
     }
 
     override fun onCreateView(
@@ -188,7 +192,9 @@ class RecorderFragment : ScopedFragment() {
     override fun onStop() {
         super.onStop()
         // Stop recording is someone presses back
-        if (isRecording) { stopRecording() }
+        if (isRecording) {
+            stopRecording()
+        }
     }
 
 

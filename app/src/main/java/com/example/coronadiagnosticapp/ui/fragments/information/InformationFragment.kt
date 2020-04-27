@@ -11,6 +11,7 @@ import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.information_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,8 +22,13 @@ class InformationFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                visibility = View.GONE
+            }
         }
     }
 

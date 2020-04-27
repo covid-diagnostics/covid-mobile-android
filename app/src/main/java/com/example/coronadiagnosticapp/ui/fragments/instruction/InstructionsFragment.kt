@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
+import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.instructions_fragment.*
 import javax.inject.Inject
 
@@ -18,8 +19,13 @@ class InstructionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
+        activity?.let {
+            it.applicationContext.let { ctx ->
+                (ctx as MyApplication).getAppComponent().inject(this)
+            }
+            it.findViewById<StepperIndicator>(R.id.stepperIndicator)?.apply {
+                visibility = View.GONE
+            }
         }
     }
 
