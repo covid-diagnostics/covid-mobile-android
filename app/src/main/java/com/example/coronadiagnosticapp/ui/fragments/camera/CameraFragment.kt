@@ -88,6 +88,9 @@ class CameraFragment : ScopedFragment() {
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)
             }
         }
+        if (!this.viewModel.getIsFirstTime()) {
+            button_startCamera.callOnClick()
+        }
     }
 
     override fun onRequestPermissionsResult(
