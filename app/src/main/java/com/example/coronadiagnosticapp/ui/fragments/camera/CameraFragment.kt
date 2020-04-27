@@ -143,7 +143,11 @@ class CameraFragment : ScopedFragment() {
                             )
                             withContext(Dispatchers.Main) {
                                 showLoading(false)
-                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+                                if (viewModel.getIsFirstTime()) {
+                                    findNavController().navigate(R.id.action_cameraFragment_to_recorderExplanation)
+                                } else {
+                                    findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
+                                }
                             }
                         }
                     }
