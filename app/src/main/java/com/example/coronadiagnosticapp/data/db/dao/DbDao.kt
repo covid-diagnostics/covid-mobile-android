@@ -2,7 +2,11 @@ package com.example.coronadiagnosticapp.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
+import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
@@ -21,7 +25,7 @@ interface DbDao {
     }
 
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     fun insert(user: User)
 
 
@@ -39,10 +43,20 @@ interface DbDao {
     @Query("SELECT * FROM metric_table LIMIT 1")
     fun getMetric(): ResponseMetric
 
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     fun insert(responseMetric: ResponseMetric)
 
+    @Insert(onConflict = REPLACE)
+    fun insert(answer: AnswersResponse)
+
+    @Query("SELECT * FROM answers")
+    fun getAnswers(): List<AnswersResponse>
+
+    @Insert(onConflict = REPLACE)
+    fun insert(questions: List<Question>)
+
+    @Query("SELECT * FROM questions WHERE type IN(:type)")
+    fun getQuestions(vararg type: QuestionType): List<Question>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertHealth(healthResult: HealthResult)

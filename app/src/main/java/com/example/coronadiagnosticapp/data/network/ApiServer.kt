@@ -1,12 +1,12 @@
 package com.example.coronadiagnosticapp.data.network
 
-import com.example.coronadiagnosticapp.data.db.Question
-import com.example.coronadiagnosticapp.data.db.UserAnswers
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
+import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
@@ -48,27 +48,26 @@ interface ApiServer {
     @GET(QUESTIONS)
     fun getQuestions(
         @Header("Accept-Language") language: String
-    ): Deferred<List<Question>>
-//    TODO send locale to server
+    ): Deferred<List<JsonObject>>
 
     @POST(SEND_ANSWERS)
-    fun updateUserAnswers(
-        @Body answers: List<UserAnswers>
-    )
+    fun sendUserAnswers(
+        @Body answers: List<AnswersResponse>
+    ): Deferred<AnswersResponse>
 
     companion object {
-        operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {
-            val okHttpClient = OkHttpClient
-                .Builder()
-                .addInterceptor(interceptor)
-                .build()
-            return Retrofit.Builder()
+        operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer =
+            Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .client(okHttpClient)
+                .client(createOkHttpClient(interceptor))
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
                 .create(ApiServer::class.java)
-        }
+
+        private fun createOkHttpClient(interceptor: TokenServiceInterceptor) =
+            OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
     }
 }

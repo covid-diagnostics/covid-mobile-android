@@ -1,12 +1,12 @@
 package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
-import com.example.coronadiagnosticapp.data.db.Question
-import com.example.coronadiagnosticapp.data.db.UserAnswers
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
+import com.google.gson.JsonObject
 import java.io.File
 
 interface NetworkDataSource {
@@ -21,10 +21,10 @@ interface NetworkDataSource {
         user: User
     ): User?
 
-    suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
+    suspend fun updateUserMetrics(cough: Int, isWet: Boolean, temp: String): ResponseMetric
 
     suspend fun uploadAudioRecording(file: File, id: Int)
 
-    suspend fun getQuestions(): List<Question>
-    suspend fun updateUserAnswers(answers: List<UserAnswers>)
+    suspend fun getQuestions(): List<JsonObject>
+    suspend fun sendAnswers(answers: List<AnswersResponse>): AnswersResponse
 }

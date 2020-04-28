@@ -45,19 +45,7 @@
             android:divider="@drawable/divider_horizontal"
             android:orientation="vertical"
             android:padding="16dp"
-            android:showDividers="middle">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="22edwf" />
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="gwrgwg" />
-
-        </LinearLayout>
+            android:showDividers="middle" />
 
     </ScrollView>
 
@@ -67,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/next"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

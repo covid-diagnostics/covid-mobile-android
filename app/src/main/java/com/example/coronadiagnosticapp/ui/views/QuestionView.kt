@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.entity.Question
 import kotlinx.android.synthetic.main.question_view.view.*
 
 class QuestionView : LinearLayout, TextWatcher, QuestionPresenter {

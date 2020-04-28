@@ -1,9 +1,9 @@
 package com.example.coronadiagnosticapp.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.Question
-import com.example.coronadiagnosticapp.data.db.UserAnswers
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
+import com.example.coronadiagnosticapp.data.db.entity.Question
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import java.io.File
 
@@ -19,8 +19,6 @@ interface Repository {
 
     suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean)
 
-    suspend fun updateUserAnswers(answers: List<UserAnswers>)
-
     suspend fun saveResult(healthResult: HealthResult)
 
     fun getLastResult(): HealthResult?
@@ -30,4 +28,8 @@ interface Repository {
     suspend fun uploadAudioRecording(file: File)
 
     suspend fun getQuestions(): List<Question>
+
+    suspend fun getNextSelectableQuestion(currentQuestion: Question?): Question?
+    suspend fun addAnswer(answer: AnswersResponse)
+    suspend fun sendUserAnswers(): AnswersResponse
 }

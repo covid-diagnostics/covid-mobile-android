@@ -108,7 +108,7 @@
         android:label="fragment_question"
         tools:layout="@layout/fragment_question">
         <action
-            android:id="@+id/action_questionFragment_to_questioneerFragment"
-            app:destination="@id/questioneerFragment" />
+            android:id="@+id/action_questionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
 </navigation>

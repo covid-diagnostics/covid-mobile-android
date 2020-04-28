@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.db.Question
-import com.example.coronadiagnosticapp.data.db.QuestionType.CHECKBOX
-import com.example.coronadiagnosticapp.data.db.QuestionType.TEXT
-import com.example.coronadiagnosticapp.data.db.UserAnswers
+import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType.CHECKBOX
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType.TEXT
 import com.example.coronadiagnosticapp.ui.views.QuestionCheckBox
 import com.example.coronadiagnosticapp.ui.views.QuestionPresenter
 import com.example.coronadiagnosticapp.ui.views.QuestionView
@@ -43,9 +40,7 @@ class QuestionnaireFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         context?.getAppComponent()?.inject(this)
 
-        next_btn.setOnClickListener {
-            showNextQuestionOrContinue()
-        }
+//        TODO only enable next when answered
 
         showLoading(progressBar, true)
         GlobalScope.launch(IO) {
@@ -54,62 +49,27 @@ class QuestionnaireFragment : Fragment() {
 
             withContext(Main) {
                 fill(questions)
+                next_btn.isEnabled = true
                 showLoading(progressBar, false)
             }
+        }
 
+        next_btn.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_questioneerFragment_to_questionFragment)
+        }
+    }
+
+    private fun fill(questions: List<Question>) = questions.forEach {
+        when (it.type) {
+            CHECKBOX -> QuestionCheckBox(context)
+            TEXT -> QuestionView(context)
+            else -> null
+        }?.let { view ->
+            questions_group.addView(view as View)
+            (view as QuestionPresenter).question = it
         }
 
     }
 
-    private fun fill(simpleQA: List<Question>) {
-        for (question in simpleQA) {
-            when (question.type) {
-                CHECKBOX -> QuestionCheckBox(context)
-                TEXT -> QuestionView(context)
-                else -> null
-            }?.let {
-                (it as QuestionPresenter).question = question
-                questions_group.addView(it as View)
-            }
-        }
-    }
-
-    private val navController: NavController
-        get() = findNavController()
-
-    private fun showNextQuestionOrContinue() {
-        val question = viewModel.nextQuestion
-            ?: run {
-                sendData()
-                return
-            }
-
-        val bundle = bundleOf("q" to question)
-
-        navController
-            .navigate(R.id.action_questioneerFragment_to_questionFragment, bundle)
-
-    }
-
-    private fun sendData() {
-
-        showLoading(progressBar, true)
-        GlobalScope.launch(IO) {
-            viewModel.sendData()
-
-            withContext(Main) {
-                showLoading(progressBar, false)
-                navController
-                    .navigate(R.id.action_questioneerFragment_to_cameraFragment)
-            }
-        }
-    }
-
-//    TODO  - on Back here from question fragment
-//    get next q from viewModel
-
-    fun onBackFromQuestionFragment(userAnswers: UserAnswers) {
-        viewModel.updateData(userAnswers)
-        showNextQuestionOrContinue()
-    }
 }

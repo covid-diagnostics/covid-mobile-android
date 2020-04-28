@@ -1,15 +1,18 @@
 package com.example.coronadiagnosticapp.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.UserAnswers
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -76,7 +79,7 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
         try {
-            val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
+            val responseMetric = networkDataSource.updateUserMetrics(cough, isWet, temp)
             dao.upsertMetric(responseMetric)
 
         } catch (e: Exception) {
@@ -103,8 +106,89 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getQuestions() = networkDataSource.getQuestions()
-    override suspend fun updateUserAnswers(answers: List<UserAnswers>) {
-        networkDataSource.updateUserAnswers(answers)
+    override suspend fun getQuestions(): List<Question> {
+        val questionsJson = networkDataSource.getQuestions()
+        val questions = mutableListOf<Question>()
+        val gson = Gson()
+        for (jsonObject in questionsJson) {
+
+            val id = jsonObject["id"].asLong
+            val name = jsonObject["name"].asString
+            val displayName = jsonObject["displayName"].asString
+            val required = jsonObject["required"].asBoolean
+
+            val type = gson.fromJson(jsonObject["qtype"], QuestionType::class.java)
+
+            val extraData = convertExtraData(jsonObject, type, gson)
+
+            val dateString = jsonObject["addedOn"].asString
+            val addedOn = SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                Locale.getDefault()
+            ).parse(dateString)!!
+
+
+            val question = Question(
+                id, name, displayName,
+                type, extraData, addedOn, required
+            )
+
+            questions.add(question)
+        }
+
+        dao.insert(questions)
+
+        return questions
+    }
+
+    private fun convertExtraData(
+        jsonObject: JsonObject,
+        type: QuestionType?,
+        gson: Gson
+    ): List<ExtraData> {
+        val jsonElementExtra = jsonObject["extraData"]
+
+        val extraData = when (type) {
+            QuestionType.CHECKBOX -> {
+                val value = gson.fromJson(
+                    jsonElementExtra.asString,
+                    CheckBoxExtraData::class.java
+                )
+
+                listOf(ExtraData(value.img))
+            }
+
+            QuestionType.MULTI_SELECT,
+            QuestionType.SELECT -> {
+                Converters().toExtraDataList(jsonElementExtra.asString)
+            }
+
+            QuestionType.TEXT, null -> emptyList()
+
+        }
+
+        return extraData
+    }
+
+    override suspend fun getNextSelectableQuestion(currentQuestion: Question?): Question? {
+        val questions = dao.getQuestions(QuestionType.SELECT, QuestionType.MULTI_SELECT)
+        if (currentQuestion == null)
+            return questions.firstOrNull()
+
+        val index = questions.indexOf(currentQuestion)
+
+        return if (index != -1) questions.getOrNull(index + 1)
+        else null
+    }
+
+    override suspend fun addAnswer(answer: AnswersResponse) {
+        dao.insert(answer)
+    }
+
+    override suspend fun sendUserAnswers(): AnswersResponse {
+
+        val answers = dao.getAnswers()
+
+        return networkDataSource.sendAnswers(answers)
     }
 }

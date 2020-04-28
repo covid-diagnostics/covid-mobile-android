@@ -3,7 +3,7 @@ package com.example.coronadiagnosticapp.ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.CheckBox
-import com.example.coronadiagnosticapp.data.db.Question
+import com.example.coronadiagnosticapp.data.db.entity.Question
 
 class QuestionCheckBox : CheckBox, QuestionPresenter {
 

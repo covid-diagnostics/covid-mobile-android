@@ -1,23 +1,34 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.db.Question
-import com.example.coronadiagnosticapp.data.db.QuestionType.MULTI_SELECT
-import com.example.coronadiagnosticapp.data.db.QuestionType.SELECT
+import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType.MULTI_SELECT
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType.SELECT
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.fragment_question.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 class QuestionFragment : Fragment() {
 
     private val TAG = javaClass.name
+
+    @Inject
+    lateinit var viewModel: QuestionFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,13 +36,33 @@ class QuestionFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_question, container, false)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.getAppComponent()?.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getParcelable<Question>("q")?.let {
-            initStuff(it)
-        }
+        options_rv.adapter = MultiQuestionAdapter(emptyList())
+        doTheFlow()
+    }
 
+    private fun doTheFlow() {
+        GlobalScope.launch(IO) {
+            val nextQuestion = viewModel.getNextQuestion()
+
+            withContext(Main) {
+                nextQuestion?.let {
+//                    Animate
+                    val animation = AnimationUtils
+                        .loadAnimation(context, android.R.anim.slide_in_left)
+                    view?.startAnimation(animation)
+                    initStuff(it)
+
+                } ?: sendData()
+            }
+        }
     }
 
     private fun initStuff(question: Question) {
@@ -49,12 +80,26 @@ class QuestionFragment : Fragment() {
 
         next_btn.setOnClickListener {
             //            "Next question"
-            val selected = (adapter as Selectable<*>).getSelected()
-            Log.d(TAG, selected.toString())
-            //            TODO send selected back
-            findNavController().navigateUp()
+            val selected = (adapter as Selectable).getSelected()
+            GlobalScope.launch(IO) {
+                viewModel.saveSelected(question.id, selected)
+                doTheFlow()
+            }
         }
     }
 
+    private fun sendData() {
+
+//        showLoading(progressBar, true)
+        GlobalScope.launch(IO) {
+            viewModel.sendData()
+            toast("Sent successfully")
+            withContext(Main) {
+//                showLoading(progressBar, false)
+                findNavController()
+                    .navigate(R.id.action_questionFragment_to_cameraFragment)
+            }
+        }
+    }
 
 }

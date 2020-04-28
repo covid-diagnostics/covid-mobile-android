@@ -7,13 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.db.ExtraData
+import com.example.coronadiagnosticapp.data.db.entity.ExtraData
 import kotlinx.android.synthetic.main.question_select_box.view.*
-
 
 class MultiQuestionAdapter(private var options: List<ExtraData>) :
     RecyclerView.Adapter<MultiQuestionAdapter.SelectBoxVH>(),
-    Selectable<List<ExtraData>> {
+    Selectable {
 
     private val selectedFlags = Array(options.size) { false }
 
@@ -57,7 +56,10 @@ class MultiQuestionAdapter(private var options: List<ExtraData>) :
         }
 
         private fun setSelectedColor() {
-            val color = if (selectedFlags[adapterPosition]) Color.LTGRAY else Color.WHITE
+            val color =
+                if (selectedFlags[adapterPosition]) Color.LTGRAY
+                else Color.WHITE
+
             (itemView as? CardView)?.setCardBackgroundColor(color)
         }
     }

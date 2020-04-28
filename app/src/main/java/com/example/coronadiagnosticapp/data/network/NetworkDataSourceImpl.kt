@@ -3,12 +3,15 @@ package com.example.coronadiagnosticapp.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.UserAnswers
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
+import com.example.coronadiagnosticapp.data.db.entity.ExtraData
+import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType
 import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
+import com.google.gson.JsonObject
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,7 +27,6 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
     private val _error = MutableLiveData<String>()
     override val responseUser: LiveData<ResponseUser> = _responseUser
     override val error: LiveData<String> = _error
-
 
     override suspend fun registerUser(userRegister: UserRegister): ResponseUser {
 
@@ -49,33 +51,80 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
     }
 
     override suspend fun updateUserMetrics(
-        temp: String,
-        cough: Int,
-        isWet: Boolean
-    ): ResponseMetric {
-        return api.updateUserMetrics(
-            SendMetric(
-                temperature = temp,
-                coughStrength = cough,
-                isCoughDry = isWet
-            )
-        ).await()
-    }
+        cough: Int, isWet: Boolean, temp: String
+    ) = api.updateUserMetrics(SendMetric(cough, isWet, temp)).await()
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
+
+        val body = RequestBody.create(MediaType.parse("audio/*"), file)
+
         val filePart = MultipartBody.Part.createFormData(
-            "chestRecording",
-            file.name,
-            RequestBody.create(MediaType.parse("audio/*"), file)
+            "chestRecording", file.name, body
         )
+
         val idPart = MultipartBody.Part.createFormData("id", id.toString())
 
         return api.uploadAudioRecording(filePart, idPart).await()
     }
 
-    override suspend fun getQuestions() = api.getQuestions(Locale.getDefault().language).await()
-    override suspend fun updateUserAnswers(answers: List<UserAnswers>) {
-        api.updateUserAnswers(answers)
+    override suspend fun getQuestions(): List<JsonObject> {
+        val language = Locale.getDefault().language
+        return api.getQuestions(language).await()
+//        return dummyQuestions()
+
     }
+
+    private fun dummyQuestions(): List<Question> {
+        return listOf(
+            Question(
+                1, "sup", "What's up?",
+                QuestionType.TEXT, emptyList()
+            ),
+
+            Question(
+                2, "you_sick", "Are you sick?",
+                QuestionType.CHECKBOX, emptyList()
+            ),
+
+            Question(
+                3, "is_flat", "Is the world flat?",
+                QuestionType.CHECKBOX, emptyList()
+            ),
+
+            Question(
+                4, "name", "What's you're name?",
+                QuestionType.CHECKBOX, emptyList()
+            ),
+
+            Question(
+                5, "single_select_test", "Select one answer only",
+                QuestionType.MULTI_SELECT, listOf(
+                    ExtraData(
+                        "cough",
+                        "cough",
+                        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.Em6Gv1fRpMRAbPTtNmAvPwAAAA%26pid%3DApi&f=1"
+                    ),
+                    ExtraData("Confusion", "Confusion", "URL")
+                )
+            ),
+
+            Question(
+                6, "symptoms", "What symptoms do you have?",
+                QuestionType.SELECT, listOf(
+                    ExtraData(
+                        "cough",
+                        "cough",
+                        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.Em6Gv1fRpMRAbPTtNmAvPwAAAA%26pid%3DApi&f=1"
+                    ),
+                    ExtraData("Confusion", "Confusion", "URL")
+                )
+            )
+
+
+        )
+    }
+
+    override suspend fun sendAnswers(answers: List<AnswersResponse>) =
+        api.sendUserAnswers(answers).await()
 
 }
