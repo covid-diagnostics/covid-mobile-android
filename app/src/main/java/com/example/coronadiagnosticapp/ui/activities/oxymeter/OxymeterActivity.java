@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -9,6 +10,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -38,6 +42,8 @@ import java.util.Queue;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function2;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.GlobalScope;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -404,6 +410,7 @@ public class OxymeterActivity extends BaseActivity {
         OxymeterData result = oxymeter.finish(previewFps / 1000D);
         if (result != null) {
             Log.i(TAG, "Oxymeter finished successfully!");
+            sendDataToDb();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(result.getOxSaturation()));
             returnIntent.putExtra("BEATS_PER_MINUTE", Integer.toString(result.getHeartRate()));
@@ -414,6 +421,20 @@ public class OxymeterActivity extends BaseActivity {
             Log.w(TAG, "Oxymeter returned null");
             measurementFailed();
         }
+    }
+
+    public void sendDataToDb() {
+        Log.i(TAG, "Got camera permissions.");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            GlobalScope.launch (Dispatchers.IO) {
+                CameraManager cameraManager = (CameraManager) context?.getSystemService(Context.CAMERA_SERVICE);
+                CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.cameraIdList[0]);
+                viewModel.updateUserCameraCharacteristics(cameraCharacteristics);
+            }
+        } else {
+            Log.w(TAG, "Android API doesn't support camera2, skipping sending camera characteristics.");
+        }
+
     }
 
     public void fingerRemoved() {

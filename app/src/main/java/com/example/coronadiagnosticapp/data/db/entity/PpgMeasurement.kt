@@ -3,8 +3,8 @@ package com.example.coronadiagnosticapp.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "camera_info")
-data class UserCameraInfo(
+@Entity(tableName = "ppgmeasurement_table")
+data class PpgMearuement(
     @PrimaryKey val userID: String,
     val calibrationTransform1: String?,
     val calibrationTransform2: String?,
