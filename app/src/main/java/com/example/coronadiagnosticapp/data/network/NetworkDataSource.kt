@@ -16,8 +16,7 @@ interface NetworkDataSource {
         user: User
     ): User?
 
-    suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
-    suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement
     suspend fun submitMeasurement(measurement: Measurement): Measurement
+    suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement
     suspend fun uploadAudioRecording(file: File, id: Int)
 }

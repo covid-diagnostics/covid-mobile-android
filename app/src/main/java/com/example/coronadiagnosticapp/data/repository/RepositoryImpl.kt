@@ -10,6 +10,7 @@ import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
 import java.io.File
 import javax.inject.Inject
 
@@ -73,17 +74,6 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
-        try {
-            val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
-            dao.upsertMetric(responseMetric)
-        } catch (e: Exception) {
-            error.postValue(e.message)
-            e.printStackTrace()
-        }
-    }
-
-
     override suspend fun saveResult(healthResult: HealthResult) {
         lastHealthResult = healthResult
         dao.insertHealth(healthResult)
@@ -94,7 +84,7 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun uploadAudioRecording(file: File) {
         try {
-            val id = dao.getMetric().id
+            val id = dao.getMeasurement().id!!
             networkDataSource.uploadAudioRecording(file, id)
 
         } catch (e: Exception) {
@@ -104,23 +94,24 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun submitMeasurement(measurement: Measurement): Measurement {
-        return networkDataSource.submitMeasurement(measurement)
+        val responseMeasurement = networkDataSource.submitMeasurement(measurement)
+        dao.upsertMeasurement(responseMeasurement)
+        return responseMeasurement
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override suspend fun submitPpgMeasurement(
-        red: Array<Int>?,
-        green: Array<Int>?,
-        blue: Array<Int>?,
-        timepoint: Array<Float>?,
-        cc: CameraCharacteristics,
-        measurementId: Int
+        oxymeterAverages: OxymeterAverages,
+        cc: CameraCharacteristics
     ) {
         Log.i(TAG, "Sending camera characteristics!")
         val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
         val ppgMeasurement = PpgMeasurement(
             null,
-            red, green, blue, timepoint,
+            oxymeterAverages.red,
+            oxymeterAverages.green,
+            oxymeterAverages.blue,
+            oxymeterAverages.timepoint,
             cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM1]?.toString(),
             cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM2]?.toString(),
             cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM1]?.toString(),
@@ -134,7 +125,7 @@ class RepositoryImpl @Inject constructor(
             cc[CameraCharacteristics.SENSOR_MAX_ANALOG_SENSITIVITY],
             cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT1],
             cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT2],
-            measurementId
+            dao.getMeasurement().id!!
         )
 
         try {

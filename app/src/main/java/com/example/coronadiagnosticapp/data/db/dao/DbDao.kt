@@ -2,10 +2,7 @@ package com.example.coronadiagnosticapp.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseMetric
-import com.example.coronadiagnosticapp.data.db.entity.User
+import com.example.coronadiagnosticapp.data.db.entity.*
 
 @Dao
 interface DbDao {
@@ -16,9 +13,9 @@ interface DbDao {
     }
 
     @Transaction
-    fun upsertMetric(metric: ResponseMetric) {
-        deleteAllMetrics()
-        insert(metric)
+    fun upsertMeasurement(measurement: Measurement) {
+        deleteAllMeasurements()
+        insert(measurement)
     }
 
 
@@ -33,17 +30,14 @@ interface DbDao {
     @Query("SELECT * FROM user_table LIMIT 1")
     fun getUser(): User
 
-    @Query("DELETE FROM metric_table")
-    fun deleteAllMetrics()
+    @Query("DELETE FROM measurement_table")
+    fun deleteAllMeasurements()
 
-
-    @Query("SELECT * FROM metric_table LIMIT 1")
-    fun getMetric(): ResponseMetric
-
+    @Query("SELECT * FROM measurement_table LIMIT 1")
+    fun getMeasurement(): Measurement
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(responseMetric: ResponseMetric)
-
+    fun insert(measurement: Measurement)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertHealth(healthResult: HealthResult)

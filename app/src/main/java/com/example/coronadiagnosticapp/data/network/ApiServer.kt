@@ -20,8 +20,6 @@ const val BASE_URL = "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/sta
 const val SIGNUP_URL = "api/me/sign-up/"
 
 const val FILL_DETAILS_URL = "api/me/fill-personal-info/"
-
-const val DAILY_METRICS_URL = "api/me/fill-daily-metrics/"
 const val PPG_MEASUREMENT_URL = "api/ppg-measurement/"
 const val MEASUREMENT_URL = "api/measurement/"
 
@@ -40,11 +38,6 @@ interface ApiServer {
     fun updateUserInformation(
         @Body user: User
     ): Deferred<User>
-
-    @POST(DAILY_METRICS_URL)
-    fun updateUserMetrics(
-        @Body sendMetric: SendMetric
-    ): Deferred<ResponseMetric>
 
     @POST(PPG_MEASUREMENT_URL)
     fun submitPpgMeasurement(

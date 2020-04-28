@@ -44,28 +44,14 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         return null
     }
 
-    override suspend fun updateUserMetrics(
-        temp: String,
-        cough: Int,
-        isWet: Boolean
-    ): ResponseMetric {
-        return api.updateUserMetrics(
-            SendMetric(
-                temperature = temp,
-                coughStrength = cough,
-                isCoughDry = isWet
-            )
-        ).await()
+    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
+        return api.submitMeasurement(measurement).await()
     }
 
     override suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement {
         return api.submitPpgMeasurement(measurement).await()
     }
 
-
-    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
-        return api.submitMeasurement(measurement).await()
-    }
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
         val filePart = MultipartBody.Part.createFormData(

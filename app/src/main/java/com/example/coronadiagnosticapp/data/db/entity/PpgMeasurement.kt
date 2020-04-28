@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "ppgmeasurement_table")
 data class PpgMeasurement(
     @PrimaryKey val id: Int?,
-    val red: Array<Int>?,
-    val green: Array<Int>?,
-    val blue: Array<Int>?,
-    val timepoint: Array<Float>?,
+    val red: Array<Double>?,
+    val green: Array<Double>?,
+    val blue: Array<Double>?,
+    val timepoint: Array<Long>?,
     val calibrationTransform1: String?,
     val calibrationTransform2: String?,
     val sensorColorTransform1: String?,

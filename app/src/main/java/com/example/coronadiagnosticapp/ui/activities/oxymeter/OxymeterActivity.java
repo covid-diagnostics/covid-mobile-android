@@ -64,7 +64,7 @@ interface OxymeterThreadEventListener {
 
 class OxymeterThread extends Thread {
     private static final String TAG = "OxThread";
-    private Oxymeter oxymeter;
+    public Oxymeter oxymeter;
     private int framesPassedToOxymeter = 0;
     private Queue<byte[]> framesQueue;
     private Camera cam;
@@ -278,7 +278,6 @@ public class OxymeterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         MyApplication app = (MyApplication) getApplicationContext();
         app.getAppComponent().inject(this);
-        submitMeasurement();
 
         setContentView(R.layout.activity_video_record);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -415,6 +414,7 @@ public class OxymeterActivity extends BaseActivity {
         OxymeterData result = oxymeter.finish(previewFps / 1000D);
         if (result != null) {
             Log.i(TAG, "Oxymeter finished successfully!");
+            submitMeasurement(oxymeter);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(result.getOxSaturation()));
             returnIntent.putExtra("BEATS_PER_MINUTE", Integer.toString(result.getHeartRate()));
@@ -427,16 +427,13 @@ public class OxymeterActivity extends BaseActivity {
         }
     }
 
-    public void submitMeasurement() {
+    public void submitMeasurement(Oxymeter oxymeter) {
         Log.i(TAG, "Got camera permissions.");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
             try {
                 @NotNull CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.getCameraIdList()[0]);
-                Integer[] x = {0};
-                Float[] y = {1F};
-                Log.i(TAG, String.valueOf(viewModel));
-                viewModel.submitPpgMeasurement(x, x, x, y, cameraCharacteristics, 0);
+                viewModel.submitPpgMeasurement(oxymeter.getAverages(), cameraCharacteristics);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
