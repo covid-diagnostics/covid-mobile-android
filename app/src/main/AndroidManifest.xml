@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <meta-data android:name="io.sentry.dsn" android:value="https://6344964f8aa0402b97742db2e891bc88@o374240.ingest.sentry.io/5191931" />
+        <meta-data android:name="io.sentry.auto-init" android:value="false" />
     </application>
 
 </manifest>
