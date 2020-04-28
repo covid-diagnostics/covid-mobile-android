@@ -284,6 +284,9 @@ public class OxymeterActivity extends BaseActivity {
 
         //Button
         readyBtn = (Button) findViewById(R.id.ready_btn);
+        findViewById(R.id.infoImg).setOnClickListener(it -> {
+            finish();
+        });
         progressBarView = (ProgressBar) findViewById(R.id.barTimer);
         timeLeftView = (TextView) findViewById(R.id.textTimer);
         heartRate = (TextView) findViewById(R.id.heartRate);
@@ -489,7 +492,9 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        oxymeterUpdater.interrupt();
+        if (oxymeterUpdater != null) {
+            oxymeterUpdater.interrupt();
+        }
     }
 
     private void removeProgressBarAndShowAlert(String alertText) {

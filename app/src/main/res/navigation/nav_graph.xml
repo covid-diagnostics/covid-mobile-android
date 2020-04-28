@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_recorderFragment_to_recorderExplanation"
+            app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"

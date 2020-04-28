@@ -59,6 +59,9 @@ class RecorderFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
+        view.findViewById<View>(R.id.infoImgRecorder).setOnClickListener {
+            findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation)
+        }
     }
 
     override fun onCreateView(
@@ -134,16 +137,19 @@ class RecorderFragment : ScopedFragment() {
         mediaRecorder!!.setOutputFile(fileLocation)
         launch {
             delay(MAX_DURATION.toLong())
-            stopRecording()
-            showLoading(true)
-            // Upload file
-            launch(Dispatchers.IO) {
-                viewModel.uploadFile(File(fileLocation!!))
-                withContext(Dispatchers.Main) { showLoading(false) }
-                Log.d(TAG, "File finished uploading!")
-                findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
+            // this thread will stay alive after the page is dead, so this is to avoid null reference
+            if (record_timer != null) { // TODO : is there s possible race?
+                stopRecording()
+                showLoading(true)
+                // Upload file
+                launch(Dispatchers.IO) {
+                    viewModel.uploadFile(File(fileLocation!!))
+                    withContext(Dispatchers.Main) { showLoading(false) }
+                    Log.d(TAG, "File finished uploading!")
+                    findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
+                }
+                processRecording()
             }
-            processRecording()
         }
 
         mediaRecorder!!.prepare()
@@ -188,7 +194,9 @@ class RecorderFragment : ScopedFragment() {
     override fun onStop() {
         super.onStop()
         // Stop recording is someone presses back
-        if (isRecording) { stopRecording() }
+        if (isRecording) {
+            stopRecording()
+        }
     }
 
 
