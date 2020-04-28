@@ -4,8 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "ppgmeasurement_table")
-data class PpgMearuement(
-    @PrimaryKey val userID: String,
+data class PpgMeasurement(
+    @PrimaryKey val id: Int?,
+    val red: Array<Int>?,
+    val green: Array<Int>?,
+    val blue: Array<Int>?,
+    val timepoint: Array<Float>?,
     val calibrationTransform1: String?,
     val calibrationTransform2: String?,
     val sensorColorTransform1: String?,
@@ -18,5 +22,6 @@ data class PpgMearuement(
     val sensorWhiteLevel: Int?,
     val sensorMaxAnalogSensitivity: Int?,
     val sensorReferenceIlluminant1: Int?,
-    val sensorReferenceIlluminant2: Byte?
+    val sensorReferenceIlluminant2: Byte?,
+    val measurement: Int
 )

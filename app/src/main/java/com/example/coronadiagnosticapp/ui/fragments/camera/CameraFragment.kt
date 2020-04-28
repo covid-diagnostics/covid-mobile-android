@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
@@ -91,24 +91,6 @@ class CameraFragment : ScopedFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 200) {
-            for (i in permissions.indices) {
-                // If we got permissions to use the camera, send camera info to the DB.
-                if (permissions[i] == Manifest.permission.CAMERA && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i(CameraFragment.TAG, "Got camera permissions.")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        launch (Dispatchers.IO) {
-                            val cameraManager = context?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                            val cameraCharacteristics : CameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.cameraIdList[0])
-                            viewModel.updateUserCameraCharacteristics(cameraCharacteristics)
-                        }
-                    } else {
-                        Log.w(CameraFragment.TAG, "Android API doesn't support camera2, skipping sending camera characteristics.")
-                    }
-                }
-            }
-
-
-
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
                     val intent = Intent(context, OxymeterActivity::class.java)

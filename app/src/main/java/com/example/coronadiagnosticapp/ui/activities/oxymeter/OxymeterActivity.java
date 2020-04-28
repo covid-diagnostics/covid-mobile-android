@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.activities;
+package com.example.coronadiagnosticapp.ui.activities.oxymeter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
@@ -25,30 +26,27 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.coronadiagnosticapp.MyApplication;
 import com.example.coronadiagnosticapp.R;
-import com.example.coronadiagnosticapp.ui.activities.oxymeter.Oxymeter;
-import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterData;
-import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterImpl;
+import com.example.coronadiagnosticapp.ui.activities.BaseActivity;
+import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.inject.Inject;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.GlobalScope;
-
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GridLabelRenderer;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 
@@ -191,6 +189,9 @@ public class OxymeterActivity extends BaseActivity {
     private OxymeterThread oxymeterUpdater;
     public int currentHeartRate;
 
+    @Inject
+    OxymeterViewModel viewModel;
+
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
@@ -275,6 +276,10 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyApplication app = (MyApplication) getApplicationContext();
+        app.getAppComponent().inject(this);
+        submitMeasurement();
+
         setContentView(R.layout.activity_video_record);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -410,7 +415,6 @@ public class OxymeterActivity extends BaseActivity {
         OxymeterData result = oxymeter.finish(previewFps / 1000D);
         if (result != null) {
             Log.i(TAG, "Oxymeter finished successfully!");
-            sendDataToDb();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("OXYGEN_SATURATION", Integer.toString(result.getOxSaturation()));
             returnIntent.putExtra("BEATS_PER_MINUTE", Integer.toString(result.getHeartRate()));
@@ -423,16 +427,21 @@ public class OxymeterActivity extends BaseActivity {
         }
     }
 
-    public void sendDataToDb() {
+    public void submitMeasurement() {
         Log.i(TAG, "Got camera permissions.");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            GlobalScope.launch (Dispatchers.IO) {
-                CameraManager cameraManager = (CameraManager) context?.getSystemService(Context.CAMERA_SERVICE);
-                CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.cameraIdList[0]);
-                viewModel.updateUserCameraCharacteristics(cameraCharacteristics);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            try {
+                @NotNull CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(cameraManager.getCameraIdList()[0]);
+                Integer[] x = {0};
+                Float[] y = {1F};
+                Log.i(TAG, String.valueOf(viewModel));
+                viewModel.submitPpgMeasurement(x, x, x, y, cameraCharacteristics, 0);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
             }
         } else {
-            Log.w(TAG, "Android API doesn't support camera2, skipping sending camera characteristics.");
+            Log.w(TAG, "Android API doesn't support camera2, not sending camera characteristics.");
         }
 
     }

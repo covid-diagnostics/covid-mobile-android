@@ -6,10 +6,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
-import com.example.coronadiagnosticapp.data.db.entity.UserCameraInfo
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
@@ -44,7 +41,6 @@ class RepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             error.postValue(e.message)
         }
-
     }
 
     override fun isLoggedIn(): Boolean {
@@ -81,9 +77,9 @@ class RepositoryImpl @Inject constructor(
         try {
             val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
             dao.upsertMetric(responseMetric)
-
         } catch (e: Exception) {
             error.postValue(e.message)
+            e.printStackTrace()
         }
     }
 
@@ -103,16 +99,28 @@ class RepositoryImpl @Inject constructor(
 
         } catch (e: Exception) {
             error.postValue(e.message)
+            e.printStackTrace()
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    override suspend fun updateUserCameraCharacteristics(cc: CameraCharacteristics) {
-        val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
-        Log.i(TAG, "Sending camera characteristics!")
+    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
+        return networkDataSource.submitMeasurement(measurement)
+    }
 
-        dao.insertCameraInfo(UserCameraInfo(
-            "test",
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun submitPpgMeasurement(
+        red: Array<Int>?,
+        green: Array<Int>?,
+        blue: Array<Int>?,
+        timepoint: Array<Float>?,
+        cc: CameraCharacteristics,
+        measurementId: Int
+    ) {
+        Log.i(TAG, "Sending camera characteristics!")
+        val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
+        val ppgMeasurement = PpgMeasurement(
+            null,
+            red, green, blue, timepoint,
             cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM1]?.toString(),
             cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM2]?.toString(),
             cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM1]?.toString(),
@@ -125,7 +133,15 @@ class RepositoryImpl @Inject constructor(
             cc[CameraCharacteristics.SENSOR_INFO_WHITE_LEVEL],
             cc[CameraCharacteristics.SENSOR_MAX_ANALOG_SENSITIVITY],
             cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT1],
-            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT2]
-        ))
+            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT2],
+            measurementId
+        )
+
+        try {
+            networkDataSource.submitPpgMeasurement(ppgMeasurement)
+        } catch (e: Exception) {
+            error.postValue(e.message)
+            e.printStackTrace()
+        }
     }
 }

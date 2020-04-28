@@ -9,7 +9,7 @@ import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.*
 
 @Database(
-    entities = [User::class, ResponseMetric::class, HealthResult::class, UserCameraInfo::class],
+    entities = [User::class, ResponseMetric::class, HealthResult::class, PpgMeasurement::class, Measurement::class],
     version = 5
 )
 @TypeConverters(Converters::class)

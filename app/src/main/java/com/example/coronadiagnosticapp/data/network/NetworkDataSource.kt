@@ -2,8 +2,6 @@ package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
 import java.io.File
 
 interface NetworkDataSource {
@@ -19,6 +17,7 @@ interface NetworkDataSource {
     ): User?
 
     suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
-
+    suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement
+    suspend fun submitMeasurement(measurement: Measurement): Measurement
     suspend fun uploadAudioRecording(file: File, id: Int)
 }
