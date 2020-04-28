@@ -53,7 +53,10 @@ interface DbDao {
     fun getAnswers(): List<AnswersResponse>
 
     @Insert(onConflict = REPLACE)
-    fun insert(questions: List<Question>)
+    fun insertAnswers(answers: List<AnswersResponse>)
+
+    @Insert(onConflict = REPLACE)
+    fun insertQuestions(questions: List<Question>)
 
     @Query("SELECT * FROM questions WHERE type IN(:type)")
     fun getQuestions(vararg type: QuestionType): List<Question>

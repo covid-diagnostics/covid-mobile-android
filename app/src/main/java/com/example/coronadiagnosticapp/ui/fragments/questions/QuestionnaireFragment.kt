@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.Question
 import com.example.coronadiagnosticapp.data.db.entity.QuestionType.CHECKBOX
 import com.example.coronadiagnosticapp.data.db.entity.QuestionType.TEXT
@@ -15,6 +17,7 @@ import com.example.coronadiagnosticapp.ui.views.QuestionPresenter
 import com.example.coronadiagnosticapp.ui.views.QuestionView
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import com.example.coronadiagnosticapp.utils.showLoading
+import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.fragment_questionnaire.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -55,8 +58,32 @@ class QuestionnaireFragment : Fragment() {
         }
 
         next_btn.setOnClickListener {
+            saveAnswers()
             findNavController()
                 .navigate(R.id.action_questioneerFragment_to_questionFragment)
+        }
+    }
+
+    private fun saveAnswers() {
+        val answers = mutableListOf<AnswersResponse>()
+        for (view in questions_group.children) {
+            val question = (view as QuestionPresenter).question!!.id
+
+            val ans = when (view) {
+                is QuestionCheckBox -> view.isChecked.toString()
+                is QuestionView -> view.getAnswer()
+                else -> ""
+            }
+
+            val answer = AnswersResponse(question, ans, question)
+            answers.add(answer)
+        }
+        GlobalScope.launch(IO) {
+            viewModel.addAnswers(answers)
+
+            withContext(Main) {
+                toast("saved")
+            }
         }
     }
 

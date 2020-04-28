@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.QuestionType
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import java.io.File
 
@@ -27,9 +28,11 @@ interface Repository {
 
     suspend fun uploadAudioRecording(file: File)
 
-    suspend fun getQuestions(): List<Question>
+    suspend fun getQuestions(vararg types: QuestionType): List<Question>
 
     suspend fun getNextSelectableQuestion(currentQuestion: Question?): Question?
     suspend fun addAnswer(answer: AnswersResponse)
     suspend fun sendUserAnswers()
+    suspend fun addAnswers(answers: List<AnswersResponse>)
+    suspend fun loadQuestionsToDB(): List<Question>
 }

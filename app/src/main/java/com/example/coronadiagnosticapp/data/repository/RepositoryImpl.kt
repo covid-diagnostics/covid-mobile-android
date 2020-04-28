@@ -106,7 +106,12 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getQuestions(): List<Question> {
+    override suspend fun getQuestions(vararg types: QuestionType): List<Question> {
+        return dao.getQuestions(*types)
+    }
+
+
+    override suspend fun loadQuestionsToDB(): List<Question> {
         val questionsJson = networkDataSource.getQuestions()
         val questions = mutableListOf<Question>()
         val gson = Gson()
@@ -136,7 +141,7 @@ class RepositoryImpl @Inject constructor(
             questions.add(question)
         }
 
-        dao.insert(questions)
+        dao.insertQuestions(questions)
 
         return questions
     }
@@ -182,9 +187,18 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun addAnswer(answer: AnswersResponse) {
+        addMeasurement(answer)
+        dao.insert(answer)
+    }
+
+    private fun addMeasurement(answer: AnswersResponse) {
         val id = dao.getMetric().id
         answer.measurement = id
-        dao.insert(answer)
+    }
+
+    override suspend fun addAnswers(answers: List<AnswersResponse>) {
+        answers.forEach(this::addMeasurement)
+        dao.insertAnswers(answers)
     }
 
     override suspend fun sendUserAnswers() {
