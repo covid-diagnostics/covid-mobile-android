@@ -11,6 +11,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -51,8 +52,8 @@ interface ApiServer {
     ): Deferred<List<JsonObject>>
 
     @POST(SEND_ANSWERS)
-    fun sendUserAnswers(
-        @Body answers: List<AnswersResponse>
+    fun sendUserAnswer(
+        @Body answer: AnswersResponse
     ): Deferred<AnswersResponse>
 
     companion object {
@@ -65,9 +66,15 @@ interface ApiServer {
                 .build()
                 .create(ApiServer::class.java)
 
-        private fun createOkHttpClient(interceptor: TokenServiceInterceptor) =
-            OkHttpClient.Builder()
+        private fun createOkHttpClient(interceptor: TokenServiceInterceptor): OkHttpClient {
+            val logging = HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
+
+            return OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(logging)
                 .build()
+        }
     }
 }

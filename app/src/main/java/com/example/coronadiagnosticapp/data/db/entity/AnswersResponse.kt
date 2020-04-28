@@ -10,5 +10,9 @@ class AnswersResponse(
     @Expose(serialize = false, deserialize = false)
     val id: Long,
     val value: String?,
-    val question: Long, val measurement: Int
-)
+    val question: Long,
+    var measurement: Int
+) {
+    constructor(id: Long, value: String?, question: Long) :
+            this(id, value, question, -1)
+}

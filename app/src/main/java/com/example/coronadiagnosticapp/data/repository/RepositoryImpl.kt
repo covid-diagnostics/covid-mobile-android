@@ -182,13 +182,13 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun addAnswer(answer: AnswersResponse) {
+        val id = dao.getMetric().id
+        answer.measurement = id
         dao.insert(answer)
     }
 
-    override suspend fun sendUserAnswers(): AnswersResponse {
-
+    override suspend fun sendUserAnswers() {
         val answers = dao.getAnswers()
-
-        return networkDataSource.sendAnswers(answers)
+        networkDataSource.sendAnswers(answers)
     }
 }

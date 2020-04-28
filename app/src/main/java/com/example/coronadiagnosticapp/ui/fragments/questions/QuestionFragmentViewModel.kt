@@ -26,10 +26,8 @@ class QuestionFragmentViewModel @Inject constructor(val repository: Repository) 
         questionId: Long,
         selected: List<ExtraData>
     ) {
-        /*TODO how to make an answer from selected*/
-        val measurement = 1 //???
         val json = Converters().fromList(selected)
-        val answer = AnswersResponse(questionId, json, questionId, measurement)
+        val answer = AnswersResponse(questionId, json, questionId)
         repository.addAnswer(answer)
     }
 }

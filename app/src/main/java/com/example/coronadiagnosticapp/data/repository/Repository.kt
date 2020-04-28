@@ -31,5 +31,5 @@ interface Repository {
 
     suspend fun getNextSelectableQuestion(currentQuestion: Question?): Question?
     suspend fun addAnswer(answer: AnswersResponse)
-    suspend fun sendUserAnswers(): AnswersResponse
+    suspend fun sendUserAnswers()
 }

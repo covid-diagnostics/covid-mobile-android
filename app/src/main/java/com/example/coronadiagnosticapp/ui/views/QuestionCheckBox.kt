@@ -3,6 +3,8 @@ package com.example.coronadiagnosticapp.ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.CheckBox
+import android.widget.LinearLayout
+import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.Question
 
 class QuestionCheckBox : CheckBox, QuestionPresenter {
@@ -22,7 +24,17 @@ class QuestionCheckBox : CheckBox, QuestionPresenter {
         }
 
     init {
+        textSize = 16f
+        val tintColor = resources.getColor(R.color.colorPrimaryDark)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
 //        TODO add some swag
+        (layoutParams as? LinearLayout.LayoutParams)?.apply {
+            setMargins(left, top, right, 16)
+        }
+
     }
 
 }

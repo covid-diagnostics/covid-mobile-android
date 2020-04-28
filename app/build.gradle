@@ -112,4 +112,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
+//    Logging
+    implementation "com.squareup.okhttp3:logging-interceptor:4.5.0"
+
 }

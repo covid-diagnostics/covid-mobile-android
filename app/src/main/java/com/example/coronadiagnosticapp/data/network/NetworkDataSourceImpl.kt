@@ -12,9 +12,9 @@ import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.google.gson.JsonObject
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.HttpException
 import java.io.File
 import java.util.*
@@ -56,7 +56,7 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
 
-        val body = RequestBody.create(MediaType.parse("audio/*"), file)
+        val body = file.asRequestBody("audio/*".toMediaType())
 
         val filePart = MultipartBody.Part.createFormData(
             "chestRecording", file.name, body
@@ -124,7 +124,10 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
         )
     }
 
-    override suspend fun sendAnswers(answers: List<AnswersResponse>) =
-        api.sendUserAnswers(answers).await()
+    override suspend fun sendAnswers(answers: List<AnswersResponse>) {
+        for (answer in answers) {
+            api.sendUserAnswer(answer).await()
+        }
+    }
 
 }
