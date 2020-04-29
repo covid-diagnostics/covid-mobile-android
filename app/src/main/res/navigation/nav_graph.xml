@@ -32,7 +32,8 @@
     <fragment
         android:id="@+id/informationFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
-        android:label="InformationFragment">
+        android:label="InformationFragment"
+        tools:layout="@layout/information_fragment">
         <action
             android:id="@+id/action_informationFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
@@ -43,8 +44,8 @@
         android:label="daily_metric_fragment"
         tools:layout="@layout/daily_metric_fragment">
         <action
-            android:id="@+id/action_dailyMetricFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            android:id="@+id/action_dailyMetricFragment_to_questioneerFragment"
+            app:destination="@id/questioneerFragment" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -76,10 +77,6 @@
         <action
             android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
-        <action
-            android:id="@+id/action_instructionsFragment_to_questioneerFragment"
-            app:destination="@id/questioneerFragment"
-            app:launchSingleTop="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"

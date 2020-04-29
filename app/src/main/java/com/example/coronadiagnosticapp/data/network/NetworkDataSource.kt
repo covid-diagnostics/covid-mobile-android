@@ -2,7 +2,8 @@ package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.Measurement
+import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
@@ -21,10 +22,9 @@ interface NetworkDataSource {
         user: User
     ): User?
 
-    suspend fun updateUserMetrics(cough: Int, isWet: Boolean, temp: String): ResponseMetric
-
     suspend fun uploadAudioRecording(file: File, id: Int)
-
     suspend fun getQuestions(): List<JsonObject>
     suspend fun sendAnswers(answers: List<AnswersResponse>)
+    suspend fun submitMeasurement(measurement: Measurement): Measurement
+    suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement
 }

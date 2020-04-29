@@ -24,6 +24,4 @@ data class HealthResult(
         measures.breathRate,
         measures.oxSaturation
     )
-
-
 }

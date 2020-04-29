@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.OxymeterActivity
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterData
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
@@ -35,8 +35,11 @@ import javax.inject.Inject
 
 
 class CameraFragment : ScopedFragment() {
-
-    companion object CameraCodes {
+    companion object {
+        const val TAG = "CameraFragment"
+        fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
+        fun breathsPerMinute() = "BREATHS_PER_MINUTE"
+        fun oxygenSaturation() = "OXYGEN_SATURATION"
         private const val RC_CAM_AND_WRITE = 200
         private const val REQUEST_CODE_PERMISSIONS = 215
         private const val REQUEST_CODE_VIDEO = 315

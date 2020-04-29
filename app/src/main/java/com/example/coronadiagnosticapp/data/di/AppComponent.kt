@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.data.di
 
 import android.content.Context
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
@@ -27,6 +28,7 @@ interface AppComponent {
     fun inject(fragment: CameraFragment)
     fun inject(fragment: WelcomeFragment)
     fun inject(fragment: InstructionsFragment)
+    fun inject(activity: OxymeterActivity)
     fun inject(fragment: QuestionnaireFragment)
     fun inject(fragment: QuestionFragment)
 

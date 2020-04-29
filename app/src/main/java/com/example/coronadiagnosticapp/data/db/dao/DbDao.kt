@@ -3,11 +3,7 @@ package com.example.coronadiagnosticapp.data.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.Question
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
 @Dao
@@ -19,9 +15,9 @@ interface DbDao {
     }
 
     @Transaction
-    fun upsertMetric(metric: ResponseMetric) {
-        deleteAllMetrics()
-        insert(metric)
+    fun upsertMeasurement(measurement: Measurement) {
+        deleteAllMeasurements()
+        insert(measurement)
     }
 
 
@@ -36,15 +32,14 @@ interface DbDao {
     @Query("SELECT * FROM user_table LIMIT 1")
     fun getUser(): User
 
-    @Query("DELETE FROM metric_table")
-    fun deleteAllMetrics()
+    @Query("DELETE FROM measurement_table")
+    fun deleteAllMeasurements()
 
+    @Query("SELECT * FROM measurement_table LIMIT 1")
+    fun getMeasurement(): Measurement
 
-    @Query("SELECT * FROM metric_table LIMIT 1")
-    fun getMetric(): ResponseMetric
-
-    @Insert(onConflict = REPLACE)
-    fun insert(responseMetric: ResponseMetric)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(measurement: Measurement)
 
     @Insert(onConflict = REPLACE)
     fun insert(answer: AnswersResponse)
@@ -63,6 +58,9 @@ interface DbDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertHealth(healthResult: HealthResult)
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insert(ppgMeasurement: PpgMeasurement)
 
     @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
     fun getLastHealthResult(): LiveData<HealthResult>

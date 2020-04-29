@@ -78,9 +78,7 @@ class InformationFragment : ScopedFragment() {
         val progress = progressBar_informationFragment
         showLoading(progress, true)
         launch(Dispatchers.IO) {
-            viewModel.updateUserPersonalInformation(
-                firstName, lastName, age
-            )
+            viewModel.updateUserPersonalInformation(firstName, lastName, age)
             withContext(Dispatchers.Main) {
                 showLoading(progress, false)
                 findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)

@@ -8,6 +8,8 @@ import kotlin.collections.ArrayList
 
 
 class Converters {
+    val gson = Gson()
+
     @TypeConverter
     fun fromTimestamp(value: Long?) = value?.let { Date(it) }
 
@@ -50,4 +52,18 @@ class Converters {
             .getParameterized(ArrayList::class.java, String::class.java).type
         return Gson().fromJson(json, type)
     }
+
+    @TypeConverter
+    fun doubleArrayToString(array: Array<Double>): String = gson.toJson(array)
+
+    @TypeConverter
+    fun stringToDoubleArray(string: String): Array<Double> =
+        gson.fromJson(string, object : TypeToken<Array<Double>>() {}.type)
+
+    @TypeConverter
+    fun longArrayToString(array: Array<Long>): String = gson.toJson(array)
+
+    @TypeConverter
+    fun stringToLongArray(string: String): Array<Long> =
+        gson.fromJson(string, object : TypeToken<Array<Long>>() {}.type)
 }

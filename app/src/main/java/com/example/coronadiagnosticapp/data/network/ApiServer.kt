@@ -1,8 +1,8 @@
 package com.example.coronadiagnosticapp.data.network
 
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.ResponseMetric
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
+import com.example.coronadiagnosticapp.data.db.entity.Measurement
+import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
@@ -30,10 +30,15 @@ interface ApiServer {
         @Body user: User
     ): Deferred<User>
 
-    @POST(DAILY_METRICS_URL)
-    fun updateUserMetrics(
-        @Body sendMetric: SendMetric
-    ): Deferred<ResponseMetric>
+    @POST(PPG_MEASUREMENT_URL)
+    fun submitPpgMeasurement(
+        @Body measurement: PpgMeasurement
+    ): Deferred<PpgMeasurement>
+
+    @POST(MEASUREMENT_URL)
+    fun submitMeasurement(
+        @Body measurement: Measurement
+    ): Deferred<Measurement>
 
     @Multipart
     @PUT(VIDEO_UPLOAD)

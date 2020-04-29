@@ -11,9 +11,7 @@ data class
 Question(
     @PrimaryKey
     val id: Long,
-
     var name: String,
-
     var displayName: String,
     @SerializedName("qtype")
     var type: QuestionType,

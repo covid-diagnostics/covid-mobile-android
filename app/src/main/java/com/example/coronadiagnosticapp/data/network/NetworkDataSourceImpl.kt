@@ -3,11 +3,7 @@ package com.example.coronadiagnosticapp.data.network
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
-import com.example.coronadiagnosticapp.data.db.entity.ExtraData
-import com.example.coronadiagnosticapp.data.db.entity.Question
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType
-import com.example.coronadiagnosticapp.data.db.entity.responseMetric.SendMetric
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
@@ -50,9 +46,14 @@ class NetworkDataSourceImpl @Inject constructor(private val api: ApiServer) : Ne
         return null
     }
 
-    override suspend fun updateUserMetrics(
-        cough: Int, isWet: Boolean, temp: String
-    ) = api.updateUserMetrics(SendMetric(cough, isWet, temp)).await()
+    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
+        return api.submitMeasurement(measurement).await()
+    }
+
+    override suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement {
+        return api.submitPpgMeasurement(measurement).await()
+    }
+
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
 

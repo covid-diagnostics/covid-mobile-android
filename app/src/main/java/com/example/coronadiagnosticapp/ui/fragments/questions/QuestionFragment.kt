@@ -90,14 +90,11 @@ class QuestionFragment : Fragment() {
 
     private fun sendData() {
 
-//        showLoading(progressBar, true)
         GlobalScope.launch(IO) {
             viewModel.sendData()
-            toast("Sent successfully")
             withContext(Main) {
-//                showLoading(progressBar, false)
-                findNavController()
-                    .navigate(R.id.action_questionFragment_to_cameraFragment)
+                toast("Sent successfully")
+                findNavController().navigate(R.id.action_questionFragment_to_cameraFragment)
             }
         }
     }

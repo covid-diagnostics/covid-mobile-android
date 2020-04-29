@@ -89,11 +89,11 @@ class DailyMetricFragment : ScopedFragment() {
         val progress = progressBar_metricFragment
         showLoading(progress, true)
         launch(Dispatchers.IO) {
-            viewModel.updateUserMetrics(temp, cough, isWet)
+            viewModel.submitMeasurement(temp, cough, isWet)
 
             withContext(Dispatchers.Main) {
                 showLoading(progress, false)
-                findNavController().navigate(R.id.action_dailyMetricFragment_to_cameraFragment)
+                findNavController().navigate(R.id.action_dailyMetricFragment_to_questioneerFragment)
             }
         }
     }
