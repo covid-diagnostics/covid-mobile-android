@@ -67,6 +67,7 @@ dependencies {
     implementation 'com.github.kittinunf.result:result:3.0.0' //for jvm
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'io.sentry:sentry-android:2.0.0-rc04'
 
     def room_version = "2.2.5"
 
