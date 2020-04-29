@@ -23,36 +23,32 @@ import com.example.coronadiagnosticapp.utils.showLoading
 import com.example.coronadiagnosticapp.utils.toast
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
-// This is an arbitrary number we are using to keep track of the permission
-// request. Where an app has multiple context for requesting permission,
-// this can help differentiate the different contexts.
-
-
 class CameraFragment : ScopedFragment() {
     companion object {
-        const val TAG = "CameraFragment"
-        fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
-        fun breathsPerMinute() = "BREATHS_PER_MINUTE"
-        fun oxygenSaturation() = "OXYGEN_SATURATION"
+        private const val TAG = "CameraFragment"
         private const val RC_CAM_AND_WRITE = 200
-        private const val REQUEST_CODE_PERMISSIONS = 215
         private const val REQUEST_CODE_VIDEO = 315
     }
 
     @Inject
     lateinit var viewModel: CameraViewModel
 
+    private val stepperIndicator by lazy {
+        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context?.getAppComponent()?.inject(this)
 
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
+        stepperIndicator?.currentStep = 1
     }
 
     override fun onCreateView(
@@ -62,7 +58,7 @@ class CameraFragment : ScopedFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
+        stepperIndicator?.currentStep = 1
         button_startCamera.setOnClickListener {
             val context = context ?: return@setOnClickListener
 
@@ -120,29 +116,18 @@ class CameraFragment : ScopedFragment() {
     }
 
     private fun checkVideoData(data: Intent) {
-        //                    val fileName = data.getStringExtra("result")
-        //                    val file = File(fileName)
-        //
-        //                    Log.d("CameraFragment", file.totalSpace.toString())
-        //                    showLoading(true)
-        //                    launch(Dispatchers.IO) {
-        //                        viewModel.uploadVideo(File("csd"))
-        //                        withContext(Dispatchers.Main) {
-        //                            showLoading(false)
-        //                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-        //                        }
-        //                    }
         val progress = progressBar_cameraFragment
         showLoading(progress, true)
         // get data from OxymeterActivity
-        val measures: OxymeterData = data.getParcelableExtra(OxymeterActivity.EXTRA_OXYMETER_DATA)
+        val measures: OxymeterData = data
+            .getParcelableExtra(OxymeterActivity.EXTRA_OXYMETER_DATA)
             ?: return
 
-        launch(Dispatchers.IO) {
+        GlobalScope.launch(IO) {
             val healthResult = HealthResult(measures)
             viewModel.saveResult(healthResult)
 
-            withContext(Dispatchers.Main) {
+            withContext(Main) {
                 showLoading(progress, false)
                 findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
             }

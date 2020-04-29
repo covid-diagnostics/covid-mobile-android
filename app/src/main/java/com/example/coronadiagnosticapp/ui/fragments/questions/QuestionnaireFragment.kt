@@ -87,16 +87,20 @@ class QuestionnaireFragment : Fragment() {
         }
     }
 
-    private fun fill(questions: List<Question>) = questions.forEach {
-        when (it.type) {
-            CHECKBOX -> QuestionCheckBox(context)
-            TEXT -> QuestionView(context)
-            else -> null
-        }?.let { view ->
-            questions_group.addView(view as View)
-            (view as QuestionPresenter).question = it
-        }
+    private fun fill(questions: List<Question>) {
+        val context = context ?: return
 
+        questions.forEach {
+            when (it.type) {
+                CHECKBOX -> QuestionCheckBox(context)
+                TEXT -> QuestionView(context)
+                else -> null
+            }?.let { view ->
+                questions_group.addView(view as View)
+                (view as QuestionPresenter).question = it
+            }
+
+        }
     }
 
 }

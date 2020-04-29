@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.BaseActivity;
-import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
 import com.example.coronadiagnosticapp.utils.MyApplication;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
@@ -44,119 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function2;
-
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
-
-interface OxymeterThreadEventListener {
-    void onFrame(int frameNumber);
-
-    void onSuccess(Oxymeter oxymeter);
-
-    void onFingerRemoved();
-
-    void onInvalidData();
-
-    void onStartWithNewOxymeter();
-}
-
-class OxymeterThread extends Thread {
-    private static final String TAG = "OxThread";
-    public Oxymeter oxymeter;
-    private int framesPassedToOxymeter = 0;
-    private Queue<byte[]> framesQueue;
-    private Camera cam;
-    private Camera.Size previewSize;
-    private Double samplingFrequency;
-    private boolean enabled = false;
-    private int totalFrames;
-    private double previewFps;
-    private Function1<? super Integer, Unit> onUpdateView;
-    private Function2<? super Integer, ? super Double, Unit> onUpdateGraphView;
-    private OxymeterThreadEventListener eventListener;
-
-    OxymeterThread(Queue<byte[]> framesQueue,
-                   Camera cam,
-                   Camera.Size previewSize,
-                   int totalFrames,
-                   double previewFps,
-                   Function1<? super Integer, Unit> onUpdateView,
-                   Function2<? super Integer, ? super Double, Unit> onUpdateGraphView,
-                   OxymeterThreadEventListener eventListener) {
-        this.framesQueue = framesQueue;
-        this.cam = cam;
-        this.previewSize = previewSize;
-        this.totalFrames = totalFrames;
-        this.previewFps = previewFps;
-        this.onUpdateView = onUpdateView;
-        this.onUpdateGraphView = onUpdateGraphView;
-        this.eventListener = eventListener;
-    }
-
-    private synchronized void onFingerRemoved() {
-        enabled = false;
-        this.oxymeter = null;
-        eventListener.onFingerRemoved();
-    }
-
-    private synchronized void onInvalidData() {
-        eventListener.onInvalidData();
-        this.interrupt();
-    }
-
-    private synchronized void startWithNewOxymeter() {
-        oxymeter = new OxymeterImpl(previewFps / 1000);
-        oxymeter.setUpdateView(onUpdateView);
-        oxymeter.setUpdateGraphView(onUpdateGraphView);
-        oxymeter.setOnInvalidData(() -> {
-            this.onInvalidData();
-            return null;
-        });
-        enabled = true;
-        framesQueue.clear();
-        framesPassedToOxymeter = 0;
-        eventListener.onStartWithNewOxymeter();
-    }
-
-    public void run() {
-        Log.i(TAG, "Starting oxymeter thread.");
-        // Keep running until we passed `totalFrames` frames to the oxymeter
-        while (framesPassedToOxymeter < totalFrames) {
-            if (interrupted()) {
-                return;
-            }
-            if (!framesQueue.isEmpty()) {
-                byte[] frame = framesQueue.remove();
-                boolean fingerOnCamera = isFingerOnCamera(frame);
-                if (enabled && !fingerOnCamera) {
-                    // Should stop
-                    onFingerRemoved();
-                } else if (!enabled && fingerOnCamera) {
-                    // Should start
-                    startWithNewOxymeter();
-                } else if (enabled) {
-                    // Should keep goingOxymeter returned
-                    passFrameToOxymeter(frame);
-                }
-            }
-        }
-        Log.i(TAG, "Finished Oxymeter!");
-        eventListener.onSuccess(oxymeter);
-    }
-
-    private void passFrameToOxymeter(byte[] frame) {
-        oxymeter.updateWithFrame(frame, cam);
-        framesPassedToOxymeter++;
-        eventListener.onFrame(framesPassedToOxymeter);
-    }
-
-    private boolean isFingerOnCamera(byte[] data) {
-        double redAvg = ImageProcessing.decodeYUV420SPtoRedBlueGreenAvg(data, previewSize.height, previewSize.width, 1); //1 stands for red intensity, 2 for blue, 3 for green
-        return redAvg >= 200;
-    }
-}
 
 
 public class OxymeterActivity extends BaseActivity {
@@ -286,9 +173,9 @@ public class OxymeterActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // XML - Java Connecting
-        SurfaceView preview = (SurfaceView) findViewById(R.id.preview);
-        putFingerAlert = (TextView) findViewById(R.id.putFingerMessage);
-        improveLightningAlert = (TextView) findViewById(R.id.improve_lightning);
+        SurfaceView preview = findViewById(R.id.preview);
+        putFingerAlert = findViewById(R.id.putFingerMessage);
+        improveLightningAlert = findViewById(R.id.improve_lightning);
         tickImageView = findViewById(R.id.fingerTickImage);
         lightningImageView = findViewById(R.id.lightningTickImage);
         previewHolder = preview.getHolder();
@@ -296,11 +183,11 @@ public class OxymeterActivity extends BaseActivity {
         previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         //Button
-        readyBtn = (Button) findViewById(R.id.ready_btn);
-        progressBarView = (ProgressBar) findViewById(R.id.barTimer);
-        timeLeftView = (TextView) findViewById(R.id.textTimer);
-        heartRate = (TextView) findViewById(R.id.heartRate);
-        graphHeartRate = (GraphView) findViewById(R.id.graphHeartRate);
+        readyBtn = findViewById(R.id.ready_btn);
+        progressBarView = findViewById(R.id.barTimer);
+        timeLeftView = findViewById(R.id.textTimer);
+        heartRate = findViewById(R.id.heartRate);
+        graphHeartRate = findViewById(R.id.graphHeartRate);
 
         mSeries = new LineGraphSeries<DataPoint>();
         mSeries.setColor(Color.WHITE);
@@ -516,7 +403,9 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        oxymeterUpdater.interrupt();
+        if (oxymeterUpdater != null) {
+            oxymeterUpdater.interrupt();
+        }
     }
 
     private void removeProgressBarAndShowAlert(String alertText) {

@@ -12,20 +12,23 @@
         android:id="@+id/textView_welcome_title"
         android:layout_width="203dp"
         android:layout_height="137dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/we_re_glad_you_ve_joined_the_effort"
         android:textAlignment="textStart"
         android:textAppearance="@style/appSubHeader"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/that_s_why_timely_diagnosis_and_isolation_can_save_your_life"
         android:textAlignment="textStart"
@@ -54,18 +57,20 @@
     <Button
         android:id="@+id/button_start"
         style="@style/customButton"
-        android:layout_marginBottom="168dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/welcome_screen_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.619"

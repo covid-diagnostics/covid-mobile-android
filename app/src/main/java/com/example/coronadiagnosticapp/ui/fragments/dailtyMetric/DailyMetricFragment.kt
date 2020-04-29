@@ -14,6 +14,7 @@ import com.example.coronadiagnosticapp.utils.showLoading
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -88,7 +89,7 @@ class DailyMetricFragment : ScopedFragment() {
     private fun submitDailyMetrics(temp: String, cough: Int, isWet: Boolean) {
         val progress = progressBar_metricFragment
         showLoading(progress, true)
-        launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             viewModel.submitMeasurement(temp, cough, isWet)
 
             withContext(Dispatchers.Main) {
