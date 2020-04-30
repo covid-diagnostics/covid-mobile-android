@@ -80,6 +80,17 @@
 
     </style>
 
+    <style name="myChipButton" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="chipBackgroundColor">@color/bg_chip_state_list</item>
+        <item name="chipStrokeColor">@color/colorBlueActivity</item>
+        <item name="android:textColor">@color/text_chip_state_list</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:checkable">true</item>
+    </style>
+
     <style name="appTitle">
         <item name="layout_constraintTop_toTopOf">parent</item>
         <item name="layout_constraintLeft_toLeftOf">parent</item>

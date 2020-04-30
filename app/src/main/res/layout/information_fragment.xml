@@ -13,92 +13,71 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/information_background" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="244dp"
-        android:layout_height="109dp"
-        android:layout_marginTop="56dp"
-        android:gravity="center"
-        android:text="@string/personal_info_request"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_personal_inp_first_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:hint="@string/first_name"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textShortMessage" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_personal_inp_last_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="@string/last_name"
-        app:errorEnabled="true"
-        app:helperTextEnabled="false"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/activity_personal_inp_first_name"
-        app:layout_constraintStart_toStartOf="@+id/activity_personal_inp_first_name"
-        app:layout_constraintTop_toBottomOf="@+id/activity_personal_inp_first_name"
-        app:passwordToggleEnabled="false">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textShortMessage" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_personal_inp_age"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="@string/age"
-        app:errorEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/activity_personal_inp_last_name"
-        app:layout_constraintStart_toStartOf="@+id/activity_personal_inp_last_name"
-        app:layout_constraintTop_toBottomOf="@+id/activity_personal_inp_last_name"
-        app:passwordToggleEnabled="false">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/button_informationNext"
+        android:id="@+id/textView_header_instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:text="@string/submit_personal_info"
+        android:text="@string/header_instructions_demographic_fragment"
+        android:textAlignment="center"
+        android:textAppearance="@style/appHeader"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/chips"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/chips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="false">
+            <com.google.android.material.chip.Chip
+                android:id="@+id/diabetes"
+                style="@style/myChipButton"
+                android:text="@string/diabetes"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/autoimmune_disease"
+                style="@style/myChipButton"
+                android:text="@string/autoimmune_disease"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/asthma"
+                style="@style/myChipButton"
+                android:text="@string/asthma"/>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pulmonary_disease"
+                style="@style/myChipButton"
+                android:text="@string/pulmonary_disease"/>
+        </com.google.android.material.chip.ChipGroup>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chronic_kidney_disease"
+            style="@style/myChipButton"
+            android:text="@string/chronic_kidney_disease"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/hypertension"
+            style="@style/myChipButton"
+            android:text="@string/high_blood_pressure"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cancer"
+            style="@style/myChipButton"
+            android:text="@string/cancer"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/button_informationNext"
+        style="@style/customButton"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -114,26 +93,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView13"
-        app:layout_constraintTop_toTopOf="@+id/imageView13"
-        app:srcCompat="@drawable/guy" />
-
-    <ImageView
-        android:id="@+id/imageView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.376"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_personal_inp_age"
-        app:srcCompat="@drawable/profile" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

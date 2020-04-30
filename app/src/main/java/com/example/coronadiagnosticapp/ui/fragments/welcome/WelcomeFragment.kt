@@ -32,6 +32,10 @@ class WelcomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        // TODO: Delete this:
+        findNavController().navigate(R.id.action_welcomFragment_to_informationFragment)
+
         button_start.setOnClickListener {
             when (viewModel.isLoggedIn()) {
                 true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)

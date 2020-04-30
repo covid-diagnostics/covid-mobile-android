@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.information
+package com.example.coronadiagnosticapp.ui.fragments.demographicData
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,8 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
-class InformationFragment : ScopedFragment() {
+/*
+class DemographicDataFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +50,16 @@ class InformationFragment : ScopedFragment() {
     private fun initForm() {
 
         form {
-            diabetes.setOnClickListener {
+            inputLayout(activity_personal_inp_first_name) {
+                isNotEmpty().description(getString(R.string.required))
+            }
+            inputLayout(activity_personal_inp_last_name) {
+                isNotEmpty().description(getString(R.string.required))
 
+
+            }
+            inputLayout(activity_personal_inp_age) {
+                isNotEmpty().description(getString(R.string.required))
             }
 
             submitWith(button_informationNext) { res ->
@@ -87,3 +95,4 @@ class InformationFragment : ScopedFragment() {
     }
 
 }
+*/
