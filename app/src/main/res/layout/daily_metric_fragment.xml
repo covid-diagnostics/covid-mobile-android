@@ -7,171 +7,80 @@
     tools:context=".ui.fragments.dailtyMetric.DailyMetricFragment">
 
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintTop_toTopOf="@+id/cough_strength"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/cough_emoji" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/button_metricSubmit"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="29dp"
-        android:layout_height="28dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fatigue"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_fatigue"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/fatigue"
-        app:srcCompat="@drawable/tired_emoji" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fatigue"
-        app:layout_constraintEnd_toStartOf="@+id/fatigue"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_fatigue"
-        app:srcCompat="@drawable/smail_emoji" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cough_strength"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintTop_toTopOf="@+id/cough_strength"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/smail_emoji" />
-
-    <TextView
-        android:id="@+id/daily_metrics_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/daily_metric_message"
-        android:textAppearance="@style/appSubHeader"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_metric"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_metrics_inp_temp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
-        android:hint="@string/temperature"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daily_metrics_message">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/cough_strength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="@string/coughStrength"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintVertical_bias="1.0" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#C5CAE9"
+                app:cardCornerRadius="16dp">
 
-    <TextView
-        android:id="@+id/fatigue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="@string/fatigue"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_fatigue"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_fatigue"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_fatigue"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintVertical_bias="1.0" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp">
 
-    <TextView
-        android:id="@+id/muscle_weakness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:text="@string/muscle_weakness"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_metrics_inp_muscle_weakness"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_muscle_weakness"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_muscle_weakness" />
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:text="How are you feeling?"
+                        android:textColor="#000" />
 
-    <SeekBar
-        android:id="@+id/activity_metrics_inp_cough_strength"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:hint="@string/coughStrength"
-        android:max="10"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/doctor" />
 
-    <SeekBar
-        android:id="@+id/activity_metrics_inp_fatigue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:hint="@string/coughStrength"
-        android:max="10"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
+                </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/activity_metrics_inp_muscle_weakness"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
-        android:hint="@string/coughStrength"
-        android:max="10"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_temp"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_temp" />
+            </androidx.cardview.widget.CardView>
 
-    <CheckBox
-        android:id="@+id/activity_metrics_chk_cough_wet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/isCoughWet"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_cough_strength"
-        app:layout_constraintTop_toBottomOf="@+id/activity_metrics_inp_cough_strength" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/divider_horizontal"
+                android:orientation="vertical"
+                android:showDividers="middle">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_metric"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+                <com.example.coronadiagnosticapp.ui.views.TemperatureQuestionView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.example.coronadiagnosticapp.ui.views.YesNoQuestionView
+                    android:id="@+id/temp_question_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:question="Have you been exposed to a verified corona patient ?" />
+
+                <com.example.coronadiagnosticapp.ui.views.DiagnosedQuestionView
+                    android:id="@+id/diagnosed_question_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar_metricFragment"
@@ -192,24 +101,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="26dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/muscle_emoji"
-        app:layout_constraintBottom_toBottomOf="@+id/muscle_weakness"
-        app:layout_constraintStart_toStartOf="@+id/activity_metrics_inp_muscle_weakness" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="29dp"
-        android:layout_height="33dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/bone_emoji"
-        app:layout_constraintBottom_toBottomOf="@+id/muscle_weakness"
-        app:layout_constraintEnd_toEndOf="@+id/activity_metrics_inp_muscle_weakness" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

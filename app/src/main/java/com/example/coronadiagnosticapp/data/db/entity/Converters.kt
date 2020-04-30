@@ -53,8 +53,19 @@ class Converters {
         return gson.fromJson(json, type)
     }
 
-//    maybe could be used for list stuff
-    fun <T> toListOf (json:String?): List<T> {
+    @TypeConverter
+    fun toGeneralFeeling(value: String?) = stringToEnum<GeneralFeeling>(value)
+
+    @TypeConverter
+    fun generalFeelingToString(value: GeneralFeeling?) = enumToString(value)
+
+    private fun enumToString(enum: Enum<*>?) = enum?.toString()
+
+    private inline fun <reified T : Enum<T>> stringToEnum(value: String?) =
+        value?.let { enumValueOf<T>(it) }
+
+    //    maybe could be used for list stuff
+    fun <T> toListOf(json: String?): List<T> {
         val type = object : TypeToken<ArrayList<T>>() {}.type
         return gson.fromJson<ArrayList<T>>(json, type) ?: emptyList()
     }

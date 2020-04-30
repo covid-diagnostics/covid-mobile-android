@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/yes_no_question_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textColor="#000"
+        tools:text="Some question ?"
+        android:layout_gravity="top"/>
+
+    <RadioGroup
+        android:id="@+id/yes_no_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/yes_radio_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/radio_btn_bg"
+            android:button="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/yes_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="yes"
+            android:textColor="#000" />
+
+        <RadioButton
+            android:id="@+id/no_radio_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/radio_btn_bg"
+            android:button="@android:color/transparent"
+            tools:checked="true" />
+
+        <TextView
+            android:id="@+id/no_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="no"
+            android:textColor="#000" />
+
+    </RadioGroup>
+
+</LinearLayout>

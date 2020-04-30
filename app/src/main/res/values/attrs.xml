@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="YesNoQuestionView">
+        <attr name="question" format="string" />
+        <attr name="positiveText" format="string" />
+        <attr name="negativeText" format="string" />
+    </declare-styleable>
+</resources>
