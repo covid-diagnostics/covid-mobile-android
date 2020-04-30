@@ -12,6 +12,7 @@ import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.Question
 import com.example.coronadiagnosticapp.data.db.entity.QuestionType.CHECKBOX
 import com.example.coronadiagnosticapp.data.db.entity.QuestionType.TEXT
+import com.example.coronadiagnosticapp.ui.fragments.questions.viewmodels.QuestionnaireViewModel
 import com.example.coronadiagnosticapp.ui.views.QuestionCheckBox
 import com.example.coronadiagnosticapp.ui.views.QuestionPresenter
 import com.example.coronadiagnosticapp.ui.views.QuestionView

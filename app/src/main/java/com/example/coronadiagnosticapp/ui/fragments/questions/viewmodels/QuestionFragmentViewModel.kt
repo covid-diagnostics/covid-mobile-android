@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.questions
+package com.example.coronadiagnosticapp.ui.fragments.questions.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse

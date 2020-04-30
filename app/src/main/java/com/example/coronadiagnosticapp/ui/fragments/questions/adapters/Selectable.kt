@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.questions
+package com.example.coronadiagnosticapp.ui.fragments.questions.adapters
 
 import com.example.coronadiagnosticapp.data.db.entity.ExtraData
 
