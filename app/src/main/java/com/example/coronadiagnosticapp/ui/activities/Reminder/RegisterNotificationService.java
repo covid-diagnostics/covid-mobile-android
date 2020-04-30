@@ -27,8 +27,6 @@ public class RegisterNotificationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate RegisterNotificationService.");
-
         super.onCreate();
         setDailyNotification(DAILY_NOTIFICATION_HOUR, DAILY_NOTIFICATION_MINUTE);
     }
@@ -42,7 +40,7 @@ public class RegisterNotificationService extends Service {
      * This function schedules the daily notification.
      */
     private void setDailyNotification(int hour, int minute) {
-        Log.d(TAG,"Setting an alarm for - " + hour + ":" + minute);
+        Log.i(TAG,"Setting an alarm for - " + hour + ":" + minute);
         AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent myIntent;
         PendingIntent pendingIntent;

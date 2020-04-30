@@ -15,10 +15,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -44,9 +44,10 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> BlueAvgList = new ArrayList<>();
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
 
-    //Initialize an object that calculates the rolling average of last 15 samples
     private int frameCounter = 0;
-    private SMA calc_mov_avg = new SMA(15);
+    private Function0<Unit> onInvalidData;
+    private Function1<? super Integer, Unit> onUpdateView;
+    private Function2<? super Integer, ? super Double, Unit> setUpdateGraphView;
 
     public OxymeterImpl(double samplingFreq) {
         this.samplingFreq = (int) samplingFreq;
@@ -67,6 +68,9 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(RedAvg);
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
+
+        frameCounter++;
+
         // we have at list 1 window and its a perfect window size
         if ((frameCounter >= samplingFreq * WINDOW_TIME) && (frameCounter % samplingFreq == 0)) {
             int windowIndex = (frameCounter / samplingFreq) - WINDOW_TIME;
@@ -77,10 +81,14 @@ public class OxymeterImpl implements Oxymeter {
             o2Windows[windowIndex] = results[0];     // if failed the result is 0
             peakBpmWindow[windowIndex] = results[1];// if failed the result is 0
             failedWindows += (int) results[2];
+            if (failedWindows > FAILED_WINDOWS_MAX) {
+                InvalidData();
+                return;
+            }
+            UpdateView((int) results[1]);
         }
-        frameCounter++;
+        UpdateGraphView(frameCounter, RedAvg);
     }
-
 
     @Override
     public OxymeterData finish(double samplingFreq) {
@@ -227,39 +235,6 @@ public class OxymeterImpl implements Oxymeter {
         return 0;
     }
 
-    private boolean checkImageIsBad(double redIntensity) {
-        //Image is bad!
-        return redIntensity < 200;
-    }
-
-
-    private int[] calculateByWindowsBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq, int window_time, int failed_windows_max) {
-        final double WINDOW_FRAMES = samplingFreq * window_time;
-        double[] results;
-        double[] o2 = new double[30 - window_time + 1];
-        double[] peakBpm = new double[30 - window_time + 1];
-        int failed = 0;
-        for (int i = 0; i <= 30 - window_time; i++) {
-            int from = (int) (samplingFreq * i);
-            int to = (int) (WINDOW_FRAMES + (int) (samplingFreq * i));
-            results = calculateWindowSampleBpmAndO2(
-                    new ArrayList(redList.subList(from, to)),
-                    new ArrayList(blueList.subList(from, to)),
-                    samplingFreq);
-            o2[i] = results[0];     // if failed the result is 0
-            peakBpm[i] = results[1];// if failed the result is 0
-            failed += (int) results[2];
-        }
-        if (failed > failed_windows_max) { // too many failed windows, the samples are bad
-            return new int[]{0, 0, 1};
-        } else {
-            return new int[]{
-                    (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(o2))) / (o2.length - failed)),
-                    (int) (sumDouble(Arrays.asList(ArrayUtils.toObject(peakBpm))) / (peakBpm.length - failed)),
-                    0};
-        }
-    }
-
     private double[] calculateWindowSampleBpmAndO2(ArrayList<Double> redList, ArrayList<Double> blueList, double samplingFreq) {
         ArrayList<Double> RedMoveAverage = calculateMovingRedWindowAverage(redList);
         ArrayList<Integer> peaksList = createWindowsToFindPeaks(RedMoveAverage, redList);
@@ -280,5 +255,39 @@ public class OxymeterImpl implements Oxymeter {
         for (Double d : list)
             sum += d;
         return sum;
+    }
+
+    private void InvalidData() {
+        // Invokes the onInvalidData callback
+        if (onInvalidData != null)
+            onInvalidData.invoke();
+    }
+
+    @Override
+    public void setOnInvalidData(@NotNull Function0<Unit> callback) {
+        onInvalidData = callback;
+    }
+
+    private void UpdateView(int heartRate) {
+        // Invokes the onUpdateView callback
+        if (onUpdateView != null)
+            onUpdateView.invoke(heartRate);
+    }
+
+    @Override
+    public void setUpdateView(@NotNull Function1<? super Integer, Unit> callback) {
+        onUpdateView = callback;
+    }
+
+
+    private void UpdateGraphView(int frame, double point) {
+        // Invokes the onUpdateView callback
+        if (setUpdateGraphView != null)
+            setUpdateGraphView.invoke(frame, point);
+    }
+
+    @Override
+    public void setUpdateGraphView(@NotNull Function2<? super Integer, ? super Double, Unit> callback) {
+        setUpdateGraphView = callback;
     }
 }

@@ -48,7 +48,6 @@
     <Button
         android:id="@+id/button_startCamera"
         style="@style/customButton"
-        android:layout_height="0dp"
         android:text="@string/im_ready"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
