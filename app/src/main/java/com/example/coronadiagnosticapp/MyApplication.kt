@@ -1,6 +1,5 @@
 package com.example.coronadiagnosticapp
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.example.coronadiagnosticapp.data.di.AppComponent
 import com.example.coronadiagnosticapp.data.di.DaggerAppComponent

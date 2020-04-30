@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.HttpException
@@ -44,25 +44,20 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         return null
     }
 
-    override suspend fun updateUserMetrics(
-        temp: String,
-        cough: Int,
-        isWet: Boolean
-    ): ResponseMetric {
-        return api.updateUserMetrics(
-            SendMetric(
-                temperature = temp,
-                coughStrength = cough,
-                isCoughDry = isWet
-            )
-        ).await()
+    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
+        return api.submitMeasurement(measurement).await()
     }
+
+    override suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement {
+        return api.submitPpgMeasurement(measurement).await()
+    }
+
 
     override suspend fun uploadAudioRecording(file: File, id: Int) {
         val filePart = MultipartBody.Part.createFormData(
             "chestRecording",
             file.name,
-            RequestBody.create(MediaType.parse("audio/*"), file)
+            RequestBody.create("audio/*".toMediaType(), file)
         )
         val idPart = MultipartBody.Part.createFormData("id", id.toString())
 
