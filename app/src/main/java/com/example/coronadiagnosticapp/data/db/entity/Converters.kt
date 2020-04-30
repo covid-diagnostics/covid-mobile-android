@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Converters {
@@ -30,6 +31,31 @@ class Converters {
     fun longArrayToString(array: Array<Long>): String = gson.toJson(array)
 
     @TypeConverter
+    fun fromQuestionType(value: String?) = value?.let { QuestionType.valueOf(it) }
+
+    @TypeConverter
+    fun questionTypeToString(value: QuestionType?) = value?.name
+
+    @TypeConverter
     fun stringToLongArray(string: String): Array<Long> =
         gson.fromJson(string, object : TypeToken<Array<Long>>() {}.type)
+
+    @TypeConverter
+    fun fromList(list: List<ExtraData>) = gson.toJson(list)
+
+
+    @TypeConverter
+    fun toExtraDataList(json: String?): List<ExtraData> {
+        json ?: return emptyList()
+        val type = TypeToken
+            .getParameterized(ArrayList::class.java, ExtraData::class.java).type
+
+        return gson.fromJson(json, type)
+    }
+
+//    maybe could be used for list stuff
+    fun <T> toListOf (json:String?): List<T> {
+        val type = object : TypeToken<ArrayList<T>>() {}.type
+        return gson.fromJson<ArrayList<T>>(json, type) ?: emptyList()
+    }
 }

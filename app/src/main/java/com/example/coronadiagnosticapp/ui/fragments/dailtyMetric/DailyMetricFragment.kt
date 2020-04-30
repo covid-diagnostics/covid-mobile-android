@@ -89,7 +89,7 @@ class DailyMetricFragment : ScopedFragment() {
 
             withContext(Dispatchers.Main) {
                 showLoading(false)
-                findNavController().navigate(R.id.action_dailyMetricFragment_to_cameraFragment)
+                findNavController().navigate(R.id.action_dailyMetricFragment_to_questioneerFragment)
             }
         }
     }

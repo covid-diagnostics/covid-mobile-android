@@ -47,4 +47,19 @@ interface DbDao {
 
     @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
     fun getLastHealthResult(): LiveData<HealthResult>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(answer: AnswersResponse)
+
+    @Query("SELECT * FROM answers")
+    fun getAnswers(): List<AnswersResponse>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAnswers(answers: List<AnswersResponse>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertQuestions(questions: List<Question>)
+
+    @Query("SELECT * FROM questions WHERE type IN(:type)")
+    fun getQuestions(vararg type: QuestionType): List<Question>
 }

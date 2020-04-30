@@ -9,8 +9,9 @@ import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.*
 
 @Database(
-    entities = [User::class, HealthResult::class, PpgMeasurement::class, Measurement::class],
-    version = 5
+    entities = [User::class, HealthResult::class, PpgMeasurement::class,
+        Measurement::class, AnswersResponse::class, Question::class],
+    version = 6
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

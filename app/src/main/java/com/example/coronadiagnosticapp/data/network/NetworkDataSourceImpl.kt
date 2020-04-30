@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
+import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.HttpException
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 
@@ -62,5 +64,14 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         val idPart = MultipartBody.Part.createFormData("id", id.toString())
 
         return api.uploadAudioRecording(filePart, idPart).await()
+    }
+
+    override suspend fun getQuestions(): List<JsonObject> {
+        val language = Locale.getDefault().language
+        return api.getQuestions(language).await()
+    }
+
+    override suspend fun sendAnswers(answers: List<AnswersResponse>) {
+        answers.forEach { api.sendUserAnswer(it).await() }
     }
 }

@@ -11,7 +11,11 @@ import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -134,5 +138,101 @@ class RepositoryImpl @Inject constructor(
             error.postValue(e.message)
             e.printStackTrace()
         }
+    }
+
+    override suspend fun getQuestions(vararg types: QuestionType) = dao.getQuestions(*types)
+
+    override suspend fun loadQuestionsToDB(): List<Question> {
+        val questionsJson = networkDataSource.getQuestions()
+        val questions = mutableListOf<Question>()
+        val gson = Gson()
+        for (jsonObject in questionsJson) {
+
+            val id = jsonObject["id"].asLong
+            val name = jsonObject["name"].asString
+            val displayName = jsonObject["displayName"].asString
+            val required = jsonObject["required"].asBoolean
+
+            val type = gson.fromJson(jsonObject["qtype"], QuestionType::class.java)
+
+            val extraData = convertExtraData(jsonObject, type, gson)
+
+            val dateString = jsonObject["addedOn"].asString
+            val addedOn = SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                Locale.getDefault()
+            ).parse(dateString)!!
+
+
+            val question = Question(
+                id, name, displayName,
+                type, extraData, addedOn, required
+            )
+
+            questions.add(question)
+        }
+
+        dao.insertQuestions(questions)
+
+        return questions
+    }
+
+    private fun convertExtraData(
+        jsonObject: JsonObject,
+        type: QuestionType?,
+        gson: Gson
+    ): List<ExtraData> {
+        val jsonElementExtra = jsonObject["extraData"]
+
+        val extraData = when (type) {
+            QuestionType.CHECKBOX -> {
+                val value = gson.fromJson(
+                    jsonElementExtra.asString,
+                    CheckBoxExtraData::class.java
+                )
+
+                listOf(ExtraData(value.img))
+            }
+
+            QuestionType.MULTI_SELECT,
+            QuestionType.SELECT -> {
+                Converters().toExtraDataList(jsonElementExtra.asString)
+            }
+
+            QuestionType.TEXT, null -> emptyList()
+
+        }
+
+        return extraData
+    }
+
+    override suspend fun getNextSelectableQuestion(currentQuestion: Question?): Question? {
+        val questions = dao.getQuestions(QuestionType.SELECT, QuestionType.MULTI_SELECT)
+        if (currentQuestion == null)
+            return questions.firstOrNull()
+
+        val index = questions.indexOf(currentQuestion)
+
+        return if (index != -1) questions.getOrNull(index + 1)
+        else null
+    }
+
+    override suspend fun addAnswer(answer: AnswersResponse) {
+        addMeasurement(answer)
+        dao.insert(answer)
+    }
+
+    private fun addMeasurement(answer: AnswersResponse) {
+        answer.measurement = dao.getMeasurement().id!!
+    }
+
+    override suspend fun addAnswers(answers: List<AnswersResponse>) {
+        answers.forEach(this::addMeasurement)
+        dao.insertAnswers(answers)
+    }
+
+    override suspend fun sendUserAnswers() {
+        val answers = dao.getAnswers()
+        networkDataSource.sendAnswers(answers)
     }
 }
