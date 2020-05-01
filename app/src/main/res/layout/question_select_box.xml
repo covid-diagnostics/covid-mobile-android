@@ -18,6 +18,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
+            android:background="@drawable/radio_off"
+            android:padding="4dp"
             tools:srcCompat="@drawable/cough_emoji" />
 
         <TextView
@@ -27,8 +29,9 @@
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
             tools:text="cough" />
 
     </LinearLayout>

@@ -7,12 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseViewHolder(viewGroup: ViewGroup, @LayoutRes layout: Int) :
-    RecyclerView.ViewHolder(
-        inflate(
-            viewGroup,
-            layout
-        )
-    ) {
+    RecyclerView.ViewHolder(inflate(viewGroup, layout)) {
 
     companion object {
         private fun inflate(viewGroup: ViewGroup, layout: Int): View {

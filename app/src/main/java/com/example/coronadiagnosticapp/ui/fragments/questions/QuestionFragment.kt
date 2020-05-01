@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.MULTI_SELECT
 import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.SELECT
@@ -48,6 +49,11 @@ class QuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Glide.with(this)
+            .load(R.drawable.doctor)
+            .circleCrop()
+            .into(doctor_image)
+
         options_rv.adapter =
             MultiQuestionAdapter(
                 emptyList()
@@ -78,8 +84,14 @@ class QuestionFragment : Fragment() {
         val options = question.extraData
 
         val adapter: RecyclerView.Adapter<*> = when (question.type) {
-            MULTI_SELECT -> MultiQuestionAdapter(options)
-            SELECT -> SelectQuestionAdapter(options)
+            MULTI_SELECT -> {
+                extra_text_tv.text = "Choose all relevant"
+                MultiQuestionAdapter(options)
+            }
+            SELECT -> {
+                extra_text_tv.text = "Choose one relevant"
+                SelectQuestionAdapter(options)
+            }
             else -> throw IllegalArgumentException("Not the right type of question")
         }
 
