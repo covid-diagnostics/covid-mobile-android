@@ -3,8 +3,7 @@ package com.example.coronadiagnosticapp.ui.fragments.questions.viewmodels
 import androidx.lifecycle.ViewModel
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.Converters
-import com.example.coronadiagnosticapp.data.db.entity.ExtraData
-import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.repository.Repository
 import javax.inject.Inject
 
@@ -12,21 +11,20 @@ class QuestionFragmentViewModel @Inject constructor(val repository: Repository) 
 
     suspend fun sendData() = repository.sendUserAnswers()
 
-    private var currentQuestion: Question? = null
+    private var currentQuestion: SelectQuestion? = null
 
 
-    suspend fun getNextQuestion(): Question? {
-        currentQuestion =
-            repository.getNextSelectableQuestion(currentQuestion)
+    suspend fun getNextQuestion() =
+        repository.getNextSelectableQuestion(currentQuestion).also {
+            currentQuestion = it
+        }
 
-        return currentQuestion
-    }
 
     suspend fun saveSelected(
         questionId: Long,
-        selected: List<ExtraData>
+        selected: List<SelectQuestion.ExtraData>
     ) {
-        val json = Converters().fromList(selected)
+        val json = Converters().fromSelectList(selected)
         val answer = AnswersResponse(questionId, json, questionId)
         repository.addAnswer(answer)
     }

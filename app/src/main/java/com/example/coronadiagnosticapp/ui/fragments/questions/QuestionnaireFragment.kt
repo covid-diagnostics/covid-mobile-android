@@ -4,20 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
-import com.example.coronadiagnosticapp.data.db.entity.Question
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType.CHECKBOX
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType.TEXT
+import com.example.coronadiagnosticapp.data.db.entity.question.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.CHECKBOX
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.TEXT
 import com.example.coronadiagnosticapp.ui.fragments.questions.viewmodels.QuestionnaireViewModel
-import com.example.coronadiagnosticapp.ui.views.QuestionCheckBox
+import com.example.coronadiagnosticapp.ui.views.QuestionCheckBoxView
 import com.example.coronadiagnosticapp.ui.views.QuestionPresenter
 import com.example.coronadiagnosticapp.ui.views.QuestionView
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import com.example.coronadiagnosticapp.utils.showLoading
+import com.example.coronadiagnosticapp.utils.toDP
 import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.fragment_questionnaire.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -71,7 +73,7 @@ class QuestionnaireFragment : Fragment() {
             val question = (view as QuestionPresenter).question!!.id
 
             val ans = when (view) {
-                is QuestionCheckBox -> view.isChecked.toString()
+                is QuestionCheckBoxView -> view.isChecked.toString()
                 is QuestionView -> view.getAnswer()
                 else -> ""
             }
@@ -91,16 +93,18 @@ class QuestionnaireFragment : Fragment() {
     private fun fill(questions: List<Question>) {
         val context = context ?: return
 
-        questions.forEach {
-            when (it.type) {
-                CHECKBOX -> QuestionCheckBox(context)
+        loop@ for (question in questions) {
+            val view = when (question.type) {
+                CHECKBOX -> QuestionCheckBoxView(context)
                 TEXT -> QuestionView(context)
-                else -> null
-            }?.let { view ->
-                questions_group.addView(view as View)
-                (view as QuestionPresenter).question = it
+                else -> continue@loop
             }
+            questions_group.addView(view as View)
+            (view as QuestionPresenter).question = question
 
+            val pad = 8.toDP(context)
+            (view.layoutParams as? LinearLayout.LayoutParams)
+                ?.setMargins(0,pad,0, pad)
         }
     }
 

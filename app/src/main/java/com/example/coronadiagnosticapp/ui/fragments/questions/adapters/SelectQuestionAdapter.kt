@@ -2,11 +2,11 @@ package com.example.coronadiagnosticapp.ui.fragments.questions.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.coronadiagnosticapp.data.db.entity.ExtraData
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.ui.fragments.questions.viewholders.SelectBoxVH
 
 
-class SelectQuestionAdapter(private var options: List<ExtraData>) :
+class SelectQuestionAdapter(private var options: List<SelectQuestion.ExtraData>) :
     RecyclerView.Adapter<SelectQuestionAdapter.SelectVH>(),
     Selectable {
 

@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.data.db.entity.Question
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType.MULTI_SELECT
-import com.example.coronadiagnosticapp.data.db.entity.QuestionType.SELECT
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.MULTI_SELECT
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.SELECT
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.ui.fragments.questions.adapters.MultiQuestionAdapter
 import com.example.coronadiagnosticapp.ui.fragments.questions.adapters.SelectQuestionAdapter
 import com.example.coronadiagnosticapp.ui.fragments.questions.adapters.Selectable
@@ -72,18 +72,14 @@ class QuestionFragment : Fragment() {
         }
     }
 
-    private fun initStuff(question: Question) {
+    private fun initStuff(question: SelectQuestion) {
         title_tv.text = question.displayName
 
         val options = question.extraData
 
         val adapter: RecyclerView.Adapter<*> = when (question.type) {
-            MULTI_SELECT -> MultiQuestionAdapter(
-                options
-            )
-            SELECT -> SelectQuestionAdapter(
-                options
-            )
+            MULTI_SELECT -> MultiQuestionAdapter(options)
+            SELECT -> SelectQuestionAdapter(options)
             else -> throw IllegalArgumentException("Not the right type of question")
         }
 

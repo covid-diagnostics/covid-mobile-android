@@ -1,6 +1,6 @@
 package com.example.coronadiagnosticapp.ui.views
 
-import com.example.coronadiagnosticapp.data.db.entity.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.Question
 
 interface QuestionPresenter {
     var question: Question?
