@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DailyMetricViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     val error = repository.error
 
-    suspend fun submitMeasurement(temp: String, cough: Int, isWet: Boolean){
-        repository.submitMeasurement(Measurement(tempMeasurement = temp))
+    suspend fun submitMeasurement(measurement: Measurement) {
+        repository.submitMeasurement(measurement)
     }
 }

@@ -276,10 +276,11 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video_record);
+
         MyApplication app = (MyApplication) getApplicationContext();
         app.getAppComponent().inject(this);
 
-        setContentView(R.layout.activity_video_record);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // XML - Java Connecting
@@ -516,7 +517,9 @@ public class OxymeterActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        oxymeterUpdater.interrupt();
+        if (oxymeterUpdater != null) {
+            oxymeterUpdater.interrupt();
+        }
     }
 
     private void removeProgressBarAndShowAlert(String alertText) {

@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
 import java.util.*
@@ -20,6 +21,18 @@ class MainActivity : BaseActivity() {
         startService(i)
 
         setContentView(R.layout.activity_main)
-        stepperLayout.visibility = View.INVISIBLE
     }
+
+    /**
+     * use this method from fragment when needed
+     */
+    fun setStepperCount(count: Int) {
+        stepperIndicator.currentStep = count
+    }
+
+    fun showStepperLayout() {
+        if (!stepperLayout.isVisible)
+            stepperLayout.visibility = View.VISIBLE
+    }
+
 }
