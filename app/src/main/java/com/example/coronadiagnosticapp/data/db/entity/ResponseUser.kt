@@ -18,8 +18,7 @@ data class Token(
 
 @Entity(tableName = "user_table")
 data class User(
-    var age: Int?,
-    @PrimaryKey val deviceId: String,
+    @PrimaryKey val phoneNumberHash: String,
     val email: String?,
     var firstName: String?,
     var id: Int?,
@@ -28,7 +27,5 @@ data class User(
 )
 
 data class UserRegister(
-    var userId:String,
-    var password:String,
-    var deviceId: String
+    var phoneNumberHash: String
 )

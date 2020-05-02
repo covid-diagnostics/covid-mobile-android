@@ -3,6 +3,7 @@
     <string name="welcome_message">Welcome to the remote corona diagnostic app</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
     <string name="repeat_password">Repeat Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="required">Required!</string>

@@ -30,13 +30,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_email"
+        android:id="@+id/textInputLayout_phoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="64dp"
         android:layout_marginTop="64dp"
         android:layout_marginRight="64dp"
-        android:hint="@string/email"
+        android:hint="@string/phone_number"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,60 +46,17 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="@string/password"
-        app:errorEnabled="true"
-        app:helperTextEnabled="false"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout_email"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout_email"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_email"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextInputLayout_passwordRepeat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="@string/repeat_password"
-        app:errorEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout_password"
-        app:layout_constraintStart_toStartOf="@+id/textInputLayout_password"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textEmailAddress|phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextInputLayout_passwordRepeat" />
+        tools:layout_editor_absoluteY="546dp" />
 
     <Button
         android:id="@+id/button_login"
