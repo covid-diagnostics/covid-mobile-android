@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.OxymeterActivity">
+    tools:context=".ui.activities.oxymeter.OxymeterActivity">
 
     <SurfaceView
         android:id="@+id/preview"
@@ -16,9 +17,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
-        android:id="@+id/putfinger"
+        android:id="@+id/putFingerMessage"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_alignParentBottom="true"
@@ -33,19 +33,50 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tickImage"
+        app:layout_constraintEnd_toEndOf="@+id/improve_lightning"
+        app:layout_constraintStart_toEndOf="@+id/fingerTickImage"
         app:layout_constraintTop_toBottomOf="@+id/barTimer" />
 
     <ImageView
-        android:id="@+id/tickImage"
+        android:id="@+id/fingerTickImage"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/putfinger"
+        app:layout_constraintBottom_toBottomOf="@+id/putFingerMessage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/putfinger"
+        app:layout_constraintTop_toTopOf="@+id/putFingerMessage"
         app:srcCompat="@drawable/ic_tick" />
+
+    <TextView
+        android:id="@+id/improve_lightning"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center_vertical"
+        android:text="@string/please_improve_lightning"
+        android:textAlignment="textStart"
+        android:textDirection="locale"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lightningTickImage"
+        app:layout_constraintTop_toBottomOf="@+id/putFingerMessage" />
+
+    <ImageView
+        android:id="@+id/lightningTickImage"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/improve_lightning"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/improve_lightning"
+        app:srcCompat="@drawable/ic_warning" />
+
 
     <Button
         android:id="@+id/ready_btn"
@@ -85,14 +116,25 @@
         app:layout_constraintTop_toTopOf="@+id/barTimer"
         app:layout_constraintVertical_bias="0.5" />
 
+    <com.jjoe64.graphview.helper.GraphViewXML
+        android:id="@+id/graphHeartRate"
+        android:layout_width="225dp"
+        android:layout_height="99dp"
+        app:layout_constraintBottom_toTopOf="@+id/ready_btn"
+        app:layout_constraintEnd_toEndOf="@+id/preview"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/improve_lightning"
+        app:seriesData="0=0" />
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="@+id/barTimer"
-        app:layout_constraintStart_toStartOf="@+id/barTimer"
-        app:layout_constraintTop_toBottomOf="@+id/putfinger"
+        android:layout_width="52dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="@+id/preview"
+        app:layout_constraintTop_toTopOf="@+id/graphHeartRate"
         app:srcCompat="@drawable/heart" />
 
     <TextView
@@ -102,9 +144,9 @@
         android:text="-"
         android:textAlignment="center"
         android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/graphHeartRate"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

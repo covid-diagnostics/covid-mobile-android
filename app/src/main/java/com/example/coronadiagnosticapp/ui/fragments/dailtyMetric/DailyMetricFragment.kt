@@ -11,7 +11,6 @@ import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.daily_metric_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,7 +85,7 @@ class DailyMetricFragment : ScopedFragment() {
     private fun submitDailyMetrics(temp: String, cough: Int, isWet: Boolean) {
         showLoading(true)
         launch(Dispatchers.IO) {
-            viewModel.updateUserMetrics(temp, cough, isWet)
+            viewModel.submitMeasurement(temp, cough, isWet)
 
             withContext(Dispatchers.Main) {
                 showLoading(false)

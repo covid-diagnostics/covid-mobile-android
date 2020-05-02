@@ -1,14 +1,16 @@
 package com.example.coronadiagnosticapp.data.repository
 
-import androidx.lifecycle.LiveData
+import android.hardware.camera2.CameraCharacteristics
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.ResponseUser
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
 import java.io.File
 import javax.inject.Inject
 
@@ -19,6 +21,7 @@ class RepositoryImpl @Inject constructor(
     val tokenServiceInterceptor: TokenServiceInterceptor
 ) : Repository {
     companion object {
+        const val TAG = "Repository"
         private var lastHealthResult : HealthResult? = null
         private var breathingRate_: Double = -1.0
     }
@@ -39,7 +42,6 @@ class RepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             error.postValue(e.message)
         }
-
     }
 
     override fun isLoggedIn(): Boolean {
@@ -72,17 +74,6 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
-        try {
-            val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)
-            dao.upsertMetric(responseMetric)
-
-        } catch (e: Exception) {
-            error.postValue(e.message)
-        }
-    }
-
-
     override suspend fun saveResult(healthResult: HealthResult) {
         lastHealthResult = healthResult
         dao.insertHealth(healthResult)
@@ -93,13 +84,55 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun uploadAudioRecording(file: File) {
         try {
-            val id = dao.getMetric().id
+            val id = dao.getMeasurement().id!!
             networkDataSource.uploadAudioRecording(file, id)
 
         } catch (e: Exception) {
             error.postValue(e.message)
+            e.printStackTrace()
         }
     }
 
+    override suspend fun submitMeasurement(measurement: Measurement): Measurement {
+        val responseMeasurement = networkDataSource.submitMeasurement(measurement)
+        dao.upsertMeasurement(responseMeasurement)
+        return responseMeasurement
+    }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun submitPpgMeasurement(
+        oxymeterAverages: OxymeterAverages,
+        cc: CameraCharacteristics
+    ) {
+        Log.i(TAG, "Sending camera characteristics!")
+        val sensitivityRange = cc[CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE]
+        val ppgMeasurement = PpgMeasurement(
+            null,
+            oxymeterAverages.red,
+            oxymeterAverages.green,
+            oxymeterAverages.blue,
+            oxymeterAverages.timepoint,
+            cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_CALIBRATION_TRANSFORM2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_COLOR_TRANSFORM2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_FORWARD_MATRIX1]?.toString(),
+            cc[CameraCharacteristics.SENSOR_FORWARD_MATRIX2]?.toString(),
+            cc[CameraCharacteristics.SENSOR_INFO_LENS_SHADING_APPLIED],
+            sensitivityRange?.lower,
+            sensitivityRange?.upper,
+            cc[CameraCharacteristics.SENSOR_INFO_WHITE_LEVEL],
+            cc[CameraCharacteristics.SENSOR_MAX_ANALOG_SENSITIVITY],
+            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT1],
+            cc[CameraCharacteristics.SENSOR_REFERENCE_ILLUMINANT2],
+            dao.getMeasurement().id!!
+        )
+
+        try {
+            networkDataSource.submitPpgMeasurement(ppgMeasurement)
+        } catch (e: Exception) {
+            error.postValue(e.message)
+            e.printStackTrace()
+        }
+    }
 }

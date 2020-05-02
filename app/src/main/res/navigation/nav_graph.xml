@@ -32,7 +32,8 @@
     <fragment
         android:id="@+id/informationFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
-        android:label="InformationFragment" >
+        android:label="InformationFragment"
+        tools:layout="@layout/information_fragment">
         <action
             android:id="@+id/action_informationFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
