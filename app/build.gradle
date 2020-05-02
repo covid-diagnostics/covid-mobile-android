@@ -109,4 +109,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
+//    for svg loading
+    implementation 'com.caverock:androidsvg-aar:1.4'
+
 }

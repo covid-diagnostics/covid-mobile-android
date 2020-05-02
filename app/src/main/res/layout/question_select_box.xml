@@ -18,8 +18,9 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
+            android:adjustViewBounds="true"
             android:background="@drawable/circle_stroke"
-            android:padding="4dp"
+            android:padding="12dp"
             tools:srcCompat="@drawable/cough_emoji" />
 
         <TextView
