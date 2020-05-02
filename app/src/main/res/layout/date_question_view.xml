@@ -14,18 +14,28 @@
         android:layout_height="wrap_content"
         tools:text="Question?" />
 
-    <Button
-        android:id="@+id/select_date_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Select date" />
-
-    <TextView
-        android:id="@+id/selected_date_tv"
-        style="@style/TextAppearance.AppCompat.Subhead"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="8dp"
-        tools:text="selected date" />
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Exposure date:"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/selected_date_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="selected date"
+            android:inputType="date"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 </LinearLayout>

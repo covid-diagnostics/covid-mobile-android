@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.dailtyMetric.DailyMetricFragment">
+    tools:context=".ui.fragments.dailtyMetric.DailyMetricFragment"
+    android:animateLayoutChanges="true">
 
 
     <ScrollView
@@ -23,39 +24,32 @@
             android:orientation="vertical"
             android:showDividers="middle">
 
-            <androidx.cardview.widget.CardView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#C5CAE9"
-                app:cardCornerRadius="16dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="16dp">
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="How are you feeling?"
+                    android:textSize="24sp"
+                    android:textColor="#FF000000" />
 
-                    <TextView
-                        style="@style/TextAppearance.AppCompat.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:text="How are you feeling?"
-                        android:textColor="#000" />
+                <ImageView
+                    android:layout_width="148dp"
+                    android:layout_height="148dp"
+                    android:src="@drawable/feel_doctor_copy" />
 
-                    <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/doctor" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
 
             <com.example.coronadiagnosticapp.ui.views.TemperatureQuestionView
@@ -86,13 +80,15 @@
             <Button
                 android:id="@+id/button_metricSubmit"
                 style="@style/customButton"
-                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/next"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_gravity="center"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         </LinearLayout>
 

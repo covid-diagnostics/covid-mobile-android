@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.ui.views
 import android.app.DatePickerDialog
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.widget.DatePicker
 import android.widget.LinearLayout
@@ -20,7 +21,7 @@ class DateQuestionView : LinearLayout, DatePickerDialog.OnDateSetListener {
             field = value
             value ?: return
             val formatted = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM).format(value)
-            selected_date_tv.text = formatted
+            selected_date_et.setText(formatted)
         }
 
     constructor(context: Context) : super(context)
@@ -42,7 +43,17 @@ class DateQuestionView : LinearLayout, DatePickerDialog.OnDateSetListener {
         View.inflate(context, R.layout.date_question_view, this)
         selectedDate = null
 
-        select_date_btn.setOnClickListener { showDatePicker() }
+        setUpDateEditText()
+    }
+
+    private fun setUpDateEditText() {
+        selected_date_et.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+
+            showDatePicker()
+            }
+            return@setOnTouchListener true
+        }
     }
 
     private fun showDatePicker() {

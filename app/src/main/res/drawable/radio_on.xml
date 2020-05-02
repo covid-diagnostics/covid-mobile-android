@@ -6,7 +6,7 @@
             <solid android:color="@color/colorPrimary" />
             <stroke
                 android:width="2dp"
-                android:color="#283593" />
+                android:color="#FF0F6AF7" />
             <size
                 android:width="30dp"
                 android:height="30dp" />
@@ -15,15 +15,5 @@
     <item
         android:bottom="2dp"
         android:drawable="@drawable/checked"
-        android:left="2dp"
-        android:right="2dp"
-        android:top="2dp">
-
-        <shape>
-            <size
-                android:width="30dp"
-                android:height="30dp" />
-        </shape>
-
-    </item>
+        android:gravity="center"/>
 </layer-list>

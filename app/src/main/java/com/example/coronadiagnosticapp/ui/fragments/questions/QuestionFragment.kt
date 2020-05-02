@@ -49,11 +49,6 @@ class QuestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Glide.with(this)
-            .load(R.drawable.doctor)
-            .circleCrop()
-            .into(doctor_image)
-
         options_rv.adapter =
             MultiQuestionAdapter(
                 emptyList()
