@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.MULTI_SELECT
 import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType.SELECT
@@ -53,10 +52,10 @@ class QuestionFragment : Fragment() {
             MultiQuestionAdapter(
                 emptyList()
             )
-        doTheFlow()
+        nextQuestionOrSendData()
     }
 
-    private fun doTheFlow() {
+    private fun nextQuestionOrSendData() {
         GlobalScope.launch(IO) {
             val nextQuestion = viewModel.getNextQuestion()
 
@@ -70,6 +69,14 @@ class QuestionFragment : Fragment() {
 
                 } ?: sendData()
             }
+        }
+    }
+
+    private suspend fun sendData() {
+        viewModel.sendData()
+        withContext(Main) {
+            toast("Sent successfully")
+            findNavController().navigate(R.id.action_questionFragment_to_cameraFragment)
         }
     }
 
@@ -97,18 +104,7 @@ class QuestionFragment : Fragment() {
             val selected = (adapter as Selectable).getSelected()
             GlobalScope.launch(IO) {
                 viewModel.saveSelected(question.id, selected)
-                doTheFlow()
-            }
-        }
-    }
-
-    private fun sendData() {
-
-        GlobalScope.launch(IO) {
-            viewModel.sendData()
-            withContext(Main) {
-                toast("Sent successfully")
-                findNavController().navigate(R.id.action_questionFragment_to_cameraFragment)
+                nextQuestionOrSendData()
             }
         }
     }

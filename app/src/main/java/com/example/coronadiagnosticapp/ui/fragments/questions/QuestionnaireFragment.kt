@@ -46,8 +46,6 @@ class QuestionnaireFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         context?.getAppComponent()?.inject(this)
 
-//        TODO only enable next when answered
-
         showLoading(progressBar, true)
         GlobalScope.launch(IO) {
 
