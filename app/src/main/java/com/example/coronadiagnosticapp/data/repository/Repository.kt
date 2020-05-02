@@ -3,9 +3,10 @@ package com.example.coronadiagnosticapp.data.repository
 import android.hardware.camera2.CameraCharacteristics
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
-import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.data.db.entity.Measurement
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.question.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
 import java.io.File
 
@@ -26,4 +27,12 @@ interface Repository {
         oxymeterAverages: OxymeterAverages,
         cc: CameraCharacteristics
     )
+    suspend fun getQuestions(type: QuestionType): List<Question>
+
+    suspend fun getNextSelectableQuestion(currentQuestion: SelectQuestion?): SelectQuestion?
+    suspend fun addAnswer(answer: AnswersResponse)
+    suspend fun sendUserAnswers()
+    suspend fun addAnswers(answers: List<AnswersResponse>)
+    suspend fun loadQuestionsToDB(): List<Question>
+    suspend fun getSimpleQuestions(): List<Question>
 }

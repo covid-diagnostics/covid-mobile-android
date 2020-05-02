@@ -44,7 +44,28 @@
         android:label="daily_metric_fragment"
         tools:layout="@layout/daily_metric_fragment" >
         <action
-            android:id="@+id/action_dailyMetricFragment_to_cameraFragment"
+            android:id="@+id/action_dailyMetricFragment_to_questioneerFragment"
+            app:destination="@id/questioneerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questioneerFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment"
+        android:label="fragment_questioneer"
+        tools:layout="@layout/fragment_questionnaire">
+        <action
+            android:id="@+id/action_questioneerFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_questioneerFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.questions.QuestionFragment"
+        android:label="fragment_question"
+        tools:layout="@layout/fragment_question">
+        <action
+            android:id="@+id/action_questionFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
