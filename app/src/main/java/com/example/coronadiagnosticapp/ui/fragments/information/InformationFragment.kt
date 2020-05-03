@@ -43,15 +43,19 @@ class InformationFragment : ScopedFragment() {
 
         viewModel.error.observe(viewLifecycleOwner, Observer { msg ->
             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-
         })
     }
 
     private fun initForm() {
 
         form {
-            diabetes.setOnClickListener {
+            //diabetes.setOnClickListener {
 
+            inputLayout(activity_personal_inp_first_name) {
+                isNotEmpty().description(getString(R.string.required))
+            }
+            inputLayout(activity_personal_inp_last_name) {
+                isNotEmpty().description(getString(R.string.required))
             }
 
             submitWith(button_informationNext) { res ->
@@ -68,9 +72,7 @@ class InformationFragment : ScopedFragment() {
     private fun submitPersonalInfoForm(firstName: String, lastName: String, age: Int) {
         showLoading(show = true)
         launch(Dispatchers.IO) {
-            viewModel.updateUserPersonalInformation(
-                firstName, lastName, age
-            )
+            viewModel.updateUserPersonalInformation(firstName, lastName, age)
             withContext(Dispatchers.Main) {
                 showLoading(false)
                 findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)

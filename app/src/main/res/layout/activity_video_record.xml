@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.OxymeterActivity">
+    tools:context=".ui.activities.oxymeter.OxymeterActivity">
 
     <SurfaceView
         android:id="@+id/preview"
@@ -28,8 +28,6 @@
         android:layout_marginEnd="40dp"
         android:gravity="center_vertical"
         android:text="@string/please_put_your_finger_on_camera"
-        android:textAlignment="textStart"
-        android:textDirection="locale"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible"
@@ -57,8 +55,6 @@
         android:layout_marginEnd="40dp"
         android:gravity="center_vertical"
         android:text="@string/please_improve_lightning"
-        android:textAlignment="textStart"
-        android:textDirection="locale"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible"
@@ -81,6 +77,9 @@
     <Button
         android:id="@+id/ready_btn"
         style="@style/customButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:text="@string/start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

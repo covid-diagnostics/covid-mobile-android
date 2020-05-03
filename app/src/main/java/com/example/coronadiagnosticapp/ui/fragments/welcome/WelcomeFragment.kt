@@ -42,6 +42,7 @@ class WelcomeFragment : Fragment() {
                 false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
             }
         }
+        AutostartUtils.requestAutostartPermissions(context)
     }
 
 }

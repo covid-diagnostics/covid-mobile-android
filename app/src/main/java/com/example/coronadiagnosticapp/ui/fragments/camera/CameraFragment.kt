@@ -2,9 +2,14 @@ package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.*
+import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
@@ -34,8 +39,8 @@ private const val REQUEST_CODE_VIDEO = 315
 
 
 class CameraFragment : ScopedFragment() {
-
-    companion object CameraCodes {
+    companion object {
+        const val TAG = "CameraFragment"
         fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
         fun breathsPerMinute() = "BREATHS_PER_MINUTE"
         fun oxygenSaturation() = "OXYGEN_SATURATION"
@@ -63,26 +68,15 @@ class CameraFragment : ScopedFragment() {
         super.onActivityCreated(savedInstanceState)
         activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
         button_startCamera.setOnClickListener {
-            // TODO: Ask permission to use the camera
-            if (context?.let { it1 ->
-                    ActivityCompat.checkSelfPermission(
-                        it1,
-                        Manifest.permission.CAMERA
-                    )
-                } != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                activity?.let { it1 ->
-                    ActivityCompat.requestPermissions(
-                        it1, arrayOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ), 200
-                    )
-                }
+                requestPermissions(arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    200)
             } else {
                 val intent = Intent(context, OxymeterActivity::class.java)
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)

@@ -1,29 +1,21 @@
 package com.example.coronadiagnosticapp.data.network
 
 import com.example.coronadiagnosticapp.data.db.entity.*
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
-import okhttp3.*
+import okhttp3.Interceptor
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.io.File
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
-
-
-const val BASE_URL = "https://tnj0200iy8.execute-api.eu-west-1.amazonaws.com/staging/"
-const val SIGNUP_URL =
-    "api/me/sign-up/"
-
-const val FILL_DETAILS_URL = "api/me/fill-personal-info/"
-
-const val DAILY_METRICS_URL = "api/me/fill-daily-metrics/"
-
-const val VIDEO_UPLOAD = "api/process/heart-rate/"
-const val AUDIO_UPLOAD = "api/me/submit-raw-info/"
-
 
 @Singleton
 interface ApiServer {
@@ -37,10 +29,15 @@ interface ApiServer {
         @Body user: User
     ): Deferred<User>
 
-    @POST(DAILY_METRICS_URL)
-    fun updateUserMetrics(
-        @Body sendMetric: SendMetric
-    ): Deferred<ResponseMetric>
+    @POST(PPG_MEASUREMENT_URL)
+    fun submitPpgMeasurement(
+        @Body measurement: PpgMeasurement
+    ): Deferred<PpgMeasurement>
+
+    @POST(MEASUREMENT_URL)
+    fun submitMeasurement(
+        @Body measurement: Measurement
+    ): Deferred<Measurement>
 
     @Multipart
     @PUT(VIDEO_UPLOAD)
@@ -48,18 +45,41 @@ interface ApiServer {
 
     @Multipart
     @PUT(AUDIO_UPLOAD)
-    fun uploadAudioRecording(@Part chestRecording: MultipartBody.Part, @Part id: MultipartBody.Part) : Deferred<Unit>
+    fun uploadAudioRecording(
+        @Part chestRecording: MultipartBody.Part,
+        @Part id: MultipartBody.Part
+    ): Deferred<Unit>
+
+    @GET(QUESTIONS)
+    fun getQuestions(
+        @Header("Accept-Language") language: String
+    ): Deferred<List<JsonObject>>
+
+    @POST(SEND_ANSWERS)
+    fun sendUserAnswer(
+        @Body answer: AnswersResponse
+    ): Deferred<AnswersResponse>
+
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {
+            val logging = HttpLoggingInterceptor().apply {
+                setLevel(BODY)
+            }
+
             val okHttpClient = OkHttpClient
                 .Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(logging)
                 .build()
+
+            val gson = GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+            //TODO fix for server to get default
+            //    TODO add this converter to api instead of using it explicitly
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(CoroutineCallAdapterFactory.invoke())
                 .build()
                 .create(ApiServer::class.java)
@@ -70,7 +90,10 @@ interface ApiServer {
 
 @Singleton
 class TokenServiceInterceptor @Inject constructor() : Interceptor {
-    val AUTH_HEDER_KEY = "Authorization"
+    companion object {
+        private const val AUTH_HEADER_KEY = "Authorization"
+    }
+
     var sessionToken: String? = null
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -78,7 +101,7 @@ class TokenServiceInterceptor @Inject constructor() : Interceptor {
         val requestBuilder = request.newBuilder()
         if (sessionToken != null) {
             requestBuilder.addHeader(
-                AUTH_HEDER_KEY, "JWT $sessionToken"
+                AUTH_HEADER_KEY, "JWT $sessionToken"
             )
         }
         return chain.proceed(requestBuilder.build())

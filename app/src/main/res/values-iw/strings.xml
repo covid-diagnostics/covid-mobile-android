@@ -19,6 +19,8 @@
     <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
     <string name="password">סיסמא</string>
     <string name="email">דואר אלקטרוני</string>
+    <string name="phone_number">מספר פלאפון</string>
+
     <string name="repeat_password">חזור על הסיסמא</string>
     <string name="sign_up">הירשם</string>
     <string name="required">שדה חובה</string>
@@ -44,6 +46,13 @@
     <string name="measurement_failed">המדידה נכשלה, בבקשה לחץ כפתור ההתחלה כאשר אתה מוכן !</string>
     <string name="recorder_test">הקלטה</string>
     <string name="camera_test">צילום</string>
+    <string name="reminder_notification_title">הבדיקה היומיות</string>
+    <string name="reminder_notification_content">הגיע הזמן לבדיקה היומית!👩‍⚕️</string>
+    <string name="autostart_dialog_title">עליה אוטומטית</string>
+    <string name="autostart_dialog_content">על מנת לקבל תזכורות יומיות כראוי, בבקשה אשר את %s בהגדרות הבאות.</string>
+    <string name="settings">הגדרות</string>
+    <string name="cancel">ביטול</string>
+    <string name="dont_show_again">אל תראה שוב</string>
     <string name="please_improve_lightning">תאורה חלשה זוהתה. בבקשה צא החוצה או הגבר את התאורה</string>
     <string name="go_outside">לתוצאות מיטביות צא החוצה לאור שמש</string>
     <string name="fatigue">עייפות</string>

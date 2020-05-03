@@ -3,6 +3,7 @@
     <string name="welcome_message">Welcome to the remote corona diagnostic app</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
     <string name="repeat_password">Repeat Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="required">Required!</string>
@@ -64,6 +65,13 @@
     <string name="measurement_failed">Measurement Failed, Please press the start button again when you are ready !</string>
     <string name="recorder_test">Recorder Test</string>
     <string name="camera_test">Camera Test</string>
+    <string name="reminder_notification_title">Daily Health Check</string>
+    <string name="reminder_notification_content">It\'s time for the daily health check! 👩‍⚕️</string>
+    <string name="autostart_dialog_title">Autostart Enabling</string>
+    <string name="autostart_dialog_content">For receiving daily reminders properly, please enable %s in the next settings.</string>
+    <string name="settings">settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="dont_show_again">don\'t show again</string>
     <string name="please_improve_lightning">Weak lightning detected. Please go outside or turn on stronger light</string>
     <string name="go_outside">For best results, go outside</string>
     <string name="fatigue">Fatigue</string>
