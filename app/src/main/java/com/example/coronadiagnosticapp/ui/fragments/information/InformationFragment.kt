@@ -37,7 +37,7 @@ class InformationFragment : ScopedFragment() {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        super.onActivityCreated(savedInsitanceState)
 
         initForm()
 

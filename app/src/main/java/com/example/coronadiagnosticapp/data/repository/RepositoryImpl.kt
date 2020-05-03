@@ -72,6 +72,10 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateBackgroundDiseases(diseases: Array<String>){
+
+    }
+
     override suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean) {
         try {
             val responseMetric = networkDataSource.updateUserMetrics(temp, cough, isWet)

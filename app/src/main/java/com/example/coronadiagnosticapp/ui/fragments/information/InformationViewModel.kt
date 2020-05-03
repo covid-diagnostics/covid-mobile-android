@@ -10,4 +10,9 @@ class InformationViewModel @Inject constructor(val repository: Repository) : Vie
     suspend fun updateUserPersonalInformation(firstName: String, lastName: String, age: Int) {
         repository.updateUserPersonalInformation(firstName, lastName, age)
     }
+
+    suspend fun updateBackgroundDiseases(diseases: Array<String>) {
+        repository.updateBackgroundDiseases(diseases)
+    }
+
 }
