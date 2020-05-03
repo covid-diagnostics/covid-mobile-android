@@ -76,4 +76,6 @@
     <string name="go_outside">For best results, go outside</string>
     <string name="fatigue">Fatigue</string>
     <string name="muscle_weakness">Muscle Weakness</string>
+    <string name="press_the_mic_button_n_to_start_recording">Press the mic button \n to start recording</string>
+    <string name="press_the_mic_button">Press the mic button \n to start recording</string>
 </resources>
