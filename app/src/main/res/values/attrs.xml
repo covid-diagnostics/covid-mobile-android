@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="YesNoQuestionView">
+        <attr name="yn_question" format="string" />
+        <attr name="positiveText" format="string" />
+        <attr name="negativeText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="DateQuestionView">
+        <attr name="date_question" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="FeelingQuestionView">
+        <attr name="enum_question" format="string" />
+    </declare-styleable>
+
+</resources>

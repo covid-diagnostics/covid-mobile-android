@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import kotlin.Unit;
@@ -43,6 +44,7 @@ public class OxymeterImpl implements Oxymeter {
     private ArrayList<Double> RedAvgList = new ArrayList<>();
     private ArrayList<Double> BlueAvgList = new ArrayList<>();
     private ArrayList<Double> GreenAvgList = new ArrayList<>();
+    private ArrayList<Long> TimepointList = new ArrayList<>();
 
     private int frameCounter = 0;
     private Function0<Unit> onInvalidData;
@@ -68,6 +70,7 @@ public class OxymeterImpl implements Oxymeter {
         RedAvgList.add(RedAvg);
         BlueAvgList.add(BlueAvg);
         GreenAvgList.add(GreenAvg);
+        TimepointList.add(System.currentTimeMillis());
 
         frameCounter++;
 
@@ -289,5 +292,16 @@ public class OxymeterImpl implements Oxymeter {
     @Override
     public void setUpdateGraphView(@NotNull Function2<? super Integer, ? super Double, Unit> callback) {
         setUpdateGraphView = callback;
+    }
+
+    @NotNull
+    @Override
+    public OxymeterAverages getAverages() {
+        return new OxymeterAverages(
+            RedAvgList.toArray(new Double[0]),
+            GreenAvgList.toArray(new Double[0]),
+            BlueAvgList.toArray(new Double[0]),
+            TimepointList.toArray(new Long[0])
+        );
     }
 }

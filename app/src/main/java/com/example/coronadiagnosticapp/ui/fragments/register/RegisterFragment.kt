@@ -14,12 +14,11 @@ import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import kotlinx.android.synthetic.main.register_fragment.*
-import kotlinx.android.synthetic.main.register_fragment.textInputLayout_email
-import kotlinx.android.synthetic.main.register_fragment.textInputLayout_password
-import kotlinx.android.synthetic.main.register_fragment.TextInputLayout_passwordRepeat
+import kotlinx.android.synthetic.main.register_fragment.textInputLayout_phoneNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.security.MessageDigest
 import javax.inject.Inject
 
 class RegisterFragment : ScopedFragment() {
@@ -32,7 +31,6 @@ class RegisterFragment : ScopedFragment() {
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
         }
-
     }
 
     override fun onCreateView(
@@ -50,12 +48,20 @@ class RegisterFragment : ScopedFragment() {
 
     }
 
+    fun hash(text: String): String {
+        val bytes = text.toString().toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
+
     private fun initForm() {
         form {
-            inputLayout(textInputLayout_email) {
+            inputLayout(textInputLayout_phoneNumber) {
                 isNotEmpty().description(getString(R.string.required))
-                isEmail().description(getString(R.string.must_valid_email))
+                //().description(getString(R.string.must_valid_email))
             }
+            /*
             inputLayout(textInputLayout_password) {
                 isNotEmpty()
             }
@@ -66,13 +72,12 @@ class RegisterFragment : ScopedFragment() {
                     val password = textInputLayout_password.editText?.text.toString()
                     password == repeatPass
                 }
-            }
+            }*/
             submitWith(button_register) { res ->
                 showLoading(show = true)
                 launch(Dispatchers.IO) {
                     viewModel.registerUser(
-                        res["textInputLayout_email"]?.value.toString(),
-                        res["textInputLayout_password"]?.value.toString()
+                        hash(res["textInputLayout_phoneNumber"]?.value.toString())
                     )
                     withContext(Dispatchers.Main) {
                         showLoading(false)

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.coronadiagnosticapp.ui.views.YesNoQuestionView
+        android:id="@+id/temp_ynq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:yn_question="Do you have a fever?\nif so ,state your temp at the next field" />
+
+    <LinearLayout
+        android:id="@+id/temp_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/temperature"
+            android:textColor="#000"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/temp_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="36.6˚"
+            android:inputType="numberSigned|numberDecimal"
+            android:maxEms="4"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"/>
+
+    </LinearLayout>
+</LinearLayout>
