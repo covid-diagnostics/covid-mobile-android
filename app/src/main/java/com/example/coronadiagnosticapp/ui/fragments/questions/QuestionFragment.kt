@@ -57,18 +57,16 @@ class QuestionFragment : Fragment() {
 
     private fun nextQuestionOrSendData() {
         GlobalScope.launch(IO) {
-            val nextQuestion = viewModel.getNextQuestion()
-
-            withContext(Main) {
-                nextQuestion?.let {
+            viewModel.getNextQuestion()?.let {
+                withContext(Main) {
 //                    Animate
                     val animation = AnimationUtils
                         .loadAnimation(context, android.R.anim.slide_in_left)
                     view?.startAnimation(animation)
                     initStuff(it)
 
-                } ?: sendData()
-            }
+                }
+            } ?: sendData()
         }
     }
 

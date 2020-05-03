@@ -19,6 +19,8 @@
     <string name="welcome_message">ברוכים הבאים לאפליקציית אבחון קורונה מרחוק</string>
     <string name="password">סיסמא</string>
     <string name="email">דואר אלקטרוני</string>
+    <string name="phone_number">מספר פלאפון</string>
+
     <string name="repeat_password">חזור על הסיסמא</string>
     <string name="sign_up">הירשם</string>
     <string name="required">שדה חובה</string>

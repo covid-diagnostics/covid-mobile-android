@@ -70,7 +70,7 @@ class RepositoryImpl @Inject constructor(
         user.apply {
             this.firstName = firstName
             this.lastName = lastName
-            this.age = age
+            //this.age = age
         }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
         if (userRes != null) {
