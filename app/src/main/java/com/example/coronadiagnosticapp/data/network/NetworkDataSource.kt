@@ -2,8 +2,7 @@ package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
-import kotlinx.coroutines.Deferred
-import okhttp3.ResponseBody
+import com.google.gson.JsonObject
 import java.io.File
 
 interface NetworkDataSource {
@@ -18,7 +17,9 @@ interface NetworkDataSource {
         user: User
     ): User?
 
-    suspend fun updateUserMetrics(temp: String, cough: Int, isWet: Boolean): ResponseMetric
-
+    suspend fun submitMeasurement(measurement: Measurement): Measurement
+    suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement
     suspend fun uploadAudioRecording(file: File, id: Int)
+    suspend fun getQuestions(): List<JsonObject>
+    suspend fun sendAnswers(answers: List<AnswersResponse>)
 }
