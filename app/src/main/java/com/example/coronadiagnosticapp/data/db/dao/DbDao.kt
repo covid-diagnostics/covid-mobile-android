@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.question.*
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
 @Dao
 interface DbDao {

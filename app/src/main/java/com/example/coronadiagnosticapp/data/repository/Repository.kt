@@ -7,6 +7,7 @@ import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.question.Question
 import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
 import java.io.File
 

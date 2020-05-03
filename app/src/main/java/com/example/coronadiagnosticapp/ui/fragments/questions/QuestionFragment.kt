@@ -110,6 +110,7 @@ class QuestionFragment : Fragment() {
                         .loadAnimation(context, android.R.anim.slide_in_left)
                     view?.startAnimation(animation)
                     initStuff(it)
+
                 }
             } ?: sendData()
         }
