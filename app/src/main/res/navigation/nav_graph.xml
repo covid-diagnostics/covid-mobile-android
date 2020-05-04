@@ -23,9 +23,6 @@
         android:label="register_fragment"
         tools:layout="@layout/register_fragment" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/action_registerFragment_to_informationFragment"
             app:destination="@id/informationFragment" />
     </fragment>
@@ -98,14 +95,5 @@
         <action
             android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.coronadiagnosticapp.ui.login.LoginFragment"
-        android:label="login_fragment"
-        tools:layout="@layout/login_fragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_instructionsFragment"
-            app:destination="@id/instructionsFragment" />
     </fragment>
 </navigation>

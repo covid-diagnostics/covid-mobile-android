@@ -32,6 +32,8 @@ interface AppComponent {
     fun inject(fragment: QuestionnaireFragment)
     fun inject(fragment: QuestionFragment)
 
+//    fun <T> inject(injectable:T)
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent

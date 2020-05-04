@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.converters.MyRetrofitConverter
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.*
-import com.example.coronadiagnosticapp.data.db.entity.question.*
+import com.example.coronadiagnosticapp.data.db.entity.question.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
@@ -64,16 +66,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserPersonalInformation(
-        firstName: String,
-        lastName: String,
-        age: Int
+        sex: Sex, age: Int, height: Int, weight: Int
     ) {
         val user = dao.getUser()
-        user.apply {
-            //this.firstName = firstName
-            //this.lastName = lastName
-            //this.age = age
-        }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
         /*if (userRes != null) {
             dao.upsertUser(userRes)

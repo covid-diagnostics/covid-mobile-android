@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -31,10 +31,15 @@ class WelcomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         button_start.setOnClickListener {
-            when (viewModel.isLoggedIn()) {
-                true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
-                false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+
+            @IdRes
+            val id = if (viewModel.isLoggedIn()) {
+                R.id.action_welcomeFragment_to_instructionsFragment
+            } else {
+                R.id.action_welcomeFragment_to_registerFragment
             }
+
+            findNavController().navigate(id)
         }
         AutostartUtils.requestAutostartPermissions(context)
     }

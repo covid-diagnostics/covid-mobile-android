@@ -4,37 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
-import com.example.coronadiagnosticapp.MyApplication
+import com.afollestad.vvalidator.form.FormResult
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.data.db.entity.Sex
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.ui.views.YesNoQuestionView.YesNo
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
+import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.information_fragment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class InformationFragment : ScopedFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
-    }
-
     @Inject
     lateinit var viewModel: InformationViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.getAppComponent()?.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.information_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.information_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -42,51 +44,64 @@ class InformationFragment : ScopedFragment() {
         initForm()
 
         viewModel.error.observe(viewLifecycleOwner, Observer { msg ->
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            toast(msg)
         })
     }
 
     private fun initForm() {
 
         form {
-            inputLayout(activity_personal_inp_first_name) {
-                isNotEmpty().description(getString(R.string.required))
+            input(et_age,"age") {
+//                isNotEmpty()
+                isNumber()
+                isNumber().greaterThan(0).description("must be a positive number")
             }
-            inputLayout(activity_personal_inp_last_name) {
-                isNotEmpty().description(getString(R.string.required))
+            input(et_height,"height") {
+//                isNotEmpty()
+                isNumber()
+                isNumber().greaterThan(0).description("must be a positive number")
             }
-            inputLayout(activity_personal_inp_age) {
-                isNotEmpty().description(getString(R.string.required))
+            input(et_weight,"weight") {
+//                isNotEmpty()
+                isNumber()
+                isNumber().greaterThan(0).description("must be a positive number")
             }
-
-            submitWith(button_informationNext) { res ->
-                submitPersonalInfoForm(
-                    res.get("activity_personal_inp_first_name")?.value.toString(),
-                    res.get("activity_personal_inp_last_name")?.value.toString(),
-                    res.get("activity_personal_inp_age")?.value.toString().toInt()
-                )
-
-            }
+//            (sex_question)
+            submitWith(info_continue_btn, this@InformationFragment::tryToSubmit)
         }
     }
 
-    private fun submitPersonalInfoForm(firstName: String, lastName: String, age: Int) {
-        showLoading(show = true)
-        launch(Dispatchers.IO) {
-            viewModel.updateUserPersonalInformation(firstName, lastName, age)
-            withContext(Dispatchers.Main) {
-                showLoading(false)
-                findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)
+    private fun tryToSubmit(res: FormResult) {
+
+        if (res.hasErrors()) {
+            toast("Make sure you filled the right details")
+            return
+        }
+
+        val sexSelection = sex_question.currentSelection!!
+        val sex =  Sex.values()[sexSelection.ordinal]
+
+        val age = res["age"]!!.asInt()!!
+        val height = res["height"]!!.asInt()!!
+        val weight = res["weight"]!!.asInt()!!
+        submitPersonalInfoForm(sex, age, height, weight)
+    }
+
+    private fun submitPersonalInfoForm(sex: Sex, age: Int, height: Int, weight: Int) {
+
+        showLoading(progressBar_informationFragment, true)
+
+        launch(IO) {
+            viewModel.updateUserPersonalInformation(sex, age, height, weight)
+
+            withContext(Main) {
+                showLoading(progressBar_informationFragment, false)
+
+                findNavController()
+                    .navigate(R.id.action_informationFragment_to_instructionsFragment)
             }
         }
 
-    }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_informationFragment.visibility = View.VISIBLE
-            false -> progressBar_informationFragment.visibility = View.GONE
-        }
     }
 
 }
