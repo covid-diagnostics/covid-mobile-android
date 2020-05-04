@@ -70,15 +70,15 @@ class RepositoryImpl @Inject constructor(
     ) {
         val user = dao.getUser()
         user.apply {
-            this.firstName = firstName
-            this.lastName = lastName
+            //this.firstName = firstName
+            //this.lastName = lastName
             //this.age = age
         }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
-        if (userRes != null) {
+        /*if (userRes != null) {
             dao.upsertUser(userRes)
             sharedProvider.setName(userRes.firstName)
-        }
+        }*/
     }
 
     override suspend fun saveResult(healthResult: HealthResult) {
