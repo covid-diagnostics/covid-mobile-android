@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="How are you feeling?"
+                    android:text="@string/how_are_you_feeling"
                     android:textSize="24sp"
                     android:textColor="#FF000000" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:enum_question="How are you feeling today?" />
+                app:enum_question="@string/how_are_you_feeling_today" />
 
             <Button
                 android:id="@+id/button_metricSubmit"

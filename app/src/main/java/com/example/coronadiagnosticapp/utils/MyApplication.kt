@@ -8,6 +8,7 @@ import io.sentry.android.core.SentryAndroid
 class MyApplication : MultiDexApplication() {
     private lateinit var appComponent: AppComponent
     override fun onCreate() {
+        
         super.onCreate()
         appComponent = DaggerAppComponent.factory().create(applicationContext)
         if (!BuildConfig.DEBUG) {
