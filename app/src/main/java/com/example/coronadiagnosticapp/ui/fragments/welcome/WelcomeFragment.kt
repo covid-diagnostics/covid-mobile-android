@@ -34,13 +34,19 @@ class WelcomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // TODO: Delete this:
-        findNavController().navigate(R.id.action_welcomFragment_to_informationFragment)
+        //findNavController().navigate(R.id.action_welcomFragment_to_informationFragment)
+
 
         button_start.setOnClickListener {
+
             when (viewModel.isLoggedIn()) {
-                true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
+                //true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
+                // TODO: delete this:
+                true -> findNavController().navigate(R.id.action_welcomeFragment_to_informationFragment)
                 false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
             }
+
+
         }
         AutostartUtils.requestAutostartPermissions(context)
     }

@@ -12,9 +12,10 @@ import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.db.entity.question.TextQuestion
 
 @Database(
-    entities = [User::class, HealthResult::class, PpgMeasurement::class, Measurement::class,
+    entities = [User::class, UserInfo::class, HealthResult::class, PpgMeasurement::class, Measurement::class,
         AnswersResponse::class, TextQuestion::class, SelectQuestion::class, CheckBoxQuestion::class
     ],
+    exportSchema = false,
     version = 7
 )
 @TypeConverters(Converters::class)

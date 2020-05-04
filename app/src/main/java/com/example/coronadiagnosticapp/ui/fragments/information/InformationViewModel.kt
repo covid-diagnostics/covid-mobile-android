@@ -7,12 +7,9 @@ import javax.inject.Inject
 class InformationViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     val error = repository.error
-    suspend fun updateUserPersonalInformation(firstName: String, lastName: String, age: Int) {
-        repository.updateUserPersonalInformation(firstName, lastName, age)
-    }
 
-    suspend fun updateBackgroundDiseases(diseases: Array<String>) {
-        repository.updateBackgroundDiseases(diseases)
+    suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>) {
+        repository.updateBackgroundDiseases(backgroundDiseases)
     }
 
 }

@@ -10,18 +10,30 @@ interface DbDao {
     @Transaction
     fun upsertUser(user: User) {
         deleteAllUsers()
-        insert(user)
+        insertUser(user)
+    }
+
+    @Transaction
+    fun upsertUserInfo(userInfo: UserInfo) {
+        deleteAllUsersInfo()
+        insertUserInfo(userInfo)
     }
 
     @Transaction
     fun upsertMeasurement(measurement: Measurement) {
         deleteAllMeasurements()
-        insert(measurement)
+        insertUser(measurement)
     }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserInfo(userInfo: UserInfo)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: User)
+    fun insertUser(user: User)
+
+
+    @Query("DELETE FROM user_info_table")
+    fun deleteAllUsersInfo()
 
 
     @Query("DELETE FROM user_table")
@@ -31,6 +43,9 @@ interface DbDao {
     @Query("SELECT * FROM user_table LIMIT 1")
     fun getUser(): User
 
+    @Query("SELECT * FROM user_info_table LIMIT 1")
+    fun getUserInfo(): UserInfo
+
     @Query("DELETE FROM measurement_table")
     fun deleteAllMeasurements()
 
@@ -38,19 +53,19 @@ interface DbDao {
     fun getMeasurement(): Measurement
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(measurement: Measurement)
+    fun insertUser(measurement: Measurement)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insertHealth(healthResult: HealthResult)
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(ppgMeasurement: PpgMeasurement)
+    fun insertUser(ppgMeasurement: PpgMeasurement)
 
     @Query("SELECT * FROM health_table ORDER BY date DESC LIMIT 1")
     fun getLastHealthResult(): LiveData<HealthResult>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(answer: AnswersResponse)
+    fun insertUser(answer: AnswersResponse)
 
     @Query("SELECT * FROM answers")
     fun getAnswers(): List<AnswersResponse>

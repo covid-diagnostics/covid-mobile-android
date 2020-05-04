@@ -16,8 +16,7 @@ interface Repository {
 
     suspend fun registerUser(userRegister: UserRegister)
     fun isLoggedIn(): Boolean
-    suspend fun updateUserPersonalInformation(firstName: String, lastName: String, age: Int)
-    suspend fun updateBackgroundDiseases(diseases: Array<String>)
+    suspend fun updateBackgroundDiseases(diseases: List<String>)
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
     fun getUserName(): String?

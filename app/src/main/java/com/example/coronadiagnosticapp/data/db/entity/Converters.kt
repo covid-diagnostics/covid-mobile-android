@@ -29,17 +29,24 @@ class Converters {
     fun longArrayToString(array: Array<Long>): String = gson.toJson(array)
 
     @TypeConverter
+    fun stringToLongArray(string: String): Array<Long> =
+        gson.fromJson(string, object : TypeToken<Array<Long>>() {}.type)
+
+    @TypeConverter
     fun fromQuestionType(value: String?) = value?.let { QuestionType.valueOf(it) }
 
     @TypeConverter
     fun questionTypeToString(value: QuestionType?) = value?.name
 
     @TypeConverter
-    fun stringToLongArray(string: String): Array<Long> =
-        gson.fromJson(string, object : TypeToken<Array<Long>>() {}.type)
+    fun fromSelectList(list: List<SelectQuestion.ExtraData>) = gson.toJson(list)
 
     @TypeConverter
-    fun fromSelectList(list: List<SelectQuestion.ExtraData>) = gson.toJson(list)
+    fun StringListToString(array: List<String>): String = gson.toJson(array)
+
+    @TypeConverter
+    fun stringToStringList(string: String): List<String> =
+        gson.fromJson(string, object : TypeToken<List<String>>() {}.type)
 
     @TypeConverter
     fun toSelectExtraDataList(json: String?): List<SelectQuestion.ExtraData> {

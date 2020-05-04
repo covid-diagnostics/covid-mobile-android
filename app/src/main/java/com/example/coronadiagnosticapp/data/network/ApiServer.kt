@@ -24,10 +24,10 @@ interface ApiServer {
         @Body user: UserRegister
     ): Deferred<ResponseUser>
 
-    @PUT(FILL_DETAILS_URL)
-    fun updateUserInformation(
-        @Body user: User
-    ): Deferred<User>
+    @POST(USER_INFO_URL)
+    fun updateUserInfo(
+        @Body userInfo: UserInfo
+    ): Deferred<UserInfo>
 
     @POST(PPG_MEASUREMENT_URL)
     fun submitPpgMeasurement(
