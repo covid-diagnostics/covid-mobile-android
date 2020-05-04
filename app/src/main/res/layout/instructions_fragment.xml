@@ -7,63 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.instruction.InstructionsFragment">
 
-    <ImageView
-        android:id="@+id/imageView_background_instructions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_heart_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_heart_ready"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_background_instructions"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/textView_header_instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:text="@string/header_instructions"
+        android:layout_marginTop="16dp"
+        android:text="@string/get_to_know"
         android:textAppearance="@style/appHeader"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline_instructions" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/textView_body_instructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/body_instructions"
+        android:layout_width="327dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/your_voice_can_help"
+        android:textAlignment="center"
         android:textAppearance="@style/appBody"
-        app:layout_constraintStart_toStartOf="@id/textView_header_instructions"
+        app:layout_constraintEnd_toEndOf="@+id/textView_header_instructions"
+        app:layout_constraintStart_toStartOf="@+id/textView_header_instructions"
         app:layout_constraintTop_toBottomOf="@id/textView_header_instructions" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_instructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
-
 
     <Button
         android:id="@+id/button_instructions"
         style="@style/customButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start"
+        android:layout_marginBottom="32dp"
+        android:text="@string/lets_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="243dp"
+        android:layout_height="178dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_undraw_doctors_hwty_1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_body_instructions" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/doctor_at_you" />
 </androidx.constraintlayout.widget.ConstraintLayout>

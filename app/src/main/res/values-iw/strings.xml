@@ -58,4 +58,10 @@
     <string name="fatigue">עייפות</string>
     <string name="muscle_weakness">חולשת שרירים</string>
     <string name="personal_info_request">עזרו לנו להכיר אתכם טוב יותר</string>
+    <string name="lets_start">בואו נתחיל</string>
+    <string name="your_voice_can_help">תרומת קול של דקה תוכל לעזור לקדם כלי איתור חינמי, מהיר ונגיש לכולם.</string>
+    <string name="get_to_know">תנו לנו להכיר אתכם יותר טוב!</string>
+    <string name="your_voice_can_win_corona"> את הקורונה!<b> לנצח</b> יכול<b>הקול שלך</b></string>
+
+
 </resources>

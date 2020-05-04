@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.instruction
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import kotlinx.android.synthetic.main.instructions_fragment.*
+import java.util.*
 import javax.inject.Inject
 
 class InstructionsFragment : Fragment() {
@@ -32,9 +34,6 @@ class InstructionsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        textView_header_instructions.apply {
-            text = "$text ${viewModel.getUserName()}"
-        }
         button_instructions.setOnClickListener {
             findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
         }
