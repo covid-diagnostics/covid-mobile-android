@@ -30,8 +30,8 @@ class WelcomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        button_start.setOnClickListener {
 
+        button_start.setOnClickListener {
             @IdRes
             val id = if (viewModel.isLoggedIn()) {
                 R.id.action_welcomeFragment_to_instructionsFragment

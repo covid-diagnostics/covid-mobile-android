@@ -98,7 +98,7 @@ class InformationFragment : ScopedFragment() {
                 showLoading(progressBar_informationFragment, false)
 
                 findNavController()
-                    .navigate(R.id.action_informationFragment_to_instructionsFragment)
+                    .navigate(R.id.action_informationFragment_to_backgroundDiseasesFragment)
             }
         }
 

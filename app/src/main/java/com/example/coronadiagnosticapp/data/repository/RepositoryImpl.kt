@@ -68,13 +68,24 @@ class RepositoryImpl @Inject constructor(
     override suspend fun updateUserPersonalInformation(
         sex: Sex, age: Int, height: Int, weight: Int
     ) {
-        val user = dao.getUser()
-        val userRes = networkDataSource.updateUserPersonalInformation(user)
-        /*if (userRes != null) {
-            dao.upsertUser(userRes)
-            sharedProvider.setName(userRes.firstName)
-        }*/
+        val userInfo = UserInfo(age, sex, weight, height, null, ArrayList<String>())
+        dao.insertUserInfo(userInfo)
     }
+
+    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>){
+        val userInfo = dao.getUserInfo()?: kotlin.run {
+            UserInfo(null, null, null, null, null, backgroundDiseases)
+        }
+
+        userInfo.backgroundDiseases = backgroundDiseases
+
+        val userInfoRes = networkDataSource.updateUserInfo(userInfo)
+        if(userInfoRes != null) {
+            dao.upsertUserInfo(userInfoRes)
+        }
+    }
+
+
 
     override suspend fun saveResult(healthResult: HealthResult) {
         lastHealthResult = healthResult
@@ -166,7 +177,7 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun addAnswer(answer: AnswersResponse) {
         addMeasurement(answer)
-        dao.insert(answer)
+        dao.insertUser(answer)
     }
 
     private fun addMeasurement(answer: AnswersResponse) {

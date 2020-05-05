@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.data.network
 import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
 import com.example.coronadiagnosticapp.data.db.entity.Measurement
 import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
+import com.example.coronadiagnosticapp.data.db.entity.UserInfo
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
@@ -25,10 +26,10 @@ interface ApiServer {
         @Body user: UserRegister
     ): Deferred<ResponseUser>
 
-    @PUT(FILL_DETAILS_URL)
-    fun updateUserInformation(
-        @Body user: User
-    ): Deferred<User>
+    @POST(USER_INFO_URL)
+    fun updateUserInfo(
+        @Body userInfo: UserInfo
+    ): Deferred<UserInfo>
 
     @POST(PPG_MEASUREMENT_URL)
     fun submitPpgMeasurement(

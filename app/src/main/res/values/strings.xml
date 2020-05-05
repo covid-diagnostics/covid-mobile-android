@@ -76,7 +76,14 @@
     <string name="go_outside">For best results, go outside</string>
     <string name="fatigue">Fatigue</string>
     <string name="muscle_weakness">Muscle Weakness</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="diabetes">Diabetes</string>
+    <string name="autoimmune_disease">Autoimmune Disease</string>
+    <string name="asthma">Asthma</string>
+    <string name="pulmonary_disease">Chronic Obstructive Pulmonary disease (COPD)</string>
+    <string name="chronic_kidney_disease">Chronic Kidney Disease (CKD)</string>
+    <string name="header_instructions_demographic_fragment">Have you been diagnosed with any of the following background diseases?</string>
+    <string name="high_blood_pressure">High blood pressure (Hypertension)</string>
+    <string name="cancer">Have or had Cancer</string>
 </resources>
