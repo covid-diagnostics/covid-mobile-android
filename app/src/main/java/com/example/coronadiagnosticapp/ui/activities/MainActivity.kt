@@ -18,11 +18,10 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
         val i = Intent(applicationContext,  RegisterNotificationService::class.java)
         startService(i)
-
-        setContentView(R.layout.activity_main)
     }
 
     /**
@@ -32,8 +31,8 @@ class MainActivity : BaseActivity() {
         stepperIndicator.currentStep = count
     }
 
-    fun showStepperLayout() = stepperLayout.show()
+    fun showStepperLayout() = stepperLayout?.show()
 
-    fun hideStepperLayout() = stepperLayout.hide()
+    fun hideStepperLayout() = stepperLayout?.hide()
 
 }
