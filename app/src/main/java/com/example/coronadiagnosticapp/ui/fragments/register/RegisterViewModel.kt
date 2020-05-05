@@ -1,10 +1,8 @@
 package com.example.coronadiagnosticapp.ui.fragments.register
 
 import androidx.lifecycle.ViewModel
-import com.example.coronadiagnosticapp.data.db.entity.UserRegister
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.repository.Repository
-import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
-import java.util.*
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(val repository: Repository) : ViewModel() {
@@ -15,8 +13,7 @@ class RegisterViewModel @Inject constructor(val repository: Repository) : ViewMo
         repository.registerUser(UserRegister(phoneNumberHash))
     }
 
-    fun isLoggedIn():Boolean = repository.isLoggedIn()
-
+    fun isLoggedIn(): Boolean = repository.isLoggedIn()
 
 
 }

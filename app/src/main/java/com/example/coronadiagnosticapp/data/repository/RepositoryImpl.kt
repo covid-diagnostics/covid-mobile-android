@@ -9,6 +9,8 @@ import com.example.coronadiagnosticapp.data.converters.MyRetrofitConverter
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.question.*
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
@@ -68,15 +70,15 @@ class RepositoryImpl @Inject constructor(
     ) {
         val user = dao.getUser()
         user.apply {
-            this.firstName = firstName
-            this.lastName = lastName
+            //this.firstName = firstName
+            //this.lastName = lastName
             //this.age = age
         }
         val userRes = networkDataSource.updateUserPersonalInformation(user)
-        if (userRes != null) {
+        /*if (userRes != null) {
             dao.upsertUser(userRes)
             sharedProvider.setName(userRes.firstName)
-        }
+        }*/
     }
 
     override suspend fun saveResult(healthResult: HealthResult) {
@@ -185,7 +187,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendUserAnswers() {
-        val answers = dao.getAnswers()
+        val answers: List<AnswersResponse> = dao.getAnswers()
         networkDataSource.sendAnswers(answers)
     }
 }

@@ -13,7 +13,7 @@ abstract class Question(
     var type: QuestionType,
     val addedOn: Date,
     @SerializedName("required")
-    var isRequired: Boolean = true
+    var isRequired: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

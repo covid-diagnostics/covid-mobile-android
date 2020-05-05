@@ -7,7 +7,6 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R

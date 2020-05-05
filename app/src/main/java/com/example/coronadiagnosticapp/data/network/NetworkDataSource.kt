@@ -2,6 +2,9 @@ package com.example.coronadiagnosticapp.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.google.gson.JsonObject
 import java.io.File
 
