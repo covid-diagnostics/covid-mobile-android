@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity

@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment

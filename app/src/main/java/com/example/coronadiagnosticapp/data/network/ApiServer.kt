@@ -1,6 +1,8 @@
 package com.example.coronadiagnosticapp.data.network
 
-import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.AnswersResponse
+import com.example.coronadiagnosticapp.data.db.entity.Measurement
+import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
@@ -8,16 +10,12 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
-import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
@@ -67,7 +65,7 @@ interface ApiServer {
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {
             val logging = HttpLoggingInterceptor().apply {
-                setLevel(BODY)
+                setLevel(HttpLoggingInterceptor.Level.BODY)
             }
 
             val okHttpClient = OkHttpClient
