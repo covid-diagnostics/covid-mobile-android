@@ -93,7 +93,6 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun getLastResult() = lastHealthResult
-    override fun getUserName() = sharedProvider.getName()
 
     override suspend fun uploadAudioRecording(file: File) {
         try {

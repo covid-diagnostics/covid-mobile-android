@@ -26,7 +26,6 @@ interface Repository {
     suspend fun updateBackgroundDiseases(diseases: List<String>)
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
-    fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
     suspend fun submitMeasurement(measurement: Measurement): Measurement
     @RequiresApi(value = 23)

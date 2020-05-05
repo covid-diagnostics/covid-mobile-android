@@ -32,9 +32,6 @@ class InstructionsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        textView_header_instructions.apply {
-            text = "$text ${viewModel.getUserName()}"
-        }
         button_instructions.setOnClickListener {
             findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
         }
