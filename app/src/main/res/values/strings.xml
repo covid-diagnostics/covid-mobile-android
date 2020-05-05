@@ -76,4 +76,11 @@
     <string name="go_outside">For best results, go outside</string>
     <string name="fatigue">Fatigue</string>
     <string name="muscle_weakness">Muscle Weakness</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="what_s_right_about_you">What\'s right about you?</string>
+    <string name="non_smoker">Non smoker</string>
+    <string name="smoker">Smoker</string>
+    <string name="smoked_5y_ago">Have been smoking and stopped for the last 5 years</string>
 </resources>

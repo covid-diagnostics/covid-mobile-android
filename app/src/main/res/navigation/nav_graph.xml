@@ -108,4 +108,9 @@
             android:id="@+id/action_loginFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/smokingFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment"
+        android:label="fragment_smoking"
+        tools:layout="@layout/fragment_smoking" />
 </navigation>
