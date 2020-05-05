@@ -18,7 +18,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_welcomeFragment_to_informationFragment"
-            app:destination="@id/informationFragment" />
+            app:destination="@id/backgroundDiseasesFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -30,15 +30,15 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_registerFragment_to_informationFragment"
-            app:destination="@id/informationFragment" />
+            app:destination="@id/backgroundDiseasesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/informationFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
-        android:label="InformationFragment"
-        tools:layout="@layout/information_fragment">
+        android:id="@+id/backgroundDiseasesFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseasesFragment"
+        android:label="BackgroundDiseasesFragment"
+        tools:layout="@layout/background_diseases_fragment">
         <action
-            android:id="@+id/action_informationFragment_to_instructionsFragment"
+            android:id="@+id/action_backgroundDiseases_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
     </fragment>
     <fragment

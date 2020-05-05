@@ -11,7 +11,7 @@ import com.afollestad.vvalidator.form
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
-import kotlinx.android.synthetic.main.information_fragment.*
+import kotlinx.android.synthetic.main.background_diseases_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +33,7 @@ class DemographicDataFragment : ScopedFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.information_fragment, container, false)
+        return inflater.inflate(R.layout.background_diseases_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -62,7 +62,7 @@ class DemographicDataFragment : ScopedFragment() {
                 isNotEmpty().description(getString(R.string.required))
             }
 
-            submitWith(button_informationNext) { res ->
+            submitWith(button_background_diseases_next) { res ->
                 submitPersonalInfoForm(
                     res.get("activity_personal_inp_first_name")?.value.toString(),
                     res.get("activity_personal_inp_last_name")?.value.toString(),

@@ -14,7 +14,7 @@ import com.example.coronadiagnosticapp.data.repository.RepositoryImpl
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
-import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
+import com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseasesFragment
 import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment
@@ -33,10 +33,10 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(fragment: RegisterFragment)
-    fun inject(fragment: InformationFragment)
+    fun inject(fragment: BackgroundDiseasesFragment)
     fun inject(fragment: DailyMetricFragment)
     fun inject(fragment: ResultFragment)
-    fun inject(fragment: RecorderFragment)
+    fun inject(fragment: RecorderFragment)in
     fun inject(fragment: CameraFragment)
     fun inject(fragment: WelcomeFragment)
     fun inject(fragment: InstructionsFragment)

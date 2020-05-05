@@ -10,13 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
-import kotlinx.android.synthetic.main.information_fragment.*
+import kotlinx.android.synthetic.main.background_diseases_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class InformationFragment : ScopedFragment() {
+class BackgroundDiseasesFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +32,13 @@ class InformationFragment : ScopedFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.information_fragment, container, false)
+        return inflater.inflate(R.layout.background_diseases_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        button_informationNext.setOnClickListener {
+        button_background_diseases_next.setOnClickListener {
             submit()
         }
 
@@ -52,7 +52,7 @@ class InformationFragment : ScopedFragment() {
         /*form {
             //diabetes.setOnClickListener {
 
-            submitWith(button_informationNext) { res ->
+            submitWith(button_background_diseases_next) { res ->
                 /*submitPersonalInfoForm(
                     res.get("activity_personal_inp_first_name")?.value.toString(),
                     res.get("activity_personal_inp_last_name")?.value.toString(),
@@ -77,7 +77,7 @@ class InformationFragment : ScopedFragment() {
             viewModel.updateBackgroundDiseases(getBackgroundDiseases())
             withContext(Dispatchers.Main) {
                 showLoading(false)
-                findNavController().navigate(R.id.action_informationFragment_to_instructionsFragment)
+                findNavController().navigate(R.id.action_backgroundDiseases_to_instructionsFragment)
             }
         }
     }
@@ -105,8 +105,8 @@ class InformationFragment : ScopedFragment() {
 
     private fun showLoading(show: Boolean) {
         when (show) {
-            true -> progressBar_informationFragment.visibility = View.VISIBLE
-            false -> progressBar_informationFragment.visibility = View.GONE
+            true -> progressBar_background_diseases_Fragment.visibility = View.VISIBLE
+            false -> progressBar_background_diseases_Fragment.visibility = View.GONE
         }
     }
 

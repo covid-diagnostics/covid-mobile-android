@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.information.InformationFragment">
+    tools:context=".ui.fragments.information.BackgroundDiseasesFragment">
 
 
     <ImageView
@@ -78,7 +78,7 @@
 
     </LinearLayout>
     <Button
-        android:id="@+id/button_informationNext"
+        android:id="@+id/button_background_diseases_next"
         style="@style/customButton"
         android:text="@string/next"
         android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar_informationFragment"
+        android:id="@+id/progressBar_background_diseases_Fragment"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
