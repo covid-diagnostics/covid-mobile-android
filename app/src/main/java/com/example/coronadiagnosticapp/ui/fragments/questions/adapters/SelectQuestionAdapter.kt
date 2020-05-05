@@ -1,12 +1,17 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions.adapters
 
+import android.graphics.drawable.PictureDrawable
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestBuilder
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.ui.fragments.questions.viewholders.SelectBoxVH
 
 
-class SelectQuestionAdapter(private var options: List<SelectQuestion.ExtraData>) :
+class SelectQuestionAdapter(
+    private var options: List<SelectQuestion.ExtraData>,
+    val requestBuilder: RequestBuilder<PictureDrawable>
+) :
     RecyclerView.Adapter<SelectQuestionAdapter.SelectVH>(),
     Selectable {
 
@@ -27,7 +32,7 @@ class SelectQuestionAdapter(private var options: List<SelectQuestion.ExtraData>)
         } ?: listOf()
 
 
-    inner class SelectVH(viewGroup: ViewGroup) : SelectBoxVH(viewGroup) {
+    inner class SelectVH(viewGroup: ViewGroup) : SelectBoxVH(viewGroup,requestBuilder) {
 
         override val isSelected: Boolean
             get() = currentSelected == adapterPosition

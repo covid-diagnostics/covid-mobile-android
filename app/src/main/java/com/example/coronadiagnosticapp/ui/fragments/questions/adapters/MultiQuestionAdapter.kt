@@ -1,17 +1,24 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions.adapters
 
+import android.graphics.drawable.PictureDrawable
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestBuilder
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.ui.fragments.questions.viewholders.SelectBoxVH
 
-class MultiQuestionAdapter(private var options: List<SelectQuestion.ExtraData>) :
+class MultiQuestionAdapter(
+    private var options: List<SelectQuestion.ExtraData>,
+    val requestBuilder: RequestBuilder<PictureDrawable>
+) :
     RecyclerView.Adapter<MultiQuestionAdapter.SelectVH>(),
     Selectable {
+
 
     private val selectedFlags = Array(options.size) { false }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SelectVH(parent)
+
 
     override fun getItemCount() = options.size
 
@@ -23,7 +30,7 @@ class MultiQuestionAdapter(private var options: List<SelectQuestion.ExtraData>) 
         selectedFlags[i]
     }
 
-    inner class SelectVH(viewGroup: ViewGroup) : SelectBoxVH(viewGroup) {
+    inner class SelectVH(viewGroup: ViewGroup) : SelectBoxVH(viewGroup,requestBuilder) {
 
         override val isSelected: Boolean
             get() = selectedFlags[adapterPosition]

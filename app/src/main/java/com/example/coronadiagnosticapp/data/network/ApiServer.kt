@@ -1,6 +1,9 @@
 package com.example.coronadiagnosticapp.data.network
 
 import com.example.coronadiagnosticapp.data.db.entity.*
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -84,26 +87,5 @@ interface ApiServer {
                 .build()
                 .create(ApiServer::class.java)
         }
-    }
-}
-
-
-@Singleton
-class TokenServiceInterceptor @Inject constructor() : Interceptor {
-    companion object {
-        private const val AUTH_HEADER_KEY = "Authorization"
-    }
-
-    var sessionToken: String? = null
-
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        val requestBuilder = request.newBuilder()
-        if (sessionToken != null) {
-            requestBuilder.addHeader(
-                AUTH_HEADER_KEY, "JWT $sessionToken"
-            )
-        }
-        return chain.proceed(requestBuilder.build())
     }
 }

@@ -7,6 +7,8 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import com.afollestad.vvalidator.util.hide
+import com.afollestad.vvalidator.util.show
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
 import java.util.*
@@ -30,9 +32,8 @@ class MainActivity : BaseActivity() {
         stepperIndicator.currentStep = count
     }
 
-    fun showStepperLayout() {
-        if (!stepperLayout.isVisible)
-            stepperLayout.visibility = View.VISIBLE
-    }
+    fun showStepperLayout() = stepperLayout.show()
+
+    fun hideStepperLayout() = stepperLayout.hide()
 
 }

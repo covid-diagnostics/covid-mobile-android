@@ -10,6 +10,7 @@ import com.example.coronadiagnosticapp.data.db.entity.*
 import com.example.coronadiagnosticapp.data.db.entity.question.CheckBoxQuestion
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.db.entity.question.TextQuestion
+import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 
 @Database(
     entities = [User::class, UserInfo::class, HealthResult::class, PpgMeasurement::class, Measurement::class,
