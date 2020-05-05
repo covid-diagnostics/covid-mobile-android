@@ -61,7 +61,8 @@
     <string name="lets_start">בואו נתחיל</string>
     <string name="your_voice_can_help">תרומת קול של דקה תוכל לעזור לקדם כלי איתור חינמי, מהיר ונגיש לכולם.</string>
     <string name="get_to_know">תנו לנו להכיר אתכם יותר טוב!</string>
-    <string name="your_voice_can_win_corona"> את הקורונה!<b> לנצח</b> יכול<b>הקול שלך</b></string>
+    <string name="your_voice_can_win_corona"><b>הקול שלך</b> יכול <b> לנצח</b> את הקורונה!</string>
+
 
 
 </resources>

@@ -4,8 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="#FFFFFF"
     tools:context=".ui.fragments.welcome.WelcomeFragment"
     tools:layout_editor_absoluteX="32dp">
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="430dp"
+        android:layout_height="415dp"
+        android:src="@drawable/welcom_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView_welcome_title"
@@ -15,7 +25,7 @@
         android:gravity="center"
         android:text="@string/your_voice_can_win_corona"
         android:textAlignment="textStart"
-        android:textSize="48sp"
+        android:textSize="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,60 +41,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="367dp"
-        android:layout_height="324dp"
-        android:layout_marginBottom="150dp"
-        android:src="@drawable/background_building"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="137dp"
-        android:layout_height="380dp"
-        android:src="@drawable/female_doctor_toward"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="48dp"
-        android:src="@drawable/speaking_bouble"
-        app:layout_constraintBottom_toTopOf="@+id/imageView7"
-        app:layout_constraintEnd_toStartOf="@+id/imageView7"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/textView_welcome_first_sub"
         android:layout_width="195dp"
         android:layout_height="93dp"
+        android:layout_marginTop="55dp"
         android:gravity="center"
         android:text="@string/your_voice_can_help"
         android:textAlignment="textStart"
         android:textAppearance="@style/appBodySmall"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintHorizontal_bias="0.714"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView14" />
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="150dp"
-        android:src="@drawable/blue_heart"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
