@@ -17,7 +17,7 @@
             android:id="@+id/action_welcomeFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_welcomeFragment_to_informationFragment"
+            android:id="@+id/action_welcomeFragment_to_backgroundDiseasesFragment"
             app:destination="@id/backgroundDiseasesFragment" />
     </fragment>
     <fragment

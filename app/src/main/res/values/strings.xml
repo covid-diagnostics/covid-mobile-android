@@ -86,4 +86,5 @@
     <string name="header_instructions_demographic_fragment">Have you been diagnosed with any of the following background diseases?</string>
     <string name="high_blood_pressure">High blood pressure (Hypertension)</string>
     <string name="cancer">Have or had Cancer</string>
+    <string name="receives_dialysis_treatment">Receives dialysis treatment</string>
 </resources>

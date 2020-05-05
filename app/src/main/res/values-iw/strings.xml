@@ -66,4 +66,5 @@
     <string name="header_instructions_demographic_fragment">האם אובחנת עם אחת ממחלות הרקע הבאות?</string>
     <string name="high_blood_pressure">לחץ דם גבוה</string>
     <string name="cancer">יש או היה לי סרטן</string>
+    <string name="receives_dialysis_treatment">מקבל טיפול בדיאליזה</string>
 </resources>

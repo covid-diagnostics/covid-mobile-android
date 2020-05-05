@@ -3,7 +3,10 @@ package com.example.coronadiagnosticapp.ui.fragments.information
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -36,6 +39,14 @@ class BackgroundDiseasesFragment : ScopedFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        chronic_kidney_disease.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            if(isChecked)
+                chronic_kidney_disease_yes_no.visibility = VISIBLE
+            else
+                chronic_kidney_disease_yes_no.visibility = GONE
+        }
+
+
         button_background_diseases_next.setOnClickListener {
             submit()
         }
@@ -66,8 +77,12 @@ class BackgroundDiseasesFragment : ScopedFragment() {
             diseases.add("asthma")
         if (pulmonary_disease.isChecked)
             diseases.add("pulmonary disease")
-        if (chronic_kidney_disease.isChecked)
-            diseases.add("chronic kidney disease")
+        if (chronic_kidney_disease.isChecked) {
+            if(yes_radio_btn.isChecked)
+                diseases.add("chronic kidney disease receives dialysis treatment")
+            else
+                diseases.add("chronic kidney disease doesn't receives dialysis treatment")
+        }
         if (hypertension.isChecked)
             diseases.add("hypertension")
         if (cancer.isChecked)
