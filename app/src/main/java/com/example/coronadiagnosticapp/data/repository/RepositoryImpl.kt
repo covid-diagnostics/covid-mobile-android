@@ -190,6 +190,6 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun saveSmokeStatus(smokingStatus: SmokingStatus) {
 //        TODO add this fun to Dao
-//        dao.saveSmokeStatus(smokingStatus.name)
+//        dao.saveSmokeStatus(smokingStatus)
     }
 }
