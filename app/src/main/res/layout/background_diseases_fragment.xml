@@ -19,13 +19,15 @@
 
     <TextView
         android:id="@+id/textView_header_instructions"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/header_instructions_demographic_fragment"
         android:textAlignment="center"
         android:textAppearance="@style/appHeader"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/chips"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,101 +36,113 @@
         android:id="@+id/chips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/textView_header_instructions">
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
-            android:theme="@style/Theme.MaterialComponents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="false"
-            android:layout_marginEnd="6dp">
+            android:layout_marginEnd="6dp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:singleLine="false">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/diabetes"
                 style="@style/myChipButton"
-                android:text="@string/diabetes"/>
+                android:text="@string/diabetes" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/autoimmune_disease"
                 style="@style/myChipButton"
-                android:text="@string/autoimmune_disease"/>
+                android:text="@string/autoimmune_disease" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/asthma"
                 style="@style/myChipButton"
-                android:text="@string/asthma"/>
+                android:text="@string/asthma" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/pulmonary_disease"
                 style="@style/myChipButton"
-                android:text="@string/pulmonary_disease"/>
+                android:text="@string/pulmonary_disease" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/chronic_kidney_disease"
                 style="@style/myChipButton"
-                android:text="@string/chronic_kidney_disease"/>
+                android:text="@string/chronic_kidney_disease" />
         </com.google.android.material.chip.ChipGroup>
-            <LinearLayout
-                android:id="@+id/chronic_kidney_disease_yes_no"
-                android:layout_width="match_parent"
+
+        <LinearLayout
+            android:id="@+id/chronic_kidney_disease_yes_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editbox_background_normal"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:background="@drawable/editbox_background_normal"
-                android:visibility="gone"
-                android:padding="10dp">
+                android:padding="8dp"
+                android:text="@string/receives_dialysis_treatment"
+                android:textColor="@color/text_chip_state_list"
+                android:textSize="16sp" />
 
-                <TextView
+            <RadioGroup
+                android:id="@+id/yes_no_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/yes_radio_btn"
+                android:orientation="horizontal">
+
+                <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
+                    android:id="@+id/yes_radio_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_chip_state_list"
-                    android:padding="8dp"
-                    android:text="@string/receives_dialysis_treatment"/>
-                <RadioGroup
-                    android:id="@+id/yes_no_group"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="Yes"
+                    android:textColor="@color/text_chip_state_list" />
+
+                <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
+                    android:id="@+id/no_radio_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:checkedButton="@+id/yes_radio_btn">
+                    android:layout_weight="1"
+                    android:text="No"
+                    android:textColor="@color/text_chip_state_list" />
+            </RadioGroup>
+        </LinearLayout>
 
-                    <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
-                        android:id="@+id/yes_radio_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/text_chip_state_list"
-                        android:text="Yes" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/hypertension"
+            style="@style/myChipButton"
+            android:text="@string/high_blood_pressure" />
 
-                    <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
-                        android:id="@+id/no_radio_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/text_chip_state_list"
-                        android:text="No" />
-                </RadioGroup>
-            </LinearLayout>
-            <com.google.android.material.chip.Chip
-                android:id="@+id/hypertension"
-                style="@style/myChipButton"
-                android:text="@string/high_blood_pressure"/>
-            <com.google.android.material.chip.Chip
-                android:id="@+id/cancer"
-                style="@style/myChipButton"
-                android:text="@string/cancer"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cancer"
+            style="@style/myChipButton"
+            android:text="@string/cancer" />
 
     </LinearLayout>
+
     <Button
         android:id="@+id/button_background_diseases_next"
         style="@style/customButton"
-        android:text="@string/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chips" />
 
     <ProgressBar
         android:id="@+id/progressBar_background_diseases_Fragment"
