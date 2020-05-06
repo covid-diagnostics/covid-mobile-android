@@ -16,6 +16,7 @@ interface Repository {
     var breathingRate: Double
 
     suspend fun registerUser(userRegister: UserRegister)
+    suspend fun setCountry(country: String)
     fun isLoggedIn(): Boolean
     suspend fun updateUserPersonalInformation(
         sex: Sex,

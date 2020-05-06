@@ -43,9 +43,9 @@ class SmokingFragment : Fragment() {
     private fun save(view: View) {
         val smokingStatus =
             when (smoke_group.checkedRadioButtonId) {
-                R.id.non_smoker_radio -> SmokingStatus.NON
-                R.id.smoker_radio -> SmokingStatus.SMOKER
-                R.id.smoker_5y_ago_radio -> SmokingStatus.SMOKED5_Y_AGO
+                R.id.non_smoker_radio -> SmokingStatus.NEVER
+                R.id.smoker_radio -> SmokingStatus.CURRENT
+                R.id.smoker_5y_ago_radio -> SmokingStatus.STOPPED
                 else->{
                     toast("Choose one option")
                     return

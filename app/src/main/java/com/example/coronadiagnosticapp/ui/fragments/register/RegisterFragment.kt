@@ -72,7 +72,8 @@ class RegisterFragment : ScopedFragment() {
             val countrySelectIndex = res["country"]!!.asInt()!!
             val country = spinner_country.adapter.getItem(countrySelectIndex) as Country
 
-            viewModel.registerUser(phone, country.iso)
+            viewModel.registerUser(phone)
+            viewModel.setCountry(country.iso)
 
             withContext(Main) {
                 if (viewModel.isLoggedIn()) {

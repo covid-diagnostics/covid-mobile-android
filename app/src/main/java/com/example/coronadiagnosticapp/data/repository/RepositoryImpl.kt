@@ -53,6 +53,7 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+
     override fun isLoggedIn(): Boolean {
         val tokenInterceptor = tokenServiceInterceptor.sessionToken
         val tokenFromPreference = sharedProvider.getToken()
@@ -65,18 +66,34 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+
+    override suspend fun setCountry(country:String){
+        dao.deleteAllUsersInfo()
+        val userInfo = UserInfo(null, null, null, null, null, country,  ArrayList())
+        dao.upsertUserInfo(userInfo)
+    }
+
     override suspend fun updateUserPersonalInformation(
         sex: Sex, age: Int, height: Int, weight: Int
     ) {
-        val userInfo = UserInfo(age, sex, weight, height, null, ArrayList<String>())
+        val userInfo = dao.getUserInfo()
+        userInfo.apply {
+            this.sex = sex
+            this.age = age
+            this.height = height
+            this.weight = weight
+        }
         dao.insertUserInfo(userInfo)
     }
 
-    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>){
-        val userInfo = dao.getUserInfo()?: kotlin.run {
-            UserInfo(null, null, null, null, null, backgroundDiseases)
-        }
+    override suspend fun saveSmokeStatus(smokingStatus: SmokingStatus) {
+        val userInfo = dao.getUserInfo()
+        userInfo.smokingStatus = smokingStatus
+        dao.upsertUserInfo(userInfo)
+    }
 
+    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>){
+        val userInfo = dao.getUserInfo()
         userInfo.backgroundDiseases = backgroundDiseases
 
         val userInfoRes = networkDataSource.updateUserInfo(userInfo)
@@ -191,10 +208,5 @@ class RepositoryImpl @Inject constructor(
     override suspend fun sendUserAnswers() {
         val answers: List<AnswersResponse> = dao.getAnswers()
         networkDataSource.sendAnswers(answers)
-    }
-
-    override suspend fun saveSmokeStatus(smokingStatus: SmokingStatus) {
-//        TODO add this fun to Dao
-//        dao.saveSmokeStatus(smokingStatus)
     }
 }
