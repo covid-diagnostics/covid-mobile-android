@@ -31,7 +31,7 @@
             android:layout_marginStart="100dp"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="@string/things_look_ok"
+            android:text="@string/good_result"
             android:textSize="20sp"
             android:textStyle="bold" />
 
