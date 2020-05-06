@@ -12,7 +12,8 @@ data class UserInfo(
     var sex: Sex?,
     var weight: Int?,
     var height: Int?,
-    var smokingStatus: String?,
+    var smokingStatus: SmokingStatus?,
+    val country: String,
     var backgroundDiseases: List<String>
 ) {
     @PrimaryKey(autoGenerate = true)
