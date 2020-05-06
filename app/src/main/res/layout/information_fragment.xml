@@ -99,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:text="@string/submit_personal_info"
+        style="@style/customButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

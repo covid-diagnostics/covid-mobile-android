@@ -92,4 +92,5 @@
     <string name="same">אותו דבר</string>
     <string name="better">טוב יותר</string>
     <string name="worse">פחות טוב</string>
+    <string name="press_the_mic_button_n_to_start_recording">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
 </resources>

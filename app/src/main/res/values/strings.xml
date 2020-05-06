@@ -96,4 +96,5 @@
     <string name="same">Same</string>
     <string name="better">Better</string>
     <string name="worse">Worse</string>
+    <string name="press_the_mic_button_n_to_start_recording">Press the mic button \n to start recording</string>
 </resources>
