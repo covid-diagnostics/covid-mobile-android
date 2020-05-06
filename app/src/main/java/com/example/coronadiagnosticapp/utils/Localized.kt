@@ -7,9 +7,9 @@ interface Localizable {
     @get:StringRes
     val stringRes:Int
 
-    fun getString(context: Context){
+    fun getString(context: Context)=
         context.getString(stringRes)
-    }
+
 }
 
 //Example of usage
