@@ -77,9 +77,9 @@ class BackgroundDiseasesFragment : ScopedFragment() {
             diseases.add("pulmonary disease")
         if (chronic_kidney_disease.isChecked) {
             if(yes_radio_btn.isChecked)
-                diseases.add("chronic kidney disease receives dialysis treatment")
+                diseases.add("CKD receives dialysis treatment")
             else
-                diseases.add("chronic kidney disease doesn't receives dialysis treatment")
+                diseases.add("CKD doesn't receives dialysis treatment")
         }
         if (hypertension.isChecked)
             diseases.add("hypertension")
