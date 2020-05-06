@@ -35,14 +35,16 @@ class DailyMetricFragment : ScopedFragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         (activity as? MainActivity)?.run {
             setStepperCount(0)
             showStepperLayout()
         }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         button_metricSubmit.setOnClickListener {
             createMeasurement()
         }

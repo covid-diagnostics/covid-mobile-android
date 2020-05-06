@@ -75,11 +75,11 @@ class RegisterFragment : ScopedFragment() {
             viewModel.registerUser(phone, country.iso)
 
             withContext(Main) {
-                showLoading(progressBar_register, false)
                 if (viewModel.isLoggedIn()) {
                     findNavController()
                         .navigate(R.id.action_registerFragment_to_informationFragment)
                 } else {
+                    showLoading(progressBar_register, false)
                     toast("Please try again")
                 }
             }

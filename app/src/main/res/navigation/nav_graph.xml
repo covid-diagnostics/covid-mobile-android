@@ -26,6 +26,9 @@
         android:label="register_fragment"
         tools:layout="@layout/register_fragment" >
         <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
             android:id="@+id/action_registerFragment_to_informationFragment"
             app:destination="@id/informationFragment" />
     </fragment>
@@ -35,8 +38,8 @@
         android:label="InformationFragment"
         tools:layout="@layout/information_fragment">
         <action
-            android:id="@+id/action_informationFragment_to_backgroundDiseasesFragment"
-            app:destination="@id/backgroundDiseasesFragment" />
+            android:id="@+id/action_informationFragment_to_smokingFragment"
+            app:destination="@id/smokingFragment" />
     </fragment>
 
     <fragment
@@ -108,5 +111,23 @@
         <action
             android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.coronadiagnosticapp.ui.login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_instructionsFragment"
+            app:destination="@id/instructionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/smokingFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment"
+        android:label="fragment_smoking"
+        tools:layout="@layout/fragment_smoking" >
+        <action
+            android:id="@+id/action_smokingFragment_to_backgroundDiseasesFragment"
+            app:destination="@id/backgroundDiseasesFragment" />
     </fragment>
 </navigation>

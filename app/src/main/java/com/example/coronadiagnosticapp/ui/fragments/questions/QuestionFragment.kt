@@ -47,11 +47,14 @@ class QuestionFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_question, container, false)
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as? MainActivity)?.hideStepperLayout()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context?.getAppComponent()?.inject(this)
-
-        (activity as? MainActivity)?.hideStepperLayout()
     }
 
     private val requestBuilder by lazy {
