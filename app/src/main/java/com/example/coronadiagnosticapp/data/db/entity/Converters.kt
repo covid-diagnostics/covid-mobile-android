@@ -88,6 +88,11 @@ class Converters {
         gson.fromJson(value, SelectQuestion.ExtraData::class.java)
     }
 
+    @TypeConverter
+    fun toSmokeStatus(value: String?) = stringToEnum<SmokingStatus>(value)
+
+    @TypeConverter
+    fun smokeStatusToString(value: SmokingStatus?) = enumToString(value)
 
     @TypeConverter
     fun toGeneralFeeling(value: String?) = stringToEnum<GeneralFeeling>(value)
