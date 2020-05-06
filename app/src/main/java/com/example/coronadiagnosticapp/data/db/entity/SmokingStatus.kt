@@ -1,5 +1,14 @@
 package com.example.coronadiagnosticapp.data.db.entity
 
+import com.google.gson.annotations.SerializedName
+
 enum class SmokingStatus {
-    NON,SMOKER,SMOKED5_Y_AGO
+    @SerializedName("NEVER")
+    NON,
+
+    @SerializedName("STOPPED")
+    SMOKER,
+
+    @SerializedName("CURRENT")
+    SMOKED5_Y_AGO
 }
