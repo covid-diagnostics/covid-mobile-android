@@ -39,8 +39,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:checked="true"
-            android:tag="0"
             android:text="@string/non_smoker"
             android:textSize="20sp" />
 
@@ -50,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_weight="1"
-            android:tag="1"
             android:text="@string/smoker"
             android:textSize="20sp" />
 
@@ -60,7 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_weight="1"
-            android:tag="2"
             android:text="@string/smoked_5y_ago"
             android:textSize="20sp" />
 

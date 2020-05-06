@@ -78,7 +78,11 @@ class InformationFragment : ScopedFragment() {
             return
         }
 
-        val sexSelection = sex_question.currentSelection!!
+        val sexSelection = sex_question.currentSelection
+            ?: run {
+                toast("please select sex")
+                return
+            }
         val sex =  Sex.values()[sexSelection.ordinal]
 
         val age = res["age"]!!.asInt()!!

@@ -41,10 +41,17 @@ class SmokingFragment : Fragment() {
     }
 
     private fun save(view: View) {
-        val btn = view.findViewById<RadioButton>(smoke_group.checkedRadioButtonId)
-        val tag = (btn.tag as String).toInt()
-        val smokingStatus = SmokingStatus.values()[tag]
-
+        val smokingStatus =
+            when (smoke_group.checkedRadioButtonId) {
+                R.id.non_smoker_radio -> SmokingStatus.NON
+                R.id.smoker_radio -> SmokingStatus.SMOKER
+                R.id.smoker_5y_ago_radio -> SmokingStatus.SMOKED5_Y_AGO
+                else->{
+                    toast("Choose one option")
+                    return
+                }
+            }
+        view.isEnabled = false
 //        todo show progress
         GlobalScope.launch(Dispatchers.IO) {
             viewModel.save(smokingStatus)

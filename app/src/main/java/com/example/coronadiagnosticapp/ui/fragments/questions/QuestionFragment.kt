@@ -62,7 +62,6 @@ class QuestionFragment : Fragment() {
             .`as`(PictureDrawable::class.java)
             .placeholder(R.drawable.ic_broken_image)
             .listener(SvgSoftwareLayerSetter())
-            .circleCrop()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,14 +82,6 @@ class QuestionFragment : Fragment() {
                 if (dy > 0) onScrollUp()
                 // Scrolling down
                 else onScrollDown()
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    // Do something
-                    //Add fling flag + when fling down show again the question_box
-                }
             }
         })
     }

@@ -1,12 +1,19 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions.viewholders
 
+import android.content.ContextWrapper
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.PictureDrawable
+import android.view.ContextThemeWrapper
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.request.RequestOptions
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import kotlinx.android.synthetic.main.question_select_box.view.*
@@ -41,11 +48,17 @@ abstract class SelectBoxVH(
 
     protected fun setSelectedColor() {
         if (isSelected) {
-            (itemView as CardView).setCardBackgroundColor(selectedColor)
-            nameTv.setTextColor(Color.WHITE)
+            setColors(selectedColor,Color.WHITE)
         } else {
-            (itemView as CardView).setCardBackgroundColor(Color.WHITE)
-            nameTv.setTextColor(Color.BLACK)
+            setColors(Color.WHITE,Color.BLACK)
         }
+    }
+
+    private fun setColors(
+        @ColorInt cardBgColor:Int,
+        @ColorInt textColor:Int
+    ) {
+        (itemView as CardView).setCardBackgroundColor(cardBgColor)
+        nameTv.setTextColor(textColor)
     }
 }
