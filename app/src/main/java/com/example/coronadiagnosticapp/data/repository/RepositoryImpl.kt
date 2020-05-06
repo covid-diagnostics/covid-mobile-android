@@ -187,4 +187,9 @@ class RepositoryImpl @Inject constructor(
         val answers: List<AnswersResponse> = dao.getAnswers()
         networkDataSource.sendAnswers(answers)
     }
+
+    override suspend fun saveSmokeStatus(smokingStatus: SmokingStatus) {
+//        TODO add this fun to Dao
+//        dao.saveSmokeStatus(smokingStatus)
+    }
 }

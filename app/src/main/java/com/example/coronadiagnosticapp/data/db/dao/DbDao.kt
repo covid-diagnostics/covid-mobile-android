@@ -93,9 +93,5 @@ interface DbDao {
     fun getSelectQuestions(): List<SelectQuestion>
 
 
-    fun getSimpleQuestions(): List<Question>{
-        return getTextQuestions() + getCheckboxQuestions()
-    }
-
-
+    fun getSimpleQuestions() = getTextQuestions() + getCheckboxQuestions()
 }
