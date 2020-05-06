@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
@@ -43,9 +42,9 @@ class SmokingFragment : Fragment() {
     private fun save(view: View) {
         val smokingStatus =
             when (smoke_group.checkedRadioButtonId) {
-                R.id.non_smoker_radio -> SmokingStatus.NEVER
-                R.id.smoker_radio -> SmokingStatus.CURRENT
-                R.id.smoker_5y_ago_radio -> SmokingStatus.STOPPED
+                R.id.non_smoker_radio -> SmokingStatus.NON
+                R.id.smoker_radio -> SmokingStatus.SMOKER
+                R.id.smoker_5y_ago_radio -> SmokingStatus.SMOKED5_Y_AGO
                 else->{
                     toast("Choose one option")
                     return

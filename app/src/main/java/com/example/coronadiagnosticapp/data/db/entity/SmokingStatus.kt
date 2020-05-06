@@ -6,9 +6,9 @@ enum class SmokingStatus {
     @SerializedName("NEVER")
     NON,
 
-    @SerializedName("STOPPED")
+    @SerializedName("CURRENT")
     SMOKER,
 
-    @SerializedName("CURRENT")
+    @SerializedName("STOPPED")
     SMOKED5_Y_AGO
 }
