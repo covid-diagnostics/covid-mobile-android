@@ -88,6 +88,9 @@
         android:label="oxymeter_fragment"
         tools:layout="@layout/fragment_oxymeter">
 
+        <action
+            android:id="@+id/action_oxymeterFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"

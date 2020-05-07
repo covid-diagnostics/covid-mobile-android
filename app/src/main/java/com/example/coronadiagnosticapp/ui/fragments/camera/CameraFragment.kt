@@ -11,12 +11,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment
+import com.example.coronadiagnosticapp.ui.activities.MainActivity
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterData
+import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
+import com.example.coronadiagnosticapp.utils.toast
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -46,23 +53,26 @@ class CameraFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
+        context!!.getAppComponent().inject(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.camera_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.camera_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
+        (activity as? MainActivity)?.setStepperCount(1)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        onOpenedFromOxymeterFragment()
+
         button_startCamera.setOnClickListener {
+
             if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
                 ) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -73,10 +83,14 @@ class CameraFragment : ScopedFragment() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     200)
             } else {
-                val intent = Intent(context, OxymeterFragment::class.java)
-                startActivityForResult(intent, REQUEST_CODE_VIDEO)
+                startOxymeterFragment()
             }
         }
+    }
+
+    private fun startOxymeterFragment() {
+        findNavController()
+            .navigate(R.id.action_cameraFragment_to_oxymeterFragment)
     }
 
     override fun onRequestPermissionsResult(
@@ -86,68 +100,31 @@ class CameraFragment : ScopedFragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 200) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                activity?.let {
-                    val intent = Intent(context, OxymeterFragment::class.java)
-                    startActivityForResult(intent, REQUEST_CODE_VIDEO)
-                }
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                startOxymeterFragment()
             } else {
-                Toast.makeText(context, "cannot continue without permissions", Toast.LENGTH_LONG)
-                    .show()
-                activity?.finish()//FIXME not sure if correct
+                toast("cannot continue without permissions", Toast.LENGTH_LONG)
+                findNavController().popBackStack()
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_VIDEO) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-//                    val fileName = data.getStringExtra("result")
-//                    val file = File(fileName)
-//
-//                    Log.d("CameraFragment", file.totalSpace.toString())
-//                    showLoading(true)
-//                    launch(Dispatchers.IO) {
-//                        viewModel.uploadVideo(File("csd"))
-//                        withContext(Dispatchers.Main) {
-//                            showLoading(false)
-//                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-//                        }
-//                    }
+    private fun onOpenedFromOxymeterFragment(){
+        // get data from OxymeterActivity
+        val oxymeterData:OxymeterData = arguments
+            ?.getParcelable(OxymeterFragment.EXTRA_OXY_DATA)
+            ?: return
 
-                    showLoading(true)
-                    // get data from OxymeterActivity
-                    val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
-                    val breathsPerMinute = data.getStringExtra(breathsPerMinute())?.toInt()
-                    val oxygenSaturation = data.getStringExtra(oxygenSaturation())?.toInt()
-                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
-                        launch(Dispatchers.IO) {
-                            viewModel.saveResult(
-                                HealthResult(
-                                    beatsPerMinute,
-                                    breathsPerMinute,
-                                    oxygenSaturation
-                                )
-                            )
-                            withContext(Dispatchers.Main) {
-                                showLoading(false)
-                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-                            }
-                        }
-                    }
-                }
-            } else {
-                Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show()
+        showLoading(progressBar_cameraFragment,true)
+
+        launch(Dispatchers.IO) {
+            viewModel.saveResult(HealthResult(oxymeterData))
+            withContext(Dispatchers.Main) {
+                showLoading(progressBar_cameraFragment,false)
+                findNavController()
+                    .navigate(R.id.action_cameraFragment_to_recorderFragment)
             }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_cameraFragment.visibility = View.VISIBLE
-            false -> progressBar_cameraFragment.visibility = View.GONE
         }
     }
 
