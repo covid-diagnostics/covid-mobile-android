@@ -24,6 +24,10 @@ import com.jjoe64.graphview.GridLabelRenderer
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.fragment_oxymeter.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -134,7 +138,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
             object : OxymeterThreadEventListener {
                 override fun onFrame(frameNumber: Int) {
                     Log.i(TAG, "Current frame:$frameNumber")
-                    activity?.runOnUiThread {
+                    GlobalScope.launch(Main) {
                         setProgress(frameNumber, totalFrames)
                     }
                 }
@@ -152,7 +156,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
                 }
 
                 override fun onStartWithNewOxymeter() {
-                    activity?.runOnUiThread {
+                    GlobalScope.launch(Main) {
                         showProgressBarAndShowAlert(getString(R.string.things_look_ok))
                     }
                 }
@@ -197,11 +201,11 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
 
     private fun fingerRemoved() {
         Log.w(TAG, "Finger not recognised!")
-        activity?.runOnUiThread { removeProgressBarAndShowAlert(getString(R.string.please_put_your_finger_on_camera)) }
+        GlobalScope.launch(Main) { removeProgressBarAndShowAlert(getString(R.string.please_put_your_finger_on_camera)) }
     }
 
     private fun measurementFailed() {
-        activity?.runOnUiThread {
+        GlobalScope.launch(Main) {
             removeProgressBarAndShowAlert(getString(R.string.measurement_failed))
             ready_btn.isClickable = true
         }
@@ -209,7 +213,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
 
     private fun updateView(heartRate: Int) {
         currentHeartRate = heartRate
-        activity?.runOnUiThread { updateMeasurements() }
+        GlobalScope.launch(Main) { updateMeasurements() }
     }
 
     private fun updateMeasurements() {
@@ -217,7 +221,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
     }
 
     private fun updateGraphView(frame: Int, point: Double) {
-        activity?.runOnUiThread { updateGraph(frame, point) }
+        GlobalScope.launch(Main) { updateGraph(frame, point) }
     }
 
     private fun updateGraph(frame: Int, point: Double) {
