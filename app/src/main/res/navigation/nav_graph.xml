@@ -76,11 +76,24 @@
         <action
             android:id="@+id/action_cameraFragment_to_recorderFragment"
             app:destination="@id/recorderFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_oxymeterFragment"
+            app:destination="@id/oxymeterFragment"
+            app:popUpTo="@id/cameraFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/oxymeterFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment"
+        android:label="oxymeter_fragment"
+        tools:layout="@layout/fragment_oxymeter">
+
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment"
-        android:label="RecorderFragment" >
+        android:label="RecorderFragment"
+        tools:layout="@layout/recorder_fragment">
         <action
             android:id="@+id/action_recorderFragment_to_recorderFragment2"
             app:destination="@id/recorderFragment2" />
@@ -88,7 +101,8 @@
     <fragment
         android:id="@+id/recorderFragment2"
         android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment2"
-        android:label="RecorderFragment2" >
+        android:label="RecorderFragment2"
+        tools:layout="@layout/recorder_fragment2">
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />

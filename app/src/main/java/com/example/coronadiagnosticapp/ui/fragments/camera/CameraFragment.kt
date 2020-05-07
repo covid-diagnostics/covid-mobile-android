@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
-import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
+import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
@@ -73,7 +73,7 @@ class CameraFragment : ScopedFragment() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     200)
             } else {
-                val intent = Intent(context, OxymeterActivity::class.java)
+                val intent = Intent(context, OxymeterFragment::class.java)
                 startActivityForResult(intent, REQUEST_CODE_VIDEO)
             }
         }
@@ -88,7 +88,7 @@ class CameraFragment : ScopedFragment() {
         if (requestCode == 200) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
-                    val intent = Intent(context, OxymeterActivity::class.java)
+                    val intent = Intent(context, OxymeterFragment::class.java)
                     startActivityForResult(intent, REQUEST_CODE_VIDEO)
                 }
             } else {

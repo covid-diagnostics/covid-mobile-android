@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activities.oxymeter.OxymeterActivity">
+            android:name="com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment">
         </activity>
         <activity
             android:name=".ui.activities.MainActivity"

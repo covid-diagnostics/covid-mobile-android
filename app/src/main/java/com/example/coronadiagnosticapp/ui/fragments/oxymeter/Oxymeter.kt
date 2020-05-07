@@ -1,7 +1,6 @@
-package com.example.coronadiagnosticapp.ui.activities.oxymeter
+package com.example.coronadiagnosticapp.ui.fragments.oxymeter
 
 import android.hardware.Camera
-import java.util.*
 
 class OxymeterData(var oxSaturation: Int, var heartRate: Int, var breathRate: Int) {}
 class OxymeterAverages(var red: Array<Double>, var green: Array<Double>, var blue: Array<Double>, var timepoint: Array<Long>)
