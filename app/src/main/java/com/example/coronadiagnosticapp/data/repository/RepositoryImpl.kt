@@ -15,6 +15,7 @@ import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
+import com.google.gson.JsonObject
 import java.io.File
 import javax.inject.Inject
 
@@ -158,6 +159,12 @@ class RepositoryImpl @Inject constructor(
 
         dao.insertQuestions(questions)
         return questions
+    }
+
+    override suspend fun getMeasurementCount(): List<JsonObject> {
+
+        val count = networkDataSource.getMeasurementCount()
+        return count
     }
 
     override suspend fun getNextSelectableQuestion(currentQuestion: SelectQuestion?): SelectQuestion? {

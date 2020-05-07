@@ -58,6 +58,10 @@ interface ApiServer {
         @Header("Accept-Language") language: String
     ): Deferred<List<JsonObject>>
 
+    @GET(MEASUREMENT_COUNT_URL)
+    fun getMeasurementCount(
+    ): Deferred<List<JsonObject>>
+
     @POST(SEND_ANSWERS)
     fun sendUserAnswer(
         @Body answer: AnswersResponse

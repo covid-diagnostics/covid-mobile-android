@@ -9,12 +9,15 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.coronadiagnosticapp.MyApplication
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.result_fragment.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ResultFragment : ScopedFragment() {
@@ -27,11 +30,15 @@ class ResultFragment : ScopedFragment() {
 
     @Inject
     lateinit var viewModel: ResultViewModel
+    var measurementCount: List<JsonObject> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.applicationContext.let { ctx ->
             (ctx as MyApplication).getAppComponent().inject(this)
+        }
+        lifecycleScope.launch {
+            measurementCount = viewModel.getMeasurementCount()
         }
     }
 
@@ -61,10 +68,11 @@ class ResultFragment : ScopedFragment() {
 
 //      Continue text gradient:
         continue_text.paint.shader = LinearGradient(
-            0F, 0F, continue_text.paint.textScaleX.toFloat(), 0F,
+            0F, 0F, continue_text.paint.measureText(continue_text.text as String?), 0F,
             intArrayOf(Color.parseColor("#34CDFD"), Color.parseColor("#5928E4")),
             floatArrayOf(0F, 1F), Shader.TileMode.CLAMP
         )
+        continue_text.text = measurementCount.toString()
 
         val NORMAL_TEXT = colorizeText(resources.getString(R.string.normal), GREEN_COLOR_CODE)
         val SEVERELY_LOW_TEXT =
