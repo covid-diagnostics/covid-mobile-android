@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0EFFF"
+    android:background="#FFFFFF"
     tools:context=".ui.fragments.resultFragment.ResultFragment">
 
     <!--    SUMMARY-->
@@ -12,186 +12,27 @@
     <!--    HEAR RATE -->
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_summary"
-        android:layout_width="310dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="56dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
+        android:id="@+id/cardView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView_summaryText"
-            android:layout_width="193dp"
-            android:layout_height="74dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/things_look_ok"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_heartRate"
-        android:layout_width="310dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_summary">
-
-        <TextView
-            android:id="@+id/textView_heartRateText"
-            android:layout_width="193dp"
-            android:layout_height="74dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/your_heart_rate_is"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:cardCornerRadius="40dp"
-        app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView_heartRate"
-        app:layout_constraintEnd_toEndOf="@+id/cardView_heartRate"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toStartOf="@+id/cardView_heartRate"
-        app:layout_constraintTop_toTopOf="@+id/cardView_heartRate"
-        app:layout_constraintVertical_bias="0.615">
-
-        <TextView
-            android:id="@+id/textView_heartRate"
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:text=""
-            android:textSize="25sp"
-            tools:layout_editor_absoluteX="270dp"
-            tools:layout_editor_absoluteY="589dp" />
+            android:scaleType="centerInside"
+            android:src="@drawable/logo_small" />
     </androidx.cardview.widget.CardView>
 
     <!--    OXYGEN -->
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_oxygen"
-        android:layout_width="310dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_heartRate">
-
-        <TextView
-            android:id="@+id/textView_OxygenText"
-            android:layout_width="196dp"
-            android:layout_height="71dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/your_oxygen_saturation_is"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:cardCornerRadius="40dp"
-        app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView_oxygen"
-        app:layout_constraintEnd_toEndOf="@+id/cardView_oxygen"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toStartOf="@+id/cardView_oxygen"
-        app:layout_constraintTop_toTopOf="@+id/cardView_oxygen"
-        app:layout_constraintVertical_bias="0.615">
-
-        <TextView
-            android:id="@+id/textView_Oxygen"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:text=""
-            android:textSize="25sp"
-            tools:layout_editor_absoluteX="270dp"
-            tools:layout_editor_absoluteY="589dp" />
-    </androidx.cardview.widget.CardView>
-
     <!--    Respiration Rate-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_respiration"
-        android:layout_width="310dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_oxygen">
-
-        <TextView
-            android:id="@+id/textView_respirationText"
-            android:layout_width="194dp"
-            android:layout_height="73dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/your_respiration_rate_is"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView9"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:cardCornerRadius="40dp"
-        app:cardElevation="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView_respiration"
-        app:layout_constraintEnd_toEndOf="@+id/cardView_respiration"
-        app:layout_constraintHorizontal_bias="0.908"
-        app:layout_constraintStart_toStartOf="@+id/cardView_respiration"
-        app:layout_constraintTop_toTopOf="@+id/cardView_respiration"
-        app:layout_constraintVertical_bias="0.615">
-
-        <TextView
-            android:id="@+id/textView_respiration"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:text=""
-            android:textSize="25sp"
-            tools:layout_editor_absoluteX="270dp"
-            tools:layout_editor_absoluteY="589dp" />
-    </androidx.cardview.widget.CardView>
 
 
     <Button
@@ -199,20 +40,91 @@
         style="@style/customButton"
         android:layout_width="211dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/finish"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="56dp"
+        android:text="Share"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_summaryText3" />
+
+    <TextView
+        android:id="@+id/textView_summaryText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="According to your symptoms, you are probably not sick"
+        android:textColor="#393939"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView_summaryText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="523 test have been done so far!"
+        android:textColor="#393939"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/textView_summaryText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="60dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Help us research and bring the world back to normal by sharing the app!"
+        android:textColor="#393939"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_summaryText2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Thanks for your donation!"
+        android:textColor="#393939"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <ImageView
-        android:id="@+id/imageView_summary"
-        android:layout_width="79dp"
-        android:layout_height="72dp"
-        android:src="@drawable/green_check"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView_summary"
-        app:layout_constraintEnd_toEndOf="@+id/cardView_summary"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="@+id/cardView_summary"
-        app:layout_constraintTop_toTopOf="@+id/cardView_summary" />
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/victory_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_summaryText" />
+
+    <TextView
+        android:id="@+id/continue_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue →"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_finish" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
