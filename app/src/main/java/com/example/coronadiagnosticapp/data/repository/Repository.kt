@@ -22,6 +22,8 @@ interface Repository {
     fun getLastResult(): HealthResult?
     fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
+    fun getIsFirstTime(): Boolean
+    fun setIsFirstTime(isFirstTime: Boolean)
     suspend fun submitMeasurement(measurement: Measurement): Measurement
     @RequiresApi(value = 23)
     suspend fun submitPpgMeasurement(
