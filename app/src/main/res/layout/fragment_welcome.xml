@@ -4,72 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="32dp"
-    android:layout_marginRight="32dp"
-    tools:context=".ui.fragments.welcome.WelcomeFragment">
+    tools:background="#FFFFFF"
+    tools:context=".ui.fragments.welcome.WelcomeFragment"
+    tools:layout_editor_absoluteX="32dp">
 
-    <TextView
-        android:id="@+id/textView_welcome_title"
-        android:layout_width="203dp"
-        android:layout_height="137dp"
-        android:layout_marginTop="204dp"
-        android:gravity="center"
-        android:text="@string/we_re_glad_you_ve_joined_the_effort"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/appSubHeader"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:text="@string/that_s_why_timely_diagnosis_and_isolation_can_save_your_life"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/appBodySmall"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_welcome_first_sub" />
-
-    <TextView
-        android:id="@+id/textView_welcome_first_sub"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="@string/thousands_of_israelis_could_suffer_the_ill_effects_of_the_coronavirus"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/appBodySmall"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_welcome_title" />
-
-    <Button
-        android:id="@+id/button_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
-        android:text="@string/start"
-        style="@style/customButton"
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="430dp"
+        android:layout_height="415dp"
+        android:src="@drawable/welcome_screen_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="124dp"
-        android:src="@drawable/welcome_screen_background"
+    <TextView
+        android:id="@+id/textView_welcome_title"
+        android:layout_width="353dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="105dp"
+        android:gravity="center"
+        android:text="@string/your_voice_can_win_corona"
+        android:textAlignment="textStart"
+        android:textSize="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_start"
+        style="@style/customButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_welcome_first_sub"
+        android:layout_width="195dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="55dp"
+        android:gravity="center"
+        android:text="@string/your_voice_can_help"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/appBodySmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView14" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

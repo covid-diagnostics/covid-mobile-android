@@ -30,10 +30,15 @@ class WelcomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        this.textView_welcome_title.setText(getText(R.string.your_voice_can_win_corona));
+
         button_start.setOnClickListener {
-            when (viewModel.isLoggedIn()) {
-                true -> findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
-                false -> findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
+            if (viewModel.isLoggedIn()) {
+                this.viewModel.setIsFirstTime(false);
+                findNavController().navigate(R.id.action_welcomeFragment_to_instructionsFragment)
+            } else {
+                this.viewModel.setIsFirstTime(true);
+                findNavController().navigate(R.id.action_welcomeFragment_to_registerFragment)
             }
         }
         AutostartUtils.requestAutostartPermissions(context)
