@@ -37,16 +37,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         start_btn.setOnClickListener {
-            val isLoggedIn = viewModel.isLoggedIn()
-            val id = if (isLoggedIn) {
-                R.id.action_homeFragment_to_instructionsFragment
-            } else {
-                R.id.action_homeFragment_to_registerFragment
-            }
-            viewModel.firstTime = !isLoggedIn
-            findNavController().navigate(id)
+            findNavController()
+                .navigate(R.id.action_homeFragment_to_instructionsFragment)
         }
-        AutostartUtils.requestAutostartPermissions(context)
 
         progressBar.show()
         num_checks_tv.hide()
