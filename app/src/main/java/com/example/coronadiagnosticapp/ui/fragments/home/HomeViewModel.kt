@@ -6,7 +6,10 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     fun isLoggedIn() = repository.isLoggedIn()
-    fun setIsFirstTime(isFirstTime: Boolean) = repository.setIsFirstTime(isFirstTime)
+    var firstTime: Boolean
+        get() = repository.getIsFirstTime()
+        set(value) = repository.setIsFirstTime(value)
+
     suspend fun getNumChecks(): Int = repository.getNumberOfMeasurements()
 }
 
