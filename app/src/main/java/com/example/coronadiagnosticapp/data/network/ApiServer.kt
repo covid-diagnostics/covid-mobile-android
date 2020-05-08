@@ -63,6 +63,8 @@ interface ApiServer {
         @Body answer: AnswersResponse
     ): Deferred<AnswersResponse>
 
+    @GET(NUMBER_OF_MEASUREMENTS)
+    fun getNumberOfMeasurements(): Deferred<Int>
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {

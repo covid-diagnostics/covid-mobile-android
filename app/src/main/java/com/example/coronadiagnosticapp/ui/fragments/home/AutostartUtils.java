@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.welcome;
+package com.example.coronadiagnosticapp.ui.fragments.home;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;

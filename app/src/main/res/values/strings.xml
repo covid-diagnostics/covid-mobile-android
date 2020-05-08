@@ -82,4 +82,16 @@
     <string name="your_voice_can_win_corona"><b>Your voice</b> can<b> beat</b> Corona!</string>
     <string name="press_the_mic_button_n_to_start_recording">Press the mic button \n to start recording</string>
     <string name="press_the_mic_button">Press the mic button \n to start recording</string>
+
+    <string name="voice_up">
+        <![CDATA[
+         <font color="#4787EF">Voice</font> up
+        ]]>
+    </string>
+    <string name="checks_have_been_taken_so_far">
+        <![CDATA[
+         <font color="#4787EF">%d</font> checks have been taken so far!
+        ]]>
+    </string>
+    <string name="city_back_on_tracks">Together we\'ll get the city back on tracks.</string>
 </resources>
