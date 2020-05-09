@@ -13,13 +13,11 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.android.synthetic.main.recorder_fragment2.*
 import kotlinx.android.synthetic.main.recorder_fragment2.progressBar_recordFragment
 import kotlinx.android.synthetic.main.recorder_fragment2.record_btn
 import kotlinx.android.synthetic.main.recorder_fragment2.record_filename

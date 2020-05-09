@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_welcome.*

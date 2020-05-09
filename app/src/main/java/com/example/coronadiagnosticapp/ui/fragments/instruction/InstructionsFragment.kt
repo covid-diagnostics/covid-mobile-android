@@ -1,16 +1,14 @@
 package com.example.coronadiagnosticapp.ui.fragments.instruction
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import kotlinx.android.synthetic.main.instructions_fragment.*
-import java.util.*
 import javax.inject.Inject
 
 class InstructionsFragment : Fragment() {
