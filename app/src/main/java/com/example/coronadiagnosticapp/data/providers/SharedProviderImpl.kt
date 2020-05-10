@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 const val USER_TOKEN = "USER_TOKEN"
 const val USER_NAME = "USER_NAME"
+const val IS_FIRST_TIME = "IS_FIRST_TIME"
 
 class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
     PreferenceProvider(context) {
@@ -29,6 +30,17 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
     override fun setName(userName: String?) {
         with(preferences.edit()) {
             putString(USER_NAME, userName)
+            apply()
+        }
+    }
+
+    override fun getIsFirstTime(): Boolean {
+        return preferences.getBoolean(IS_FIRST_TIME, true)
+    }
+
+    override fun setIsFirstTime(isFirstTime: Boolean) {
+        with(preferences.edit()) {
+            putBoolean(IS_FIRST_TIME, isFirstTime)
             apply()
         }
     }

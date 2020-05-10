@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterActivity
@@ -50,6 +50,9 @@ class CameraFragment : ScopedFragment() {
             (ctx as MyApplication).getAppComponent().inject(this)
         }
         activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
+        if (!this.viewModel.getIsFirstTime()) {
+            openOximeter()
+        }
     }
 
     override fun onCreateView(
@@ -59,24 +62,26 @@ class CameraFragment : ScopedFragment() {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
 
+    private fun openOximeter() {
+        if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                200)
+        } else {
+            val intent = Intent(context, OxymeterActivity::class.java)
+            startActivityForResult(intent, REQUEST_CODE_VIDEO)
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.findViewById<StepperIndicator>(R.id.stepperIndicator)?.currentStep = 1
-        button_startCamera.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestPermissions(arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    200)
-            } else {
-                val intent = Intent(context, OxymeterActivity::class.java)
-                startActivityForResult(intent, REQUEST_CODE_VIDEO)
-            }
-        }
+        button_startCamera.setOnClickListener { openOximeter() }
     }
 
     override fun onRequestPermissionsResult(
@@ -100,45 +105,30 @@ class CameraFragment : ScopedFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_VIDEO) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-//                    val fileName = data.getStringExtra("result")
-//                    val file = File(fileName)
-//
-//                    Log.d("CameraFragment", file.totalSpace.toString())
-//                    showLoading(true)
-//                    launch(Dispatchers.IO) {
-//                        viewModel.uploadVideo(File("csd"))
-//                        withContext(Dispatchers.Main) {
-//                            showLoading(false)
-//                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-//                        }
-//                    }
-
-                    showLoading(true)
-                    // get data from OxymeterActivity
-                    val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
-                    val breathsPerMinute = data.getStringExtra(breathsPerMinute())?.toInt()
-                    val oxygenSaturation = data.getStringExtra(oxygenSaturation())?.toInt()
-                    if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
-                        launch(Dispatchers.IO) {
-                            viewModel.saveResult(
-                                HealthResult(
-                                    beatsPerMinute,
-                                    breathsPerMinute,
-                                    oxygenSaturation
-                                )
-                            )
-                            withContext(Dispatchers.Main) {
-                                showLoading(false)
-                                findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
-                            }
+        if ((requestCode == REQUEST_CODE_VIDEO) && (resultCode == Activity.RESULT_OK) && (data != null)) {
+            showLoading(true)
+            // get data from OxymeterActivity
+            val beatsPerMinute = data.getStringExtra(beatsPerMinuteKey())?.toInt()
+            val breathsPerMinute = data.getStringExtra(breathsPerMinute())?.toInt()
+            val oxygenSaturation = data.getStringExtra(oxygenSaturation())?.toInt()
+            if (beatsPerMinute != null && breathsPerMinute != null && oxygenSaturation != null) {
+                launch(Dispatchers.IO) {
+                    viewModel.saveResult(
+                        HealthResult(
+                            beatsPerMinute,
+                            breathsPerMinute,
+                            oxygenSaturation
+                        )
+                    )
+                    withContext(Dispatchers.Main) {
+                        showLoading(false)
+                        if (viewModel.getIsFirstTime()) {
+                            findNavController().navigate(R.id.action_cameraFragment_to_recorderExplanation)
+                        } else {
+                            findNavController().navigate(R.id.action_cameraFragment_to_recorderFragment)
                         }
                     }
                 }
-            } else {
-                Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

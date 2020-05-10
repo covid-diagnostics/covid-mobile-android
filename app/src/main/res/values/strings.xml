@@ -96,5 +96,9 @@
     <string name="same">Same</string>
     <string name="better">Better</string>
     <string name="worse">Worse</string>
+    <string name="lets_start">Let\'s Start</string>
+    <string name="your_voice_can_help">One minute voice sample can help promote a free, fast and accessible tracking tool.</string>
+    <string name="get_to_know">Let\'s get to know you!</string>
+    <string name="your_voice_can_win_corona"><b>Your voice</b> can<b> beat</b> Corona!</string>
     <string name="press_the_mic_button_n_to_start_recording">Press the mic button \n to start recording</string>
 </resources>

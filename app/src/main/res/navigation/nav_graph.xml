@@ -76,6 +76,9 @@
         <action
             android:id="@+id/action_cameraFragment_to_recorderFragment"
             app:destination="@id/recorderFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_recorderExplanation"
+            app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
@@ -84,6 +87,9 @@
         <action
             android:id="@+id/action_recorderFragment_to_recorderFragment2"
             app:destination="@id/recorderFragment2" />
+        <action
+            android:id="@+id/action_recorderFragment_to_recorderExplanation3"
+            app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment2"
@@ -92,6 +98,9 @@
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_recorderFragment2_to_recorderExplanation"
+            app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
@@ -115,5 +124,14 @@
         <action
             android:id="@+id/action_loginFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recorderExplanation"
+        android:name="com.example.coronadiagnosticapp.recorderExplanation"
+        android:label="fragment_recorder_explanation"
+        tools:layout="@layout/fragment_recorder_explanation" >
+        <action
+            android:id="@+id/action_recorderExplanation_to_recorderFragment"
+            app:destination="@id/recorderFragment" />
     </fragment>
 </navigation>

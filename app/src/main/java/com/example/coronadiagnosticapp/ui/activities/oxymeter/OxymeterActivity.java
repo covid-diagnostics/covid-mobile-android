@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.coronadiagnosticapp.MyApplication;
+import com.example.coronadiagnosticapp.utils.MyApplication;
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.BaseActivity;
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;
@@ -295,6 +295,9 @@ public class OxymeterActivity extends BaseActivity {
 
         //Button
         readyBtn = (Button) findViewById(R.id.ready_btn);
+        findViewById(R.id.infoImg).setOnClickListener(it -> {
+            finish();
+        });
         progressBarView = (ProgressBar) findViewById(R.id.barTimer);
         timeLeftView = (TextView) findViewById(R.id.textTimer);
         heartRate = (TextView) findViewById(R.id.heartRate);
