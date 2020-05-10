@@ -24,7 +24,7 @@ interface Repository {
         height: Int,
         weight: Int
     )
-    suspend fun updateBackgroundDiseases(diseases: List<String>)
+    suspend fun updateBackgroundDiseases(diseases: List<BackDiseases>)
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
     suspend fun uploadAudioRecording(file: File)

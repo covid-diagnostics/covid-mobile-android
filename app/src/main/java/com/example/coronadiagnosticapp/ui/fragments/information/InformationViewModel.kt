@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.information
 
 import androidx.lifecycle.ViewModel
+import com.example.coronadiagnosticapp.data.db.entity.BackDiseases
 import com.example.coronadiagnosticapp.data.db.entity.Sex
 import com.example.coronadiagnosticapp.data.repository.Repository
 import javax.inject.Inject
@@ -12,7 +13,7 @@ class InformationViewModel @Inject constructor(val repository: Repository) : Vie
         sex: Sex, age: Int, height: Int, weight: Int
     ) = repository.updateUserPersonalInformation(sex, age,height,weight)
 
-    suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>) {
+    suspend fun updateBackgroundDiseases(backgroundDiseases: List<BackDiseases>) {
         repository.updateBackgroundDiseases(backgroundDiseases)
     }
 }

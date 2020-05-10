@@ -92,7 +92,7 @@ class RepositoryImpl @Inject constructor(
         dao.upsertUserInfo(userInfo)
     }
 
-    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<String>){
+    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<BackDiseases>){
         val userInfo = dao.getUserInfo()
         userInfo.backgroundDiseases = backgroundDiseases
 
@@ -101,8 +101,6 @@ class RepositoryImpl @Inject constructor(
             dao.upsertUserInfo(userInfoRes)
         }
     }
-
-
 
     override suspend fun saveResult(healthResult: HealthResult) {
         lastHealthResult = healthResult

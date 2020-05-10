@@ -45,10 +45,10 @@ class Converters {
     fun questionTypeToString(value: QuestionType?) = value?.name
 
     @TypeConverter
-    fun fromSelectList(list: List<SelectQuestion.ExtraData>) = gson.toJson(list)
+    fun fromSelectList(list: List<SelectQuestion.ExtraData>): String? = gson.toJson(list)
 
     @TypeConverter
-    fun StringListToString(array: List<String>): String = gson.toJson(array)
+    fun stringListToString(array: List<String>): String = gson.toJson(array)
 
     @TypeConverter
     fun stringToStringList(string: String): List<String> =
@@ -77,7 +77,6 @@ class Converters {
     @TypeConverter
     fun toCheckBoxExtra(value: String?) = value?.let { CheckBoxQuestion.ExtraData(it) }
 
-
     @TypeConverter
     fun fromSelectExtraData(extraData: SelectQuestion.ExtraData?): String? {
         return extraData?.let { gson.toJson(extraData) }
@@ -100,14 +99,17 @@ class Converters {
     @TypeConverter
     fun generalFeelingToString(value: GeneralFeeling?) = enumToString(value)
 
+    @TypeConverter
+    fun toDiseaseList(value: String?): List<BackDiseases> {
+        val type = object : TypeToken<ArrayList<BackDiseases>>() {}.type
+        return gson.fromJson<ArrayList<BackDiseases>>(value, type) ?: emptyList()
+    }
+
+    @TypeConverter
+    fun fromDiseaseList(list: List<BackDiseases>): String? = gson.toJson(list)
+
     private fun enumToString(enum: Enum<*>?) = enum?.toString()
 
     private inline fun <reified T : Enum<T>> stringToEnum(value: String?) =
         value?.let { enumValueOf<T>(it) }
-
-    //    maybe could be used for list stuff
-    fun <T> toListOf(json: String?): List<T> {
-        val type = object : TypeToken<ArrayList<T>>() {}.type
-        return gson.fromJson<ArrayList<T>>(json, type) ?: emptyList()
-    }
 }

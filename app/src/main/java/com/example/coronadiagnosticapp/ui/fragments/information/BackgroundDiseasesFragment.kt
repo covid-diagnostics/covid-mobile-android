@@ -11,8 +11,10 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.data.db.entity.BackDiseases
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.showLoading
 import kotlinx.android.synthetic.main.background_diseases_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,46 +57,38 @@ class BackgroundDiseasesFragment : ScopedFragment() {
     }
 
     private fun submit(){
-        showLoading(show = true)
+        showLoading(progressBar_background_diseases_Fragment, true)
         launch(Dispatchers.IO) {
             viewModel.updateBackgroundDiseases(getBackgroundDiseases())
             withContext(Dispatchers.Main) {
-                showLoading(false)
+                showLoading(progressBar_background_diseases_Fragment,false)
                 findNavController().navigate(R.id.action_backgroundDiseases_to_instructionsFragment)
             }
         }
     }
 
-    private fun getBackgroundDiseases(): ArrayList<String> {
-        val diseases = ArrayList<String>()
+    private fun getBackgroundDiseases(): List<BackDiseases> {
+        val diseases = mutableListOf<BackDiseases>()
         if (diabetes.isChecked)
-            diseases.add("diabetes")
+            diseases.add(BackDiseases.DIABETES)
         if (autoimmune_disease.isChecked)
-            diseases.add("autoimmune disease")
+            diseases.add(BackDiseases.AUTOIMMUNE)
         if (asthma.isChecked)
-            diseases.add("asthma")
+            diseases.add(BackDiseases.ASTHMA)
         if (pulmonary_disease.isChecked)
-            diseases.add("pulmonary disease")
+            diseases.add(BackDiseases.PULMONARY)
         if (chronic_kidney_disease.isChecked) {
-            if(yes_radio_btn.isChecked)
-                diseases.add("CKD receives dialysis treatment")
+            val disease = if (yes_radio_btn.isChecked)
+                BackDiseases.CKD_RECEIVES_DIALYSIS
             else
-                diseases.add("CKD doesn't receives dialysis treatment")
+                BackDiseases.CKD_NOT_RECEIVE_DIALYSIS
+            diseases.add(disease)
         }
         if (hypertension.isChecked)
-            diseases.add("hypertension")
+            diseases.add(BackDiseases.HYPERTENSION)
         if (cancer.isChecked)
-            diseases.add("cancer")
+            diseases.add(BackDiseases.CANCER)
         return diseases
 
     }
-
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_background_diseases_Fragment.visibility = View.VISIBLE
-            false -> progressBar_background_diseases_Fragment.visibility = View.GONE
-        }
-    }
-
 }
