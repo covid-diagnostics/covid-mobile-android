@@ -131,11 +131,11 @@ class QuestionFragment : Fragment() {
 
         val adapter: RecyclerView.Adapter<*> = when (question.type) {
             MULTI_SELECT -> {
-                extra_text_tv.text = "Choose all relevant"
+                extra_text_tv.text = getString(R.string.choose_all_relevant)
                 MultiQuestionAdapter(options, requestBuilder)
             }
             SELECT -> {
-                extra_text_tv.text = "Choose one relevant"
+                extra_text_tv.text = getString(R.string.choose_one_relevant)
                 SelectQuestionAdapter(options, requestBuilder)
             }
             else -> throw IllegalArgumentException("Not the right type of question")

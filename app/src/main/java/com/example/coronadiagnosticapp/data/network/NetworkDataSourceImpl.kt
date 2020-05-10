@@ -70,7 +70,7 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
     }
 
     override suspend fun getQuestions(): List<JsonObject> {
-        val language = Locale.getDefault().language
+        val language = Locale.getDefault().language.replace("iw", "he")
         return api.getQuestions(language).await()
     }
 
