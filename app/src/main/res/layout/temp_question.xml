@@ -34,10 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="36.6˚"
+            android:maxLength="4"
             android:inputType="numberSigned|numberDecimal"
-            android:maxEms="4"
             android:paddingStart="24dp"
-            android:paddingEnd="24dp"/>
+            android:paddingEnd="24dp" />
 
     </LinearLayout>
 </LinearLayout>
