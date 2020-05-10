@@ -30,7 +30,6 @@ interface AppComponent {
     fun inject(fragment: RecorderFragment)
     fun inject(fragment: CameraFragment)
     fun inject(fragment: WelcomeFragment)
-    fun inject(fragment: InstructionsFragment)
     fun inject(activity: OxymeterActivity)
     fun inject(fragment: QuestionnaireFragment)
     fun inject(fragment: QuestionFragment)

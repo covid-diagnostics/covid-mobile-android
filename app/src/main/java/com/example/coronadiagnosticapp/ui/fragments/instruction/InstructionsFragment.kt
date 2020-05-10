@@ -8,32 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.instructions_fragment.*
 import javax.inject.Inject
 
 class InstructionsFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModel: InstructionViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.instructions_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.instructions_fragment, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         button_instructions.setOnClickListener {
-            findNavController().navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
+            findNavController()
+                .navigate(R.id.action_instructionsFragment_to_dailyMetricFragment)
         }
     }
 
