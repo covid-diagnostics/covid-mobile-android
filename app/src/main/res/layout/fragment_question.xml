@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                tools:text="Choose all relevant" />
+                tools:text="@string/choose_all_relevant" />
         </LinearLayout>
 
         <ImageView

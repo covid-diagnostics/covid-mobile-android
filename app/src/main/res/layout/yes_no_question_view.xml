@@ -31,14 +31,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="Yes" />
+            android:text="@string/yes" />
 
         <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
             android:id="@+id/no_radio_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="No" />
+            android:text="@string/no" />
 
     </RadioGroup>
 

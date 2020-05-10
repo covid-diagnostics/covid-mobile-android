@@ -10,7 +10,7 @@
         android:id="@+id/did_expose_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:yn_question="Have you been exposed to a verified corona patient ?" />
+        app:yn_question="@string/corona_exposed_question" />
 
     <com.example.coronadiagnosticapp.ui.views.DateQuestionView
         android:id="@+id/date_picker_view"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:visibility="gone"
-        app:date_question="When were you exposed ?"
+        app:date_question="@string/where_corona_exposed"
         tools:visibility="visible" />
 
 </LinearLayout>

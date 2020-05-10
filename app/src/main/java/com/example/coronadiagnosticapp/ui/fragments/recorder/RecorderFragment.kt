@@ -59,7 +59,7 @@ class RecorderFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
-        view.findViewById<View>(R.id.infoImgRecorder).setOnClickListener {
+        infoImgRecorder.setOnClickListener {
             findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation3)
         }
     }

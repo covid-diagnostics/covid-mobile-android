@@ -10,7 +10,7 @@
         android:id="@+id/temp_ynq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:yn_question="Do you have a fever?\nif so ,state your temp at the next field" />
+        app:yn_question="@string/fever_question" />
 
     <LinearLayout
         android:id="@+id/temp_group"

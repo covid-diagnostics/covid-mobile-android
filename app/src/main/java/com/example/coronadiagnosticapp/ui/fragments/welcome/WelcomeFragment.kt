@@ -40,7 +40,7 @@ class WelcomeFragment : Fragment() {
 
             findNavController().navigate(id)
         }
-        AutostartUtils.requestAutostartPermissions(context)
+        AutostartUtils.requestAutostartPermissions(context!!)
     }
 
 }
