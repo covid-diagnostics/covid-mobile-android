@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
@@ -59,7 +59,7 @@ class RecorderFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
-        view.findViewById<View>(R.id.infoImgRecorder).setOnClickListener {
+        infoImgRecorder.setOnClickListener {
             findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation3)
         }
     }

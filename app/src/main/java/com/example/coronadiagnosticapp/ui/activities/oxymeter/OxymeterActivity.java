@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.coronadiagnosticapp.MyApplication;
+import com.example.coronadiagnosticapp.utils.MyApplication;
 import com.example.coronadiagnosticapp.R;
 import com.example.coronadiagnosticapp.ui.activities.BaseActivity;
 import com.example.coronadiagnosticapp.ui.activities.ImageProcessing;

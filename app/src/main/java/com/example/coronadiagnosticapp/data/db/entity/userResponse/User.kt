@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user_table")
 data class User(
     var id: Int?,
-    @PrimaryKey val phoneNumberHash: String,
+    @PrimaryKey
+    val phoneNumberHash: String,
     var isActive: Boolean
 )

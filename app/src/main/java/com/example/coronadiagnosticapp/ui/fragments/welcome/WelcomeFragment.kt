@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
@@ -20,14 +21,17 @@ class WelcomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        textView_welcome_title.text = getText(R.string.your_voice_can_win_corona);
-
         button_start.setOnClickListener {
-//            Navigate to register
-            findNavController()
-                .navigate(R.id.action_welcomeFragment_to_registerFragment)
+            @IdRes
+            val id = if (viewModel.isLoggedIn()) {
+                R.id.action_welcomeFragment_to_instructionsFragment
+            } else {
+                R.id.action_welcomeFragment_to_registerFragment
+            }
+
+            findNavController().navigate(id)
         }
-        AutostartUtils.requestAutostartPermissions(context)
+        AutostartUtils.requestAutostartPermissions(context!!)
     }
 
 }

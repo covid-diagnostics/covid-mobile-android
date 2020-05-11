@@ -16,9 +16,10 @@ interface NetworkDataSource {
         userRegister: UserRegister
     ): ResponseUser
 
-    suspend fun updateUserPersonalInformation(
-        user: User
-    ): User?
+    suspend fun updateUserInfo(
+        userInfo: UserInfo
+    ): UserInfo?
+
 
     suspend fun submitMeasurement(measurement: Measurement): Measurement
     suspend fun submitPpgMeasurement(measurement: PpgMeasurement): PpgMeasurement

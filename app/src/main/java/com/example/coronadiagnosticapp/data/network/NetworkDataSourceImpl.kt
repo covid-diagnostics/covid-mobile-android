@@ -37,17 +37,18 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
 
     }
 
-    override suspend fun updateUserPersonalInformation(
-        user: User
-    ): User? {
+    override suspend fun updateUserInfo(
+        userInfo: UserInfo
+    ): UserInfo? {
         try {
-            return api.updateUserInformation(user).await()
+            return api.updateUserInfo(userInfo).await()
 
         } catch (e: HttpException) {
             Log.e("HTTP", e.response().toString())
         }
         return null
     }
+
 
     override suspend fun submitMeasurement(measurement: Measurement): Measurement {
         return api.submitMeasurement(measurement).await()
@@ -70,7 +71,7 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
     }
 
     override suspend fun getQuestions(): List<JsonObject> {
-        val language = Locale.getDefault().language
+        val language = Locale.getDefault().language.replace("iw", "he")
         return api.getQuestions(language).await()
     }
 

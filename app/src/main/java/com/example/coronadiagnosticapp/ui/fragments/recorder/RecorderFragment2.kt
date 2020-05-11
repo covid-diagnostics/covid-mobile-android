@@ -13,18 +13,12 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.rakshakhegde.stepperindicator.StepperIndicator
-import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.android.synthetic.main.recorder_fragment2.*
-import kotlinx.android.synthetic.main.recorder_fragment2.progressBar_recordFragment
-import kotlinx.android.synthetic.main.recorder_fragment2.record_btn
-import kotlinx.android.synthetic.main.recorder_fragment2.record_filename
-import kotlinx.android.synthetic.main.recorder_fragment2.record_timer
-import kotlinx.android.synthetic.main.recorder_fragment2.visualizer
 import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
@@ -65,7 +59,7 @@ class RecorderFragment2 : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
-        view.findViewById<View>(R.id.infoImgRecorder).setOnClickListener {
+        infoImgRecorder2.setOnClickListener {
             findNavController().navigate(R.id.action_recorderFragment2_to_recorderExplanation)
         }
     }
@@ -75,7 +69,7 @@ class RecorderFragment2 : ScopedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.recorder_fragment, container, false)
+        return inflater.inflate(R.layout.recorder_fragment2, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
