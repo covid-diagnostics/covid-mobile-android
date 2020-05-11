@@ -22,14 +22,9 @@ class WelcomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         button_start.setOnClickListener {
-            @IdRes
-            val id = if (viewModel.isLoggedIn()) {
-                R.id.action_welcomeFragment_to_instructionsFragment
-            } else {
-                R.id.action_welcomeFragment_to_registerFragment
-            }
 
-            findNavController().navigate(id)
+            findNavController()
+                .navigate( R.id.action_welcomeFragment_to_registerFragment)
         }
         AutostartUtils.requestAutostartPermissions(context!!)
     }
