@@ -3,4 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.splash.SplashFragment" />
+    tools:context=".ui.fragments.splash.SplashFragment">
+
+    <ImageView
+        android:id="@+id/logo_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/wavey_logo" />
+
+    <View
+        android:id="@+id/ellipse_115"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_stroke" />
+
+</FrameLayout>
