@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#9C27B0</color>
     <color name="colorBlueActivity">#FF488AFF</color>
+
+    <color name="text_mid_color">#34CDFD</color>
+    <color name="text_outer_color">#5928E4</color>
 </resources>

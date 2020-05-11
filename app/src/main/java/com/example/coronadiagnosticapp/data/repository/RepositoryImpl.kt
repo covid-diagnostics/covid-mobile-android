@@ -161,10 +161,8 @@ class RepositoryImpl @Inject constructor(
         return questions
     }
 
-    override suspend fun getMeasurementCount(): List<JsonObject> {
-
-        val count = networkDataSource.getMeasurementCount()
-        return count
+    override suspend fun getMeasurementCount(): Int {
+        return networkDataSource.getMeasurementCount()
     }
 
     override suspend fun getNextSelectableQuestion(currentQuestion: SelectQuestion?): SelectQuestion? {

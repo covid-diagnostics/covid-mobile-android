@@ -38,6 +38,6 @@ interface Repository {
     suspend fun sendUserAnswers()
     suspend fun addAnswers(answers: List<AnswersResponse>)
     suspend fun loadQuestionsToDB(): List<Question>
-    suspend fun getMeasurementCount(): List<JsonObject>
+    suspend fun getMeasurementCount(): Int
     suspend fun getSimpleQuestions(): List<Question>
 }

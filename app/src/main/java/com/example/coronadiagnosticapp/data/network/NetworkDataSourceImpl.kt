@@ -74,7 +74,7 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
         return api.getQuestions(language).await()
     }
 
-    override suspend fun getMeasurementCount(): List<JsonObject> {
+    override suspend fun getMeasurementCount(): Int {
         return api.getMeasurementCount().await()
     }
 

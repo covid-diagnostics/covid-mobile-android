@@ -25,5 +25,5 @@ interface NetworkDataSource {
     suspend fun uploadAudioRecording(file: File, id: Int)
     suspend fun getQuestions(): List<JsonObject>
     suspend fun sendAnswers(answers: List<AnswersResponse>)
-    suspend fun getMeasurementCount(): List<JsonObject>
+    suspend fun getMeasurementCount(): Int
 }

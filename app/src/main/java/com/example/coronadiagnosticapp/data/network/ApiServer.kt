@@ -59,8 +59,7 @@ interface ApiServer {
     ): Deferred<List<JsonObject>>
 
     @GET(MEASUREMENT_COUNT_URL)
-    fun getMeasurementCount(
-    ): Deferred<List<JsonObject>>
+    fun getMeasurementCount(): Deferred<Int>
 
     @POST(SEND_ANSWERS)
     fun sendUserAnswer(
