@@ -13,20 +13,11 @@ import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
 
 class WelcomeFragment : Fragment() {
-    @Inject
-    lateinit var viewModel: WelcomeViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_welcome, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_welcome, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

@@ -45,4 +45,5 @@ interface Repository {
     suspend fun loadQuestionsToDB(): List<Question>
     suspend fun getSimpleQuestions(): List<Question>
     suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
+    suspend fun getNumberOfMeasurements(): Int
 }

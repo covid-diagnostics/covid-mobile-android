@@ -78,4 +78,8 @@ class NetworkDataSourceImpl @Inject constructor(val api: ApiServer) : NetworkDat
     override suspend fun sendAnswers(answers: List<AnswersResponse>) {
         answers.forEach { api.sendUserAnswer(it).await() }
     }
+
+    override suspend fun getNumberOfMeasurements(): Int {
+        return api.getNumberOfMeasurements().await()
+    }
 }
