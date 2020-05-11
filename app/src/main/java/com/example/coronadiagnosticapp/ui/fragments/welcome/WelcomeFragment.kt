@@ -12,13 +12,6 @@ import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
 
 class WelcomeFragment : Fragment() {
-    @Inject
-    lateinit var viewModel: WelcomeViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,15 +23,9 @@ class WelcomeFragment : Fragment() {
         textView_welcome_title.text = getText(R.string.your_voice_can_win_corona);
 
         button_start.setOnClickListener {
-
-            val isLoggedIn = viewModel.isLoggedIn()
-            val id = if (isLoggedIn) {
-                R.id.action_welcomeFragment_to_homeFragment
-            } else {
-                R.id.action_welcomeFragment_to_registerFragment
-            }
-            viewModel.setIsFirstTime( !isLoggedIn)
-            findNavController().navigate(id)
+//            Navigate to register
+            findNavController()
+                .navigate(R.id.action_welcomeFragment_to_registerFragment)
         }
         AutostartUtils.requestAutostartPermissions(context)
     }

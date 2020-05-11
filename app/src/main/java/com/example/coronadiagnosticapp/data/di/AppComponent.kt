@@ -13,6 +13,7 @@ import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment2
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment
+import com.example.coronadiagnosticapp.ui.fragments.splash.SplashFragment
 import com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -35,6 +36,7 @@ interface AppComponent {
     fun inject(fragment: QuestionnaireFragment)
     fun inject(fragment: QuestionFragment)
     fun inject(fragment: HomeFragment)
+    fun inject(fragment: SplashFragment)
 
     @Component.Factory
     interface Factory {
