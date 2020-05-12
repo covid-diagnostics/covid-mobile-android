@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Html
 import android.util.AttributeSet
 import android.widget.TextView
+import com.example.coronadiagnosticapp.utils.asHTML
 
 class SpannableTextView : TextView {
     constructor(context: Context) : super(context)
@@ -14,6 +15,6 @@ class SpannableTextView : TextView {
     }
 
     fun setSpanText(newText: CharSequence) {
-        text = Html.fromHtml(newText.toString())
+        text = newText.toString().asHTML
     }
 }
