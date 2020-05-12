@@ -1,24 +1,24 @@
 package com.example.coronadiagnosticapp.ui.fragments.register
 
+import android.R.layout.simple_spinner_dropdown_item
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.form
-import com.example.coronadiagnosticapp.MyApplication
-
+import com.afollestad.vvalidator.form.FormResult
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
+import com.example.coronadiagnosticapp.utils.*
 import kotlinx.android.synthetic.main.register_fragment.*
-import kotlinx.android.synthetic.main.register_fragment.textInputLayout_phoneNumber
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.security.MessageDigest
 import javax.inject.Inject
 
 class RegisterFragment : ScopedFragment() {
@@ -28,82 +28,69 @@ class RegisterFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        context?.getAppComponent()?.inject(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.register_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.register_fragment, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpCountriesOptions()
+
         initForm()
         initErrors()
-
-
     }
 
-    fun hash(text: String): String {
-        val bytes = text.toString().toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    private fun setUpCountriesOptions() {
+        spinner_country.adapter = ArrayAdapter(
+            context!!,
+            simple_spinner_dropdown_item,
+            CountryHelper.getCountriesList()
+        )
+
+        spinner_country.setSelection(0)
     }
 
-    private fun initForm() {
-        form {
-            inputLayout(textInputLayout_phoneNumber) {
-                isNotEmpty().description(getString(R.string.required))
-                //().description(getString(R.string.must_valid_email))
-            }
-            /*
-            inputLayout(textInputLayout_password) {
-                isNotEmpty()
-            }
-            inputLayout(TextInputLayout_passwordRepeat) {
-                isNotEmpty()
-                assert(getString(R.string.passwords_match)) { view ->
-                    val repeatPass = view.editText?.text.toString()
-                    val password = textInputLayout_password.editText?.text.toString()
-                    password == repeatPass
-                }
-            }*/
-            submitWith(button_register) { res ->
-                showLoading(show = true)
-                launch(Dispatchers.IO) {
-                    viewModel.registerUser(
-                        hash(res["textInputLayout_phoneNumber"]?.value.toString())
-                    )
-                    withContext(Dispatchers.Main) {
-                        showLoading(false)
-                        if (viewModel.isLoggedIn()) {
-                            findNavController().navigate(R.id.action_registerFragment_to_informationFragment)
-                        } else {
-                            Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+    private fun initForm() = form {
+        input(et_phone, "phone") {
+            isNotEmpty().description(getString(R.string.required))
+        }
+        spinner(spinner_country, "country") {
+        }
+        submitWith(register_continue_btn, this@RegisterFragment::tryToSubmit)
+    }
 
+
+    private fun tryToSubmit(res: FormResult) {
+        showLoading(progressBar_register, true)
+        launch(IO) {
+            val phone = res["phone"]!!.asString()
+            val countrySelectIndex = res["country"]!!.asInt()!!
+            val country = spinner_country.adapter.getItem(countrySelectIndex) as Country
+
+            viewModel.registerUser(phone)
+            viewModel.setCountry(country.code)
+
+            withContext(Main) {
+                if (viewModel.isLoggedIn()) {
+                    findNavController()
+                        .navigate(R.id.action_registerFragment_to_informationFragment)
+                } else {
+                    showLoading(progressBar_register, false)
+                    toast("Please try again")
                 }
             }
+
         }
     }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_register.visibility = View.VISIBLE
-            false -> progressBar_register.visibility = View.GONE
-        }
-    }
-
 
     private fun initErrors() {
         viewModel.error.observe(viewLifecycleOwner, Observer { msg ->
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            toast(msg)
             Log.e("RegisterFragment", msg)
         })
     }

@@ -52,6 +52,10 @@ class QuestionnaireFragment : Fragment() {
             val questions = viewModel.getQuestions()
 
             withContext(Main) {
+                if (questions.isEmpty()) {
+                    moveToNextScreen()
+                    return@withContext
+                }
                 fill(questions)
                 next_btn.isEnabled = true
                 showLoading(progressBar, false)
@@ -59,13 +63,18 @@ class QuestionnaireFragment : Fragment() {
         }
 
         next_btn.setOnClickListener {
+            it.isEnabled = false
             saveAnswers()
-            findNavController()
-                .navigate(R.id.action_questioneerFragment_to_questionFragment)
         }
     }
 
+    private fun moveToNextScreen() {
+        findNavController()
+            .navigate(R.id.action_questioneerFragment_to_questionFragment)
+    }
+
     private fun saveAnswers() {
+        showLoading(progressBar, true)
         val answers = mutableListOf<AnswersResponse>()
         for (view in questions_group.children) {
             val question = (view as QuestionPresenter).question!!.id
@@ -83,7 +92,9 @@ class QuestionnaireFragment : Fragment() {
             viewModel.addAnswers(answers)
 
             withContext(Main) {
+                showLoading(progressBar, false)
                 toast("saved")
+                moveToNextScreen()
             }
         }
     }

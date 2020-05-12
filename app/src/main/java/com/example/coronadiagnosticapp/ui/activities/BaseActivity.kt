@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.example.coronadiagnosticapp.R
 
 
@@ -25,12 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
         //If a layout container, iterate over children and seed recursion.
-        if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                val innerView = view.getChildAt(i)
-                setupUI(innerView)
-            }
-        }
+        (view as? ViewGroup)?.children?.forEach { setupUI(it) }
     }
 
     private fun hideSoftKeyboard(activity: Activity) {

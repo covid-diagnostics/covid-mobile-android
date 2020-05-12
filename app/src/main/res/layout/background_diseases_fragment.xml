@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.information.BackgroundDiseasesFragment">
+
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/information_background" />
+
+    <TextView
+        android:id="@+id/textView_header_instructions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/header_instructions_demographic_fragment"
+        android:textAlignment="center"
+        android:textAppearance="@style/appHeader"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/chips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_header_instructions">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:singleLine="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/diabetes"
+                style="@style/myChipButton"
+                android:text="@string/diabetes" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/autoimmune_disease"
+                style="@style/myChipButton"
+                android:text="@string/autoimmune_disease" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/asthma"
+                style="@style/myChipButton"
+                android:text="@string/asthma" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/pulmonary_disease"
+                style="@style/myChipButton"
+                android:text="@string/pulmonary_disease" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chronic_kidney_disease"
+                style="@style/myChipButton"
+                android:text="@string/chronic_kidney_disease" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <LinearLayout
+            android:id="@+id/chronic_kidney_disease_yes_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editbox_background_normal"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/receives_dialysis_treatment"
+                android:textColor="@color/text_chip_state_list"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/yes_no_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/yes_radio_btn"
+                android:orientation="horizontal">
+
+                <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
+                    android:id="@+id/yes_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="1"
+                    android:text="Yes"
+                    android:textColor="@color/text_chip_state_list" />
+
+                <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
+                    android:id="@+id/no_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="No"
+                    android:textColor="@color/text_chip_state_list" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/hypertension"
+            style="@style/myChipButton"
+            android:text="@string/high_blood_pressure" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cancer"
+            style="@style/myChipButton"
+            android:text="@string/cancer" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_background_diseases_next"
+        style="@style/customButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chips" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_background_diseases_Fragment"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

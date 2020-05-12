@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.coronadiagnosticapp.data.converters.MyRetrofitConverter
 import com.example.coronadiagnosticapp.data.db.dao.DbDao
 import com.example.coronadiagnosticapp.data.db.entity.*
-import com.example.coronadiagnosticapp.data.db.entity.question.*
+import com.example.coronadiagnosticapp.data.db.entity.question.Question
+import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType
+import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
@@ -51,6 +53,7 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+
     override fun isLoggedIn(): Boolean {
         val tokenInterceptor = tokenServiceInterceptor.sessionToken
         val tokenFromPreference = sharedProvider.getToken()
@@ -63,22 +66,40 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+
+    override suspend fun setCountry(country:String){
+        dao.deleteAllUsersInfo()
+        val userInfo = UserInfo(null, null, null, null, null, country,  ArrayList())
+        dao.upsertUserInfo(userInfo)
+    }
+
     override suspend fun updateUserPersonalInformation(
-        firstName: String,
-        lastName: String,
-        age: Int
+        sex: Sex, age: Int, height: Int, weight: Int
     ) {
-        val user = dao.getUser()
-        user.apply {
-            //this.firstName = firstName
-            //this.lastName = lastName
-            //this.age = age
+        val userInfo = dao.getUserInfo()
+        userInfo.apply {
+            this.sex = sex
+            this.age = age
+            this.height = height
+            this.weight = weight
         }
-        val userRes = networkDataSource.updateUserPersonalInformation(user)
-        /*if (userRes != null) {
-            dao.upsertUser(userRes)
-            sharedProvider.setName(userRes.firstName)
-        }*/
+        dao.insertUserInfo(userInfo)
+    }
+
+    override suspend fun saveSmokeStatus(smokingStatus: SmokingStatus) {
+        val userInfo = dao.getUserInfo()
+        userInfo.smokingStatus = smokingStatus
+        dao.upsertUserInfo(userInfo)
+    }
+
+    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<BackDiseases>){
+        val userInfo = dao.getUserInfo()
+        userInfo.backgroundDiseases = backgroundDiseases
+
+        val userInfoRes = networkDataSource.updateUserInfo(userInfo)
+        if(userInfoRes != null) {
+            dao.upsertUserInfo(userInfoRes)
+        }
     }
 
     override suspend fun saveResult(healthResult: HealthResult) {
@@ -87,7 +108,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun getLastResult() = lastHealthResult
-    override fun getUserName() = sharedProvider.getName()
+
+    override fun getIsFirstTime() = sharedProvider.getIsFirstTime()
+    override fun setIsFirstTime(isFirstTime: Boolean) = sharedProvider.setIsFirstTime(isFirstTime)
 
     override suspend fun uploadAudioRecording(file: File) {
         try {
@@ -171,7 +194,7 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun addAnswer(answer: AnswersResponse) {
         addMeasurement(answer)
-        dao.insert(answer)
+        dao.insertUser(answer)
     }
 
     private fun addMeasurement(answer: AnswersResponse) {
@@ -186,5 +209,10 @@ class RepositoryImpl @Inject constructor(
     override suspend fun sendUserAnswers() {
         val answers: List<AnswersResponse> = dao.getAnswers()
         networkDataSource.sendAnswers(answers)
+    }
+
+
+    override suspend fun getNumberOfMeasurements(): Int {
+        return networkDataSource.getNumberOfMeasurements()
     }
 }

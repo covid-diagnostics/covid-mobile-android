@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.MyApplication
+import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
@@ -59,6 +59,9 @@ class RecorderFragment2 : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
+        infoImgRecorder2.setOnClickListener {
+            findNavController().navigate(R.id.action_recorderFragment2_to_recorderExplanation)
+        }
     }
 
     override fun onCreateView(
@@ -66,7 +69,7 @@ class RecorderFragment2 : ScopedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.recorder_fragment, container, false)
+        return inflater.inflate(R.layout.recorder_fragment2, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -134,16 +137,19 @@ class RecorderFragment2 : ScopedFragment() {
         mediaRecorder!!.setOutputFile(fileLocation)
         launch {
             delay(MAX_DURATION.toLong())
-            stopRecording()
-            showLoading(true)
-            // Upload file
-            launch(Dispatchers.IO) {
-                viewModel.uploadFile(File(fileLocation!!))
-                withContext(Dispatchers.Main) { showLoading(false) }
-                Log.d(TAG, "File finished uploading!")
-                findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
+            // this thread will stay alive after the page is dead, so this is to avoid null reference
+            if (record_timer != null) { // TODO : is there s possible race?
+                stopRecording()
+                showLoading(true)
+                // Upload file
+                launch(Dispatchers.IO) {
+                    viewModel.uploadFile(File(fileLocation!!))
+                    withContext(Dispatchers.Main) { showLoading(false) }
+                    Log.d(TAG, "File finished uploading!")
+                    findNavController().navigate(R.id.action_recorderFragment_to_resultFragment)
+                }
+                processRecording()
             }
-            processRecording()
         }
 
         mediaRecorder!!.prepare()
@@ -188,7 +194,9 @@ class RecorderFragment2 : ScopedFragment() {
     override fun onStop() {
         super.onStop()
         // Stop recording is someone presses back
-        if (isRecording) { stopRecording() }
+        if (isRecording) {
+            stopRecording()
+        }
     }
 
 
