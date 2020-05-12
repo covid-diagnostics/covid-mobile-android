@@ -52,7 +52,7 @@ class ResultFragment : Fragment() {
         )
 
         continue_text.setOnClickListener {
-            val id = if (viewModel.didSetNotificationTime()) {
+            val id = if (viewModel.didSetNotificationTime) {
                 R.id.action_resultFragment_to_notificationFragment
             } else {
                 R.id.action_resultFragment_to_homeFragment

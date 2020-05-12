@@ -9,7 +9,6 @@ import com.example.coronadiagnosticapp.data.db.entity.question.QuestionType
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterAverages
-import com.google.gson.JsonObject
 import java.io.File
 
 interface Repository {
@@ -47,6 +46,5 @@ interface Repository {
     suspend fun getMeasurementCount(): Int
     suspend fun getSimpleQuestions(): List<Question>
     suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
-    fun didSetNotificationTime(): Boolean
-    fun setNotificationTime(hour:Int,minute:Int)
+    var didSetNotificationTime: Boolean
 }

@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
-    fun saveNotification(hour: Int, minute: Int) =
-        repository.setNotificationTime(hour, minute)
+    fun setNotification(didSave: Boolean) {
+        repository.didSetNotificationTime = didSave
+    }
 }
