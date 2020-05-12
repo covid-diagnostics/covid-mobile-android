@@ -24,7 +24,7 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     public static final String NOTIFICATION_CHANNEL_NAME = "Daily measurements reminder";
 
-    private static final String TAG = "AlrmNotificationRcvr";
+    private static final String TAG = "AlarmNotificationReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {

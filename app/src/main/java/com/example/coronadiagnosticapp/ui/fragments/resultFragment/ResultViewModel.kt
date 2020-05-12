@@ -5,4 +5,7 @@ import javax.inject.Inject
 
 class ResultViewModel @Inject constructor(val repository: Repository){
     suspend fun getMeasurementCount() = repository.getMeasurementCount()
+    fun didSetNotificationTime()=
+        repository.didSetNotificationTime()
+
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.afollestad.vvalidator.util.show
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
@@ -49,5 +50,14 @@ class ResultFragment : Fragment() {
             getColor(R.color.text_outer_color),
             getColor(R.color.text_mid_color)
         )
+
+        continue_text.setOnClickListener {
+            val id = if (viewModel.didSetNotificationTime()) {
+                R.id.action_resultFragment_to_notificationFragment
+            } else {
+                R.id.action_resultFragment_to_homeFragment
+            }
+            findNavController().navigate(id)
+        }
     }
 }

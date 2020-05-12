@@ -47,4 +47,6 @@ interface Repository {
     suspend fun getMeasurementCount(): Int
     suspend fun getSimpleQuestions(): List<Question>
     suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
+    fun didSetNotificationTime(): Boolean
+    fun setNotificationTime(hour:Int,minute:Int)
 }

@@ -67,6 +67,14 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override fun didSetNotificationTime() =
+        sharedProvider.didSetNotificationTime()
+
+    override fun setNotificationTime(hour: Int, minute: Int) {
+        TODO("Set notification")
+        sharedProvider.setNotificationTime(true)
+    }
+
 
     override suspend fun setCountry(country:String){
         dao.deleteAllUsersInfo()
