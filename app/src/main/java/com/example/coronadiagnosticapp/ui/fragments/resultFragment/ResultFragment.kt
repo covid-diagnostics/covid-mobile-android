@@ -29,10 +29,12 @@ class ResultFragment : Fragment() {
 
         GlobalScope.launch(IO) {
             val count = viewModel.getMeasurementCount()
+            val measurementId = viewModel.getMeasurementId()
             withContext(Main) {
                 textView_summaryText2?.show()
                 textView_summaryText2?.text =
                     getString(R.string.tests_done_so_far, count)
+                textView2?.text= getString(R.string.thank_you, measurementId)
             }
         }
     }
