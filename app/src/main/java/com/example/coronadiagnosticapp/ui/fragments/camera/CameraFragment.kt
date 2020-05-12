@@ -31,15 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
-// This is an arbitrary number we are using to keep track of the permission
-// request. Where an app has multiple context for requesting permission,
-// this can help differentiate the different contexts.
-private const val REQUEST_CODE_PERMISSIONS = 215
-
-private const val REQUEST_CODE_VIDEO = 315
-
-
 class CameraFragment : ScopedFragment() {
     companion object {
         const val TAG = "CameraFragment"
