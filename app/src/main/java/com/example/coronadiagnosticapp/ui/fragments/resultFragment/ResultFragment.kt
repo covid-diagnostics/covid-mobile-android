@@ -34,7 +34,7 @@ class ResultFragment : Fragment() {
                 textView_summaryText2?.show()
                 textView_summaryText2?.text =
                     getString(R.string.tests_done_so_far, count)
-                textView2?.text= getString(R.string.thank_you, measurementId)
+                textViewMeasurementIdDisplay?.text= getString(R.string.thank_you, measurementId)
             }
         }
     }
