@@ -43,9 +43,6 @@ private const val REQUEST_CODE_VIDEO = 315
 class CameraFragment : ScopedFragment() {
     companion object {
         const val TAG = "CameraFragment"
-        fun beatsPerMinuteKey() = "BEATS_PER_MINUTE"
-        fun breathsPerMinute() = "BREATHS_PER_MINUTE"
-        fun oxygenSaturation() = "OXYGEN_SATURATION"
     }
 
     @Inject
@@ -60,22 +57,6 @@ class CameraFragment : ScopedFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.camera_fragment, container, false)
-
-    private fun openOximeter() {
-        if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                200)
-        } else {
-            val intent = Intent(context, OxymeterActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_VIDEO)
-        }
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
