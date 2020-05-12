@@ -60,7 +60,7 @@ class RecorderFragment : ScopedFragment() {
         val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
         stepperIndicator?.currentStep = 2
         infoImgRecorder.setOnClickListener {
-            findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation3)
+            findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation)
         }
     }
 
@@ -144,9 +144,13 @@ class RecorderFragment : ScopedFragment() {
                 // Upload file
                 launch(Dispatchers.IO) {
                     viewModel.uploadFile(File(fileLocation!!))
-                    withContext(Dispatchers.Main) { showLoading(false) }
+                    withContext(Dispatchers.Main) {
+                        showLoading(false)
+//                        TODO reset view for next recording or move to result screen
+                        findNavController()
+                            .navigate(R.id.action_recorderFragment_to_resultFragment)
+                    }
                     Log.d(TAG, "File finished uploading!")
-                    findNavController().navigate(R.id.action_recorderFragment_to_recorderFragment2)
                 }
                 processRecording()
             }

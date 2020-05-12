@@ -10,13 +10,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.view.animation.Animation
 import android.view.animation.Animation.RELATIVE_TO_SELF
 import android.view.animation.RotateAnimation
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavDirections
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
@@ -26,14 +23,11 @@ import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.fragment_oxymeter.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
-class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener {
+class OxymeterFragment : Fragment(), SurfaceHolder.Callback, SensorEventListener {
     //ProgressBar
     private var mSeries: LineGraphSeries<DataPoint>? = null
     private var makeVertical: RotateAnimation? = null
@@ -176,10 +170,10 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
         Log.i(TAG, "Oxymeter finished successfully!")
         submitMeasurement(oxymeter)
         val dataBundle = bundleOf(EXTRA_OXY_DATA to oxyData)
-        val navController = findNavController()
-        navController
-            .navigate(R.id.action_oxymeterFragment_to_cameraFragment,
-                dataBundle)
+        findNavController().navigate(
+            R.id.action_oxymeterFragment_to_cameraFragment,
+            dataBundle
+        )
     }
 
     private fun submitMeasurement(oxymeter: Oxymeter) {
@@ -327,7 +321,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback,SensorEventListener 
         }
     }
 
-//    Surface Listener impl
+    //    Surface Listener impl
     override fun surfaceCreated(holder: SurfaceHolder) {
         try {
             camera!!.setPreviewDisplay(previewHolder)

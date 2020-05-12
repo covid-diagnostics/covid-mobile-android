@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class CameraViewModel @Inject
 constructor(val repository: Repository) : ViewModel() {
-    fun getIsFirstTime() = repository.getIsFirstTime()
+    fun isFirstTime() = repository.getIsFirstTime()
     suspend fun uploadVideo(file: File) {
         delay(3000)
 

@@ -121,7 +121,7 @@
     <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
     <string name="continue_arrow">Continue →</string>
 
-    <string name="voice_up">
+    <string name="voice_up" translatable="false">
         <![CDATA[
          <font color="#4787EF">Voice</font> up
         ]]>
@@ -135,4 +135,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_measurements">
+        <![CDATA[
+        On the next screen we\'ll take
+        <font color="#333333"> 4 short voice samples</font>
+        and get a
+        <font color="#333333">pulse checks</font>
+        from the finger using your camera.
+        ]]>
+    </string>
+    <string name="voice_check">Voice check</string>
+    <string name="how_does_it_work">- How does it work?</string>
+    <string name="why_voice_and_pulse">Why voice and pulse?</string>
+    <string name="research_shows">Research shows that changes in those physiologycal signs may help with exemining earlier about potential illness!</string>
+    <string name="better_checking_in_the_morning_after_brushing_your_teeth">Better checking in the morning, after brushing your teeth.</string>
 </resources>
