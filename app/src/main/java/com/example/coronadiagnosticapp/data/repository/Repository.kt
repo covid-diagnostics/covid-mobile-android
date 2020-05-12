@@ -47,5 +47,4 @@ interface Repository {
     suspend fun getMeasurementCount(): Int
     suspend fun getSimpleQuestions(): List<Question>
     suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
-    suspend fun getNumberOfMeasurements(): Int
 }

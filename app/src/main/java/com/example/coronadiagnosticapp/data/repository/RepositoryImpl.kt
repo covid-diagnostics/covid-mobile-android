@@ -215,9 +215,4 @@ class RepositoryImpl @Inject constructor(
         val answers: List<AnswersResponse> = dao.getAnswers()
         networkDataSource.sendAnswers(answers)
     }
-
-
-    override suspend fun getNumberOfMeasurements(): Int {
-        return networkDataSource.getNumberOfMeasurements()
-    }
 }
