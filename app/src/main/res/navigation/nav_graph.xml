@@ -87,8 +87,23 @@
             android:id="@+id/action_cameraFragment_to_recorderFragment"
             app:destination="@id/recorderFragment" />
         <action
+            android:id="@+id/action_cameraFragment_to_oxymeterFragment"
+            app:destination="@id/oxymeterFragment"
+            app:popUpTo="@id/cameraFragment" />
+        <action
             android:id="@+id/action_cameraFragment_to_recorderExplanation"
             app:destination="@id/recorderExplanation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/oxymeterFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment"
+        android:label="oxymeter_fragment"
+        tools:layout="@layout/fragment_oxymeter">
+
+        <action
+            android:id="@+id/action_oxymeterFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"

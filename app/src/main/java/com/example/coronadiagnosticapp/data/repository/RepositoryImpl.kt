@@ -16,7 +16,7 @@ import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
-import com.example.coronadiagnosticapp.ui.activities.oxymeter.OxymeterAverages
+import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterAverages
 import com.google.gson.JsonObject
 import java.io.File
 import javax.inject.Inject

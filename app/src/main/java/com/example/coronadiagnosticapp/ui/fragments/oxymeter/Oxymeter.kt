@@ -1,9 +1,11 @@
-package com.example.coronadiagnosticapp.ui.activities.oxymeter
+package com.example.coronadiagnosticapp.ui.fragments.oxymeter
 
 import android.hardware.Camera
-import java.util.*
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class OxymeterData(var oxSaturation: Int, var heartRate: Int, var breathRate: Int) {}
+@Parcelize
+class OxymeterData(var oxSaturation: Int, var heartRate: Int, var breathRate: Int) :Parcelable
 class OxymeterAverages(var red: Array<Double>, var green: Array<Double>, var blue: Array<Double>, var timepoint: Array<Long>)
 
 interface Oxymeter {

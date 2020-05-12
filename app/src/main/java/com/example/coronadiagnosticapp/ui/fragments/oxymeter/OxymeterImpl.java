@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.activities.oxymeter;
+package com.example.coronadiagnosticapp.ui.fragments.oxymeter;
 
 import android.hardware.Camera;
 
@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import kotlin.Unit;
