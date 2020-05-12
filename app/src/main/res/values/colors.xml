@@ -7,4 +7,5 @@
 
     <color name="text_mid_color">#34CDFD</color>
     <color name="text_outer_color">#5928E4</color>
+    <color name="color_btn_disabled">#443A64</color>
 </resources>

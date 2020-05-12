@@ -4,11 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.RadioGroup
+import com.afollestad.vvalidator.field.FormField
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.R.styleable.*
 import kotlinx.android.synthetic.main.yes_no_question_view.view.*
 
-class YesNoQuestionView : LinearLayout, RadioGroup.OnCheckedChangeListener {
+class YesNoQuestionView : LinearLayout, RadioGroup.OnCheckedChangeListener{
 
     constructor(context: Context) : super(context)
     private var changedCallback: YesNoCallback?

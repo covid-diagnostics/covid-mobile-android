@@ -6,7 +6,6 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import com.example.coronadiagnosticapp.MyApplication
 import com.example.coronadiagnosticapp.data.di.AppComponent
 
 fun Context.toast(msg: String, duration: Int = LENGTH_SHORT) =

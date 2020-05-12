@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.request.RequestOptions
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.question.SelectQuestion
 import kotlinx.android.synthetic.main.question_select_box.view.*
@@ -41,11 +40,17 @@ abstract class SelectBoxVH(
 
     protected fun setSelectedColor() {
         if (isSelected) {
-            (itemView as CardView).setCardBackgroundColor(selectedColor)
-            nameTv.setTextColor(Color.WHITE)
+            setColors(selectedColor, Color.WHITE)
         } else {
-            (itemView as CardView).setCardBackgroundColor(Color.WHITE)
-            nameTv.setTextColor(Color.BLACK)
+            setColors(Color.WHITE, Color.BLACK)
         }
+    }
+
+    private fun setColors(
+        @ColorInt cardBgColor: Int,
+        @ColorInt textColor: Int
+    ) {
+        (itemView as CardView).setCardBackgroundColor(cardBgColor)
+        nameTv.setTextColor(textColor)
     }
 }

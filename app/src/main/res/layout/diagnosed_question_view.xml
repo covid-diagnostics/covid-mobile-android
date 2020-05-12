@@ -10,13 +10,13 @@
         android:id="@+id/did_check_corona"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:yn_question="Have you been checked for corona?"/>
+        app:yn_question="@string/corona_check_question"/>
 
     <com.example.coronadiagnosticapp.ui.views.YesNoQuestionView
         android:id="@+id/corona_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:yn_question="Are you a diagnosed with corona?"
+        app:yn_question="@string/corona_diagnosed_question"
         android:visibility="gone"
         tools:visibility="visible" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/date_picker_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:date_question="When were you last got checked up ?"
+        app:date_question="@string/when_corona_checked"
         android:visibility="gone"
         tools:visibility="visible"/>
 

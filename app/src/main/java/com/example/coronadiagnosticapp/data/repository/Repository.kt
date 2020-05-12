@@ -17,11 +17,17 @@ interface Repository {
     var breathingRate: Double
 
     suspend fun registerUser(userRegister: UserRegister)
+    suspend fun setCountry(country: String)
     fun isLoggedIn(): Boolean
-    suspend fun updateUserPersonalInformation(firstName: String, lastName: String, age: Int)
+    suspend fun updateUserPersonalInformation(
+        sex: Sex,
+        age: Int,
+        height: Int,
+        weight: Int
+    )
+    suspend fun updateBackgroundDiseases(diseases: List<BackDiseases>)
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
-    fun getUserName(): String?
     suspend fun uploadAudioRecording(file: File)
     fun getIsFirstTime(): Boolean
     fun setIsFirstTime(isFirstTime: Boolean)
@@ -40,4 +46,6 @@ interface Repository {
     suspend fun loadQuestionsToDB(): List<Question>
     suspend fun getMeasurementCount(): Int
     suspend fun getSimpleQuestions(): List<Question>
+    suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
+    suspend fun getNumberOfMeasurements(): Int
 }

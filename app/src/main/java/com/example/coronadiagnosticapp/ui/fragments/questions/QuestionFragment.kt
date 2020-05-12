@@ -47,11 +47,14 @@ class QuestionFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_question, container, false)
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as? MainActivity)?.hideStepperLayout()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context?.getAppComponent()?.inject(this)
-
-        (activity as? MainActivity)?.hideStepperLayout()
     }
 
     private val requestBuilder by lazy {
@@ -59,7 +62,6 @@ class QuestionFragment : Fragment() {
             .`as`(PictureDrawable::class.java)
             .placeholder(R.drawable.ic_broken_image)
             .listener(SvgSoftwareLayerSetter())
-            .circleCrop()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,14 +82,6 @@ class QuestionFragment : Fragment() {
                 if (dy > 0) onScrollUp()
                 // Scrolling down
                 else onScrollDown()
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    // Do something
-                    //Add fling flag + when fling down show again the question_box
-                }
             }
         })
     }
@@ -131,11 +125,11 @@ class QuestionFragment : Fragment() {
 
         val adapter: RecyclerView.Adapter<*> = when (question.type) {
             MULTI_SELECT -> {
-                extra_text_tv.text = "Choose all relevant"
+                extra_text_tv.text = getString(R.string.choose_all_relevant)
                 MultiQuestionAdapter(options, requestBuilder)
             }
             SELECT -> {
-                extra_text_tv.text = "Choose one relevant"
+                extra_text_tv.text = getString(R.string.choose_one_relevant)
                 SelectQuestionAdapter(options, requestBuilder)
             }
             else -> throw IllegalArgumentException("Not the right type of question")
