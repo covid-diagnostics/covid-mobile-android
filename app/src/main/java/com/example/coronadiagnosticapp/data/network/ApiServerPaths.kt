@@ -9,5 +9,5 @@ const val QUESTIONS = "api/question/"
 const val SEND_ANSWERS = "api/question-response/"
 const val PPG_MEASUREMENT_URL = "api/ppg-measurement/"
 const val MEASUREMENT_URL = "api/measurement/"
-const val NUMBER_OF_MEASUREMENTS = MEASUREMENT_URL + "count/"
+const val MEASUREMENT_COUNT_URL = MEASUREMENT_URL + "count/"
 

@@ -114,6 +114,12 @@
     <string name="smoked_5y_ago">Have been smoking and stopped for the last 5 years</string>
     <string name="receives_dialysis_treatment">Receives dialysis treatment</string>
     <string name="press_the_mic_button">Press the mic button \n to start recording</string>
+    <string name="tests_done_so_far">%d tests have been done so far!</string>
+    <string name="share_now">Share now</string>
+    <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygein!</string>
+    <string name="thank_you">Thank you!</string>
+    <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
+    <string name="continue_arrow">Continue →</string>
 
     <string name="voice_up">
         <![CDATA[
