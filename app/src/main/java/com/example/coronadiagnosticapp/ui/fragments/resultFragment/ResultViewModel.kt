@@ -4,6 +4,5 @@ import com.example.coronadiagnosticapp.data.repository.Repository
 import javax.inject.Inject
 
 class ResultViewModel @Inject constructor(val repository: Repository){
-    fun getLastHealth() = repository.getLastResult()
-    fun getBreathingRate() = repository.breathingRate
+    suspend fun getMeasurementCount() = repository.getMeasurementCount()
 }

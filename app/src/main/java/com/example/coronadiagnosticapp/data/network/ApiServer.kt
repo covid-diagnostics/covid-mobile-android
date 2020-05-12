@@ -5,7 +5,6 @@ import com.example.coronadiagnosticapp.data.db.entity.Measurement
 import com.example.coronadiagnosticapp.data.db.entity.PpgMeasurement
 import com.example.coronadiagnosticapp.data.db.entity.UserInfo
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.ResponseUser
-import com.example.coronadiagnosticapp.data.db.entity.userResponse.User
 import com.example.coronadiagnosticapp.data.db.entity.userResponse.UserRegister
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
@@ -57,13 +56,13 @@ interface ApiServer {
         @Header("Accept-Language") language: String
     ): Deferred<List<JsonObject>>
 
+    @GET(MEASUREMENT_COUNT_URL)
+    fun getMeasurementCount(): Deferred<Int>
+
     @POST(SEND_ANSWERS)
     fun sendUserAnswer(
         @Body answer: AnswersResponse
     ): Deferred<AnswersResponse>
-
-    @GET(NUMBER_OF_MEASUREMENTS)
-    fun getNumberOfMeasurements(): Deferred<Int>
 
     companion object {
         operator fun invoke(interceptor: TokenServiceInterceptor): ApiServer {

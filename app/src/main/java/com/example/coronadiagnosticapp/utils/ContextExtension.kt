@@ -3,6 +3,7 @@ package com.example.coronadiagnosticapp.utils
 import android.content.Context
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.example.coronadiagnosticapp.data.di.AppComponent
@@ -23,3 +24,6 @@ fun Fragment.toast(@StringRes msg: Int, duration: Int = LENGTH_SHORT) =
 //App component shorter
 fun Context.getAppComponent(): AppComponent =
     (applicationContext as MyApplication).getAppComponent()
+
+fun Context.getColor(@ColorRes color: Int) = resources.getColor(color)
+fun Fragment.getColor(@ColorRes color: Int) = resources.getColor(color)
