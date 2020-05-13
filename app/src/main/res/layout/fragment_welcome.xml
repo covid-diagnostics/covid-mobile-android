@@ -51,14 +51,28 @@
     <TextView
         android:id="@+id/textView_welcome_first_sub"
         android:layout_width="195dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="55dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/short_report"
         android:textAppearance="@style/appBodySmall"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView14" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="381dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="464dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
