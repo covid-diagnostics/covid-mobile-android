@@ -24,7 +24,7 @@
         android:layout_width="327dp"
         android:layout_height="130dp"
         android:layout_marginTop="28dp"
-        android:text="@string/your_voice_can_help"
+        android:text="@string/short_report"
         android:textAlignment="center"
         android:textAppearance="@style/appBody"
         app:layout_constraintEnd_toEndOf="@+id/textView_header_instructions"

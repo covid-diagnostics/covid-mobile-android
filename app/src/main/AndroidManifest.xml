@@ -51,6 +51,9 @@
         <meta-data
             android:name="io.sentry.auto-init"
             android:value="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
