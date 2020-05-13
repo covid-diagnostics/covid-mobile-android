@@ -114,4 +114,12 @@
     <string name="why_voice_and_pulse">למה קול ודופק?</string>
     <string name="how_does_it_work">איך זה עובד?</string>
     <string name="voice_check">בדיקת קול</string>
+    <string name="about_measurements"><![CDATA[
+       במסך הבא נקח
+        <font color="#333333"> 4 דגימות קןל קצרות</font>
+        וגם
+        <font color="#333333">בדיקת דופק</font>
+       מהאצבע באמצעות המצלמה
+        ]]>
+    </string>
 </resources>

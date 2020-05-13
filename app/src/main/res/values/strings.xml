@@ -133,16 +133,13 @@
     </string>
     <string name="city_back_on_tracks">Together we\'ll get the city back on tracks.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about_measurements">
         <![CDATA[
-        On the next screen we\'ll take
-        <font color="#333333"> 4 short voice samples</font>
-        and get a
-        <font color="#333333">pulse checks</font>
-        from the finger using your camera.
-        ]]>
+         On the next screen we\'ll take
+         <font color="#333333"> 4 short voice samples</font>
+         and get a
+         <font color="#333333">pulse checks</font>
+         from the finger using your camera.]]>
     </string>
     <string name="voice_check">Voice check</string>
     <string name="how_does_it_work">- How does it work?</string>
