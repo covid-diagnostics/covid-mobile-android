@@ -25,6 +25,7 @@ interface Repository {
         height: Int,
         weight: Int
     )
+
     suspend fun updateBackgroundDiseases(diseases: List<BackDiseases>)
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
@@ -32,11 +33,13 @@ interface Repository {
     fun getIsFirstTime(): Boolean
     fun setIsFirstTime(isFirstTime: Boolean)
     suspend fun submitMeasurement(measurement: Measurement): Measurement
+
     @RequiresApi(value = 23)
     suspend fun submitPpgMeasurement(
         oxymeterAverages: OxymeterAverages,
         cc: CameraCharacteristics
     )
+
     suspend fun getQuestions(type: QuestionType): List<Question>
 
     suspend fun getNextSelectableQuestion(currentQuestion: SelectQuestion?): SelectQuestion?
@@ -45,6 +48,7 @@ interface Repository {
     suspend fun addAnswers(answers: List<AnswersResponse>)
     suspend fun loadQuestionsToDB(): List<Question>
     suspend fun getMeasurementCount(): Int
+    suspend fun getLastMeasurementId(): Int
     suspend fun getSimpleQuestions(): List<Question>
     suspend fun saveSmokeStatus(smokingStatus: SmokingStatus)
 }
