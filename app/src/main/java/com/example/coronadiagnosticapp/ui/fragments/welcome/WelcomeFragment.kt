@@ -8,6 +8,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
@@ -23,8 +24,9 @@ class WelcomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         button_start.setOnClickListener {
 
-            findNavController()
-                .navigate( R.id.action_welcomeFragment_to_registerFragment)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment,RegisterFragment())
+                .commit()
         }
         AutostartUtils.requestAutostartPermissions(context!!)
     }
