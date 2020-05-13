@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.oxymeter.OxymeterActivity">
+    tools:context=".ui.fragments.oxymeter.OxymeterFragment">
 
     <ImageView
         android:id="@+id/infoImg"
@@ -25,6 +25,7 @@
         android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
+        android:background="@drawable/rounded_corners_inside"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

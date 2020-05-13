@@ -1,9 +1,8 @@
-package com.example.coronadiagnosticapp.ui.activities.oxymeter
+package com.example.coronadiagnosticapp.ui.fragments.oxymeter
 
 import android.hardware.camera2.CameraCharacteristics
 import android.os.Build
 import androidx.lifecycle.ViewModel
-import com.example.coronadiagnosticapp.data.db.entity.Measurement
 import com.example.coronadiagnosticapp.data.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
