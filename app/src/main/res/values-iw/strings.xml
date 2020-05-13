@@ -115,4 +115,5 @@
     <string name="tests_done_so_far">%d בדיקות נעשו עד כה!</string>
     <string name="share_now">שתף!</string>
     <string name="continue_arrow">המשך ←</string>
+    <string name="thank_you">מדידה %d הושלמה בהצלחה!</string>
 </resources>

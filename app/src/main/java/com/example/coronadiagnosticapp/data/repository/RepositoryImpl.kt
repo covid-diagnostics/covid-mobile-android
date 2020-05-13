@@ -185,6 +185,10 @@ class RepositoryImpl @Inject constructor(
         return networkDataSource.getMeasurementCount()
     }
 
+    override suspend fun getLastMeasurementId(): Int {
+        return dao.getMeasurement().id!!
+    }
+
     override suspend fun getNextSelectableQuestion(currentQuestion: SelectQuestion?): SelectQuestion? {
         val questions = dao.getSelectQuestions()
 
