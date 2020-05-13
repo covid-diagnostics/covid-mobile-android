@@ -8,14 +8,33 @@
     tools:context=".ui.fragments.onboarding.WelcomeFragment"
     tools:layout_editor_absoluteX="32dp">
 
-    <ImageView
-        android:id="@+id/imageView14"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="415dp"
-        android:src="@drawable/welcome_screen_background"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="match_parent"
+            android:layout_height="415dp"
+            android:src="@drawable/welcome_screen_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_welcome_first_sub"
+            android:layout_width="197dp"
+            android:layout_height="67dp"
+            android:layout_marginLeft="240px"
+            android:layout_marginTop="250px"
+            android:gravity="center"
+            android:text="@string/short_report"
+            android:textAppearance="@style/appBodySmall" />
+    </FrameLayout>
 
     <com.example.coronadiagnosticapp.ui.views.SpannableTextView
         android:id="@+id/textView7"
@@ -47,32 +66,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <TextView
-        android:id="@+id/textView_welcome_first_sub"
-        android:layout_width="195dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text="@string/short_report"
-        android:textAppearance="@style/appBodySmall"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="381dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="464dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
