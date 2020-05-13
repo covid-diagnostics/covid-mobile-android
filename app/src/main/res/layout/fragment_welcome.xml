@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="#FFFFFF"
-    tools:context=".ui.fragments.welcome.WelcomeFragment"
+    tools:context=".ui.fragments.onboarding.WelcomeFragment"
     tools:layout_editor_absoluteX="32dp">
 
     <ImageView
         android:id="@+id/imageView14"
-        android:layout_width="430dp"
+        android:layout_width="match_parent"
         android:layout_height="415dp"
         android:src="@drawable/welcome_screen_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,17 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_start"
-        style="@style/customButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView_welcome_first_sub"

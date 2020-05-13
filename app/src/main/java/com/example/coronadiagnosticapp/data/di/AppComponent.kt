@@ -16,7 +16,7 @@ import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment
 import com.example.coronadiagnosticapp.ui.fragments.splash.SplashFragment
 import com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment
-import com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment
+import com.example.coronadiagnosticapp.ui.fragments.onboarding.WelcomeFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

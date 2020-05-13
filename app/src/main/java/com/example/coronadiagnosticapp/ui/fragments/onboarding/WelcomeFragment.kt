@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.welcome
+package com.example.coronadiagnosticapp.ui.fragments.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,16 +19,4 @@ class WelcomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_welcome, container, false)
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        button_start.setOnClickListener {
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment,RegisterFragment())
-                .commit()
-        }
-        AutostartUtils.requestAutostartPermissions(context!!)
-    }
-
 }
