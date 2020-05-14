@@ -5,54 +5,95 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="#FFFFFF"
-    tools:context=".ui.fragments.welcome.WelcomeFragment"
+    tools:context=".ui.fragments.onboarding.WelcomeFragment"
     tools:layout_editor_absoluteX="32dp">
 
     <ImageView
-        android:id="@+id/imageView14"
-        android:layout_width="430dp"
-        android:layout_height="415dp"
-        android:src="@drawable/welcome_screen_background"
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/background_illustration"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_title" />
 
-    <TextView
-        android:id="@+id/textView_welcome_title"
-        android:layout_width="353dp"
-        android:layout_height="135dp"
-        android:layout_marginTop="105dp"
-        android:gravity="center"
-        android:text="@string/your_voice_can_win_corona"
-        android:textAlignment="textStart"
-        android:textSize="44dp"
+    <ImageView
+        android:id="@+id/speech_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/comic_bubble"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+    <com.example.coronadiagnosticapp.ui.views.SpannableTextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="@string/voice_up"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_start"
-        style="@style/customButton"
-        android:layout_width="wrap_content"
+    <com.example.coronadiagnosticapp.ui.views.SpannableTextView
+        android:id="@+id/textView_welcome_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/start"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/your_chance_to_win_corona"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:textSize="44sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView_welcome_first_sub"
-        android:layout_width="195dp"
-        android:layout_height="93dp"
-        android:layout_marginTop="55dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center"
-        android:text="@string/your_voice_can_help"
-        android:textAlignment="textStart"
+        android:text="@string/short_report"
+        android:textAlignment="viewStart"
         android:textAppearance="@style/appBodySmall"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/speech_bubble"
+        app:layout_constraintEnd_toEndOf="@+id/speech_bubble"
+        app:layout_constraintStart_toStartOf="@+id/speech_bubble"
+        app:layout_constraintTop_toTopOf="@+id/speech_bubble" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/female_doctor_toward"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/imageView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/heart"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+        app:layout_constraintEnd_toEndOf="@+id/imageView9" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

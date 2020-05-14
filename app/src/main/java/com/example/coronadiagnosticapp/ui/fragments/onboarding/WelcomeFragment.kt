@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.welcome
+package com.example.coronadiagnosticapp.ui.fragments.onboarding
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_welcome.*
 import javax.inject.Inject
@@ -18,15 +19,4 @@ class WelcomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_welcome, container, false)
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        button_start.setOnClickListener {
-
-            findNavController()
-                .navigate( R.id.action_welcomeFragment_to_registerFragment)
-        }
-        AutostartUtils.requestAutostartPermissions(context!!)
-    }
-
 }
