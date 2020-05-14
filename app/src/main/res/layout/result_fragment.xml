@@ -66,9 +66,9 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/victory_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="337dp" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_summaryText" />
 
             <TextView
                 android:id="@+id/textView_summaryText2"
