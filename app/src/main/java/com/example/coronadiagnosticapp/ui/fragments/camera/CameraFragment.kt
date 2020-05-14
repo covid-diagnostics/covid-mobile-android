@@ -1,8 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
-import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.data.db.entity.HealthResult
 import com.example.coronadiagnosticapp.ui.activities.MainActivity
@@ -24,7 +19,6 @@ import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import com.example.coronadiagnosticapp.utils.showLoading
 import com.example.coronadiagnosticapp.utils.toast
-import com.rakshakhegde.stepperindicator.StepperIndicator
 import kotlinx.android.synthetic.main.camera_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -110,8 +104,12 @@ class CameraFragment : ScopedFragment() {
             viewModel.saveResult(HealthResult(oxymeterData))
             withContext(Dispatchers.Main) {
                 showLoading(progressBar_cameraFragment,false)
-                findNavController()
-                    .navigate(R.id.action_cameraFragment_to_recorderFragment)
+                val id = if (viewModel.isFirstTime) {
+                    R.id.action_cameraFragment_to_recorderExplanation
+                }else{
+                    R.id.action_cameraFragment_to_recorderFragment
+                }
+                findNavController().navigate(id)
             }
         }
     }

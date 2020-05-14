@@ -6,7 +6,9 @@ import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     fun isLoggedIn() = repository.isLoggedIn()
-    fun setIsFirstTime(isFirstTime: Boolean) = repository.setIsFirstTime(isFirstTime)
+    fun setIsFirstTime(isFirstTime: Boolean) {
+        repository.isFirstTime = isFirstTime
+    }
 }
 
 

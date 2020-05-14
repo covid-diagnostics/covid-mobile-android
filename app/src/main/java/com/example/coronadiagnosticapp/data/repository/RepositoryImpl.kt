@@ -112,8 +112,9 @@ class RepositoryImpl @Inject constructor(
 
     override fun getLastResult() = lastHealthResult
 
-    override fun getIsFirstTime() = sharedProvider.getIsFirstTime()
-    override fun setIsFirstTime(isFirstTime: Boolean) = sharedProvider.setIsFirstTime(isFirstTime)
+    override var isFirstTime: Boolean
+        get() = sharedProvider.getIsFirstTime()
+        set(value) = sharedProvider.setIsFirstTime(value)
 
     override suspend fun uploadAudioRecording(file: File) {
         try {

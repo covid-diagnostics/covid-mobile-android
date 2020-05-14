@@ -116,4 +116,17 @@
     <string name="share_now">שתף!</string>
     <string name="continue_arrow">המשך ←</string>
     <string name="thank_you">מדידה %d הושלמה בהצלחה!</string>
+    <string name="better_checking_in_the_morning_after_brushing_your_teeth">כדאי למדוד בבוקר,לאחר צחצוח שיניים.</string>
+    <string name="research_shows">מחקרים מראים ששינויים בסימנים פיזיולוגיים אלו עשויים לסייע לתת התראה מוקדמת לגבי תחלואה פוטנציאלית!</string>
+    <string name="why_voice_and_pulse">למה קול ודופק?</string>
+    <string name="how_does_it_work">איך זה עובד?</string>
+    <string name="voice_check">בדיקת קול</string>
+    <string name="about_measurements"><![CDATA[
+       במסך הבא נקח
+        <font color="#333333"> 4 דגימות קןל קצרות</font>
+        וגם
+        <font color="#333333">בדיקת דופק</font>
+       מהאצבע באמצעות המצלמה
+        ]]>
+    </string>
 </resources>
