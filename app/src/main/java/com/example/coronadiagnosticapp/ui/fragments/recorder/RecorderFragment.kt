@@ -19,6 +19,7 @@ import com.example.coronadiagnosticapp.ui.activities.MainActivity
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
+import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.recorder_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -47,23 +48,17 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.getAppComponent()?.inject(this)
+        activity!!.getAppComponent().inject(this)
 
         recordFile = context!!.externalCacheDir!!.absolutePath
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (context as? MainActivity)?.setStepperCount(2)
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.recorder_fragment, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (context as? MainActivity)?.setStepperCount(2)
         // Use viewModel
         initButton()
     }
@@ -125,16 +120,17 @@ class RecorderFragment : ScopedFragment() {
             // this thread will stay alive after the page is dead, so this is to avoid null reference
             stopRecording()
             // Upload file
+            toast("Uploading...")
             launch(Dispatchers.IO) {
                 viewModel.uploadFile(File(fileLocation!!))
                 withContext(Dispatchers.Main) {
+                    toast("Uploaded!")
                     updateNextRecording()
                 }
                 Log.d(TAG, "File finished uploading!")
             }
             processRecording()
         }
-
         mediaRecorder!!.prepare()
         mediaRecorder!!.start()
         startUpdatingVisualizer()
@@ -167,7 +163,9 @@ class RecorderFragment : ScopedFragment() {
             return true
 
         // Permission not granted, ask for permission
-        ActivityCompat.requestPermissions(activity!!, arrayOf(RECORD_AUDIO), PERMISSION_CODE)
+        ActivityCompat.requestPermissions(
+            activity!!, arrayOf(RECORD_AUDIO), PERMISSION_CODE
+        )
 
         return false
     }
