@@ -7,13 +7,8 @@ import kotlinx.coroutines.delay
 import java.io.File
 import javax.inject.Inject
 
-class CameraViewModel @Inject
-constructor(val repository: Repository) : ViewModel() {
-    fun getIsFirstTime() = repository.getIsFirstTime()
-    suspend fun uploadVideo(file: File) {
-        delay(3000)
-
-    }
+class CameraViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+    val isFirstTime = repository.isFirstTime
 
     suspend fun saveResult(healthResult: HealthResult) {
         repository.saveResult(healthResult)
