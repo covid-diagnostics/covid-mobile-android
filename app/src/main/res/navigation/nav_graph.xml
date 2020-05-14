@@ -102,22 +102,7 @@
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
         <action
-            android:id="@+id/action_recorderFragment_to_recorderFragment2"
-            app:destination="@id/recorderFragment2" />
-        <action
             android:id="@+id/action_recorderFragment_to_recorderExplanation3"
-            app:destination="@id/recorderExplanation" />
-    </fragment>
-    <fragment
-        android:id="@+id/recorderFragment2"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment2"
-        android:label="RecorderFragment2"
-        tools:layout="@layout/recorder_fragment2">
-        <action
-            android:id="@+id/action_recorderFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
-        <action
-            android:id="@+id/action_recorderFragment2_to_recorderExplanation"
             app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
