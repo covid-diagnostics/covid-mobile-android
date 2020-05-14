@@ -59,8 +59,20 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (context as? MainActivity)?.setStepperCount(2)
-        // Use viewModel
+        fill(viewModel.getCurrentRecording())
         initButton()
+        progressBarHorizontal.max = viewModel.recordingCount
+        progressBarHorizontal.progress = 1
+    }
+
+    private fun fill(recording: Recording) {
+        instruction_tv.setText(recording.title)
+        example_tv.setText(recording.example)
+        recording.explanation?.let {
+            extra_info_tv.setText(it)
+        }?: extra_info_tv.setText("")
+
+        visualizerView.clear()
     }
 
     private fun initButton() {
@@ -75,6 +87,20 @@ class RecorderFragment : ScopedFragment() {
                 tap_to_record_tv.hide()
             }
         }
+    }
+
+    private fun updateNextRecording() {
+        //  Continue to next question recording
+        val nextRecording = viewModel.getNextRecording()
+            ?: kotlin.run {
+                //         if there's no questions left move to next fragment
+                findNavController()
+                    .navigate(R.id.action_recorderFragment_to_resultFragment)
+                return
+            }
+        progressBarHorizontal.progress = viewModel.getCurrentRecordingIndex() + 1
+//        fill the data from next question
+        fill(nextRecording)
     }
 
     private fun stopRecording() {
@@ -134,15 +160,6 @@ class RecorderFragment : ScopedFragment() {
         mediaRecorder!!.prepare()
         mediaRecorder!!.start()
         startUpdatingVisualizer()
-    }
-
-    private fun updateNextRecording() {
-//        TODO if there's no questions left move to next fragment
-        findNavController()
-            .navigate(R.id.action_recorderFragment_to_resultFragment)
-//        TODO("Continue to next question recording")
-//        fill the data from next question
-        visualizerView.clear()
     }
 
     private fun startUpdatingVisualizer() {
