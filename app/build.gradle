@@ -113,4 +113,7 @@ dependencies {
 
 //    for svg loading
     implementation 'com.caverock:androidsvg-aar:1.4'
+
+//    Sound visualization
+    implementation 'com.github.Armen101:AudioRecordView:1.0.2'
 }

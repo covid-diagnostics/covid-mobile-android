@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ui.activities.MainActivity">
 
     <ProgressBar
@@ -21,8 +22,9 @@
 
     <ImageView
         android:id="@+id/doc_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
         android:layout_marginTop="16dp"
         android:src="@drawable/feel_doctor"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +48,7 @@
             android:id="@+id/instruction_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/open_sans_semibold"
             android:textAlignment="center"
             android:textColor="@android:color/black"
@@ -58,7 +60,7 @@
             android:id="@+id/example_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/open_sans_semibold"
             android:textAlignment="center"
             android:textColor="@color/blueText"
@@ -72,7 +74,7 @@
             android:fontFamily="@font/open_sans_semibold"
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="extra info" />
     </LinearLayout>
@@ -94,26 +96,90 @@
     <ImageButton
         android:id="@+id/record_btn"
         style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="32dp"
         android:background="@android:color/transparent"
         android:src="@drawable/mic_button"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.coronadiagnosticapp.ui.fragments.recorder.VisualizerView
+
+    <com.visualizer.amplitude.AudioRecordView
         android:id="@+id/visualizerView"
         android:layout_width="0dp"
         android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/recorder_background"
+        app:chunkAlignTo="center"
+        app:chunkColor="@android:color/white"
+        app:chunkMaxHeight="48dp"
+        app:chunkMinHeight="2dp"
+        app:chunkRoundedCorners="true"
+        app:chunkSoftTransition="true"
+        app:chunkSpace="2dp"
+        app:chunkWidth="3dp"
         app:layout_constraintBottom_toTopOf="@+id/tap_to_record_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
+    <LinearLayout
+        android:id="@+id/play_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/recorder_background"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tap_to_record_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        tools:visibility="gone">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_play" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/sound_seekBar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:progressBackgroundTint="@android:color/white"
+            android:progressTint="@android:color/white"
+            android:thumbTint="@color/colorBlueActivity" />
+
+        <ImageButton
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/mic_button" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

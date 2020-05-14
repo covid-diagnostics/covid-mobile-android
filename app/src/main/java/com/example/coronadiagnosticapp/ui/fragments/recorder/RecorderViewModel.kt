@@ -16,7 +16,7 @@ class RecorderViewModel @Inject constructor(val repository: Repository) : ViewMo
     private val recordings = RecordingsFactory.getRecordings()
     private var currentRecordingIndex = 0
 
-    fun getCurrentRecording() = recordings[currentRecordingIndex]
+    fun getCurrentRecording() = recordings.getOrNull(currentRecordingIndex)
     fun getNextRecording(): Recording? {
         currentRecordingIndex++
         return getCurrentRecording()

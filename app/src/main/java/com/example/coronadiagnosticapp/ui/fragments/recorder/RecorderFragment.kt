@@ -59,7 +59,7 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (context as? MainActivity)?.setStepperCount(2)
-        fill(viewModel.getCurrentRecording())
+        fill(viewModel.getCurrentRecording()!!)
         initButton()
         progressBarHorizontal.max = viewModel.recordingCount
         progressBarHorizontal.progress = 1
@@ -72,7 +72,11 @@ class RecorderFragment : ScopedFragment() {
             extra_info_tv.setText(it)
         }?: extra_info_tv.setText("")
 
-        visualizerView.clear()
+        visualizerView.recreate()
+
+        record_btn.setImageResource(R.drawable.mic_button)
+        record_btn.isEnabled = true
+        isRecording = false
     }
 
     private fun initButton() {
@@ -84,7 +88,7 @@ class RecorderFragment : ScopedFragment() {
                     setImageResource(R.drawable.mic_button_recording)
                     isEnabled = false
                 }
-                tap_to_record_tv.hide()
+                tap_to_record_tv.visibility = View.INVISIBLE
             }
         }
     }
@@ -92,7 +96,7 @@ class RecorderFragment : ScopedFragment() {
     private fun updateNextRecording() {
         //  Continue to next question recording
         val nextRecording = viewModel.getNextRecording()
-            ?: kotlin.run {
+            ?: run {
                 //         if there's no questions left move to next fragment
                 findNavController()
                     .navigate(R.id.action_recorderFragment_to_resultFragment)
@@ -106,7 +110,7 @@ class RecorderFragment : ScopedFragment() {
     private fun stopRecording() {
         isRecording = false
 
-        tap_to_record_tv.show()
+        tap_to_record_tv.visibility = View.VISIBLE
 
         //Stop media recorder and set it to null for further use to record new audio
         mediaRecorder?.apply {
@@ -165,8 +169,8 @@ class RecorderFragment : ScopedFragment() {
     private fun startUpdatingVisualizer() {
         launch {
             while (isRecording) {
-                visualizerView.addAmplitude(mediaRecorder!!.maxAmplitude.toFloat())
-                visualizerView.invalidate()
+                val amplitude = mediaRecorder!!.maxAmplitude
+                visualizerView.update(amplitude * 4)//for more visualization
                 delay(VISUALIZATION_FREQUENCY)
             }
         }
