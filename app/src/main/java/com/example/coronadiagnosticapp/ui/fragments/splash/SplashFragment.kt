@@ -51,7 +51,7 @@ class SplashFragment : Fragment(), Animator.AnimatorListener {
         val id = if (isLoggedIn) {
             R.id.action_splashFragment_to_homeFragment
         } else {
-            R.id.action_splashFragment_to_welcomeFragment
+            R.id.action_splashFragment_to_onBoardingMainFragment
         }
         findNavController().navigate(id)
     }

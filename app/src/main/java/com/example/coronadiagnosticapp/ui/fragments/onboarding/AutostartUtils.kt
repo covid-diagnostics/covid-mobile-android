@@ -1,4 +1,4 @@
-package com.example.coronadiagnosticapp.ui.fragments.welcome
+package com.example.coronadiagnosticapp.ui.fragments.onboarding
 
 import android.app.AlertDialog
 import android.content.ComponentName
@@ -15,11 +15,15 @@ import com.example.coronadiagnosticapp.R
 
 object AutostartUtils {
     fun requestAutostartPermissions(context: Context) {
-        val SETTINGS_INTENTS = createSettingIntents()
+        val SETTINGS_INTENTS =
+            createSettingIntents()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val intent =
-                getCompIntent("com.coloros.safecenter", "startupapp.StartupAppListActivity")
+                getCompIntent(
+                    "com.coloros.safecenter",
+                    "startupapp.StartupAppListActivity"
+                )
                     .setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)//TODO check this
                     .setData(Uri.parse("package:" + context.packageName))
             SETTINGS_INTENTS += intent
@@ -32,9 +36,21 @@ object AutostartUtils {
             return
         }
 
-        SETTINGS_INTENTS.firstOrNull { isCallable(context, it) }?.let {
-            saveSkipProtectAppCheck(settings, true)
-            showDialog(context, settings, it)
+        SETTINGS_INTENTS.firstOrNull {
+            isCallable(
+                context,
+                it
+            )
+        }?.let {
+            saveSkipProtectAppCheck(
+                settings,
+                true
+            )
+            showDialog(
+                context,
+                settings,
+                it
+            )
         }
     }
 
@@ -60,15 +76,42 @@ object AutostartUtils {
                 "com.coloros.powermanager.fuelgaue.PowerConsumptionActivity",
                 false
             ),
-            getCompIntent("com.huawei.systemmanager", "optimize.process.ProtectActivity"),
-            getCompIntent("com.coloros.safecenter", "permission.startup.StartupAppListActivity"),
-            getCompIntent("com.oppo.safe", "permission.startup.StartupAppListActivity"),
-            getCompIntent("com.iqoo.secure", "ui.phoneoptimize.AddWhiteListActivity"),
-            getCompIntent("com.iqoo.secure", "ui.phoneoptimize.BgStartUpManager"),
-            getCompIntent("com.vivo.permissionmanager", "activity.BgStartUpManagerActivity"),
-            getCompIntent("com.asus.mobilemanager", "entry.FunctionActivity"),
-            getCompIntent("com.asus.mobilemanager", "autostart.AutoStartActivity"),
-            getCompIntent("com.letv.android.letvsafe", "AutobootManageActivity")
+            getCompIntent(
+                "com.huawei.systemmanager",
+                "optimize.process.ProtectActivity"
+            ),
+            getCompIntent(
+                "com.coloros.safecenter",
+                "permission.startup.StartupAppListActivity"
+            ),
+            getCompIntent(
+                "com.oppo.safe",
+                "permission.startup.StartupAppListActivity"
+            ),
+            getCompIntent(
+                "com.iqoo.secure",
+                "ui.phoneoptimize.AddWhiteListActivity"
+            ),
+            getCompIntent(
+                "com.iqoo.secure",
+                "ui.phoneoptimize.BgStartUpManager"
+            ),
+            getCompIntent(
+                "com.vivo.permissionmanager",
+                "activity.BgStartUpManagerActivity"
+            ),
+            getCompIntent(
+                "com.asus.mobilemanager",
+                "entry.FunctionActivity"
+            ),
+            getCompIntent(
+                "com.asus.mobilemanager",
+                "autostart.AutoStartActivity"
+            ),
+            getCompIntent(
+                "com.letv.android.letvsafe",
+                "AutobootManageActivity"
+            )
                 .setData(Uri.parse("mobilemanager://function/entry/AutoStart")),
             getCompIntent(
                 "com.huawei.systemmanager",
@@ -77,7 +120,10 @@ object AutostartUtils {
                 else
                     "appcontrol.activity.StartupAppControlActivity"
             ),
-            getCompIntent("com.meizu.safe", "security.SHOW_APPSEC")
+            getCompIntent(
+                "com.meizu.safe",
+                "security.SHOW_APPSEC"
+            )
                 .addCategory(Intent.CATEGORY_DEFAULT)
                 .putExtra("packageName", BuildConfig.APPLICATION_ID)
         )
@@ -93,7 +139,10 @@ object AutostartUtils {
         val dontShowAgain = AppCompatCheckBox(context).apply {
             setText(R.string.dont_show_again)
             setOnCheckedChangeListener { _, isChecked ->
-                saveSkipProtectAppCheck(settings, isChecked)
+                saveSkipProtectAppCheck(
+                    settings,
+                    isChecked
+                )
             }
         }
         val msg = context.getString(
@@ -107,7 +156,10 @@ object AutostartUtils {
             .setPositiveButton(R.string.settings) { _, _ ->
                 context.startActivity(intent)
                 // Don't show this message again.
-                saveSkipProtectAppCheck(settings, true)
+                saveSkipProtectAppCheck(
+                    settings,
+                    true
+                )
             }
             .setNegativeButton(R.string.cancel, null)
             .show()

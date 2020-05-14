@@ -14,4 +14,9 @@
         <attr name="enum_question" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="StepView">
+        <attr name="stepDescription" format="string" />
+        <attr name="stepNumber" format="string"/>
+    </declare-styleable>
+
 </resources>
