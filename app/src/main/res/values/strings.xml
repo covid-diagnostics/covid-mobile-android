@@ -117,7 +117,7 @@
     <string name="tests_done_so_far">%d tests have been done so far!</string>
     <string name="share_now">Share now</string>
     <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygein!</string>
-    <string name="thank_you">Thank you!</string>
+    <string name="thank_you">Measurement %d successfully submitted!</string>
     <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
     <string name="continue_arrow">Continue →</string>
 
