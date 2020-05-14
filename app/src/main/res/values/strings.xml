@@ -136,9 +136,6 @@
         ]]>
     </string>
     <string name="city_back_on_tracks">Together we\'ll get the city back on tracks.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="how_does_it_work">How does it work?</string>
     <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minues, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
     <string name="letsHearSound">let\'s hear the sound</string>
@@ -148,7 +145,7 @@
     <string name="cough3Times">Cough 3 times</string>
     <string name="soundA">AAAAA</string>
     <string name="soundE">EEEEE</string>
-    <string name="soundA_like">Sounds like \'dad\',long without stoping, until your breath runs out</string>
-    <string name="soundE_like">Sounds like \'Me\',long without stoping, until your breath runs out</string>
-    <string name="can_use_he">no breaks, if English is hard, Hebrew is an optionn too</string>
+    <string name="soundA_like">Sounds like \'dad\',long without stopping, until your breath runs out</string>
+    <string name="soundE_like">Sounds like \'Me\',long without stopping, until your breath runs out</string>
+    <string name="can_use_he">if English is hard,you can use Hebrew as well</string>
 </resources>

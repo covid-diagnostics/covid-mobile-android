@@ -116,4 +116,14 @@
     <string name="share_now">שתף!</string>
     <string name="continue_arrow">המשך ←</string>
     <string name="thank_you">מדידה %d הושלמה בהצלחה!</string>
+    <string name="letsHearSound">נרצה לשמוע את הצליל</string>
+    <string name="letsHear">נרצה לשמוע</string>
+    <string name="count_1to10">ספירה באנגלית מ1 עד 10</string>
+    <string name="lastTimeLetsHear">אחרון ודי, נרצה לשמוע</string>
+    <string name="cough3Times">שיעול 3 פעמים</string>
+    <string name="soundA">אההההה</string>
+    <string name="soundE">אייייי</string>
+    <string name="soundA_like">כמו במילה אבא ארוך ובלי הפסקות עד שיגמר לך האויר</string>
+    <string name="soundE_like">כמו במילה אמא ארוך בלי הפסקות עד שיגמאר לך האוויר</string>
+    <string name="can_use_he">אם לא נוח באנגלית אפשר גם בעברית</string>
 </resources>
