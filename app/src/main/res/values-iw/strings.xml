@@ -101,9 +101,15 @@
     <string name="better">טוב יותר</string>
     <string name="worse">פחות טוב</string>
     <string name="lets_start">בואו נתחיל</string>
-    <string name="your_voice_can_help">תרומת קול של דקה תוכל לעזור לקדם כלי איתור חינמי, מהיר ונגיש לכולם.</string>
+    <string name="short_report">
+        דיווח יומי,קצר ופשוט זה כל מה שצריך, אנחנו כבר נעשה את השאר 😀
+    </string>
     <string name="get_to_know">תנו לנו להכיר אתכם יותר טוב!</string>
-    <string name="your_voice_can_win_corona"><b>הקול שלך</b> יכול <b> לנצח</b> את הקורונה!</string>
+    <string name="your_chance_to_win_corona">
+        <![CDATA[
+            <font color="#4787EF"> ההזדמנות שלך </font> לעזור במאבק מול וירוס הקורונה
+        ]]>
+    </string>
     <string name="press_the_mic_button_n_to_start_recording">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
     <string name="press_the_mic_button">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
     <string name="tests_done_so_far">%d בדיקות נעשו עד כה!</string>

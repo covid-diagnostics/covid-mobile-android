@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.coronadiagnosticapp">
+    package="com.example.coronadiagnosticapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,29 +16,44 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activities.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".ui.activities.Reminder.AlarmNotificationReceiver"/>
+
+        <receiver android:name=".ui.activities.Reminder.AlarmNotificationReceiver" />
+
         <service android:name=".ui.activities.Reminder.RegisterNotificationService" />
-        <receiver android:name=".ui.activities.Reminder.BootReceiver"
+
+        <receiver
+            android:name=".ui.activities.Reminder.BootReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="io.sentry.dsn" android:value="https://6344964f8aa0402b97742db2e891bc88@o374240.ingest.sentry.io/5191931" />
-        <meta-data android:name="io.sentry.auto-init" android:value="false" />
+
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="https://6344964f8aa0402b97742db2e891bc88@o374240.ingest.sentry.io/5191931" />
+        <meta-data
+            android:name="io.sentry.auto-init"
+            android:value="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>
