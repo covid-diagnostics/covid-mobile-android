@@ -104,7 +104,7 @@ class CameraFragment : ScopedFragment() {
             viewModel.saveResult(HealthResult(oxymeterData))
             withContext(Dispatchers.Main) {
                 showLoading(progressBar_cameraFragment,false)
-                val id = if (viewModel.isFirstTime()) {
+                val id = if (viewModel.isFirstTime) {
                     R.id.action_cameraFragment_to_recorderExplanation
                 }else{
                     R.id.action_cameraFragment_to_recorderFragment

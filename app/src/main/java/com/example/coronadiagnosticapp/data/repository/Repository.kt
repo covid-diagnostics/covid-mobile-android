@@ -30,8 +30,7 @@ interface Repository {
     suspend fun saveResult(healthResult: HealthResult)
     fun getLastResult(): HealthResult?
     suspend fun uploadAudioRecording(file: File)
-    fun getIsFirstTime(): Boolean
-    fun setIsFirstTime(isFirstTime: Boolean)
+    var isFirstTime: Boolean
     suspend fun submitMeasurement(measurement: Measurement): Measurement
 
     @RequiresApi(value = 23)
