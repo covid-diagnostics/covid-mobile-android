@@ -10,6 +10,10 @@ const val IS_FIRST_TIME = "IS_FIRST_TIME"
 class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
     PreferenceProvider(context) {
 
+    companion object{
+        const val HAS_CONSENT = "HAS_CONSENT"
+    }
+
 
     override fun getToken(): String? {
         return preferences.getString(USER_TOKEN, null)
@@ -41,6 +45,17 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
     override fun setIsFirstTime(isFirstTime: Boolean) {
         with(preferences.edit()) {
             putBoolean(IS_FIRST_TIME, isFirstTime)
+            apply()
+        }
+    }
+
+    override fun getHasConsent()=
+        preferences.getBoolean(HAS_CONSENT, false)
+
+
+    override fun setHasConsent(hasConsent: Boolean) {
+        with(preferences.edit()) {
+            putBoolean(HAS_CONSENT, hasConsent)
             apply()
         }
     }

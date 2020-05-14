@@ -8,6 +8,7 @@ import com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseas
 import com.example.coronadiagnosticapp.ui.fragments.home.HomeFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
+import com.example.coronadiagnosticapp.ui.fragments.onboarding.FourthFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
@@ -17,6 +18,7 @@ import com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragmen
 import com.example.coronadiagnosticapp.ui.fragments.splash.SplashFragment
 import com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment
 import com.example.coronadiagnosticapp.ui.fragments.onboarding.WelcomeFragment
+import com.example.coronadiagnosticapp.ui.fragments.terms.TermsAndConditionsFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -43,6 +45,8 @@ interface AppComponent {
 //    fun <T> inject(injectable:T)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: SplashFragment)
+    fun inject(fragment: TermsAndConditionsFragment)
+    fun inject(fragment: FourthFragment)
 
     @Component.Factory
     interface Factory {
