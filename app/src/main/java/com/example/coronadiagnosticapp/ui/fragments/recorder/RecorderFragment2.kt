@@ -101,7 +101,7 @@ class RecorderFragment2 : ScopedFragment() {
         record_timer.stop()
 
         //Change text on page to file saved
-        record_filename.text = "Recording Stopped, File Saved : $recordFile"
+        instruction_tv.text = "Recording Stopped, File Saved : $recordFile"
 
         //Stop media recorder and set it to null for further use to record new audio
         mediaRecorder!!.stop()

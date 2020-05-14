@@ -117,7 +117,7 @@
     <string name="smoker">Smoker</string>
     <string name="smoked_5y_ago">Have been smoking and stopped for the last 5 years</string>
     <string name="receives_dialysis_treatment">Receives dialysis treatment</string>
-    <string name="press_the_mic_button">Press the mic button \n to start recording</string>
+    <string name="tap_to_record">Tap to record</string>
     <string name="tests_done_so_far">%d tests have been done so far!</string>
     <string name="share_now">Share now</string>
     <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygein!</string>

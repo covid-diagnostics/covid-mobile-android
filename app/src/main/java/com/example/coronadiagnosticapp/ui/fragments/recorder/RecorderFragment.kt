@@ -1,10 +1,9 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder
 
-import android.Manifest
+import android.Manifest.permission.RECORD_AUDIO
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,31 +12,26 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.example.coronadiagnosticapp.utils.MyApplication
 import com.example.coronadiagnosticapp.R
+import com.example.coronadiagnosticapp.ui.activities.MainActivity
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
-import com.rakshakhegde.stepperindicator.StepperIndicator
+import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-// This is an array of all the permission specified in the manifest.
-private val REQUIRED_PERMISSIONS = arrayOf(
-    Manifest.permission.RECORD_AUDIO,
-    Manifest.permission.WRITE_EXTERNAL_STORAGE
-)
-
 class RecorderFragment : ScopedFragment() {
     companion object {
         private const val TAG = "RecorderFragment"
-        private const val RECORDER_PERMISSION = Manifest.permission.RECORD_AUDIO
         private const val PERMISSION_CODE: Int = 21
-        private const val MAX_DURATION = 1000 * 10 // in milliseconds
-        private const val VISUALIZATION_FREQUENCY: Long = 30
+        private const val MAX_DURATION:Long = 1000 * 10 // in milliseconds
     }
 
     @Inject
@@ -50,18 +44,13 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.applicationContext.let { ctx ->
-            (ctx as MyApplication).getAppComponent().inject(this)
-        }
+        activity?.getAppComponent()?.inject(this)
+
         recordFile = context!!.externalCacheDir!!.absolutePath
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val stepperIndicator = view.findViewById<StepperIndicator>(R.id.stepperIndicator)
-        stepperIndicator?.currentStep = 2
-        infoImgRecorder.setOnClickListener {
-            findNavController().navigate(R.id.action_recorderFragment_to_recorderExplanation3)
-        }
+        (context as? MainActivity)?.setStepperCount(2)
     }
 
     override fun onCreateView(
@@ -97,16 +86,15 @@ class RecorderFragment : ScopedFragment() {
     private fun stopRecording() {
         isRecording = false
 
-        //Stop Timer, very obvious
-        record_timer.stop()
-
-        //Change text on page to file saved
-        record_filename.text = "Recording Stopped, File Saved : $recordFile"
+        //Change text
+//        instruction_tv.text =
 
         //Stop media recorder and set it to null for further use to record new audio
-        mediaRecorder!!.stop()
-        mediaRecorder!!.reset()
-        mediaRecorder!!.release()
+        mediaRecorder?.apply {
+            stop()
+            reset()
+            release()
+        }
         mediaRecorder = null
         Log.i("ASQWEQWE", "asd")
         processRecording()
@@ -114,10 +102,6 @@ class RecorderFragment : ScopedFragment() {
 
     private fun startRecording() {
         isRecording = true
-
-        //Start timer from 0
-        record_timer.base = SystemClock.elapsedRealtime()
-        record_timer.start()
 
         //Get app external directory path
         val recordPath = activity!!.getExternalFilesDir("/")!!.absolutePath
@@ -130,65 +114,42 @@ class RecorderFragment : ScopedFragment() {
         fileLocation = "$recordPath/$recordFile"
 
         //Setup Media Recorder for recording
-        mediaRecorder = MediaRecorder()
-        mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder!!.setOutputFile(fileLocation)
+        mediaRecorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(fileLocation)
+        }
         launch {
-            delay(MAX_DURATION.toLong())
+            delay(MAX_DURATION)
+            if (isVisible.not()) return@launch
             // this thread will stay alive after the page is dead, so this is to avoid null reference
-            if (record_timer != null) { // TODO : is there s possible race?
-                stopRecording()
-                showLoading(true)
-                // Upload file
-                launch(Dispatchers.IO) {
-                    viewModel.uploadFile(File(fileLocation!!))
-                    withContext(Dispatchers.Main) { showLoading(false) }
-                    Log.d(TAG, "File finished uploading!")
+            stopRecording()
+            // Upload file
+            launch(Dispatchers.IO) {
+                viewModel.uploadFile(File(fileLocation!!))
+                withContext(Dispatchers.Main) {
                     findNavController().navigate(R.id.action_recorderFragment_to_recorderFragment2)
                 }
-                processRecording()
+                Log.d(TAG, "File finished uploading!")
             }
+            processRecording()
         }
 
         mediaRecorder!!.prepare()
         mediaRecorder!!.start()
-        startUpdatingVisualizer()
-    }
-
-    private fun startUpdatingVisualizer() {
-        launch {
-            while (isRecording) {
-                visualizer.addAmplitude(mediaRecorder!!.maxAmplitude.toFloat())
-                visualizer.invalidate()
-                delay(VISUALIZATION_FREQUENCY)
-            }
-        }
-    }
-
-    private fun showLoading(show: Boolean) {
-        when (show) {
-            true -> progressBar_recordFragment.visibility = View.VISIBLE
-            false -> progressBar_recordFragment.visibility = View.GONE
-        }
     }
 
     private fun checkPermissions(): Boolean { // Check permission
-        return if (ActivityCompat.checkSelfPermission(
-                context!!,
-                RECORDER_PERMISSION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) { // Permission Granted
-            true
-        } else { // Permission not granted, ask for permission
-            ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(RECORDER_PERMISSION),
-                PERMISSION_CODE
-            )
-            false
-        }
+        // Permission Granted
+        if (ActivityCompat.checkSelfPermission(context!!, RECORD_AUDIO)
+            == PackageManager.PERMISSION_GRANTED)
+            return true
+
+        // Permission not granted, ask for permission
+        ActivityCompat.requestPermissions(activity!!, arrayOf(RECORD_AUDIO), PERMISSION_CODE)
+
+        return false
     }
 
     override fun onStop() {

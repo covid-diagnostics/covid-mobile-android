@@ -9,4 +9,5 @@
     <color name="text_outer_color">#5928E4</color>
     <color name="color_btn_disabled">#443A64</color>
     <color name="selected_time_color">#FF405A88</color>
+    <color name="blueText">#0E6CFB</color>
 </resources>

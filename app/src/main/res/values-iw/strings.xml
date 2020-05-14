@@ -111,7 +111,7 @@
         ]]>
     </string>
     <string name="press_the_mic_button_n_to_start_recording">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
-    <string name="press_the_mic_button">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
+    <string name="tap_to_record">לחץ כדי להקליט</string>
     <string name="tests_done_so_far">%d בדיקות נעשו עד כה!</string>
     <string name="share_now">שתף!</string>
     <string name="continue_arrow">המשך ←</string>
