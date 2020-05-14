@@ -7,4 +7,7 @@ class ResultViewModel @Inject constructor(val repository: Repository) {
     suspend fun getMeasurementCount() = repository.getMeasurementCount()
     suspend fun getMeasurementId() = repository.getLastMeasurementId()
 
+    val didSetNotificationTime get()=
+        repository.didSetNotificationTime
+
 }

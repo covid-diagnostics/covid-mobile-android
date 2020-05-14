@@ -8,6 +8,7 @@ import com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseas
 import com.example.coronadiagnosticapp.ui.fragments.home.HomeFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
+import com.example.coronadiagnosticapp.ui.fragments.notification.NotificationFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
@@ -43,6 +44,7 @@ interface AppComponent {
 //    fun <T> inject(injectable:T)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: SplashFragment)
+    fun inject(fragment: NotificationFragment)
 
     @Component.Factory
     interface Factory {
