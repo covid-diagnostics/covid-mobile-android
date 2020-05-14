@@ -11,9 +11,6 @@
         android:label="register_fragment"
         tools:layout="@layout/register_fragment" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/action_registerFragment_to_informationFragment"
             app:destination="@id/informationFragment" />
     </fragment>
@@ -189,7 +186,7 @@
         </fragment>
         <fragment
             android:id="@+id/welcomeFragment"
-            android:name="com.example.coronadiagnosticapp.ui.fragments.welcome.WelcomeFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.onboarding.WelcomeFragment"
             android:label="fragment_welcome"
             tools:layout="@layout/fragment_welcome">
             <action
