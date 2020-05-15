@@ -161,4 +161,8 @@
     <string name="soundA_like">Sounds like \'dad\',long without stopping, until your breath runs out</string>
     <string name="soundE_like">Sounds like \'Me\',long without stopping, until your breath runs out</string>
     <string name="can_use_he">if English is hard,you can use Hebrew as well</string>
+    <string name="to_record_again_tap_the_microphone_n_to_the_next_recording_tap_continue">To record again tap the microphone\n to the next recording tap continue</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

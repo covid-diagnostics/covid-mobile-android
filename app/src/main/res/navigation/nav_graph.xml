@@ -89,9 +89,9 @@
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecordingsMainFragment"
         android:label="RecorderFragment"
-        tools:layout="@layout/recorder_fragment">
+        tools:layout="@layout/fragment_recordings_main">
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />

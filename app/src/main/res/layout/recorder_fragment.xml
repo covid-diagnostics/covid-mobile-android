@@ -1,121 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".ui.fragments.recorder.RecorderFragment">
-
-    <ProgressBar
-        android:id="@+id/progressBarHorizontal"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/doc_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/feel_doctor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBarHorizontal" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doc_img">
-
-        <TextView
-            android:id="@+id/instruction_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/open_sans_semibold"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="placeholder" />
-
-        <TextView
-            android:id="@+id/example_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/open_sans_semibold"
-            android:textAlignment="center"
-            android:textColor="@color/blueText"
-            android:textSize="24sp"
-            tools:text="example" />
-
-        <TextView
-            android:id="@+id/extra_info_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/open_sans_semibold"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="extra info" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tap_to_record_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/tap_to_record"
-        app:layout_constraintBottom_toTopOf="@+id/record_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:layout_constraintVertical_bias="1" />
-
-    <ImageButton
-        android:id="@+id/record_btn"
-        style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="32dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/mic_button"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
     <com.visualizer.amplitude.AudioRecordView
         android:id="@+id/visualizerView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/recorder_background"
         app:chunkAlignTo="center"
         app:chunkColor="@android:color/white"
@@ -124,62 +25,24 @@
         app:chunkRoundedCorners="true"
         app:chunkSoftTransition="true"
         app:chunkSpace="2dp"
-        app:chunkWidth="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/tap_to_record_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+        app:chunkWidth="3dp" />
 
-    <LinearLayout
-        android:id="@+id/play_box"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tap_to_record_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/recorder_background"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/tap_to_record_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        tools:visibility="gone">
+        android:layout_marginBottom="16dp"
+        android:text="@string/tap_to_record" />
 
-        <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_play" />
+    <ImageButton
+        android:id="@+id/record_btn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        android:src="@drawable/mic_button" />
 
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/sound_seekBar"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:progressBackgroundTint="@android:color/white"
-            android:progressTint="@android:color/white"
-            android:thumbTint="@color/colorBlueActivity" />
 
-        <ImageButton
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/mic_button" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

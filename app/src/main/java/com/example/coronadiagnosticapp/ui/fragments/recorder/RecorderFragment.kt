@@ -9,28 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import androidx.navigation.fragment.findNavController
 import be.tarsos.dsp.io.PipedAudioStream
 import be.tarsos.dsp.io.android.AndroidFFMPEGLocator
-import com.afollestad.vvalidator.util.hide
-import com.afollestad.vvalidator.util.show
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.MainActivity
 import com.example.coronadiagnosticapp.ui.audioAnalyzer.AudioAnalyzerImpl
 import com.example.coronadiagnosticapp.ui.fragments.ScopedFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
-import com.example.coronadiagnosticapp.utils.toast
 import kotlinx.android.synthetic.main.recorder_fragment.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-class RecorderFragment : ScopedFragment() {
+class RecorderFragment() : ScopedFragment() {
     companion object {
         private const val TAG = "RecorderFragment"
         private const val PERMISSION_CODE: Int = 21
@@ -45,6 +38,11 @@ class RecorderFragment : ScopedFragment() {
     private var mediaRecorder: MediaRecorder? = null
     private var recordFile: String? = null
     private var fileLocation: String? = null
+    private var recordingCallback:Callback? = null
+
+    constructor(recordingCallback: Callback) : this() {
+        this.recordingCallback = recordingCallback
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,21 +57,12 @@ class RecorderFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (context as? MainActivity)?.setStepperCount(2)
-        fill(viewModel.getCurrentRecording()!!)
+        resetUI()
         initButton()
-        progressBarHorizontal.max = viewModel.recordingCount
-        progressBarHorizontal.progress = 1
     }
 
-    private fun fill(recording: Recording) {
-        instruction_tv.setText(recording.title)
-        example_tv.setText(recording.example)
-        recording.explanation?.let {
-            extra_info_tv.setText(it)
-        }?: extra_info_tv.setText("")
-
+    fun resetUI() {
         visualizerView.recreate()
-
         record_btn.setImageResource(R.drawable.mic_button)
         record_btn.isEnabled = true
         isRecording = false
@@ -91,20 +80,6 @@ class RecorderFragment : ScopedFragment() {
                 tap_to_record_tv.visibility = View.INVISIBLE
             }
         }
-    }
-
-    private fun updateNextRecording() {
-        //  Continue to next question recording
-        val nextRecording = viewModel.getNextRecording()
-            ?: run {
-                //         if there's no questions left move to next fragment
-                findNavController()
-                    .navigate(R.id.action_recorderFragment_to_resultFragment)
-                return
-            }
-        progressBarHorizontal.progress = viewModel.getCurrentRecordingIndex() + 1
-//        fill the data from next question
-        fill(nextRecording)
     }
 
     private fun stopRecording() {
@@ -143,27 +118,20 @@ class RecorderFragment : ScopedFragment() {
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setOutputFile(fileLocation)
+
+            prepare()
+            start()
         }
+        startUpdatingVisualizer()
+
         launch {
             delay(MAX_DURATION)
             if (isVisible.not()) return@launch
             // this thread will stay alive after the page is dead, so this is to avoid null reference
             stopRecording()
             // Upload file
-            toast("Uploading...")
-            launch(Dispatchers.IO) {
-                viewModel.uploadFile(File(fileLocation!!))
-                withContext(Dispatchers.Main) {
-                    toast("Uploaded!")
-                    updateNextRecording()
-                }
-                Log.d(TAG, "File finished uploading!")
-            }
-            processRecording()
+            recordingCallback?.onRecordingFinished(fileLocation!!)
         }
-        mediaRecorder!!.prepare()
-        mediaRecorder!!.start()
-        startUpdatingVisualizer()
     }
 
     private fun startUpdatingVisualizer() {
@@ -184,9 +152,7 @@ class RecorderFragment : ScopedFragment() {
             return true
 
         // Permission not granted, ask for permission
-        ActivityCompat.requestPermissions(
-            activity!!, arrayOf(RECORD_AUDIO), PERMISSION_CODE
-        )
+        ActivityCompat.requestPermissions(activity!!, arrayOf(RECORD_AUDIO), PERMISSION_CODE)
 
         return false
     }
@@ -198,7 +164,6 @@ class RecorderFragment : ScopedFragment() {
             stopRecording()
         }
     }
-
 
     // Extracts the breathing rate from the recording
     private fun processRecording() {
@@ -212,5 +177,7 @@ class RecorderFragment : ScopedFragment() {
         viewModel.setBreathingRate(breathingRate)
     }
 
-
+    interface Callback{
+        fun onRecordingFinished(fileLocation: String)
+    }
 }

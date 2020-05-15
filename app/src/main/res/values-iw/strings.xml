@@ -139,4 +139,5 @@
     <string name="soundA_like">כמו במילה אבא ארוך ובלי הפסקות עד שיגמר לך האויר</string>
     <string name="soundE_like">כמו במילה אמא ארוך בלי הפסקות עד שיגמאר לך האוויר</string>
     <string name="can_use_he">אם לא נוח באנגלית אפשר גם בעברית</string>
+    <string name="to_record_again_tap_the_microphone_n_to_the_next_recording_tap_continue">להקלטה חוזרת יש ללחוץ על המיקרופון \n להקלטה הבאה לחץ המשך</string>
 </resources>
