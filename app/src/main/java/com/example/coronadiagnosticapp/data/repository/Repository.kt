@@ -12,6 +12,7 @@ import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterAverages
 import java.io.File
 
 interface Repository {
+    var hasConsent: Boolean
     val error: MutableLiveData<String>
     var breathingRate: Double
 

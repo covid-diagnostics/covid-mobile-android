@@ -39,6 +39,9 @@ class RepositoryImpl @Inject constructor(
         }
 
     private lateinit var responseUser: ResponseUser
+    override var hasConsent: Boolean
+        get() = sharedProvider.getHasConsent()
+        set(value) = sharedProvider.setHasConsent(value)
     override val error: MutableLiveData<String> = MutableLiveData()
 
 

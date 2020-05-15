@@ -150,7 +150,7 @@
     <string name="research_shows">Research shows that changes in those physiologycal signs may help with exemining earlier about potential illness!</string>
     <string name="better_checking_in_the_morning_after_brushing_your_teeth">Better checking in the morning, after brushing your teeth.</string>
     <string name="how_does_it_work">How does it work?</string>
-    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minues, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
+    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minutes, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
     <string name="letsHearSound">let\'s hear the sound</string>
     <string name="letsHear">let\'s hear</string>
     <string name="count_1to10">count in English from 1-10</string>
@@ -163,6 +163,57 @@
     <string name="can_use_he">if English is hard,you can use Hebrew as well</string>
     <string name="to_record_again_tap_the_microphone_n_to_the_next_recording_tap_continue">To record again tap the microphone\n to the next recording tap continue</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="consent_info">
+        Consent form:
+
+Your privacy is important to us! Please take the time to read the information regarding your privacy and information collection and confirm your consent:
+
+The purpose of this venture is to collect data that will help locate people who may be infected with the Corona virus, (hereinafter: 19-COVID) based on questionnaire analysis, voice sampling and heart rate sampling from the mobile phone in a simple and fast length of about 2 minutes. The research is gathering and accessing information for
+The research community for the development of new and rapid corona detection technologies.
+
+When you sign up for an app, you will be presented with a short demographic information survey. A brief daily follow-up questionnaire will ask for daily updates on symptoms as well as whether you have been diagnosed with corona. In addition, you will be asked to provide a voice sample and a pulse index, preferably every morning to track changes. If you are interested in learning
+More about this study, please read on. This form is written in male language but of course appeals to both genders.
+
+introduction:
+
+Thank you for choosing to volunteer for our research project. In this project, we aim to use Machine Learning, Artificial Intelligence (AI) and voice analysis technologies to help diagnose Corona and thus directly help to stop the epidemic. The research project consists of filling out a questionnaire
+A short daily, receiving your voice recording and heart rate index with the help of an app specifically developed for research. All data is collected anonymously. Please note that you are not required to participate and you may decide to terminate your participation at any time by simply quitting. If you\'re a soldier, beware
+Please note that your commanders will not be provided with any information whether or not you chose to participate in the study and your decision will not affect your military service or conditions and that the results of the study will have no effect on the follow-up and / or medical treatment you receive.
+
+Below is a description of the research project and the details of your consent to participate. Please read this information carefully. You may consult family members, family physicians, military physicians or anyone else. For questions to researchers or technical problems, please email voiceup.clinical@gmail.com.
+
+By clicking the confirmation button, you acknowledge that you have had time to read and consider your consent and accept your requests as a participant in the project.
+
+Research title: "The Voice for the Good" - Early detection of corona morbidity by analyzing physiologic metrics using a mobile device.
+
+Methods and data collection:
+
+The data collection will be done without your identifying marks and will be based on an application developed by the research team which includes answering a short questionnaire (demographics and symptoms), recording a voice sample (cough, counting and syllables) and recording a heart rate sample by placing your finger on a mobile device camera for
+15 seconds. The process takes up to 2 minutes, and should be done every morning for at least a week, preferably under the same conditions. In addition, if a decision is made to move to a recovery / hospitalization facility (if you receive a positive laboratory test answer to Corona), we will ask for further data collection within the study.
+In the app beyond the week after symptoms expire and collect metrics collected at the medical facility where it will stay, regardless of research, such as heart rate, fever, number of breaths and general feeling. Also, if you move to isolation after the recovery period, it will be very important to continue collecting data through the app
+We can learn from this the changes in measurements over the course of the disease from infection to recovery. If you provide false information, we will not know it, but it may harm the research, so it is important to make sure you fill in and make real measurements.
+
+Benefits and risks:
+
+We hope that by collecting the sound samples and heart rate index from people in Corona or carriers (with or without symptoms) and from people who are not infected we will be able to locate people who may be infected early. Research and development at this stage will be of no use and will not harm you since we are in the development and collection stages
+Data and you will not receive any alerts from us. Corona\'s diagnosis will remain with you exactly as it is today and you must continue to follow the Health Ministry\'s instructions, without intervention from the system developers. Below, we hope to build a system that will benefit many people in the world.
+
+If you are a soldier: if you exceed the questionnaires for which you suspect any coronary morbidity according to the criteria defined by the Medical Corps or if the tool we develop within the research will be sufficient, according to criteria established with the Medical Corps, to alert such suspicion in favor of
+Maintaining your health, the health of your family and the health of your friends who serve you and according to the military\'s requirement Information will be forwarded to the Medical Corps for follow-up and continued treatment if necessary.
+
+Secrecy:
+
+We will keep your information confidential and will not provide any ID. This coded database may be transmitted to third parties for research and development purposes on Corona. Information transmitted to third parties will contain only the voice and questionnaire data. It is important to note that it will not be possible to identify who it is. we
+We will not collect any information from this account other than your ID (ID). The ID will be stored in a coded and secure way, preventing us from recovering your ID, and will be useful only to determine if the ID is new or has been previously saved in the system. Remove concern from your heart: We are unable to track data
+Your location (GPS) and we cannot use your camera or microphone to collect data outside of the heart rate or cough recordings in the dedicated app. If you are in research: Because an ID number (number tested) is used in the research, data collection is done
+In a coded and not completely anonymous manner (the conversion key for a soldier will be kept only by medical personnel and not by an external party. The conversion key for civilians will be kept with the health insurance fund).
+
+By clicking the consent button you are declaring that you have the full right and authority to sign this form, that you wish to participate in this study and that you understand what the project is, where the data will be saved and how and how it is carried out. Also, you are aware that the app does not provide any medical advice
+And you will not receive alerts back from the team of researchers.
+
+In addition, you are aware that if you are exposed to a Corona patient or you may experience symptoms that may indicate that you are contracted to follow the Medical Corps / Ministry of Health guidelines, regardless of the research.
+
+        If you have any questions regarding this project or a technical issue, please contact the responsible researchers / technical staff: Email voiceup.clinical@gmail.com
+    </string>
+    <string name="consent_form">Consent form</string>
 </resources>
