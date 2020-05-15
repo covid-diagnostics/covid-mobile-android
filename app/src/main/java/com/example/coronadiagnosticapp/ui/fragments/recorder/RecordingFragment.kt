@@ -87,7 +87,13 @@ class RecordingFragment() : Fragment() {
             while (player != null) {
                 if (player!!.isPlaying) {
                     withContext(Main) {
-                        sound_seekBar.progress = player!!.currentPosition
+                        if (player != null){
+                            sound_seekBar.progress = player!!.currentPosition
+                        }
+                        else{
+                            sound_seekBar.progress = 0
+                        }
+
                     }
                 }
                 delay(100)

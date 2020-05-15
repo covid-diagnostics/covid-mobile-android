@@ -95,7 +95,7 @@ class RecorderFragment() : ScopedFragment() {
         }
         mediaRecorder = null
         Log.i("ASQWEQWE", "asd")
-        processRecording()
+        //processRecording()
     }
 
     private fun startRecording() {
