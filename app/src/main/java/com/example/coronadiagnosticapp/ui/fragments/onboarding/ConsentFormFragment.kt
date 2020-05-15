@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
@@ -16,10 +14,10 @@ import kotlinx.android.synthetic.main.fragment_fourth.*
 import javax.inject.Inject
 
 
-class FourthFragment : Fragment() {
+class ConsentFormFragment : Fragment() {
 
     @Inject
-    lateinit var viewModel:FourthViewModel
+    lateinit var viewModel:ConsentFormViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

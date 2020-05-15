@@ -45,7 +45,7 @@ class OnBoardingMainFragment : Fragment() {
             0 -> WelcomeFragment()
             1 -> DisclosureFragment()
             2 -> StepsFragment()
-            3 -> FourthFragment()
+            3 -> ConsentFormFragment()
             else -> WelcomeFragment()
         }
     }

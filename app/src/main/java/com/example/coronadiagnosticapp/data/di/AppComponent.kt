@@ -9,7 +9,7 @@ import com.example.coronadiagnosticapp.ui.fragments.home.HomeFragment
 import com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment
 import com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment
 import com.example.coronadiagnosticapp.ui.fragments.notification.NotificationFragment
-import com.example.coronadiagnosticapp.ui.fragments.onboarding.FourthFragment
+import com.example.coronadiagnosticapp.ui.fragments.onboarding.ConsentFormFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionFragment
 import com.example.coronadiagnosticapp.ui.fragments.questions.QuestionnaireFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment
@@ -50,7 +50,7 @@ interface AppComponent {
     fun inject(fragment: RecordingsMainFragment)
     fun inject(fragment: RecordingFragment)
     fun inject(fragment: TermsAndConditionsFragment)
-    fun inject(fragment: FourthFragment)
+    fun inject(fragment: ConsentFormFragment)
 
     @Component.Factory
     interface Factory {
