@@ -111,11 +111,35 @@
         ]]>
     </string>
     <string name="press_the_mic_button_n_to_start_recording">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
-    <string name="press_the_mic_button">לחץ על כפתור המיקרופון כדי להתחיל את ההקלטה</string>
+    <string name="tap_to_record">לחץ כדי להקליט</string>
     <string name="tests_done_so_far">%d בדיקות נעשו עד כה!</string>
     <string name="share_now">שתף!</string>
     <string name="continue_arrow">המשך ←</string>
     <string name="thank_you">מדידה %d הושלמה בהצלחה!</string>
+    <string name="better_checking_in_the_morning_after_brushing_your_teeth">כדאי למדוד בבוקר,לאחר צחצוח שיניים.</string>
+    <string name="research_shows">מחקרים מראים ששינויים בסימנים פיזיולוגיים אלו עשויים לסייע לתת התראה מוקדמת לגבי תחלואה פוטנציאלית!</string>
+    <string name="why_voice_and_pulse">למה קול ודופק?</string>
+    <string name="how_does_it_work">איך זה עובד?</string>
+    <string name="voice_check">בדיקת קול</string>
+    <string name="about_measurements"><![CDATA[
+       במסך הבא נקח
+        <font color="#333333"> 4 דגימות קןל קצרות</font>
+        וגם
+        <font color="#333333">בדיקת דופק</font>
+       מהאצבע באמצעות המצלמה
+        ]]>
+    </string>
+    <string name="letsHearSound">נרצה לשמוע את הצליל</string>
+    <string name="letsHear">נרצה לשמוע</string>
+    <string name="count_1to10">ספירה באנגלית מ1 עד 10</string>
+    <string name="lastTimeLetsHear">אחרון ודי, נרצה לשמוע</string>
+    <string name="cough3Times">שיעול 3 פעמים</string>
+    <string name="soundA">אההההה</string>
+    <string name="soundE">אייייי</string>
+    <string name="soundA_like">כמו במילה אבא ארוך ובלי הפסקות עד שיגמר לך האויר</string>
+    <string name="soundE_like">כמו במילה אמא ארוך בלי הפסקות עד שיגמאר לך האוויר</string>
+    <string name="can_use_he">אם לא נוח באנגלית אפשר גם בעברית</string>
+    <string name="to_record_again_tap_the_microphone_n_to_the_next_recording_tap_continue">להקלטה חוזרת יש ללחוץ על המיקרופון \n להקלטה הבאה לחץ המשך</string>
 
     <string name="consent_info">
         טופס הסכמה:

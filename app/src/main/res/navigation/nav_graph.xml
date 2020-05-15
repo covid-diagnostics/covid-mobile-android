@@ -11,9 +11,6 @@
         android:label="register_fragment"
         tools:layout="@layout/register_fragment" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/action_registerFragment_to_informationFragment"
             app:destination="@id/informationFragment" />
     </fragment>
@@ -51,9 +48,6 @@
         android:label="fragment_questioneer"
         tools:layout="@layout/fragment_questionnaire">
         <action
-            android:id="@+id/action_questioneerFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-        <action
             android:id="@+id/action_questioneerFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
     </fragment>
@@ -72,15 +66,15 @@
         android:label="camera_fragment"
         tools:layout="@layout/camera_fragment">
         <action
-            android:id="@+id/action_cameraFragment_to_recorderFragment"
-            app:destination="@id/recorderFragment" />
-        <action
             android:id="@+id/action_cameraFragment_to_oxymeterFragment"
             app:destination="@id/oxymeterFragment"
             app:popUpTo="@id/cameraFragment" />
         <action
             android:id="@+id/action_cameraFragment_to_recorderExplanation"
             app:destination="@id/recorderExplanation" />
+        <action
+            android:id="@+id/action_cameraFragment_to_recorderFragment"
+            app:destination="@id/recorderFragment" />
     </fragment>
 
     <fragment
@@ -95,36 +89,29 @@
     </fragment>
     <fragment
         android:id="@+id/recorderFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecordingsMainFragment"
         android:label="RecorderFragment"
-        tools:layout="@layout/recorder_fragment">
+        tools:layout="@layout/fragment_recordings_main"
+        app:startDestination="@id/action_recorderFragment_to_resultFragment">
         <action
             android:id="@+id/action_recorderFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
         <action
-            android:id="@+id/action_recorderFragment_to_recorderFragment2"
-            app:destination="@id/recorderFragment2" />
-        <action
-            android:id="@+id/action_recorderFragment_to_recorderExplanation3"
-            app:destination="@id/recorderExplanation" />
-    </fragment>
-    <fragment
-        android:id="@+id/recorderFragment2"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.recorder.RecorderFragment2"
-        android:label="RecorderFragment2"
-        tools:layout="@layout/recorder_fragment2">
-        <action
-            android:id="@+id/action_recorderFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
-        <action
-            android:id="@+id/action_recorderFragment2_to_recorderExplanation"
+            android:id="@+id/action_recorderFragment_to_recorderExplanation"
             app:destination="@id/recorderExplanation" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.resultFragment.ResultFragment"
         android:label="result_fragment"
-        tools:layout="@layout/result_fragment" />
+        tools:layout="@layout/result_fragment" >
+        <action
+            android:id="@+id/action_resultFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_resultFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/instructionsFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment"
@@ -135,26 +122,8 @@
             app:destination="@id/dailyMetricFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.coronadiagnosticapp.ui.login.LoginFragment"
-        android:label="login_fragment"
-        tools:layout="@layout/login_fragment">
-        <action
-            android:id="@+id/action_loginFragment_to_instructionsFragment"
-            app:destination="@id/instructionsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/smokingFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment"
-        android:label="fragment_smoking"
-        tools:layout="@layout/fragment_smoking">
-        <action
-            android:id="@+id/action_smokingFragment_to_backgroundDiseasesFragment"
-            app:destination="@id/backgroundDiseasesFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/recorderExplanation"
-        android:name="com.example.coronadiagnosticapp.recorderExplanation"
+        android:name="com.example.coronadiagnosticapp.RecorderExplanationFragment"
         android:label="fragment_recorder_explanation"
         tools:layout="@layout/fragment_recorder_explanation">
         <action
@@ -176,12 +145,65 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
+            android:id="@+id/action_splashFragment_to_welcomeFragment"
+            app:destination="@id/registration_details_navigation" />
+        <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_splashFragment_to_onBoardingMainFragment"
             app:destination="@id/onBoardingMainFragment" />
     </fragment>
+    <navigation
+        android:id="@+id/registration_details_navigation"
+        android:label="registration"
+        app:startDestination="@id/welcomeFragment">
+        <fragment
+            android:id="@+id/informationFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.information.InformationFragment"
+            android:label="InformationFragment"
+            tools:layout="@layout/information_fragment">
+            <action
+                android:id="@+id/action_informationFragment_to_smokingFragment"
+                app:destination="@id/smokingFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/registerFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment"
+            android:label="register_fragment"
+            tools:layout="@layout/register_fragment">
+            <action
+                android:id="@+id/action_registerFragment_to_informationFragment"
+                app:destination="@id/informationFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/smokingFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.smoking.SmokingFragment"
+            android:label="fragment_smoking"
+            tools:layout="@layout/fragment_smoking">
+            <action
+                android:id="@+id/action_smokingFragment_to_backgroundDiseasesFragment"
+                app:destination="@id/backgroundDiseasesFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/welcomeFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.onboarding.WelcomeFragment"
+            android:label="fragment_welcome"
+            tools:layout="@layout/fragment_welcome">
+            <action
+                android:id="@+id/action_welcomeFragment_to_registerFragment"
+                app:destination="@id/registerFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/backgroundDiseasesFragment"
+            android:name="com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseasesFragment"
+            android:label="BackgroundDiseasesFragment"
+            tools:layout="@layout/background_diseases_fragment">
+            <action
+                android:id="@+id/action_backgroundDiseases_to_instructionsFragment"
+                app:destination="@id/instructionsFragment" />
+        </fragment>
+    </navigation>
     <fragment
         android:id="@+id/onBoardingMainFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.onboarding.OnBoardingMainFragment"
@@ -190,5 +212,14 @@
         <action
             android:id="@+id/action_onBoardingMainFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.coronadiagnosticapp.ui.fragments.notification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_notificationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

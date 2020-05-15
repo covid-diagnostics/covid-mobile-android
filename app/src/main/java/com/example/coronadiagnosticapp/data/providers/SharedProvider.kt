@@ -9,6 +9,8 @@ interface SharedProvider {
 
     fun getIsFirstTime(): Boolean
     fun setIsFirstTime(isFirstTime: Boolean)
+    fun didSetNotificationTime(): Boolean
+    fun setNotificationTime(didSet:Boolean)
     fun getHasConsent(): Boolean
     fun setHasConsent(hasConsent: Boolean)
 }

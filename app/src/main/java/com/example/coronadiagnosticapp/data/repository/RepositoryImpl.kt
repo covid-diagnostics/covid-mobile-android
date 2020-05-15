@@ -17,7 +17,6 @@ import com.example.coronadiagnosticapp.data.network.NetworkDataSource
 import com.example.coronadiagnosticapp.data.network.TokenServiceInterceptor
 import com.example.coronadiagnosticapp.data.providers.SharedProvider
 import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterAverages
-import com.google.gson.JsonObject
 import java.io.File
 import javax.inject.Inject
 
@@ -70,10 +69,13 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override var didSetNotificationTime: Boolean
+        get() = sharedProvider.didSetNotificationTime()
+        set(value) = sharedProvider.setNotificationTime(value)
 
-    override suspend fun setCountry(country:String){
+    override suspend fun setCountry(country: String) {
         dao.deleteAllUsersInfo()
-        val userInfo = UserInfo(null, null, null, null, null, country,  ArrayList())
+        val userInfo = UserInfo(null, null, null, null, null, country, ArrayList())
         dao.upsertUserInfo(userInfo)
     }
 
@@ -96,12 +98,12 @@ class RepositoryImpl @Inject constructor(
         dao.upsertUserInfo(userInfo)
     }
 
-    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<BackDiseases>){
+    override suspend fun updateBackgroundDiseases(backgroundDiseases: List<BackDiseases>) {
         val userInfo = dao.getUserInfo()
         userInfo.backgroundDiseases = backgroundDiseases
 
         val userInfoRes = networkDataSource.updateUserInfo(userInfo)
-        if(userInfoRes != null) {
+        if (userInfoRes != null) {
             dao.upsertUserInfo(userInfoRes)
         }
     }
@@ -113,8 +115,9 @@ class RepositoryImpl @Inject constructor(
 
     override fun getLastResult() = lastHealthResult
 
-    override fun getIsFirstTime() = sharedProvider.getIsFirstTime()
-    override fun setIsFirstTime(isFirstTime: Boolean) = sharedProvider.setIsFirstTime(isFirstTime)
+    override var isFirstTime: Boolean
+        get() = sharedProvider.getIsFirstTime()
+        set(value) = sharedProvider.setIsFirstTime(value)
 
     override suspend fun uploadAudioRecording(file: File) {
         try {

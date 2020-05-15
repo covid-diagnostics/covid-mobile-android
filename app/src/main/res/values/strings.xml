@@ -117,7 +117,7 @@
     <string name="smoker">Smoker</string>
     <string name="smoked_5y_ago">Have been smoking and stopped for the last 5 years</string>
     <string name="receives_dialysis_treatment">Receives dialysis treatment</string>
-    <string name="press_the_mic_button">Press the mic button \n to start recording</string>
+    <string name="tap_to_record">Tap to record</string>
     <string name="tests_done_so_far">%d tests have been done so far!</string>
     <string name="share_now">Share now</string>
     <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygein!</string>
@@ -125,7 +125,7 @@
     <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
     <string name="continue_arrow">Continue →</string>
 
-    <string name="voice_up">
+    <string name="voice_up" translatable="false">
         <![CDATA[
          <font color="#4787EF">Voice</font> up
         ]]>
@@ -137,6 +137,34 @@
     </string>
     <string name="city_back_on_tracks">Together we\'ll get the city back on tracks.</string>
 
+    <string name="about_measurements">
+        <![CDATA[
+         On the next screen we\'ll take
+         <font color="#333333"> 4 short voice samples</font>
+         and get a
+         <font color="#333333">pulse checks</font>
+         from the finger using your camera.]]>
+    </string>
+    <string name="voice_check">Voice check</string>
+    <string name="why_voice_and_pulse">Why voice and pulse?</string>
+    <string name="research_shows">Research shows that changes in those physiologycal signs may help with exemining earlier about potential illness!</string>
+    <string name="better_checking_in_the_morning_after_brushing_your_teeth">Better checking in the morning, after brushing your teeth.</string>
+    <string name="how_does_it_work">How does it work?</string>
+    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minues, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
+    <string name="letsHearSound">let\'s hear the sound</string>
+    <string name="letsHear">let\'s hear</string>
+    <string name="count_1to10">count in English from 1-10</string>
+    <string name="lastTimeLetsHear">last one, we\'d like to hear</string>
+    <string name="cough3Times">Cough 3 times</string>
+    <string name="soundA">AAAAA</string>
+    <string name="soundE">EEEEE</string>
+    <string name="soundA_like">Sounds like \'dad\',long without stopping, until your breath runs out</string>
+    <string name="soundE_like">Sounds like \'Me\',long without stopping, until your breath runs out</string>
+    <string name="can_use_he">if English is hard,you can use Hebrew as well</string>
+    <string name="to_record_again_tap_the_microphone_n_to_the_next_recording_tap_continue">To record again tap the microphone\n to the next recording tap continue</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="how_does_it_work">How does it work?</string>
     <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minues, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
 
