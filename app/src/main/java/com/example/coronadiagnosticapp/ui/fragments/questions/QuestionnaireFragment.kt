@@ -93,7 +93,7 @@ class QuestionnaireFragment : Fragment() {
 
             withContext(Main) {
                 showLoading(progressBar, false)
-                toast("saved")
+                //toast("saved")
                 moveToNextScreen()
             }
         }

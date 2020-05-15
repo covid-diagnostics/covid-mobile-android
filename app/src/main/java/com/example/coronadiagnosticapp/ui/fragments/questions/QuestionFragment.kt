@@ -113,7 +113,7 @@ class QuestionFragment : Fragment() {
     private suspend fun sendData() {
         viewModel.sendData()
         withContext(Main) {
-            toast("Sent successfully")
+            //toast("Sent successfully")
             findNavController().navigate(R.id.action_questionFragment_to_cameraFragment)
         }
     }

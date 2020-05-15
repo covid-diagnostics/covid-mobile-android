@@ -97,11 +97,11 @@ class RecordingsMainFragment : ScopedFragment(), RecorderFragment.Callback{
 
     private fun uploadFile(fileLocation: String) {
         // Upload file
-        toast("Uploading...")
+        //toast("Uploading...")
         launch(Dispatchers.IO) {
             viewModel.uploadFile(File(fileLocation))
             withContext(Dispatchers.Main) {
-                toast("Uploaded!")
+                //toast("Uploaded!")
                 updateNextRecording()
             }
             Log.d(TAG, "File finished uploading!")

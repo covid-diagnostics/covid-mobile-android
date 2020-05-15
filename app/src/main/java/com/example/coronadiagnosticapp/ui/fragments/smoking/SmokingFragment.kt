@@ -56,7 +56,7 @@ class SmokingFragment : Fragment() {
             viewModel.save(smokingStatus)
 
             withContext(Dispatchers.Main) {
-                toast("saved")
+                //toast("saved")
                 findNavController()
                     .navigate(R.id.action_smokingFragment_to_backgroundDiseasesFragment)
             }
