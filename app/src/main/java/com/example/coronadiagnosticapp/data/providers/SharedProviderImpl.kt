@@ -14,26 +14,13 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
         const val HAS_CONSENT = "HAS_CONSENT"
     }
 
-    override fun getToken(): String? =
-        preferences.getString(USER_TOKEN, null)
+    override fun getToken(): String? = getString(USER_TOKEN)
 
-    override fun setToken(token: String?) {
-        with(preferences.edit()) {
-            putString(USER_TOKEN, token)
-            apply()
-        }
-    }
+    override fun setToken(token: String?) = putString(USER_TOKEN, token)
 
-    override fun getName(): String? {
-        return preferences.getString(USER_NAME, null)
-    }
+    override fun getName(): String? = getString(USER_NAME)
 
-    override fun setName(userName: String?) {
-        with(preferences.edit()) {
-            putString(USER_NAME, userName)
-            apply()
-        }
-    }
+    override fun setName(token: String?) = putString(USER_NAME, token)
 
     override fun getIsFirstTime() = getBool(IS_FIRST_TIME)
 
@@ -43,6 +30,10 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
 
     override fun setNotificationTime(didSet: Boolean) = putBool(DID_SET_NOTIF_TIME, didSet)
 
+    override fun getHasConsent() = getBool(HAS_CONSENT)
+
+    override fun setHasConsent(hasConsent: Boolean) = putBool(HAS_CONSENT, hasConsent)
+
     private fun putBool(key: String, flag: Boolean) =
         preferences.edit()
             .putBoolean(key, flag)
@@ -50,21 +41,13 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
 
     private fun getBool(key: String, defValue: Boolean = false) =
         preferences.getBoolean(key, defValue)
-    override fun setIsFirstTime(isFirstTime: Boolean) {
-        with(preferences.edit()) {
-            putBoolean(IS_FIRST_TIME, isFirstTime)
-            apply()
-        }
-    }
 
-    override fun getHasConsent()=
-        preferences.getBoolean(HAS_CONSENT, false)
+     private fun putString(key: String, value: String?) =
+        preferences.edit()
+            .putString(key, value)
+            .apply()
 
+    private fun getString(key: String, defValue: String? = null) =
+        preferences.getString(key, defValue)
 
-    override fun setHasConsent(hasConsent: Boolean) {
-        with(preferences.edit()) {
-            putBoolean(HAS_CONSENT, hasConsent)
-            apply()
-        }
-    }
 }
