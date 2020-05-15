@@ -24,15 +24,15 @@ class RecordingFragment() : Fragment() {
     private lateinit var filePath: String
     private lateinit var callback: Callback
 
+    private var player: MediaPlayer? = null
+
     constructor(fileLocation: String, callback: Callback) : this() {
         this.filePath = fileLocation
         this.callback = callback
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.recording_fragment, container, false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,23 +56,61 @@ class RecordingFragment() : Fragment() {
     }
 
     private fun toggleRecording() {
-        TODO("Not yet implemented")
+        val mp = player ?: return
+        if (mp.isPlaying) {
+            play_pause_btn.setImageResource(R.drawable.ic_play)
+            mp.pause()
+        } else {
+            play_pause_btn.setImageResource(R.drawable.ic_pause)
+            mp.start()
+        }
     }
 
     private fun loadRecording(filePath: String) {
-        val player = MediaPlayer()
-        player.setDataSource(filePath)
-        player.prepare()//async
-        sound_seekBar.max = player.duration
-        player.start()
-        GlobalScope.launch {
-            while (player.isPlaying) {
-                withContext(Main) {
-                    sound_seekBar.progress = player.currentPosition
-                }
-                delay(1000 * 1)
+
+        play_pause_btn.isEnabled = false
+        player = MediaPlayer().apply {
+            setDataSource(filePath)
+            prepareAsync()
+            setOnPreparedListener {
+                play_pause_btn.isEnabled = true
+                sound_seekBar.max = duration
+                updateProgress()
             }
         }
+
+        updateProgress()
+    }
+
+    private fun updateProgress() {
+        GlobalScope.launch {
+            while (player != null) {
+                if (player!!.isPlaying) {
+                    withContext(Main) {
+                        sound_seekBar.progress = player!!.currentPosition
+                    }
+                }
+                delay(100)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        player?.apply {
+            if (isPlaying) {
+                toggleRecording()
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player?.apply {
+            stop()
+            release()
+        }
+        player = null
     }
 
     interface Callback {
