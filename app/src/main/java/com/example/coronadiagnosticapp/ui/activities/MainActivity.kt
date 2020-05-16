@@ -28,7 +28,10 @@ class MainActivity : BaseActivity() {
         stepperIndicator.currentStep = count
     }
 
-    fun showStepperLayout() = stepperLayout?.show()
+    fun showStepperLayout() {
+//        stepperLayout?.show()
+//        TODO uncomment
+    }
 
     fun hideStepperLayout() = stepperLayout?.hide()
 

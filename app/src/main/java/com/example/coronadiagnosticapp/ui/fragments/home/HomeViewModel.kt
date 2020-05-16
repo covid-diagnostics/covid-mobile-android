@@ -6,6 +6,8 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     suspend fun getNumChecks(): Int = repository.getMeasurementCount()
+    val isFirstTime: Boolean
+        get() = repository.isFirstTime
 }
 
 

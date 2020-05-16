@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 
 import com.example.coronadiagnosticapp.R
-import com.example.coronadiagnosticapp.ui.fragments.register.RegisterFragment
 import com.example.coronadiagnosticapp.ui.fragments.terms.TermsAndConditionsFragment
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_fourth.*
@@ -34,17 +34,13 @@ class ConsentFormFragment : Fragment() {
         button_start.setOnClickListener {
             AutostartUtils.requestAutostartPermissions(context!!)
 
-            val transaction = parentFragmentManager.beginTransaction()
-
-            if (viewModel.hasConsent) {
-                transaction.replace(R.id.nav_host_fragment, RegisterFragment())
+            val id = if (viewModel.hasConsent) {
+                R.id.action_onBoardingMainFragment_to_registerFragment
             } else {
-                transaction.replace(R.id.nav_host_fragment, TermsAndConditionsFragment())
-//                TODO set zoom animation
-//                    .setCustomAnimations()
+                R.id.action_onBoardingMainFragment_to_termsAndConditionsFragment
             }
+            findNavController().navigate(id)
 
-            transaction.commit()
         }
     }
 }

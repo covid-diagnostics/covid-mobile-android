@@ -85,7 +85,8 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback, SensorEventListener
                 isHorizontalLabelsVisible = false
                 gridStyle = GridLabelRenderer.GridStyle.NONE
             }
-            setBackgroundColor(Color.rgb(0x62, 0x00, 0xEE))
+            val color = context!!.resources.getColor(R.color.colorPrimary)
+            setBackgroundColor(color)
         }
 
         /*Animation*/

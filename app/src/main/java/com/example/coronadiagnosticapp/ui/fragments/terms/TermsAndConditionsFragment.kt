@@ -36,10 +36,8 @@ class TermsAndConditionsFragment : Fragment() {
 
         start_btn.setOnClickListener {
             viewModel.saveConsent()
-            fragmentManager!!.beginTransaction()
-                .replace(R.id.nav_host_fragment, RegisterFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit()
+            findNavController()
+                .navigate(R.id.action_termsAndConditionsFragment2_to_registerFragment)
         }
     }
 
