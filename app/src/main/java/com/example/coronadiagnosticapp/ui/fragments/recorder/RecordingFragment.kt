@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RecordingFragment() : Fragment() {
+class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
 
     @Inject
     lateinit var viewModel: RecorderViewModel
@@ -53,6 +54,7 @@ class RecordingFragment() : Fragment() {
         play_pause_btn.setOnClickListener {
             toggleRecording()
         }
+        sound_seekBar.setOnSeekBarChangeListener(this)
     }
 
     private fun toggleRecording() {
@@ -76,6 +78,9 @@ class RecordingFragment() : Fragment() {
                 play_pause_btn.isEnabled = true
                 sound_seekBar.max = duration
                 updateProgress()
+            }
+            setOnCompletionListener {
+                play_pause_btn.setImageResource(R.drawable.ic_play)
             }
         }
 
@@ -122,5 +127,17 @@ class RecordingFragment() : Fragment() {
     interface Callback {
         fun onContinueTapped()
         fun onRecordTapped()
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if (fromUser) {
+            player?.seekTo(progress)
+        }
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
 }
