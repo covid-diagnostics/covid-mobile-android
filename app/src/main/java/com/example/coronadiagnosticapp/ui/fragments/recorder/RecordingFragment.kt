@@ -59,12 +59,9 @@ class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
 
     private fun toggleRecording() {
         val mp = player ?: return
-        if (mp.isPlaying) {
-            play_pause_btn.setImageResource(R.drawable.ic_play)
-            mp.pause()
-        } else {
-            play_pause_btn.setImageResource(R.drawable.ic_pause)
-            mp.start()
+        play_pause_btn.toggleAnimation()
+        with(mp) {
+            if (isPlaying) pause() else start()
         }
     }
 
@@ -80,7 +77,7 @@ class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
                 updateProgress()
             }
             setOnCompletionListener {
-                play_pause_btn.setImageResource(R.drawable.ic_play)
+                play_pause_btn.pauseToPlay()
             }
         }
 
@@ -92,13 +89,7 @@ class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
             while (player != null) {
                 if (player!!.isPlaying) {
                     withContext(Main) {
-                        if (player != null){
-                            sound_seekBar.progress = player!!.currentPosition
-                        }
-                        else{
-                            sound_seekBar.progress = 0
-                        }
-
+                        sound_seekBar.progress = player?.currentPosition ?: 0
                     }
                 }
                 delay(100)
