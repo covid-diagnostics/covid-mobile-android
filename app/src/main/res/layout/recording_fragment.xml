@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +31,7 @@
         android:background="@drawable/recorder_background"
         android:orientation="horizontal">
 
-        <ImageButton
+        <com.example.coronadiagnosticapp.ui.views.MorphButton
             android:id="@+id/play_pause_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -38,8 +39,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_play" />
+            android:scaleType="fitCenter" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/sound_seekBar"

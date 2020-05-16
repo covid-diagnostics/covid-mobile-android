@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.utils.getAppComponent
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RecordingFragment() : Fragment() {
+class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
 
     @Inject
     lateinit var viewModel: RecorderViewModel
@@ -53,16 +54,14 @@ class RecordingFragment() : Fragment() {
         play_pause_btn.setOnClickListener {
             toggleRecording()
         }
+        sound_seekBar.setOnSeekBarChangeListener(this)
     }
 
     private fun toggleRecording() {
         val mp = player ?: return
-        if (mp.isPlaying) {
-            play_pause_btn.setImageResource(R.drawable.ic_play)
-            mp.pause()
-        } else {
-            play_pause_btn.setImageResource(R.drawable.ic_pause)
-            mp.start()
+        play_pause_btn.toggleAnimation()
+        with(mp) {
+            if (isPlaying) pause() else start()
         }
     }
 
@@ -77,6 +76,9 @@ class RecordingFragment() : Fragment() {
                 sound_seekBar.max = duration
                 updateProgress()
             }
+            setOnCompletionListener {
+                play_pause_btn.pauseToPlay()
+            }
         }
 
         updateProgress()
@@ -87,13 +89,7 @@ class RecordingFragment() : Fragment() {
             while (player != null) {
                 if (player!!.isPlaying) {
                     withContext(Main) {
-                        if (player != null){
-                            sound_seekBar.progress = player!!.currentPosition
-                        }
-                        else{
-                            sound_seekBar.progress = 0
-                        }
-
+                        sound_seekBar.progress = player?.currentPosition ?: 0
                     }
                 }
                 delay(100)
@@ -122,5 +118,17 @@ class RecordingFragment() : Fragment() {
     interface Callback {
         fun onContinueTapped()
         fun onRecordTapped()
+    }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if (fromUser) {
+            player?.seekTo(progress)
+        }
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
     }
 }
