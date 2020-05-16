@@ -37,11 +37,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         start_btn.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_homeFragment_to_instructionsFragment)
+            val id = if (viewModel.isFirstTime) {
+                R.id.action_homeFragment_to_instructionsFragment
+            }else{
+                R.id.action_homeFragment_to_dailyMetricFragment
+            }
+            findNavController().navigate(id)
         }
+        start_btn.isEnabled = false
 
-        progressBar.show()
+            progressBar.show()
         num_checks_tv.hide()
         GlobalScope.launch(Dispatchers.IO) {
             val count = viewModel.getNumChecks()
@@ -51,6 +56,7 @@ class HomeFragment : Fragment() {
                 val text = getString(R.string.checks_have_been_taken_so_far, count)
                 num_checks_tv.setSpanText(text)
                 num_checks_tv.show()
+                start_btn.isEnabled = true
             }
         }
 
