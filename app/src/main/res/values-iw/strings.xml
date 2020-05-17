@@ -194,5 +194,16 @@
 אם יש לך שאלות הנוגעות לפרויקט זה או בעיה טכנית, אנא צור קשר עם החוקרים האחראיים/הצוות הטכני: במייל voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">טופס הסכמה</string>
+    <string name="what_s_right_about_you">מה נכון לגביך?</string>
+    <string name="non_smoker">לא מעשן</string>
+    <string name="smoker">מעשן</string>
+    <string name="smoked_5y_ago">עישנתי והפסקתי כבר לפחות 5 שנים</string>
+    <string name="thx_samples_keep_hygein">תודה על הבדיקות!\\n השתדלו לשמור על הגיינה</string>
+    <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">עזרו למחקר ולהחזיר את העולם לשגרה עם שיתוף האפליקציה!</string>
+    <string name="checks_have_been_taken_so_far">" <![CDATA[
+         <font color="#4787EF">%d</font> בדיקות נעשו עד כה!
+        ]]>"</string>
+    <string name="city_back_on_tracks">ביחד נחזיר את העיר לשגרה.</string>
+    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">בפחות מ-2 דקות ,פעם ביום, לפחות לשבוע, או כפי יכולתך לעזור לקדם את המאבק נגד הקורונה כאן ובכל העולם.</string>
 
 </resources>
