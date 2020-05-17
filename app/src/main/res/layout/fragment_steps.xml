@@ -62,7 +62,7 @@
         <com.example.coronadiagnosticapp.ui.views.StepView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:stepDescription="Starting with general details and some background (only once,promise)"
+            app:stepDescription="@string/general_details"
             app:stepNumber="1" />
 
         <TextView
@@ -78,7 +78,7 @@
         <com.example.coronadiagnosticapp.ui.views.StepView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:stepDescription="We'll ask to know how are you feeling today"
+            app:stepDescription="@string/feeling_today_q"
             app:stepNumber="2" />
 
         <TextView
@@ -94,7 +94,7 @@
         <com.example.coronadiagnosticapp.ui.views.StepView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:stepDescription="We'll take some short voice samples and a pulse check"
+            app:stepDescription="@string/voice_smpl_voice_chx"
             app:stepNumber="3" />
 
         <TextView
@@ -110,7 +110,7 @@
         <com.example.coronadiagnosticapp.ui.views.StepView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:stepDescription="We'll thank you and will be glad to see you again the day after 😊"
+            app:stepDescription="@string/thx_glad_to_see_you_tomorrow"
             app:stepNumber="4" />
 
     </LinearLayout>
