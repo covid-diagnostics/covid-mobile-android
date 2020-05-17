@@ -234,6 +234,7 @@
     <string name="voice_up">" <![CDATA[
          <font color="#4787EF">הקול </font> לטובה
         ]]>"</string>
+    <string name="skip">דלג</string>
 
 
 </resources>
