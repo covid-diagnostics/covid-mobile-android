@@ -36,9 +36,9 @@
             android:id="@+id/sex_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:negativeText="female"
-            app:positiveText="male"
-            app:yn_question="Birth sex" />
+            app:negativeText="@string/female"
+            app:positiveText="@string/male"
+            app:yn_question="@string/birth_sex" />
 
         <EditText
             android:id="@+id/et_age"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:hint="Height"
+                android:hint="@string/height"
                 android:inputType="numberSigned"
                 android:maxLength="3" />
 
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:hint="Weight"
+                android:hint="@string/weight"
                 android:inputType="numberSigned"
                 android:maxLength="3" />
 
@@ -105,7 +105,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Continue"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
