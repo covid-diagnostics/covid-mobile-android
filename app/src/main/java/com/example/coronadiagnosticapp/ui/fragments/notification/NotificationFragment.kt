@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.coronadiagnosticapp.R
 import com.example.coronadiagnosticapp.ui.activities.Reminder.RegisterNotificationService
+import com.example.coronadiagnosticapp.ui.fragments.onboarding.AutostartUtils
 import com.example.coronadiagnosticapp.utils.getAppComponent
 import kotlinx.android.synthetic.main.fragment_notification.*
 import javax.inject.Inject
@@ -33,6 +34,7 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         done_btn.setOnClickListener {
+            AutostartUtils.requestAutostartPermissions(context!!)
             saveTime()
             goHome()
         }

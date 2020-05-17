@@ -106,18 +106,8 @@ class RecordingsMainFragment : ScopedFragment(), RecorderFragment.Callback{
             }
             Log.d(TAG, "File finished uploading!")
         }
-        processRecording(fileLocation)
     }
 
     // Extracts the breathing rate from the recording
-    private fun processRecording(fileLocation: String) {
-        AndroidFFMPEGLocator(context)
-        Log.i(TAG, "Starting to process recording")
-        val audioStream = PipedAudioStream(fileLocation)
-            .getMonoStream(44100, 0.0)
-        val breathingRate = AudioAnalyzerImpl()
-            .breathingRateFromAudioStream(audioStream)
-        Log.i(TAG, "Breathing rate: $breathingRate")
-        viewModel.setBreathingRate(breathingRate)
-    }
+
 }
