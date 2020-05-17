@@ -217,6 +217,9 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
     </string>
     <string name="consent_form">Consent form</string>
 
+    <string name="if_nothing_applies_to_you_just_continue">if nothing applies to you ,just continue</string>
+
+
     <string name="continue_if_non_relevant">(if nothing is relevant continue)</string>
 
     <string name="about_you">about you</string>
@@ -241,4 +244,5 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
     <string name="we_got_you_covered">We got you covered.</string>
     <string name="when_would_you_like_to_be_reminded">When would you like to be reminded?</string>
     <string name="i_ll_set_it_later">i\'ll set it later</string>
+
 </resources>
