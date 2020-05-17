@@ -244,5 +244,6 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
     <string name="we_got_you_covered">We got you covered.</string>
     <string name="when_would_you_like_to_be_reminded">When would you like to be reminded?</string>
     <string name="i_ll_set_it_later">i\'ll set it later</string>
+    <string name="skip">skip</string>
 
 </resources>
