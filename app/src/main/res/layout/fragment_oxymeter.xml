@@ -26,13 +26,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
         android:gravity="center_vertical"
         android:text="@string/please_put_your_finger_on_camera"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/improve_lightning"
+        app:layout_constraintBottom_toTopOf="@+id/graphHeartRate"
         app:layout_constraintStart_toEndOf="@+id/fingerTickImage"
         app:layout_constraintTop_toBottomOf="@+id/barTimer" />
 
@@ -45,34 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/putFingerMessage"
         app:srcCompat="@drawable/ic_tick" />
-
-    <TextView
-        android:id="@+id/improve_lightning"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="40dp"
-        android:gravity="center_vertical"
-        android:text="@string/please_improve_lightning"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lightningTickImage"
-        app:layout_constraintTop_toBottomOf="@+id/putFingerMessage" />
-
-    <ImageView
-        android:id="@+id/lightningTickImage"
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/improve_lightning"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/improve_lightning"
-        app:srcCompat="@drawable/ic_warning" />
 
 
     <Button
@@ -124,7 +95,6 @@
         app:layout_constraintEnd_toEndOf="@+id/preview"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/heart_img"
-        app:layout_constraintTop_toBottomOf="@+id/improve_lightning"
         app:seriesData="0=0" />
 
     <ImageView

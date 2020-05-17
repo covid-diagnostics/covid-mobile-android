@@ -282,7 +282,7 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback, SensorEventListener
     }
 
     private fun showProgressBarAndShowAlert(alertText: String) {
-        lightningTickImage.setImageDrawable(resources.getDrawable(R.drawable.ic_tick))
+        //lightningTickImage.setImageDrawable(resources.getDrawable(R.drawable.ic_tick))
         putFingerMessage.text = alertText
         if (barTimer.visibility != View.VISIBLE) {
             barTimer.startAnimation(makeVertical)
@@ -394,8 +394,8 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback, SensorEventListener
         if (event.sensor.type == Sensor.TYPE_LIGHT) {
             Log.d(TAG, "light sensor value:${event.values[0]}")
             val visibility = if (event.values[0] < MIN_LIGHT_VALUE) View.VISIBLE else View.GONE
-            improve_lightning?.visibility = visibility
-            lightningTickImage?.visibility = visibility
+            //improve_lightning?.visibility = visibility
+            //lightningTickImage?.visibility = visibility
         }
     }
 }
