@@ -227,5 +227,8 @@
     <string name="we_got_you_covered">אנחנו על זה.</string>
     <string name="when_would_you_like_to_be_reminded">מתי תרצו לקבל תזכורת?</string>
     <string name="i_ll_set_it_later">אני אחליט אחר כך</string>
+    <string name="voice_up">" <![CDATA[
+         <font color="#4787EF">הקול </font> לטובה
+        ]]>"</string>
 
 </resources>
