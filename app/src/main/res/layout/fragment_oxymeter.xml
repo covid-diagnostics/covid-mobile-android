@@ -91,6 +91,7 @@
         android:id="@+id/graphHeartRate"
         android:layout_width="225dp"
         android:layout_height="99dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/ready_btn"
         app:layout_constraintEnd_toEndOf="@+id/preview"
         app:layout_constraintHorizontal_bias="0.0"

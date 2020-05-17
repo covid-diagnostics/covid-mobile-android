@@ -97,7 +97,7 @@
     <string name="better">Better</string>
     <string name="worse">Worse</string>
     <string name="lets_start">Let\'s Start</string>
-    <string name="short_report">Daily report,short and simple,that all it takes, we\'ll do the rest 😀</string>
+    <string name="short_report">You give us a short and simple daily report. We\'ll do the rest 😀</string>
     <string name="get_to_know">Let\'s get to know you!</string>
     <string name="your_chance_to_win_corona">
         <![CDATA[
@@ -120,7 +120,7 @@
     <string name="tap_to_record">Tap to record</string>
     <string name="tests_done_so_far">%d tests have been done so far!</string>
     <string name="share_now">Share now</string>
-    <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygein!</string>
+    <string name="thx_samples_keep_hygein">Thank you for your samples! \nKeep practicing good hygiene!</string>
     <string name="thank_you">Measurement %d successfully submitted!</string>
     <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
     <string name="continue_arrow">Continue →</string>
@@ -147,10 +147,10 @@
     </string>
     <string name="voice_check">Voice check</string>
     <string name="why_voice_and_pulse">Why voice and pulse?</string>
-    <string name="research_shows">Research shows that changes in those physiologycal signs may help with exemining earlier about potential illness!</string>
+    <string name="research_shows">Research shows that changes in those physiological signs may help with examining earlier about potential illness!</string>
     <string name="better_checking_in_the_morning_after_brushing_your_teeth">Better checking in the morning, after brushing your teeth.</string>
     <string name="how_does_it_work">How does it work?</string>
-    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">in less than 2 minutes, once a day, for a week at least, or as much as you could help promote the fight against corona here and even worldwide.</string>
+    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">Measurement takes less than 2 minutes, do it once a day, for a week at least, or as much as you can to help promote the fight against covid19 here and worldwide.</string>
     <string name="letsHearSound">let\'s hear the sound</string>
     <string name="letsHear">let\'s hear</string>
     <string name="count_1to10">count in English from 1-10</string>
@@ -217,27 +217,27 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
     </string>
     <string name="consent_form">Consent form</string>
 
-    <string name="if_nothing_applies_to_you_just_continue">if nothing applies to you ,just continue</string>
+    <string name="if_nothing_applies_to_you_just_continue">If nothing applies to you ,just continue</string>
 
 
-    <string name="continue_if_non_relevant">(if nothing is relevant continue)</string>
+    <string name="continue_if_non_relevant">(If nothing is relevant continue)</string>
 
-    <string name="about_you">about you</string>
+    <string name="about_you">About you</string>
     <string name="we_ll_only_ask_this_once">We\'ll only ask this once ✌️</string>
     <string name="your_country">Your country</string>
     <string name="before_we_start">Before we start</string>
-    <string name="severe_symptoms_or_life_threatning_contact_101_or_medical_care">in case of severe symptoms or life threatning such as breath shortening,chest pains or loss of consiousness, \nyou should contact 101 or address for proper medical care.</string>
-    <string name="do_not_consider_the_app_s_measures_as_medical_advisury">Do not consider the app\'s measures as medical advisury!</string>
-    <string name="in_case_of_medical_attention_you_should_contact_your_medical_provider_or_set_an_appointemnt_with_the_advising_doctor">In case of medical attention, you should contact your medical provider or set an appointemnt with the advising doctor.</string>
-    <string name="general_details">Starting with general details and some background (only once,promise)</string>
-    <string name="feeling_today_q">We\'ll ask to know how are you feeling today</string>
+    <string name="severe_symptoms_or_life_threatning_contact_101_or_medical_care">In case of severe or life threatening symptoms such as shortness of breath,chest pains or loss of consciousness, \nyou should contact 101 or your doctor for proper medical care.</string>
+    <string name="do_not_consider_the_app_s_measures_as_medical_advisory">Do not consider the app\'s measures as medical advisory!</string>
+    <string name="in_case_of_medical_attention_you_should_contact_your_medical_provider_or_set_an_appointemnt_with_the_advising_doctor">In case you need medical attention, you should contact your medical provider or set an appointment with the advising doctor.</string>
+    <string name="general_details">Starting with general details and some background (you only do this once, we promise)</string>
+    <string name="feeling_today_q">We\'ll ask how are you feeling today</string>
     <string name="voice_smpl_voice_chx">We\'ll take some short voice samples and a pulse check</string>
-    <string name="thx_glad_to_see_you_tomorrow">We\'ll thank you and will be glad to see you again the day after 😊</string>
-    <string name="let_us_know_you_better">let us know you better !</string>
-    <string name="one_minute_long_voice_sample_could_help_promote_free_detection_tool_fast_and_accessible_for_all">one minute long voice sample could help promote free detection tool,fast and accessible for all.</string>
+    <string name="thx_glad_to_see_you_tomorrow">We\'ll be glad to see you again the next day 😊</string>
+    <string name="let_us_know_you_better">Let\'s get to know you better !</string>
+    <string name="one_minute_long_voice_sample_could_help_promote_free_detection_tool_fast_and_accessible_for_all">A one minute long voice sample could help promote a free, fast and accessible detection tool.</string>
     <string name="birth_sex">Birth sex</string>
-    <string name="female">female</string>
-    <string name="male">male</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="we_ll_be_glad_to_see_you_again">We\'ll be glad to see you again!</string>

@@ -43,13 +43,15 @@
                 android:textColor="#000000"
                 android:textSize="18sp"
                 tools:text="@string/choose_all_relevant" />
+
             <TextView
                 android:id="@+id/notes_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textColor="#000000"
                 android:textSize="14sp"
-                android:layout_marginTop="8dp"
+                android:visibility="visible"
                 tools:text="@string/continue_if_non_relevant" />
         </LinearLayout>
 

@@ -62,7 +62,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/open_sans_semibold"
-        android:text="@string/do_not_consider_the_app_s_measures_as_medical_advisury"
+        android:text="@string/do_not_consider_the_app_s_measures_as_medical_advisory"
         android:textColor="#2570F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
