@@ -43,8 +43,8 @@ class OnBoardingMainFragment : Fragment() {
 
         override fun getItem(position: Int) = when (position) {
             0 -> WelcomeFragment()
-            1 -> DisclosureFragment()
-            2 -> StepsFragment()
+            1 -> StepsFragment()
+            2 -> DisclosureFragment()
             3 -> ConsentFormFragment()
             else -> WelcomeFragment()
         }
