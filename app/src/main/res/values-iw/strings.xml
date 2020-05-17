@@ -194,5 +194,6 @@
 אם יש לך שאלות הנוגעות לפרויקט זה או בעיה טכנית, אנא צור קשר עם החוקרים האחראיים/הצוות הטכני: במייל voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">טופס הסכמה</string>
+    <string name="continue_if_non_relevant">אם שום דבר לא מתאים אפשר להמשך</string>
 
 </resources>
