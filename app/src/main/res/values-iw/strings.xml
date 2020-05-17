@@ -194,6 +194,9 @@
 אם יש לך שאלות הנוגעות לפרויקט זה או בעיה טכנית, אנא צור קשר עם החוקרים האחראיים/הצוות הטכני: במייל voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">טופס הסכמה</string>
+
+    <string name="continue_if_non_relevant">אם שום דבר לא מתאים אפשר להמשך</string>
+
     <string name="what_s_right_about_you">מה נכון לגביך?</string>
     <string name="non_smoker">לא מעשן</string>
     <string name="smoker">מעשן</string>
@@ -230,5 +233,6 @@
     <string name="voice_up">" <![CDATA[
          <font color="#4787EF">הקול </font> לטובה
         ]]>"</string>
+
 
 </resources>

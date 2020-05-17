@@ -216,6 +216,9 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
         If you have any questions regarding this project or a technical issue, please contact the responsible researchers / technical staff: Email voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">Consent form</string>
+
+    <string name="continue_if_non_relevant">(if nothing is relevant continue)</string>
+
     <string name="about_you">about you</string>
     <string name="we_ll_only_ask_this_once">We\'ll only ask this once ✌️</string>
     <string name="your_country">Your country</string>
