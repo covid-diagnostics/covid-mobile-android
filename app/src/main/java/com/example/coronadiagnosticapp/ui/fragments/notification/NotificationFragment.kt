@@ -34,7 +34,7 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         done_btn.setOnClickListener {
-            AutostartUtils.requestAutostartPermissions(context!!)
+            AutostartUtils.requestAutoStartPermissions(context!!)
             saveTime()
             goHome()
         }

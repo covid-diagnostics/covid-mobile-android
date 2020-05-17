@@ -14,7 +14,7 @@ import com.example.coronadiagnosticapp.BuildConfig
 import com.example.coronadiagnosticapp.R
 
 object AutostartUtils {
-    fun requestAutostartPermissions(context: Context) {
+    fun requestAutoStartPermissions(context: Context) {
         val SETTINGS_INTENTS =
             createSettingIntents()
 
