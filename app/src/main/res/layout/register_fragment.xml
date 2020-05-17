@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="about you"
+            android:text="@string/about_you"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="20sp"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="We'll only ask this once ✌️"
+            android:text="@string/we_ll_only_ask_this_once"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
@@ -48,7 +48,8 @@
         android:inputType="phone"
         android:maxLines="1"
         android:maxLength="15"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:autofillHints="visible" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -63,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Your country"
+            android:text="@string/your_country"
             android:textSize="20sp" />
 
         <Spinner
@@ -78,7 +79,7 @@
         style="@style/customButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
