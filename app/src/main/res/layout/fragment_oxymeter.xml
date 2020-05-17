@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.oxymeter.OxymeterFragment">
 
     <SurfaceView
         android:id="@+id/preview"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:background="@drawable/rounded_corners_inside"
@@ -21,41 +21,50 @@
     <TextView
         android:id="@+id/putFingerMessage"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textAlignment="center"
+        android:drawableStart="@drawable/ic_tick"
+        android:drawablePadding="8dp"
         android:text="@string/please_put_your_finger_on_camera"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/graphHeartRate"
-        app:layout_constraintStart_toEndOf="@+id/fingerTickImage"
-        app:layout_constraintTop_toBottomOf="@+id/barTimer" />
-
-    <ImageView
-        android:id="@+id/fingerTickImage"
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/putFingerMessage"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/putFingerMessage"
-        app:srcCompat="@drawable/ic_tick" />
+        app:layout_constraintTop_toBottomOf="@+id/preview" />
 
-
-    <Button
-        android:id="@+id/ready_btn"
-        style="@style/customButton"
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="@string/start"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/ready_btn"
+            style="@style/customButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start" />
+
+        <Button
+            android:id="@+id/skip_btn"
+            style="@style/customButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/skip" />
+
+    </LinearLayout>
 
 
     <ProgressBar
@@ -63,61 +72,71 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="30dp"
         android:indeterminate="false"
         android:progressDrawable="@drawable/circular_progress_bar"
         android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preview" />
+        app:layout_constraintBottom_toTopOf="@+id/graph_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/putFingerMessage" />
+
+    <LinearLayout
+        android:id="@+id/graph_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/putFingerMessage"
+        app:layout_constraintVertical_bias="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/heart_img"
+                android:layout_width="52dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/heart" />
+
+            <TextView
+                android:id="@+id/heartRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textAlignment="center"
+                android:textSize="36sp" />
+        </LinearLayout>
+
+        <com.jjoe64.graphview.helper.GraphViewXML
+            android:id="@+id/graphHeartRate"
+            android:layout_width="225dp"
+            android:layout_height="99dp"
+            app:seriesData="0=0" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textTimer"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/barTimer"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/barTimer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@id/barTimer"
         app:layout_constraintRight_toRightOf="@id/barTimer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barTimer"
         app:layout_constraintVertical_bias="0.5" />
-
-    <com.jjoe64.graphview.helper.GraphViewXML
-        android:id="@+id/graphHeartRate"
-        android:layout_width="225dp"
-        android:layout_height="99dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/ready_btn"
-        app:layout_constraintEnd_toEndOf="@+id/preview"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/heart_img"
-        app:seriesData="0=0" />
-
-    <ImageView
-        android:id="@+id/heart_img"
-        android:layout_width="52dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="@+id/preview"
-        app:layout_constraintTop_toTopOf="@+id/graphHeartRate"
-        app:srcCompat="@drawable/heart" />
-
-    <TextView
-        android:id="@+id/heartRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="-"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/graphHeartRate"
-        app:layout_constraintEnd_toEndOf="@+id/heart_img"
-        app:layout_constraintStart_toStartOf="@+id/heart_img"
-        app:layout_constraintTop_toBottomOf="@+id/heart_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

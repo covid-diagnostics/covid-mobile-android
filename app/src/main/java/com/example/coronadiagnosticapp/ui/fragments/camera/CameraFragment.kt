@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -51,7 +52,7 @@ class CameraFragment : ScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onOpenedFromOxymeterFragment()
+        checkOpenedFromOxymeterFragment()
 
         button_startCamera.setOnClickListener {
 
@@ -92,26 +93,34 @@ class CameraFragment : ScopedFragment() {
         }
     }
 
-    private fun onOpenedFromOxymeterFragment(){
+    private fun checkOpenedFromOxymeterFragment(){
+        val args = arguments ?: return
+        val resultCode = args.getInt("ResultCode")
         // get data from OxymeterActivity
-        val oxymeterData:OxymeterData = arguments
-            ?.getParcelable(OxymeterFragment.EXTRA_OXY_DATA)
-            ?: return
+        if (resultCode == Activity.RESULT_CANCELED){
+            moveToRecorder()
+            return
+        }
+
+        val oxymeterData = args.getParcelable<OxymeterData>(OxymeterFragment.EXTRA_OXY_DATA)
 
         showLoading(progressBar_cameraFragment,true)
-
         launch(Dispatchers.IO) {
             viewModel.saveResult(HealthResult(oxymeterData))
             withContext(Dispatchers.Main) {
                 showLoading(progressBar_cameraFragment,false)
-                val id = if (viewModel.isFirstTime) {
-                    R.id.action_cameraFragment_to_recorderExplanation
-                }else{
-                    R.id.action_cameraFragment_to_recorderFragment
-                }
-                findNavController().navigate(id)
+                moveToRecorder()
             }
         }
+    }
+
+    private fun moveToRecorder() {
+        val id = if (viewModel.isFirstTime) {
+            R.id.action_cameraFragment_to_recorderExplanation
+        } else {
+            R.id.action_cameraFragment_to_recorderFragment
+        }
+        findNavController().navigate(id)
     }
 
 }
