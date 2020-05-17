@@ -125,7 +125,7 @@
     <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">Help us research and bring the world back to normal by sharing the app!</string>
     <string name="continue_arrow">Continue →</string>
 
-    <string name="voice_up" translatable="false">
+    <string name="voice_up">
         <![CDATA[
          <font color="#4787EF">Voice</font> up
         ]]>
@@ -216,4 +216,26 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
         If you have any questions regarding this project or a technical issue, please contact the responsible researchers / technical staff: Email voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">Consent form</string>
+    <string name="about_you">about you</string>
+    <string name="we_ll_only_ask_this_once">We\'ll only ask this once ✌️</string>
+    <string name="your_country">Your country</string>
+    <string name="before_we_start">Before we start</string>
+    <string name="severe_symptoms_or_life_threatning_contact_101_or_medical_care">in case of severe symptoms or life threatning such as breath shortening,chest pains or loss of consiousness, \nyou should contact 101 or address for proper medical care.</string>
+    <string name="do_not_consider_the_app_s_measures_as_medical_advisury">Do not consider the app\'s measures as medical advisury!</string>
+    <string name="in_case_of_medical_attention_you_should_contact_your_medical_provider_or_set_an_appointemnt_with_the_advising_doctor">In case of medical attention, you should contact your medical provider or set an appointemnt with the advising doctor.</string>
+    <string name="general_details">Starting with general details and some background (only once,promise)</string>
+    <string name="feeling_today_q">We\'ll ask to know how are you feeling today</string>
+    <string name="voice_smpl_voice_chx">We\'ll take some short voice samples and a pulse check</string>
+    <string name="thx_glad_to_see_you_tomorrow">We\'ll thank you and will be glad to see you again the day after 😊</string>
+    <string name="let_us_know_you_better">let us know you better !</string>
+    <string name="one_minute_long_voice_sample_could_help_promote_free_detection_tool_fast_and_accessible_for_all">one minute long voice sample could help promote free detection tool,fast and accessible for all.</string>
+    <string name="birth_sex">Birth sex</string>
+    <string name="female">female</string>
+    <string name="male">male</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="we_ll_be_glad_to_see_you_again">We\'ll be glad to see you again!</string>
+    <string name="we_got_you_covered">We got you covered.</string>
+    <string name="when_would_you_like_to_be_reminded">When would you like to be reminded?</string>
+    <string name="i_ll_set_it_later">i\'ll set it later</string>
 </resources>
