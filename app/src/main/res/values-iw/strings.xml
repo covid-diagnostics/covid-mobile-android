@@ -49,7 +49,7 @@
     <string name="reminder_notification_title">הבדיקה היומיות</string>
     <string name="reminder_notification_content">הגיע הזמן לבדיקה היומית!👩‍⚕️</string>
     <string name="autostart_dialog_title">עליה אוטומטית</string>
-    <string name="autostart_dialog_content">על מנת לקבל תזכורות יומיות כראוי, בבקשה אשר את %s בהגדרות הבאות.</string>
+    <string name="autostart_dialog_content">על מנת לקבל תזכורות יומיות לבדיקה , יש לאשר את %s בהגדרות הבאות.</string>
     <string name="settings">הגדרות</string>
     <string name="cancel">ביטול</string>
     <string name="dont_show_again">אל תראה שוב</string>

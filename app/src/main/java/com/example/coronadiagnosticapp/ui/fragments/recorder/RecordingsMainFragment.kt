@@ -107,4 +107,5 @@ class RecordingsMainFragment : ScopedFragment(), RecorderFragment.Callback{
             Log.d(TAG, "File finished uploading!")
         }
     }
+
 }
