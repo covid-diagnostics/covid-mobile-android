@@ -57,7 +57,7 @@ class RegisterFragment : ScopedFragment() {
 
     private fun initForm() = form {
         input(et_phone, "phone") {
-            isNotEmpty().description(getString(R.string.required))
+            isNotEmpty().description(R.string.required)
         }
         spinner(spinner_country, "country") {
         }
