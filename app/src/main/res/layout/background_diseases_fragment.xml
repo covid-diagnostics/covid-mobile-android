@@ -32,6 +32,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/nothing_applies_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/if_nothing_applies_to_you_just_continue"
+        android:fontFamily="@font/open_sans_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_header_instructions" />
+
     <LinearLayout
         android:id="@+id/chips"
         android:layout_width="wrap_content"
@@ -40,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_header_instructions">
+        app:layout_constraintTop_toBottomOf="@+id/nothing_applies_tv">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
@@ -107,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_weight="1"
-                    android:text="Yes"
+                    android:text="@string/yes"
                     android:textColor="@color/text_chip_state_list" />
 
                 <com.example.coronadiagnosticapp.ui.views.EkRadioBtn
@@ -115,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="No"
+                    android:text="@string/no"
                     android:textColor="@color/text_chip_state_list" />
             </RadioGroup>
         </LinearLayout>

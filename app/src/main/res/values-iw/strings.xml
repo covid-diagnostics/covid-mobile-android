@@ -194,5 +194,47 @@
 אם יש לך שאלות הנוגעות לפרויקט זה או בעיה טכנית, אנא צור קשר עם החוקרים האחראיים/הצוות הטכני: במייל voiceup.clinical@gmail.com
     </string>
     <string name="consent_form">טופס הסכמה</string>
+    <string name="if_nothing_applies_to_you_just_continue">אם שום דבר לא מתאים אפשר להמשיך</string>
+
+    <string name="continue_if_non_relevant">אם שום דבר לא מתאים אפשר להמשך</string>
+
+    <string name="what_s_right_about_you">מה נכון לגביך?</string>
+    <string name="non_smoker">לא מעשן</string>
+    <string name="smoker">מעשן</string>
+    <string name="smoked_5y_ago">עישנתי והפסקתי כבר לפחות 5 שנים</string>
+    <string name="thx_samples_keep_hygein">תודה על הבדיקות!\\n השתדלו לשמור על הגיינה</string>
+    <string name="help_us_research_and_bring_the_world_back_to_normal_by_sharing_the_app">עזרו למחקר ולהחזיר את העולם לשגרה עם שיתוף האפליקציה!</string>
+    <string name="checks_have_been_taken_so_far">" <![CDATA[
+         <font color="#4787EF">%d</font> בדיקות נעשו עד כה!
+        ]]>"</string>
+    <string name="city_back_on_tracks">ביחד נחזיר את העיר לשגרה.</string>
+    <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">בפחות מ-2 דקות ,פעם ביום, לפחות לשבוע, או כפי יכולתך לעזור לקדם את המאבק נגד הקורונה כאן ובכל העולם.</string>
+    <string name="about_you">קצת עליך</string>
+    <string name="we_ll_only_ask_this_once">נשאל רק פעם אחת ✌️ </string>
+    <string name="your_country">המדינה שלך</string>
+    <string name="before_we_start">לפני שנתחיל</string>
+    <string name="severe_symptoms_or_life_threatning_contact_101_or_medical_care">במקרה של תסמינים חמורים או מסכני חיים כמו קוצר נשימה ,כאבים בחזה או איבוד הכרה ,צריך ליצור קשר עם מוקד101 או לפנות לטיפול רפואי מתאים.</string>
+    <string name="do_not_consider_the_app_s_measures_as_medical_advisory">אין להחשיב את האפליקציה כיעוץ רפואי!</string>
+    <string name="in_case_of_medical_attention_you_should_contact_your_medical_provider_or_set_an_appointemnt_with_the_advising_doctor">במקרה שנדרשת תשומת לב רפואית ,יש ליצור קשר עם השירות הרפואי או לקבוע פגישה עם הרופא המטפל.</string>
+    <string name="general_details">נתחיל עם מידע כללי ורקע(רק פעם אחת,מבטיחים)</string>
+    <string name="feeling_today_q">נשאל איך אתם מרגישים היום</string>
+    <string name="voice_smpl_voice_chx">ניקח כמה בדיקות קול קצרות ובדיקת דופק</string>
+    <string name="thx_glad_to_see_you_tomorrow">נגיד תודה ונשמח לראותכם למחרת 😊</string>
+    <string name="let_us_know_you_better">תנו לנו להכיר אתכם יותר טוב!</string>
+    <string name="one_minute_long_voice_sample_could_help_promote_free_detection_tool_fast_and_accessible_for_all">"דגימת קול תוכל לעזור לקדם קידום כלי זיהוי חינמי,מהיר וזמין לכולם. "</string>
+    <string name="birth_sex">מין מולד</string>
+    <string name="female">נקבה</string>
+    <string name="male">זכר</string>
+    <string name="height">גובה</string>
+    <string name="weight">משקל</string>
+    <string name="we_ll_be_glad_to_see_you_again">נשמח לראותכם שוב!</string>
+    <string name="we_got_you_covered">אנחנו על זה.</string>
+    <string name="when_would_you_like_to_be_reminded">מתי תרצו לקבל תזכורת?</string>
+    <string name="i_ll_set_it_later">אני אחליט אחר כך</string>
+    <string name="voice_up">" <![CDATA[
+         <font color="#4787EF">הקול </font> לטובה
+        ]]>"</string>
+    <string name="skip">דלג</string>
+
 
 </resources>
