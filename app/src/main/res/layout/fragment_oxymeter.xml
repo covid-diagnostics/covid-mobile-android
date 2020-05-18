@@ -9,8 +9,8 @@
 
     <SurfaceView
         android:id="@+id/preview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:background="@drawable/rounded_corners_inside"
@@ -56,12 +56,13 @@
             android:layout_height="wrap_content"
             android:text="@string/start" />
 
-        <Button
+        <TextView
             android:id="@+id/skip_btn"
-            style="@style/customButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textSize="24sp"
+            android:fontFamily="@font/open_sans_light"
             android:text="@string/skip" />
 
     </LinearLayout>
