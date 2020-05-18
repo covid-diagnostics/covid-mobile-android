@@ -108,6 +108,4 @@ class RecordingsMainFragment : ScopedFragment(), RecorderFragment.Callback{
         }
     }
 
-    // Extracts the breathing rate from the recording
-
 }

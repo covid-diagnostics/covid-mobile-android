@@ -37,12 +37,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         start_btn.setOnClickListener {
-            val id = if (viewModel.isFirstTime) {
-                R.id.action_homeFragment_to_instructionsFragment
-            }else{
-                R.id.action_homeFragment_to_dailyMetricFragment
-            }
-            findNavController().navigate(id)
+            findNavController().navigate( R.id.action_homeFragment_to_dailyMetricFragment)
         }
         start_btn.isEnabled = false
 
