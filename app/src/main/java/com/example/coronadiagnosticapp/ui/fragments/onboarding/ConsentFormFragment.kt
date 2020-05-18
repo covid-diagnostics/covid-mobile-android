@@ -32,7 +32,6 @@ class ConsentFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         button_start.setOnClickListener {
-            AutostartUtils.requestAutostartPermissions(context!!)
 
             val id = if (viewModel.hasConsent) {
                 R.id.action_onBoardingMainFragment_to_registerFragment

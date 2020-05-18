@@ -69,7 +69,7 @@
     <string name="reminder_notification_title">Daily Health Check</string>
     <string name="reminder_notification_content">It\'s time for the daily health check! 👩‍⚕️</string>
     <string name="autostart_dialog_title">Autostart Enabling</string>
-    <string name="autostart_dialog_content">For receiving daily reminders properly, please enable %s in the next settings.</string>
+    <string name="autostart_dialog_content">For receiving daily checkup reminders properly, please enable %s in the next settings.</string>
     <string name="settings">settings</string>
     <string name="cancel">Cancel</string>
     <string name="dont_show_again">don\'t show again</string>
