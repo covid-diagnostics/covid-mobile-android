@@ -6,15 +6,6 @@
     app:startDestination="@id/splashFragment">
 
     <fragment
-        android:id="@+id/backgroundDiseasesFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.information.BackgroundDiseasesFragment"
-        android:label="BackgroundDiseasesFragment"
-        tools:layout="@layout/background_diseases_fragment">
-        <action
-            android:id="@+id/action_backgroundDiseases_to_instructionsFragment"
-            app:destination="@id/instructionsFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/dailyMetricFragment"
         android:name="com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment"
         android:label="daily_metric_fragment"
@@ -94,15 +85,6 @@
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/instructionsFragment"
-        android:name="com.example.coronadiagnosticapp.ui.fragments.instruction.InstructionsFragment"
-        android:label="instructions_fragment"
-        tools:layout="@layout/instructions_fragment">
-        <action
-            android:id="@+id/action_instructionsFragment_to_dailyMetricFragment"
-            app:destination="@id/dailyMetricFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/recorderExplanation"
         android:name="com.example.coronadiagnosticapp.RecorderExplanationFragment"
         android:label="fragment_recorder_explanation"
@@ -116,9 +98,6 @@
         android:name="com.example.coronadiagnosticapp.ui.fragments.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_instructionsFragment"
-            app:destination="@id/instructionsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_dailyMetricFragment"
             app:destination="@id/dailyMetricFragment" />
@@ -172,8 +151,8 @@
             android:label="BackgroundDiseasesFragment"
             tools:layout="@layout/background_diseases_fragment">
             <action
-                android:id="@+id/action_backgroundDiseases_to_instructionsFragment"
-                app:destination="@id/instructionsFragment" />
+                android:id="@+id/action_background_diseases_to_dailyMatricFragment"
+                app:destination="@id/dailyMetricFragment" />
         </fragment>
         <fragment
             android:id="@+id/termsAndConditionsFragment2"
@@ -196,6 +175,9 @@
                 android:id="@+id/action_onBoardingMainFragment_to_registerFragment"
                 app:destination="@id/registerFragment" />
         </fragment>
+        <action
+            android:id="@+id/action_global_dailyMetricFragment"
+            app:destination="@id/dailyMetricFragment" />
     </navigation>
     <fragment
         android:id="@+id/notificationFragment"

@@ -62,7 +62,7 @@ class BackgroundDiseasesFragment : ScopedFragment() {
             viewModel.updateBackgroundDiseases(getBackgroundDiseases())
             withContext(Dispatchers.Main) {
                 showLoading(progressBar_background_diseases_Fragment,false)
-                findNavController().navigate(R.id.action_backgroundDiseases_to_instructionsFragment)
+                findNavController().navigate(R.id.action_background_diseases_to_dailyMatricFragment)
             }
         }
     }
