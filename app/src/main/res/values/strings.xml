@@ -151,7 +151,7 @@
     <string name="better_checking_in_the_morning_after_brushing_your_teeth">Better checking in the morning, after brushing your teeth.</string>
     <string name="how_does_it_work">How does it work?</string>
     <string name="once_a_day_for_a_week_help_promote_the_fight_against_corona">Measurement takes less than 2 minutes, do it once a day, for a week at least, or as much as you can to help promote the fight against covid19 here and worldwide.</string>
-    <string name="letsHearSound">let\'s hear the sound</string>
+    <string name="letsHearSound">Let\'s hear the sound</string>
     <string name="letsHear">let\'s hear</string>
     <string name="count_1to10">count in English from 1-10</string>
     <string name="lastTimeLetsHear">last one, we\'d like to hear</string>
@@ -244,6 +244,6 @@ In addition, you are aware that if you are exposed to a Corona patient or you ma
     <string name="we_got_you_covered">We got you covered.</string>
     <string name="when_would_you_like_to_be_reminded">When would you like to be reminded?</string>
     <string name="i_ll_set_it_later">i\'ll set it later</string>
-    <string name="skip">skip</string>
+    <string name="skip">Skip</string>
 
 </resources>
