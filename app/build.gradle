@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.coronadiagnosticapp"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -124,4 +124,7 @@ dependencies {
 
 //    Sound visualization
     implementation 'com.github.Armen101:AudioRecordView:1.0.2'
+
+//    Encryption
+    implementation 'androidx.security:security-crypto:1.0.0-rc01'
 }

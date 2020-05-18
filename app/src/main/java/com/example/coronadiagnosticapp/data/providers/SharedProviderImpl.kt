@@ -35,19 +35,19 @@ class SharedProviderImpl @Inject constructor(context: Context) : SharedProvider,
     override fun setHasConsent(hasConsent: Boolean) = putBool(HAS_CONSENT, hasConsent)
 
     private fun putBool(key: String, flag: Boolean) =
-        preferences.edit()
+        encryptedPrefs.edit()
             .putBoolean(key, flag)
             .apply()
 
     private fun getBool(key: String, defValue: Boolean = false) =
-        preferences.getBoolean(key, defValue)
+        encryptedPrefs.getBoolean(key, defValue)
 
      private fun putString(key: String, value: String?) =
-        preferences.edit()
+        encryptedPrefs.edit()
             .putString(key, value)
             .apply()
 
     private fun getString(key: String, defValue: String? = null) =
-        preferences.getString(key, defValue)
+        encryptedPrefs.getString(key, defValue)
 
 }
