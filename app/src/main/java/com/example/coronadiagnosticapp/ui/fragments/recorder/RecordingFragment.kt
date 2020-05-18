@@ -87,7 +87,7 @@ class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
     private fun updateProgress() {
         GlobalScope.launch {
             while (player != null) {
-                if (player!!.isPlaying) {
+                if (player!!.isPlaying) {//TODO check
                     withContext(Main) {
                         sound_seekBar.progress = player?.currentPosition ?: 0
                     }
