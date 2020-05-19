@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.resultFragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +25,17 @@ class ResultFragment : Fragment() {
     @Inject
     lateinit var viewModel: ResultViewModel
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.result_fragment, container, false)
+
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
 
         GlobalScope.launch(IO) {
             val count = viewModel.getMeasurementCount()
@@ -39,11 +48,6 @@ class ResultFragment : Fragment() {
             }
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.result_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

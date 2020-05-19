@@ -7,15 +7,15 @@ import com.example.coronadiagnosticapp.data.di.DaggerAppComponent
 import io.sentry.android.core.SentryAndroid
 
 class MyApplication : MultiDexApplication() {
-    private lateinit var appComponent: AppComponent
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent
+            .factory().create(applicationContext)
+    }
     override fun onCreate() {
-        
         super.onCreate()
-        appComponent = DaggerAppComponent.factory().create(applicationContext)
+        appComponent//Create
         if (!BuildConfig.DEBUG) {
             SentryAndroid.init(this)
         }
     }
-
-    fun getAppComponent(): AppComponent = appComponent
 }

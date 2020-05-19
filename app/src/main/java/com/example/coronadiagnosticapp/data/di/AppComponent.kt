@@ -1,6 +1,8 @@
 package com.example.coronadiagnosticapp.data.di
 
 import android.content.Context
+import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
 import com.example.coronadiagnosticapp.ui.fragments.oxymeter.OxymeterFragment
 import com.example.coronadiagnosticapp.ui.fragments.camera.CameraFragment
 import com.example.coronadiagnosticapp.ui.fragments.dailtyMetric.DailyMetricFragment
@@ -20,6 +22,7 @@ import com.example.coronadiagnosticapp.ui.fragments.onboarding.WelcomeFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecordingFragment
 import com.example.coronadiagnosticapp.ui.fragments.recorder.RecordingsMainFragment
 import com.example.coronadiagnosticapp.ui.fragments.terms.TermsAndConditionsFragment
+import com.example.coronadiagnosticapp.utils.getAppComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -40,8 +43,6 @@ interface AppComponent {
     fun inject(fragment: QuestionnaireFragment)
     fun inject(fragment: QuestionFragment)
     fun inject(fragment: SmokingFragment)
-
-//    fun <T> inject(injectable:T)
     fun inject(fragment: HomeFragment)
     fun inject(fragment: SplashFragment)
     fun inject(fragment: NotificationFragment)

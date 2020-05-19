@@ -57,12 +57,16 @@ class OxymeterFragment : Fragment(), SurfaceHolder.Callback, SensorEventListener
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_oxymeter, container, false)
 
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
+    }
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        context?.getAppComponent()?.inject(this)
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         previewHolder = preview.holder

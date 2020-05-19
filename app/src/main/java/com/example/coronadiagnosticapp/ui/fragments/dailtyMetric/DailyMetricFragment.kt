@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.dailtyMetric
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,9 +30,9 @@ class DailyMetricFragment : ScopedFragment() {
     ): View? = inflater.inflate(R.layout.daily_metric_fragment, container, false)
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
 

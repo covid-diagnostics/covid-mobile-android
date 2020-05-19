@@ -2,6 +2,7 @@ package com.example.coronadiagnosticapp.ui.fragments.camera
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,9 +35,9 @@ class CameraFragment : ScopedFragment() {
     @Inject
     lateinit var viewModel: CameraViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context!!.getAppComponent().inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(

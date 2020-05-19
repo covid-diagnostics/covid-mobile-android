@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,10 +42,13 @@ class QuestionnaireFragment : Fragment() {
     ): View? =
         inflater.inflate(R.layout.fragment_questionnaire, container, false)
 
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        context?.getAppComponent()?.inject(this)
 
         showLoading(progressBar, true)
         GlobalScope.launch(IO) {

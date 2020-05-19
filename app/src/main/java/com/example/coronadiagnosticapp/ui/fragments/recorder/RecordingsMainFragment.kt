@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,9 +35,9 @@ class RecordingsMainFragment : ScopedFragment(), RecorderFragment.Callback{
         savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.fragment_recordings_main, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context!!.getAppComponent().inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

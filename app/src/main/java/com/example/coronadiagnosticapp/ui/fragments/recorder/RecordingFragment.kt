@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,9 +37,9 @@ class RecordingFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.recording_fragment, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context!!.getAppComponent().inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

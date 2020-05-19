@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.questions
 
+import android.content.Context
 import android.graphics.drawable.PictureDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -52,9 +53,9 @@ class QuestionFragment : Fragment() {
         (activity as? MainActivity)?.hideStepperLayout()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     private val requestBuilder by lazy {

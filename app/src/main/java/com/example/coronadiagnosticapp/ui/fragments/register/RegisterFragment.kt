@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.register
 
 import android.R.layout.simple_spinner_dropdown_item
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,9 +27,9 @@ class RegisterFragment : ScopedFragment() {
     @Inject
     lateinit var viewModel: RegisterViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
