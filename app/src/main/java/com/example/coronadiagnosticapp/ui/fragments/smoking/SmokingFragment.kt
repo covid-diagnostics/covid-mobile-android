@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.smoking
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,12 +26,11 @@ class SmokingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_smoking, container, false)
+    ) = inflater.inflate(R.layout.fragment_smoking, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

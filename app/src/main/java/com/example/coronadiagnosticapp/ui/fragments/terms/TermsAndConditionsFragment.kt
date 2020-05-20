@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.terms
 
+import android.content.Context
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
@@ -26,9 +27,9 @@ class TermsAndConditionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.fragment_terms_and_conditions, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

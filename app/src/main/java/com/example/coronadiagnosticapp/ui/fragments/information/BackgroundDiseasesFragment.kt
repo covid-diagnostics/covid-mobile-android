@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.information
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +24,9 @@ import javax.inject.Inject
 
 class BackgroundDiseasesFragment : ScopedFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     @Inject

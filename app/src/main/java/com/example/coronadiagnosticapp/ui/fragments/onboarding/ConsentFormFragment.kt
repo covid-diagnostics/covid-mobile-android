@@ -1,5 +1,6 @@
 package com.example.coronadiagnosticapp.ui.fragments.onboarding
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,9 +25,9 @@ class ConsentFormFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_fourth, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

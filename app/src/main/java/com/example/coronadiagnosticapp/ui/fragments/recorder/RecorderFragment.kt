@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.recorder
 
 import android.Manifest.permission.RECORD_AUDIO
+import android.content.Context
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -44,11 +45,10 @@ class RecorderFragment() : ScopedFragment() {
         this.recordingCallback = recordingCallback
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activity!!.getAppComponent().inject(this)
-
-        recordFile = context!!.externalCacheDir!!.absolutePath
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        recordFile = context.externalCacheDir!!.absolutePath
+        super.onAttach(context)
     }
 
     override fun onCreateView(

@@ -1,6 +1,7 @@
 package com.example.coronadiagnosticapp.ui.fragments.splash
 
 import android.animation.Animator
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,31 +18,29 @@ class SplashFragment : Fragment(), Animator.AnimatorListener {
     @Inject
     lateinit var viewModel: SplashViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?
     ) = inflater.inflate(R.layout.fragment_splash, container, false)
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.getAppComponent()?.inject(this)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animateLogo()
     }
 
+    override fun onAttach(context: Context) {
+        context.getAppComponent().inject(this)
+        super.onAttach(context)
+    }
+
     private fun animateLogo() = with(logo_img) {
         alpha = 0.5f
         scaleX = 0f
         scaleY = 0f
-        animate()
+        animate().alpha(1f)
             .setDuration(500)
+            .scaleX(1f).scaleY(1f)
             .setListener(this@SplashFragment)
-            .alpha(1f)
-            .scaleX(1f)
-            .scaleY(1f)
             .start()
     }
 

@@ -22,8 +22,8 @@ fun Fragment.toast(@StringRes msg: Int, duration: Int = LENGTH_SHORT) =
 
 
 //App component shorter
-fun Context.getAppComponent(): AppComponent =
-    (applicationContext as MyApplication).getAppComponent()
+fun Context.getAppComponent() =
+    (applicationContext as MyApplication).appComponent
 
 fun Context.getColor(@ColorRes color: Int) = resources.getColor(color)
 fun Fragment.getColor(@ColorRes color: Int) = resources.getColor(color)
